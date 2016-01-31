@@ -202,3 +202,66 @@ public func /(lhs: MortarAttribute, rhs: CGFloat) -> MortarAttribute {
     lhs.multiplier = 1.0 / CGFloat(rhs)
     return lhs
 }
+
+
+/**
+ Allow constraints to apply directly to numbers.  This creates implicit
+ relationships to the target's superview
+
+ e.g.
+
+ view1.m_top |=| 50  
+
+-- is equivalent to --
+
+ view1.m_top |=| view1.superview.m_top + 50
+ 
+ Note that the target must be an explicit attribute (cannot infer attribute explicitly)
+*/
+public func |=|(lhs: MortarAttribute, rhs: Int) -> MortarConstraint {
+    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .Equal)
+}
+
+public func |>|(lhs: MortarAttribute, rhs: Int) -> MortarConstraint {
+    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .GreaterThanOrEqual)
+}
+
+public func |<|(lhs: MortarAttribute, rhs: Int) -> MortarConstraint {
+    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .LessThanOrEqual)
+}
+
+public func |=|(lhs: MortarAttribute, rhs: Double) -> MortarConstraint {
+    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .Equal)
+}
+
+public func |>|(lhs: MortarAttribute, rhs: Double) -> MortarConstraint {
+    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .GreaterThanOrEqual)
+}
+
+public func |<|(lhs: MortarAttribute, rhs: Double) -> MortarConstraint {
+    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .LessThanOrEqual)
+}
+
+public func |=|(lhs: MortarAttribute, rhs: Float) -> MortarConstraint {
+    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .Equal)
+}
+
+public func |>|(lhs: MortarAttribute, rhs: Float) -> MortarConstraint {
+    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .GreaterThanOrEqual)
+}
+
+public func |<|(lhs: MortarAttribute, rhs: Float) -> MortarConstraint {
+    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .LessThanOrEqual)
+}
+
+public func |=|(lhs: MortarAttribute, rhs: CGFloat) -> MortarConstraint {
+    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .Equal)
+}
+
+public func |>|(lhs: MortarAttribute, rhs: CGFloat) -> MortarConstraint {
+    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .GreaterThanOrEqual)
+}
+
+public func |<|(lhs: MortarAttribute, rhs: CGFloat) -> MortarConstraint {
+    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .LessThanOrEqual)
+}

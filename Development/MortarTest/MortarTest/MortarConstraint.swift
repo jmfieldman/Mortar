@@ -27,37 +27,55 @@ public class MortarConstraint {
      - returns: A mortar representing this layout constraint
      */
     internal init(targetMortar: MortarAttribute, sourceMortar: MortarAttribute, relation: NSLayoutRelation) {
-        let targetComponents = targetMortar.attribute.componentAttributes()
-        let sourceComponents = sourceMortar.attribute.componentAttributes()
+        
+        /* The target view must be explicitly declared */
+        guard let targetView = targetMortar.view else {
+            NSException(name: "Target Attribute must have a defined view",
+                      reason: "Target Attribute must have a defined view",
+                    userInfo: nil).raise()
+            return
+        }
+        
+        /* The source view will default to the target superview to allow constants
+           to be expressed by themselves (e.g. view1.m_top |=| 100) */
+        let sourceView = sourceMortar.view ?? targetView.superview
+        
+        /* Attributes will inherit implicitly from the opposite side.
+           If neither is declared, it will try to match edges */
+        let targetAttribute = (targetMortar.attribute ?? sourceMortar.attribute) ?? .Edges
+        let sourceAttribute = (sourceMortar.attribute ?? targetMortar.attribute) ?? .Edges
+        
+        let targetComponents = targetAttribute.componentAttributes()
+        let sourceComponents = sourceAttribute.componentAttributes()
         
         if (targetComponents.count != sourceComponents.count) {
             NSException(name: "Attribute size mismatch",
-                      reason: "Binding two attributes of different size [left: \(targetComponents.count), right: \(sourceComponents.count)]",
+                      reason: "Binding two attributes of different size [left: \(targetAttribute) -> \(targetComponents.count), right: \(sourceAttribute) -> \(sourceComponents.count)]",
                     userInfo: nil).raise()
         }
 
-        targetMortar.view.translatesAutoresizingMaskIntoConstraints = false
+        targetView.translatesAutoresizingMaskIntoConstraints = false
         
         for i in 0 ..< targetComponents.count {
-            guard let tAttribute = targetComponents[i].nsLayoutAttribute() else {
+            guard let tLayoutAttribute = targetComponents[i].nsLayoutAttribute() else {
                 NSException(name: "Component Attribute does not have corresponding NSLayoutAttribute",
                           reason: "Component Attribute does not have corresponding NSLayoutAttribute: \(targetComponents[i])",
                         userInfo: nil).raise()
                 continue
             }
             
-            guard let sAttribute = sourceComponents[i].nsLayoutAttribute() else {
+            guard let sLayoutAttribute = sourceComponents[i].nsLayoutAttribute() else {
                 NSException(name: "Component Attribute does not have corresponding NSLayoutAttribute",
                           reason: "Component Attribute does not have corresponding NSLayoutAttribute: \(sourceComponents[i])",
                         userInfo: nil).raise()
                 continue
             }
             
-            nsConstraints.append(NSLayoutConstraint(item: targetMortar.view,
-                                               attribute: tAttribute,
+            nsConstraints.append(NSLayoutConstraint(item: targetView,
+                                               attribute: tLayoutAttribute,
                                                relatedBy: relation,
-                                                  toItem: sourceMortar.view,
-                                               attribute: sAttribute,
+                                                  toItem: sourceView,
+                                               attribute: sLayoutAttribute,
                                               multiplier: sourceMortar.multiplier,
                                                 constant: sourceMortar.constant))
             
@@ -79,7 +97,7 @@ public class MortarConstraint {
      - returns: The constraint that is created
      */
     internal convenience init(targetView: UIView, sourceMortar: MortarAttribute, relation: NSLayoutRelation) {
-        self.init(targetMortar: MortarAttribute(view: targetView, attribute: sourceMortar.attribute),
+        self.init(targetMortar: MortarAttribute(view: targetView),
                   sourceMortar: sourceMortar,
                       relation: relation)
     }
@@ -96,7 +114,7 @@ public class MortarConstraint {
      */
     internal convenience init(targetMortar: MortarAttribute, sourceView: UIView, relation: NSLayoutRelation) {
         self.init(targetMortar: targetMortar,
-                  sourceMortar: MortarAttribute(view: sourceView, attribute: targetMortar.attribute),
+                  sourceMortar: MortarAttribute(view: sourceView),
                       relation: relation)
     }
 
@@ -111,8 +129,8 @@ public class MortarConstraint {
      - returns: The constraint that is created
      */
     internal convenience init(targetView: UIView, sourceView: UIView, relation: NSLayoutRelation) {
-        self.init(targetMortar: MortarAttribute(view: targetView, attribute: .Edges),
-                  sourceMortar: MortarAttribute(view: sourceView, attribute: .Edges),
+        self.init(targetMortar: MortarAttribute(view: targetView),
+                  sourceMortar: MortarAttribute(view: sourceView),
                       relation: relation)
         
     }

@@ -12,10 +12,10 @@ import UIKit
 public class MortarAttribute {
     
     /** Affected view for this mortar element */
-    internal var view: UIView
+    internal var view: UIView?
     
     /** attribute is assigned for Mortar elements of type .ViewAttribute */
-    internal var attribute: MortarLayoutAttribute
+    internal var attribute: MortarLayoutAttribute?
     
     /** The multiplier to apply to this attribute */
     internal var multiplier: CGFloat = 1.0
@@ -34,9 +34,44 @@ public class MortarAttribute {
      
      - returns: A Mortar object representing the layout property of this view
      */
-    internal init(view: UIView, attribute: MortarLayoutAttribute) {
+    internal init(view: UIView?, attribute: MortarLayoutAttribute?) {
         self.view      = view
         self.attribute = attribute        
+    }
+    
+    /**
+     Create a Mortar Attribute that represents an attribute-less view
+     
+     - parameter view: The view to create an attribute for
+     
+     - returns: The new Mortar Attribute
+     */
+    internal convenience init(view: UIView) {
+        self.init(view: view, attribute: nil)
+    }
+    
+    /**
+     Create a Mortar Attribute that represents a constant metric
+     
+     - parameter constant: The value of the constant
+     
+     - returns: The new Mortar Attribute
+     */
+    internal convenience init(constant: CGFloat) {
+        self.init(view: nil, attribute: nil)
+        self.constant = constant
+    }
+    
+    internal convenience init(constant: Int) {
+        self.init(constant: CGFloat(constant))
+    }
+    
+    internal convenience init(constant: Double) {
+        self.init(constant: CGFloat(constant))
+    }
+    
+    internal convenience init(constant: Float) {
+        self.init(constant: CGFloat(constant))
     }
     
 }

@@ -23,8 +23,9 @@ class ViewController: UIViewController {
         self.view.addSubview(s)
         
         s.m_size |=| t.m_size
-        s.m_left |=| t.m_right
-        s.m_top  |=| t.m_top
+        s.m_left |=| 200
+        s.m_top  |=| 200
+
 	}
 
 	override func didReceiveMemoryWarning() {
