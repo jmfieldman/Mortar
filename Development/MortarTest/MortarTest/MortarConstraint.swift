@@ -26,7 +26,12 @@ public class MortarConstraint {
      
      - returns: A mortar representing this layout constraint
      */
-    internal init(targetMortar: MortarAttribute, sourceMortar: MortarAttribute, relation: NSLayoutRelation) {
+    internal convenience init(target: MortarAttributable, source: MortarAttributable, relation: NSLayoutRelation) {
+        
+        self.init()
+        
+        let targetMortar = target.m_intoAttribute()
+        let sourceMortar = source.m_intoAttribute()
         
         /* The target view must be explicitly declared */
         guard let targetView = targetMortar.view else {
@@ -76,62 +81,52 @@ public class MortarConstraint {
                                            relatedBy: relation,
                                               toItem: sourceView,
                                            attribute: sLayoutAttribute,
-                                          multiplier: sourceMortar.multiplier[i],
-                                            constant: sourceMortar.constant[i])
+                                          multiplier: sourceMortar.multiplier,
+                                            constant: sourceMortar.constant)
             
             constraint.priority = sourceMortar.priority
             constraint.active   = true
             nsConstraints.append(constraint)
         }        
     }
-    
-    /**
-     Create a constraint relationship between a UIView and a Mortar Attribute.  Implicitly uses the
-     same attribute for the corresponding UIView
-     
-     - parameter targetView:   Left-side view
-     - parameter sourceMortar: Right-side attribute
-     - parameter relation:     Equal, Greater, Less
-     
-     - returns: The constraint that is created
-     */
-    internal convenience init(targetView: UIView, sourceMortar: MortarAttribute, relation: NSLayoutRelation) {
-        self.init(targetMortar: MortarAttribute(view: targetView),
-                  sourceMortar: sourceMortar,
-                      relation: relation)
-    }
-    
-    /**
-     Create a constraint relationship between a UIView and a Mortar Attribute.  Implicitly uses the
-     same attribute for the corresponding UIView
-     
-     - parameter targetView:   Left-side attribute
-     - parameter sourceMortar: Right-side view
-     - parameter relation:     Equal, Greater, Less
-     
-     - returns: The constraint that is created
-     */
-    internal convenience init(targetMortar: MortarAttribute, sourceView: UIView, relation: NSLayoutRelation) {
-        self.init(targetMortar: targetMortar,
-                  sourceMortar: MortarAttribute(view: sourceView),
-                      relation: relation)
-    }
-
-    /**
-     Create a constraint relationship between a UIView and a UIView.  Implicitly uses the
-     .Edges attribute for the constraint
-     
-     - parameter targetView:   Left-side view
-     - parameter sourceMortar: Right-side view
-     - parameter relation:     Equal, Greater, Less
-     
-     - returns: The constraint that is created
-     */
-    internal convenience init(targetView: UIView, sourceView: UIView, relation: NSLayoutRelation) {
-        self.init(targetMortar: MortarAttribute(view: targetView),
-                  sourceMortar: MortarAttribute(view: sourceView),
-                      relation: relation)
         
+    
+    internal convenience init(target: MortarAttribute, source: MortarTuple, relation: NSLayoutRelation) {
+        
+        self.init()
+        
+        /* The target view must be explicitly declared */
+        guard let targetView = target.view else {
+            NSException(name: "Target Attribute must have a defined view",
+                      reason: "Target Attribute must have a defined view",
+                    userInfo: nil).raise()
+            return
+        }
+        
+        /* For tuples, the target attribute must be explicitly declared */
+        guard let targetAttribute = target.attribute else {
+            NSException(name: "Target Attribute must be defined",
+                      reason: "Target Attribute must be defined (cannot assign to UIView with declaring attribute)",
+                    userInfo: nil).raise()
+            return
+        }
+        
+        let targetComponents = targetAttribute.componentAttributes()
+        
+        if (targetComponents.count != source.count) {
+            NSException(name: "Invalid component count",
+                      reason: "Target Attribute expected component count \(targetComponents.count), source is \(source.count)",
+                    userInfo: nil).raise()
+            return
+        }
+        
+        for i in 0 ..< targetComponents.count {
+            let subAttribute  = MortarAttribute(view: targetView, attribute: targetComponents[i])
+            let subConstraint = MortarConstraint(target: subAttribute, source: source[i], relation: relation)
+            
+            nsConstraints += subConstraint.nsConstraints
+        }
     }
+    
     
 }

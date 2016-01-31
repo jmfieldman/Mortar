@@ -112,33 +112,84 @@ internal enum MortarLayoutAttribute {
 
 let UILayoutPriorityDefault = (UILayoutPriorityDefaultHigh + UILayoutPriorityDefaultLow) / 2.0
 
-public protocol Mortar_CGFloatable {
+public protocol MortarCGFloatable {
     @inline(__always) func m_cgfloatValue() -> CGFloat
 }
 
-extension CGFloat : Mortar_CGFloatable {
+extension CGFloat : MortarCGFloatable {
     @inline(__always) public func m_cgfloatValue() -> CGFloat {
         return self
     }
 }
 
-extension Int : Mortar_CGFloatable {
+extension Int : MortarCGFloatable {
     @inline(__always) public func m_cgfloatValue() -> CGFloat {
         return CGFloat(self)
     }
 }
 
-extension Double : Mortar_CGFloatable {
+extension Double : MortarCGFloatable {
     @inline(__always) public func m_cgfloatValue() -> CGFloat {
         return CGFloat(self)
     }
 }
 
-extension Float : Mortar_CGFloatable {
+extension Float : MortarCGFloatable {
     @inline(__always) public func m_cgfloatValue() -> CGFloat {
         return CGFloat(self)
     }
 }
 
 
+public protocol MortarAttributable {
+    @inline(__always) func m_intoAttribute() -> MortarAttribute
+}
+
+extension CGFloat : MortarAttributable {
+    @inline(__always) public func m_intoAttribute() -> MortarAttribute {
+        return MortarAttribute(constant: self)
+    }
+}
+
+extension Int : MortarAttributable {
+    @inline(__always) public func m_intoAttribute() -> MortarAttribute {
+        return MortarAttribute(constant: self)
+    }
+}
+
+extension Double : MortarAttributable {
+    @inline(__always) public func m_intoAttribute() -> MortarAttribute {
+        return MortarAttribute(constant: self)
+    }
+}
+
+extension Float : MortarAttributable {
+    @inline(__always) public func m_intoAttribute() -> MortarAttribute {
+        return MortarAttribute(constant: self)
+    }
+}
+
+extension UIView : MortarAttributable {
+    @inline(__always) public func m_intoAttribute() -> MortarAttribute {
+        return MortarAttribute(view: self)
+    }
+}
+
+extension MortarAttribute : MortarAttributable {
+    @inline(__always) public func m_intoAttribute() -> MortarAttribute {
+        return self
+    }
+}
+
+public typealias MortarTwople  = (MortarAttributable, MortarAttributable)
+public typealias MortarFourple = (MortarAttributable, MortarAttributable, MortarAttributable, MortarAttributable)
+public typealias MortarTuple   = [MortarAttribute]
+
+@inline(__always) internal func MortarConvertTwople(twople: MortarTwople) -> MortarTuple {
+    return [twople.0.m_intoAttribute(), twople.1.m_intoAttribute()]
+}
+
+@inline(__always) internal func MortarConvertFourple(fourple: MortarFourple) -> MortarTuple {
+    return [fourple.0.m_intoAttribute(), fourple.1.m_intoAttribute(), fourple.2.m_intoAttribute(), fourple.3.m_intoAttribute()]
+}
 

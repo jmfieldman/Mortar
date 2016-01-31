@@ -21,10 +21,10 @@ public class MortarAttribute {
     internal var attribute: MortarLayoutAttribute?
     
     /** The multiplier to apply to this attribute */
-    internal var multiplier: [CGFloat] = Array<CGFloat>(count: kMortarConstArrayLen, repeatedValue: 1.0)
+    internal var multiplier: CGFloat = 1.0
     
     /** The offset constant to apply to this attribute */
-    internal var constant: [CGFloat] = Array<CGFloat>(count: kMortarConstArrayLen, repeatedValue: 0.0)
+    internal var constant: CGFloat = 0.0
     
     /** What is the marked priority of this attribute as a source */
     internal var priority: UILayoutPriority = UILayoutPriorityDefault
@@ -40,7 +40,7 @@ public class MortarAttribute {
      */
     internal init(view: UIView?, attribute: MortarLayoutAttribute?) {
         self.view      = view
-        self.attribute = attribute        
+        self.attribute = attribute
     }
     
     /**
@@ -61,9 +61,14 @@ public class MortarAttribute {
      
      - returns: The new Mortar Attribute
      */
-    internal convenience init(constant: Mortar_CGFloatable) {
+    internal convenience init(constant: MortarCGFloatable) {
         self.init(view: nil, attribute: nil)
-        self.constant = Array<CGFloat>(count: kMortarConstArrayLen, repeatedValue: constant.m_cgfloatValue())
+        self.constant = constant.m_cgfloatValue()
     }
+    
+    //internal convenience init(twople: MortarTwople) {
+    //    self.init(view: nil, attribute: nil)
+    //    self.constant = twople.0.m_intoAttribute()
+   // }
     
 }

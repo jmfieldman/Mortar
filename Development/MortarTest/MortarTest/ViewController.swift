@@ -22,10 +22,11 @@ class ViewController: UIViewController {
         s.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5)
         self.view.addSubview(s)
         
-        s.m_size |=| t.m_size
+        //s.m_size |=| t.m_size
         s.m_left |=| 200
         s.m_top  |=| 200
 
+        s.m_size |=| (100, 100)
 	}
 
 	override func didReceiveMemoryWarning() {
