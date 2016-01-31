@@ -9,6 +9,9 @@
 import Foundation
 import UIKit
 
+internal let kMortarConstArrayLen = 4
+
+
 public class MortarAttribute {
     
     /** Affected view for this mortar element */
@@ -18,13 +21,14 @@ public class MortarAttribute {
     internal var attribute: MortarLayoutAttribute?
     
     /** The multiplier to apply to this attribute */
-    internal var multiplier: CGFloat = 1.0
+    internal var multiplier: [CGFloat] = Array<CGFloat>(count: kMortarConstArrayLen, repeatedValue: 1.0)
     
     /** The offset constant to apply to this attribute */
-    internal var constant: CGFloat = 0.0
+    internal var constant: [CGFloat] = Array<CGFloat>(count: kMortarConstArrayLen, repeatedValue: 0.0)
     
     /** What is the marked priority of this attribute as a source */
-    internal var priority: UILayoutPriority = (UILayoutPriorityDefaultHigh + UILayoutPriorityDefaultLow) / 2.0
+    internal var priority: UILayoutPriority = UILayoutPriorityDefault
+
     
     /**
      Initialize a Mortar object to represent the layout attribute of a particular view.
@@ -59,7 +63,7 @@ public class MortarAttribute {
      */
     internal convenience init(constant: Mortar_CGFloatable) {
         self.init(view: nil, attribute: nil)
-        self.constant = constant.m_cgfloatValue()
+        self.constant = Array<CGFloat>(count: kMortarConstArrayLen, repeatedValue: constant.m_cgfloatValue())
     }
     
 }

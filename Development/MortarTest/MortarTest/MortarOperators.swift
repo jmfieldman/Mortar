@@ -124,22 +124,22 @@ public func |<|(lhs: UIView, rhs: MortarAttribute) -> MortarConstraint {
  
 */
 public func +(lhs: MortarAttribute, rhs: Mortar_CGFloatable) -> MortarAttribute {
-    lhs.constant = rhs.m_cgfloatValue()
+    lhs.constant = Array<CGFloat>(count: kMortarConstArrayLen, repeatedValue: rhs.m_cgfloatValue())
     return lhs
 }
 
 public func -(lhs: MortarAttribute, rhs: Mortar_CGFloatable) -> MortarAttribute {
-    lhs.constant = -rhs.m_cgfloatValue()
+    lhs.constant = Array<CGFloat>(count: kMortarConstArrayLen, repeatedValue: -rhs.m_cgfloatValue())
     return lhs
 }
 
 public func *(lhs: MortarAttribute, rhs: Mortar_CGFloatable) -> MortarAttribute {
-    lhs.multiplier = rhs.m_cgfloatValue()
+    lhs.multiplier = Array<CGFloat>(count: kMortarConstArrayLen, repeatedValue: rhs.m_cgfloatValue())
     return lhs
 }
 
 public func /(lhs: MortarAttribute, rhs: Mortar_CGFloatable) -> MortarAttribute {
-    lhs.multiplier = 1.0 / rhs.m_cgfloatValue()
+    lhs.multiplier = Array<CGFloat>(count: kMortarConstArrayLen, repeatedValue: 1.0 / rhs.m_cgfloatValue())
     return lhs
 }
 

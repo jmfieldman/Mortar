@@ -110,7 +110,7 @@ internal enum MortarLayoutAttribute {
     }
 }
 
-
+let UILayoutPriorityDefault = (UILayoutPriorityDefaultHigh + UILayoutPriorityDefaultLow) / 2.0
 
 public protocol Mortar_CGFloatable {
     @inline(__always) func m_cgfloatValue() -> CGFloat

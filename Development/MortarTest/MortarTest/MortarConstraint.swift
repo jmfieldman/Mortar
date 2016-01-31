@@ -71,19 +71,18 @@ public class MortarConstraint {
                 continue
             }
             
-            nsConstraints.append(NSLayoutConstraint(item: targetView,
-                                               attribute: tLayoutAttribute,
-                                               relatedBy: relation,
-                                                  toItem: sourceView,
-                                               attribute: sLayoutAttribute,
-                                              multiplier: sourceMortar.multiplier,
-                                                constant: sourceMortar.constant))
+            let constraint = NSLayoutConstraint(item: targetView,
+                                           attribute: tLayoutAttribute,
+                                           relatedBy: relation,
+                                              toItem: sourceView,
+                                           attribute: sLayoutAttribute,
+                                          multiplier: sourceMortar.multiplier[i],
+                                            constant: sourceMortar.constant[i])
             
-        }
-        
-        for constraint in nsConstraints {
-            constraint.active = true
-        }
+            constraint.priority = sourceMortar.priority
+            constraint.active   = true
+            nsConstraints.append(constraint)
+        }        
     }
     
     /**
