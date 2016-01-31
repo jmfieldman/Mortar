@@ -110,14 +110,35 @@ internal enum MortarLayoutAttribute {
     }
 }
 
-internal enum MortarType {
-    case ViewAttribute
-    case LayoutConstraint
-    case Parent
-    case Invalid
+
+
+public protocol Mortar_CGFloatable {
+    @inline(__always) func m_cgfloatValue() -> CGFloat
 }
 
+extension CGFloat : Mortar_CGFloatable {
+    @inline(__always) public func m_cgfloatValue() -> CGFloat {
+        return self
+    }
+}
 
+extension Int : Mortar_CGFloatable {
+    @inline(__always) public func m_cgfloatValue() -> CGFloat {
+        return CGFloat(self)
+    }
+}
+
+extension Double : Mortar_CGFloatable {
+    @inline(__always) public func m_cgfloatValue() -> CGFloat {
+        return CGFloat(self)
+    }
+}
+
+extension Float : Mortar_CGFloatable {
+    @inline(__always) public func m_cgfloatValue() -> CGFloat {
+        return CGFloat(self)
+    }
+}
 
 
 

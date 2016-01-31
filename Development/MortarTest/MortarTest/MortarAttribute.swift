@@ -57,21 +57,9 @@ public class MortarAttribute {
      
      - returns: The new Mortar Attribute
      */
-    internal convenience init(constant: CGFloat) {
+    internal convenience init(constant: Mortar_CGFloatable) {
         self.init(view: nil, attribute: nil)
-        self.constant = constant
-    }
-    
-    internal convenience init(constant: Int) {
-        self.init(constant: CGFloat(constant))
-    }
-    
-    internal convenience init(constant: Double) {
-        self.init(constant: CGFloat(constant))
-    }
-    
-    internal convenience init(constant: Float) {
-        self.init(constant: CGFloat(constant))
+        self.constant = constant.m_cgfloatValue()
     }
     
 }

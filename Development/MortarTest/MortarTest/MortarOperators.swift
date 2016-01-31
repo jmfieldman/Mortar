@@ -123,83 +123,23 @@ public func |<|(lhs: UIView, rhs: MortarAttribute) -> MortarConstraint {
  view1.m_size   * 2.0 + 10    <-- chains multiplier/constant together
  
 */
-public func +(lhs: MortarAttribute, rhs: Int) -> MortarAttribute {
-    lhs.constant = CGFloat(rhs)
+public func +(lhs: MortarAttribute, rhs: Mortar_CGFloatable) -> MortarAttribute {
+    lhs.constant = rhs.m_cgfloatValue()
     return lhs
 }
 
-public func +(lhs: MortarAttribute, rhs: Double) -> MortarAttribute {
-    lhs.constant = CGFloat(rhs)
+public func -(lhs: MortarAttribute, rhs: Mortar_CGFloatable) -> MortarAttribute {
+    lhs.constant = -rhs.m_cgfloatValue()
     return lhs
 }
 
-public func +(lhs: MortarAttribute, rhs: Float) -> MortarAttribute {
-    lhs.constant = CGFloat(rhs)
+public func *(lhs: MortarAttribute, rhs: Mortar_CGFloatable) -> MortarAttribute {
+    lhs.multiplier = rhs.m_cgfloatValue()
     return lhs
 }
 
-public func +(lhs: MortarAttribute, rhs: CGFloat) -> MortarAttribute {
-    lhs.constant = CGFloat(rhs)
-    return lhs
-}
-
-public func -(lhs: MortarAttribute, rhs: Int) -> MortarAttribute {
-    lhs.constant = -CGFloat(rhs)
-    return lhs
-}
-
-public func -(lhs: MortarAttribute, rhs: Double) -> MortarAttribute {
-    lhs.constant = -CGFloat(rhs)
-    return lhs
-}
-
-public func -(lhs: MortarAttribute, rhs: Float) -> MortarAttribute {
-    lhs.constant = -CGFloat(rhs)
-    return lhs
-}
-
-public func -(lhs: MortarAttribute, rhs: CGFloat) -> MortarAttribute {
-    lhs.constant = -CGFloat(rhs)
-    return lhs
-}
-
-public func *(lhs: MortarAttribute, rhs: Int) -> MortarAttribute {
-    lhs.multiplier = CGFloat(rhs)
-    return lhs
-}
-
-public func *(lhs: MortarAttribute, rhs: Double) -> MortarAttribute {
-    lhs.multiplier = CGFloat(rhs)
-    return lhs
-}
-
-public func *(lhs: MortarAttribute, rhs: Float) -> MortarAttribute {
-    lhs.multiplier = CGFloat(rhs)
-    return lhs
-}
-
-public func *(lhs: MortarAttribute, rhs: CGFloat) -> MortarAttribute {
-    lhs.multiplier = CGFloat(rhs)
-    return lhs
-}
-
-public func /(lhs: MortarAttribute, rhs: Int) -> MortarAttribute {
-    lhs.multiplier = 1.0 / CGFloat(rhs)
-    return lhs
-}
-
-public func /(lhs: MortarAttribute, rhs: Double) -> MortarAttribute {
-    lhs.multiplier = 1.0 / CGFloat(rhs)
-    return lhs
-}
-
-public func /(lhs: MortarAttribute, rhs: Float) -> MortarAttribute {
-    lhs.multiplier = 1.0 / CGFloat(rhs)
-    return lhs
-}
-
-public func /(lhs: MortarAttribute, rhs: CGFloat) -> MortarAttribute {
-    lhs.multiplier = 1.0 / CGFloat(rhs)
+public func /(lhs: MortarAttribute, rhs: Mortar_CGFloatable) -> MortarAttribute {
+    lhs.multiplier = 1.0 / rhs.m_cgfloatValue()
     return lhs
 }
 
@@ -218,50 +158,14 @@ public func /(lhs: MortarAttribute, rhs: CGFloat) -> MortarAttribute {
  
  Note that the target must be an explicit attribute (cannot infer attribute explicitly)
 */
-public func |=|(lhs: MortarAttribute, rhs: Int) -> MortarConstraint {
-    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .Equal)
+public func |=|(lhs: MortarAttribute, rhs: Mortar_CGFloatable) -> MortarConstraint {
+    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs.m_cgfloatValue()), relation: .Equal)
 }
 
-public func |>|(lhs: MortarAttribute, rhs: Int) -> MortarConstraint {
-    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .GreaterThanOrEqual)
+public func |>|(lhs: MortarAttribute, rhs: Mortar_CGFloatable) -> MortarConstraint {
+    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs.m_cgfloatValue()), relation: .GreaterThanOrEqual)
 }
 
-public func |<|(lhs: MortarAttribute, rhs: Int) -> MortarConstraint {
-    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .LessThanOrEqual)
-}
-
-public func |=|(lhs: MortarAttribute, rhs: Double) -> MortarConstraint {
-    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .Equal)
-}
-
-public func |>|(lhs: MortarAttribute, rhs: Double) -> MortarConstraint {
-    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .GreaterThanOrEqual)
-}
-
-public func |<|(lhs: MortarAttribute, rhs: Double) -> MortarConstraint {
-    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .LessThanOrEqual)
-}
-
-public func |=|(lhs: MortarAttribute, rhs: Float) -> MortarConstraint {
-    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .Equal)
-}
-
-public func |>|(lhs: MortarAttribute, rhs: Float) -> MortarConstraint {
-    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .GreaterThanOrEqual)
-}
-
-public func |<|(lhs: MortarAttribute, rhs: Float) -> MortarConstraint {
-    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .LessThanOrEqual)
-}
-
-public func |=|(lhs: MortarAttribute, rhs: CGFloat) -> MortarConstraint {
-    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .Equal)
-}
-
-public func |>|(lhs: MortarAttribute, rhs: CGFloat) -> MortarConstraint {
-    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .GreaterThanOrEqual)
-}
-
-public func |<|(lhs: MortarAttribute, rhs: CGFloat) -> MortarConstraint {
-    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs), relation: .LessThanOrEqual)
+public func |<|(lhs: MortarAttribute, rhs: Mortar_CGFloatable) -> MortarConstraint {
+    return MortarConstraint(targetMortar: lhs, sourceMortar: MortarAttribute(constant: rhs.m_cgfloatValue()), relation: .LessThanOrEqual)
 }
