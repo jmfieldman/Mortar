@@ -23,10 +23,11 @@ class ViewController: UIViewController {
         self.view.addSubview(s)
         
         //s.m_size |=| t.m_size
-        s.m_left |=| 200
-        s.m_top  |=| 200
+        //s.m_left |=| 200
+        //s.m_top  |=| 200
 
-        s.m_size |=| (100, 100)
+        //s.m_size |=| (100, 100)
+        s.m_frame |=| (160, 100, 50, 50)
 	}
 
 	override func didReceiveMemoryWarning() {

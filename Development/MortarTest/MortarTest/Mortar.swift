@@ -107,7 +107,7 @@ internal enum MortarLayoutAttribute {
         case .CornerBL:                 return [.Bottom,  .Left                         ]
         case .CornerBR:                 return [.Bottom,  .Right                        ]
         case .Edges:                    return [.Top,     .Left,    .Bottom,  .Right    ]
-        case .Frame:                    return [.Top,     .Left,    .Width,   .Height   ]
+        case .Frame:                    return [.Left,    .Top,     .Width,   .Height   ]
         case .Center:                   return [.CenterX, .CenterY                      ]            
         }
     }
