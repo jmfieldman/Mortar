@@ -50,6 +50,9 @@ public class MortarConstraint {
         let targetAttribute = (targetMortar.attribute ?? sourceMortar.attribute) ?? .Edges
         let sourceAttribute = (sourceMortar.attribute ?? targetMortar.attribute) ?? .Edges
         
+        /* Flag if we need baseline constant mod for things like view1.m_width |=| 40 */
+        let needsImplicitBaseline = (targetMortar.attribute != nil) && (sourceMortar.attribute == nil) && (sourceMortar.view == nil)
+        
         let targetComponents = targetAttribute.componentAttributes()
         let sourceComponents = sourceAttribute.componentAttributes()
         
@@ -79,8 +82,8 @@ public class MortarConstraint {
             let constraint = NSLayoutConstraint(item: targetView,
                                            attribute: tLayoutAttribute,
                                            relatedBy: relation,
-                                              toItem: sourceView,
-                                           attribute: sLayoutAttribute,
+                                              toItem: (needsImplicitBaseline ? ( (targetComponents[i].implicitSuperviewBaseline() == .NotAnAttribute) ? nil : targetView.superview ) : sourceView),
+                                           attribute: (needsImplicitBaseline ? targetComponents[i].implicitSuperviewBaseline() : sLayoutAttribute),
                                           multiplier: sourceMortar.multiplier,
                                             constant: sourceMortar.constant)
             

@@ -36,6 +36,7 @@ internal enum MortarLayoutAttribute {
     case TrailingMargin
     case CenterXWithinMargins
     case CenterYWithinMargins
+    case NotAnAttribute
     case Sides
     case Caps
     case Size
@@ -69,6 +70,7 @@ internal enum MortarLayoutAttribute {
         case .TrailingMargin:           return .TrailingMargin
         case .CenterXWithinMargins:     return .CenterXWithinMargins
         case .CenterYWithinMargins:     return .CenterYWithinMargins
+        case .NotAnAttribute:           return .NotAnAttribute
         default:                        return nil
         }
     }
@@ -95,6 +97,7 @@ internal enum MortarLayoutAttribute {
         case .TrailingMargin:           return [.TrailingMargin                         ]
         case .CenterXWithinMargins:     return [.CenterXWithinMargins                   ]
         case .CenterYWithinMargins:     return [.CenterYWithinMargins                   ]
+        case .NotAnAttribute:           return [.NotAnAttribute                         ]
             
         case .Sides:                    return [.Left,    .Right                        ]
         case .Caps:                     return [.Top,     .Bottom                       ]
@@ -106,6 +109,20 @@ internal enum MortarLayoutAttribute {
         case .Edges:                    return [.Top,     .Left,    .Bottom,  .Right    ]
         case .Frame:                    return [.Top,     .Left,    .Width,   .Height   ]
         case .Center:                   return [.CenterX, .CenterY                      ]            
+        }
+    }
+    
+    func implicitSuperviewBaseline() -> NSLayoutAttribute {
+        switch self {
+        case .Left:                     return .Left
+        case .Right:                    return .Left
+        case .Top:                      return .Top
+        case .Bottom:                   return .Top
+        case .CenterX:                  return .Left
+        case .CenterY:                  return .Top
+        case .CenterXWithinMargins:     return .Left
+        case .CenterYWithinMargins:     return .Top
+        default:                        return .NotAnAttribute
         }
     }
 }
