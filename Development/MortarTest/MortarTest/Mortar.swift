@@ -129,6 +129,20 @@ internal enum MortarLayoutAttribute {
 
 let UILayoutPriorityDefault = (UILayoutPriorityDefaultHigh + UILayoutPriorityDefaultLow) / 2.0
 
+public enum MortarLayoutPriority {
+    case Low, Normal, High, Req
+    
+    public func layoutPriority() -> UILayoutPriority {
+        switch self {
+        case .Low:      return UILayoutPriorityDefaultLow
+        case .Normal:   return UILayoutPriorityDefault
+        case .High:     return UILayoutPriorityDefaultHigh
+        case .Req:      return UILayoutPriorityRequired
+        }
+    }
+}
+
+
 public protocol MortarCGFloatable {
     @inline(__always) func m_cgfloatValue() -> CGFloat
 }
@@ -200,13 +214,13 @@ extension MortarAttribute : MortarAttributable {
 
 public typealias MortarTwople  = (MortarAttributable, MortarAttributable)
 public typealias MortarFourple = (MortarAttributable, MortarAttributable, MortarAttributable, MortarAttributable)
-public typealias MortarTuple   = [MortarAttribute]
+public typealias MortarTuple   = ([MortarAttribute], UILayoutPriority)
 
 @inline(__always) internal func MortarConvertTwople(twople: MortarTwople) -> MortarTuple {
-    return [twople.0.m_intoAttribute(), twople.1.m_intoAttribute()]
+    return ([twople.0.m_intoAttribute(), twople.1.m_intoAttribute()], UILayoutPriorityDefault)
 }
 
 @inline(__always) internal func MortarConvertFourple(fourple: MortarFourple) -> MortarTuple {
-    return [fourple.0.m_intoAttribute(), fourple.1.m_intoAttribute(), fourple.2.m_intoAttribute(), fourple.3.m_intoAttribute()]
+    return ([fourple.0.m_intoAttribute(), fourple.1.m_intoAttribute(), fourple.2.m_intoAttribute(), fourple.3.m_intoAttribute()], UILayoutPriorityDefault)
 }
 

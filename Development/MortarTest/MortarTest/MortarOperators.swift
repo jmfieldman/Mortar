@@ -18,12 +18,16 @@ view1.m_size     |=| (view1.m_width, view2.m_height)
 view2.m_center   |=| self.view
 view1.m_top      |=| [self.view, view2, view3]
 view1            |=| [self.view.m_bottom, self.view.m_sides]
-view1.m_height   |=| 40 ! .Low
+view1.m_height   |=| 40 !
+
+[view1, view2, view3, view4].m_frame |=| (100, 100, 40, 40)  !?
+[view1, view2, view3, view4].m_frame |=| view5               !!
+
 */
 
-infix operator |=| {}
-infix operator |>| {}
-infix operator |<| {}
+infix operator |=| { precedence 95 }
+infix operator |>| { precedence 95 }
+infix operator |<| { precedence 95 }
 
 
 /**
@@ -74,6 +78,19 @@ public func |<|(lhs: MortarAttribute, rhs: MortarFourple) -> MortarConstraint {
 }
 
 
+public func |=|(lhs: MortarAttribute, rhs: MortarTuple) -> MortarConstraint {
+    return MortarConstraint(target: lhs, source: rhs, relation: .Equal)
+}
+
+public func |>|(lhs: MortarAttribute, rhs: MortarTuple) -> MortarConstraint {
+    return MortarConstraint(target: lhs, source: rhs, relation: .GreaterThanOrEqual)
+}
+
+public func |<|(lhs: MortarAttribute, rhs: MortarTuple) -> MortarConstraint {
+    return MortarConstraint(target: lhs, source: rhs, relation: .LessThanOrEqual)
+}
+
+
 
 /**
  Handle multiplier/constant modifiers to MortarAttributes using basic arithmetic operators
@@ -84,30 +101,117 @@ public func |<|(lhs: MortarAttribute, rhs: MortarFourple) -> MortarConstraint {
  view1.m_bottom - 40
  view1.m_width  * 2.0
  view1.m_height / 3.0
- view1.m_size   * 2.0 + 10    <-- chains multiplier/constant together
+ view1.m_size   * 2.0 + 10  <-- chains multiplier/constant together
  
 */
 public func +(lhs: MortarAttribute, rhs: MortarCGFloatable) -> MortarAttribute {
-    lhs.constant = rhs.m_cgfloatValue()
+    lhs.constant += rhs.m_cgfloatValue()
     return lhs
 }
 
 public func -(lhs: MortarAttribute, rhs: MortarCGFloatable) -> MortarAttribute {
-    lhs.constant = -rhs.m_cgfloatValue()
+    lhs.constant -= rhs.m_cgfloatValue()
     return lhs
 }
 
 public func *(lhs: MortarAttribute, rhs: MortarCGFloatable) -> MortarAttribute {
-    lhs.multiplier = rhs.m_cgfloatValue()
+    lhs.multiplier *= rhs.m_cgfloatValue()
     return lhs
 }
 
 public func /(lhs: MortarAttribute, rhs: MortarCGFloatable) -> MortarAttribute {
-    lhs.multiplier = 1.0 / rhs.m_cgfloatValue()
+    lhs.multiplier /= rhs.m_cgfloatValue()
+    return lhs
+}
+
+/* This is only using for chaining constants with priorities attached */
+
+public func +(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
+    if (rhs.view != nil || rhs.attribute != nil) {
+        NSException(name: "Right side of arithmetic must be constant",
+                  reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
+                userInfo: nil).raise()
+    }
+    lhs.constant += rhs.constant
+    lhs.priority =  rhs.priority
+    return lhs
+}
+
+public func -(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
+    if (rhs.view != nil || rhs.attribute != nil) {
+        NSException(name: "Right side of arithmetic must be constant",
+                  reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
+                userInfo: nil).raise()
+    }
+    lhs.constant -= rhs.constant
+    lhs.priority =  rhs.priority
+    return lhs
+}
+
+public func *(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
+    if (rhs.view != nil || rhs.attribute != nil) {
+        NSException(name: "Right side of arithmetic must be constant",
+                  reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
+                userInfo: nil).raise()
+    }
+    lhs.multiplier *= rhs.constant
+    lhs.priority    = rhs.priority
+    return lhs
+}
+
+public func /(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
+    if (rhs.view != nil || rhs.attribute != nil) {
+        NSException(name: "Right side of arithmetic must be constant",
+                  reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
+                userInfo: nil).raise()
+    }
+    lhs.multiplier /= rhs.constant
+    lhs.priority    = rhs.priority
     return lhs
 }
 
 
+/**
+ Priority operators
+*/
+
+infix operator !! { precedence 130 }
+
+public func !!(lhs: MortarAttributable, rhs: MortarLayoutPriority) -> MortarAttribute {
+    let attr = lhs.m_intoAttribute()
+    attr.priority = rhs.layoutPriority()
+    return attr
+}
+
+public func !!(lhs: MortarAttributable, rhs: UILayoutPriority) -> MortarAttribute {
+    let attr = lhs.m_intoAttribute()
+    attr.priority = rhs
+    return attr
+}
 
 
+public func !!(lhs: MortarTwople, rhs: MortarLayoutPriority) -> MortarTuple {
+    var tup = MortarConvertTwople(lhs)
+    tup.1 = rhs.layoutPriority()
+    return tup
+}
+
+public func !!(lhs: MortarTwople, rhs: UILayoutPriority) -> MortarTuple {
+    var tup = MortarConvertTwople(lhs)
+    tup.1 = rhs
+    return tup
+}
+
+
+public func !!(lhs: MortarFourple, rhs: MortarLayoutPriority) -> MortarTuple {
+    var tup = MortarConvertFourple(lhs)
+    tup.1 = rhs.layoutPriority()
+    return tup
+}
+
+public func !!(lhs: MortarFourple, rhs: UILayoutPriority) -> MortarTuple {
+    var tup = MortarConvertFourple(lhs)
+    tup.1 = rhs
+    return tup
+}
 

@@ -24,10 +24,33 @@ class ViewController: UIViewController {
         
         //s.m_size |=| t.m_size
         //s.m_left |=| 200
-        //s.m_top  |=| 200
+        s.m_top     |=| 200 !! .Low
+        s.m_left    |=| 200 !! .Low
+        s.m_size    |=| (60, 60) !! .Low
 
         //s.m_size |=| (100, 100)
-        s.m_frame |=| (160, 100, 50, 50)
+        //s.m_frame |>| (160, 100, t, 50)
+        //s.m_frame |<| (180, 120, 100, 100)
+        
+        //[s, t].m_width
+        
+        //s.m_frame |=| (200, 200, 50, 50)
+        
+        
+        /*
+        let z = s.m_top |=| 40
+        NSLayoutConstraint.deactivateConstraints(z.nsConstraints)
+        self.view.updateConstraintsIfNeeded()
+        z.nsConstraints.forEach {
+            ($0.firstItem as! UIView).removeConstraint($0)
+            ($0.secondItem as! UIView).removeConstraint($0)
+            $0.active = false
+            ($0.firstItem as! UIView).superview!.updateConstraints()
+            $0.priority = UILayoutPriorityRequired;
+            ($0.firstItem as! UIView).addConstraint($0)
+            ($0.secondItem as! UIView).addConstraint($0)
+        }
+        */
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -37,4 +60,3 @@ class ViewController: UIViewController {
 
 
 }
-

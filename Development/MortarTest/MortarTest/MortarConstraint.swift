@@ -116,16 +116,16 @@ public class MortarConstraint {
         
         let targetComponents = targetAttribute.componentAttributes()
         
-        if (targetComponents.count != source.count) {
+        if (targetComponents.count != source.0.count) {
             NSException(name: "Invalid component count",
-                      reason: "Target Attribute expected component count \(targetComponents.count), source is \(source.count)",
+                      reason: "Target Attribute expected component count \(targetComponents.count), source is \(source.0.count)",
                     userInfo: nil).raise()
             return
         }
         
         for i in 0 ..< targetComponents.count {
             let subAttribute  = MortarAttribute(view: targetView, attribute: targetComponents[i])
-            let subConstraint = MortarConstraint(target: subAttribute, source: source[i], relation: relation)
+            let subConstraint = MortarConstraint(target: subAttribute, source: source.0[i], relation: relation)
             
             nsConstraints += subConstraint.nsConstraints
         }

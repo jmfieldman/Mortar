@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3527D8241C5FE67B0090DF3D /* Array+Mortar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3527D8231C5FE67B0090DF3D /* Array+Mortar.swift */; };
 		3572EA941C5D13D00036DC10 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572EA931C5D13D00036DC10 /* AppDelegate.swift */; };
 		3572EA961C5D13D00036DC10 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572EA951C5D13D00036DC10 /* ViewController.swift */; };
 		3572EA991C5D13D00036DC10 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3572EA971C5D13D00036DC10 /* Main.storyboard */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3527D8231C5FE67B0090DF3D /* Array+Mortar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Mortar.swift"; sourceTree = "<group>"; };
 		3572EA901C5D13D00036DC10 /* MortarTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MortarTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3572EA931C5D13D00036DC10 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3572EA951C5D13D00036DC10 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				3572EAAE1C5DBDD40036DC10 /* MortarConstraint.swift */,
 				3572EAB01C5DBE3C0036DC10 /* MortarGroup.swift */,
 				3572EAA81C5D19E70036DC10 /* View+Mortar.swift */,
+				3527D8231C5FE67B0090DF3D /* Array+Mortar.swift */,
 			);
 			name = Mortar;
 			sourceTree = "<group>";
@@ -168,6 +171,7 @@
 				3572EA941C5D13D00036DC10 /* AppDelegate.swift in Sources */,
 				3572EAAF1C5DBDD40036DC10 /* MortarConstraint.swift in Sources */,
 				3572EAA91C5D19E70036DC10 /* View+Mortar.swift in Sources */,
+				3527D8241C5FE67B0090DF3D /* Array+Mortar.swift in Sources */,
 				3572EAB11C5DBE3D0036DC10 /* MortarGroup.swift in Sources */,
 				3572EAAD1C5DBDCB0036DC10 /* MortarAttribute.swift in Sources */,
 			);
@@ -319,6 +323,7 @@
 				3572EAA41C5D13D00036DC10 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
