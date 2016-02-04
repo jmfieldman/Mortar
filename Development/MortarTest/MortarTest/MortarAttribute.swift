@@ -27,7 +27,7 @@ public class MortarAttribute {
     internal var constant: CGFloat = 0.0
     
     /** What is the marked priority of this attribute as a source */
-    internal var priority: UILayoutPriority = UILayoutPriorityDefault
+    internal var priority: UILayoutPriority?
 
     
     /**

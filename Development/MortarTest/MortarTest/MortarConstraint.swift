@@ -87,7 +87,7 @@ public class MortarConstraint {
                                           multiplier: sourceMortar.multiplier,
                                             constant: sourceMortar.constant)
             
-            constraint.priority = sourceMortar.priority
+            constraint.priority = (sourceMortar.priority ?? targetMortar.priority) ?? UILayoutPriorityDefault
             constraint.active   = true
             nsConstraints.append(constraint)
         }        
@@ -125,11 +125,39 @@ public class MortarConstraint {
         
         for i in 0 ..< targetComponents.count {
             let subAttribute  = MortarAttribute(view: targetView, attribute: targetComponents[i])
+            
+            if (subAttribute.priority == nil) {
+                subAttribute.priority = source.1
+            }
+            
             let subConstraint = MortarConstraint(target: subAttribute, source: source.0[i], relation: relation)
             
             nsConstraints += subConstraint.nsConstraints
         }
     }
     
-    
+    internal convenience init(targetArray: [MortarAttribute], sourceArray: [MortarAttribute], crosslink: Bool, relation: NSLayoutRelation) {
+        
+        self.init()
+        
+        if crosslink {
+            for target in targetArray {
+                for source in sourceArray {
+                    nsConstraints += MortarConstraint(target: target, source: source, relation: relation).nsConstraints
+                }
+            }
+        } else {
+            if (targetArray.count != sourceArray.count) {
+                NSException(name: "Constraining two arrays requires them to be the same length",
+                          reason: "Constraining two arrays requires them to be the same length.  target: \(targetArray.count), source: \(sourceArray.count)",
+                        userInfo: nil).raise()
+                return
+            }
+            
+            for i in 0 ..< targetArray.count {
+                nsConstraints += MortarConstraint(target: targetArray[i], source: sourceArray[i], relation: relation).nsConstraints
+            }
+        }
+        
+    }
 }

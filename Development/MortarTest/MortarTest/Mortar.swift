@@ -214,7 +214,7 @@ extension MortarAttribute : MortarAttributable {
 
 public typealias MortarTwople  = (MortarAttributable, MortarAttributable)
 public typealias MortarFourple = (MortarAttributable, MortarAttributable, MortarAttributable, MortarAttributable)
-public typealias MortarTuple   = ([MortarAttribute], UILayoutPriority)
+public typealias MortarTuple   = ([MortarAttribute], UILayoutPriority?)
 
 @inline(__always) internal func MortarConvertTwople(twople: MortarTwople) -> MortarTuple {
     return ([twople.0.m_intoAttribute(), twople.1.m_intoAttribute()], UILayoutPriorityDefault)

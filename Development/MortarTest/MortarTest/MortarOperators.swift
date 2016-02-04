@@ -52,6 +52,7 @@ public func |<|(lhs: MortarAttributable, rhs: MortarAttributable) -> MortarConst
 
 
 
+
 public func |=|(lhs: MortarAttribute, rhs: MortarTwople) -> MortarConstraint {
     return MortarConstraint(target: lhs, source: MortarConvertTwople(rhs), relation: .Equal)
 }
@@ -63,6 +64,7 @@ public func |>|(lhs: MortarAttribute, rhs: MortarTwople) -> MortarConstraint {
 public func |<|(lhs: MortarAttribute, rhs: MortarTwople) -> MortarConstraint {
     return MortarConstraint(target: lhs, source: MortarConvertTwople(rhs), relation: .LessThanOrEqual)
 }
+
 
 
 public func |=|(lhs: MortarAttribute, rhs: MortarFourple) -> MortarConstraint {
@@ -78,6 +80,7 @@ public func |<|(lhs: MortarAttribute, rhs: MortarFourple) -> MortarConstraint {
 }
 
 
+
 public func |=|(lhs: MortarAttribute, rhs: MortarTuple) -> MortarConstraint {
     return MortarConstraint(target: lhs, source: rhs, relation: .Equal)
 }
@@ -90,6 +93,71 @@ public func |<|(lhs: MortarAttribute, rhs: MortarTuple) -> MortarConstraint {
     return MortarConstraint(target: lhs, source: rhs, relation: .LessThanOrEqual)
 }
 
+
+
+public func |=|(lhs: [MortarAttributable], rhs: [MortarAttributable]) -> MortarConstraint {
+    return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
+                            sourceArray: rhs.map { $0.m_intoAttribute() },
+                              crosslink: false,
+                               relation: .Equal)
+}
+
+public func |>|(lhs: [MortarAttributable], rhs: [MortarAttributable]) -> MortarConstraint {
+    return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
+                            sourceArray: rhs.map { $0.m_intoAttribute() },
+                              crosslink: false,
+                               relation: .GreaterThanOrEqual)
+}
+
+public func |<|(lhs: [MortarAttributable], rhs: [MortarAttributable]) -> MortarConstraint {
+    return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
+                            sourceArray: rhs.map { $0.m_intoAttribute() },
+                              crosslink: false,
+                               relation: .LessThanOrEqual)
+}
+
+
+public func |=|(lhs: MortarAttributable, rhs: [MortarAttributable]) -> MortarConstraint {
+    return MortarConstraint(targetArray: [lhs.m_intoAttribute()],
+                            sourceArray: rhs.map { $0.m_intoAttribute() },
+                              crosslink: true,
+                               relation: .Equal)
+}
+
+public func |>|(lhs: MortarAttributable, rhs: [MortarAttributable]) -> MortarConstraint {
+    return MortarConstraint(targetArray: [lhs.m_intoAttribute()],
+                            sourceArray: rhs.map { $0.m_intoAttribute() },
+                              crosslink: true,
+                               relation: .GreaterThanOrEqual)
+}
+
+public func |<|(lhs: MortarAttributable, rhs: [MortarAttributable]) -> MortarConstraint {
+    return MortarConstraint(targetArray: [lhs.m_intoAttribute()],
+                            sourceArray: rhs.map { $0.m_intoAttribute() },
+                              crosslink: true,
+                               relation: .LessThanOrEqual)
+}
+
+public func |=|(lhs: [MortarAttributable], rhs: MortarAttributable) -> MortarConstraint {
+    return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
+                            sourceArray: [rhs.m_intoAttribute()],
+                              crosslink: true,
+                               relation: .Equal)
+}
+
+public func |>|(lhs: [MortarAttributable], rhs: MortarAttributable) -> MortarConstraint {
+    return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
+                            sourceArray: [rhs.m_intoAttribute()],
+                              crosslink: true,
+                               relation: .GreaterThanOrEqual)
+}
+
+public func |<|(lhs: [MortarAttributable], rhs: MortarAttributable) -> MortarConstraint {
+    return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
+                            sourceArray: [rhs.m_intoAttribute()],
+                              crosslink: true,
+                               relation: .LessThanOrEqual)
+}
 
 
 /**
@@ -175,43 +243,55 @@ public func /(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
  Priority operators
 */
 
-infix operator !! { precedence 130 }
+infix operator ! { precedence 130 }
 
-public func !!(lhs: MortarAttributable, rhs: MortarLayoutPriority) -> MortarAttribute {
+public func !(lhs: MortarAttributable, rhs: MortarLayoutPriority) -> MortarAttribute {
     let attr = lhs.m_intoAttribute()
     attr.priority = rhs.layoutPriority()
     return attr
 }
 
-public func !!(lhs: MortarAttributable, rhs: UILayoutPriority) -> MortarAttribute {
+public func !(lhs: MortarAttributable, rhs: UILayoutPriority) -> MortarAttribute {
     let attr = lhs.m_intoAttribute()
     attr.priority = rhs
     return attr
 }
 
 
-public func !!(lhs: MortarTwople, rhs: MortarLayoutPriority) -> MortarTuple {
+public func !(lhs: MortarTwople, rhs: MortarLayoutPriority) -> MortarTuple {
     var tup = MortarConvertTwople(lhs)
     tup.1 = rhs.layoutPriority()
     return tup
 }
 
-public func !!(lhs: MortarTwople, rhs: UILayoutPriority) -> MortarTuple {
+public func !(lhs: MortarTwople, rhs: UILayoutPriority) -> MortarTuple {
     var tup = MortarConvertTwople(lhs)
     tup.1 = rhs
     return tup
 }
 
 
-public func !!(lhs: MortarFourple, rhs: MortarLayoutPriority) -> MortarTuple {
+public func !(lhs: MortarFourple, rhs: MortarLayoutPriority) -> MortarTuple {
     var tup = MortarConvertFourple(lhs)
     tup.1 = rhs.layoutPriority()
     return tup
 }
 
-public func !!(lhs: MortarFourple, rhs: UILayoutPriority) -> MortarTuple {
+public func !(lhs: MortarFourple, rhs: UILayoutPriority) -> MortarTuple {
     var tup = MortarConvertFourple(lhs)
     tup.1 = rhs
     return tup
 }
+
+public func !(lhs: [MortarAttribute], rhs: MortarLayoutPriority) -> [MortarAttribute] {
+    lhs.forEach { if $0.priority == nil { $0.priority = rhs.layoutPriority() } }
+    return lhs
+}
+
+public func !(lhs: [MortarAttribute], rhs: UILayoutPriority) -> [MortarAttribute] {
+    lhs.forEach { if $0.priority == nil { $0.priority = rhs } }
+    return lhs
+}
+
+
 

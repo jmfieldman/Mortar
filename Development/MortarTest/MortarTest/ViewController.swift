@@ -22,12 +22,18 @@ class ViewController: UIViewController {
         s.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5)
         self.view.addSubview(s)
         
+        let r = UIView(frame: CGRectMake(100, 100, 50, 50))
+        r.backgroundColor = UIColor(red: 0, green: 0, blue: 1, alpha: 0.5)
+        self.view.addSubview(r)
+        
         //s.m_size |=| t.m_size
         //s.m_left |=| 200
-        s.m_top     |=| 200 !! .Low
-        s.m_left    |=| 200 !! .Low
-        s.m_size    |=| (60, 60) !! .Low
+        //s.m_top     |=| 200 ! .Low
+        //s.m_left    |=| 200 ! .Low
+        //[s.m_size ! .Low, s.m_size]   |=| (60, 60) ! .Low
 
+        //s.m_left |=| [s].m_right ! .Low
+        
         //s.m_size |=| (100, 100)
         //s.m_frame |>| (160, 100, t, 50)
         //s.m_frame |<| (180, 120, 100, 100)
@@ -35,6 +41,18 @@ class ViewController: UIViewController {
         //[s, t].m_width
         
         //s.m_frame |=| (200, 200, 50, 50)
+        
+        [s.m_bottom, s.m_sides] |=| self.view
+        s.m_height              |=| 50
+        
+        //r.m_cornerBL |=| s.m_cornerTL
+        //r.m_size     |=| (self.view, s)
+        
+        [r.m_size]     |=| (self.view, s)
+        
+        //r.m_frame |=| (4, 4)
+        
+        //[r.m_cornerBL, r.m_size] |=| [s.m_cornerTL,
         
         
         /*
