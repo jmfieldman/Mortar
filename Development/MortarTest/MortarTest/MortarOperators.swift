@@ -25,6 +25,20 @@ view1.m_height   |=| 40 !
 
 */
 
+infix operator |+| { precedence 95 }
+
+public func |+|(lhs: UIView, rhs: UIView) -> UIView {
+    lhs.addSubview(rhs)
+    return lhs
+}
+
+public func |+|(lhs: UIView, rhs: [UIView]) -> UIView {
+    rhs.forEach { lhs.addSubview($0) }
+    return lhs
+}
+
+
+
 infix operator |=| { precedence 95 }
 infix operator |>| { precedence 95 }
 infix operator |<| { precedence 95 }
@@ -158,6 +172,53 @@ public func |<|(lhs: [MortarAttributable], rhs: MortarAttributable) -> MortarCon
                               crosslink: true,
                                relation: .LessThanOrEqual)
 }
+
+
+public func |=|(lhs: [MortarAttributable], rhs: MortarTuple) -> MortarConstraint {
+    return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
+                            sourceTuple: rhs,
+                               relation: .Equal)
+}
+
+public func |>|(lhs: [MortarAttributable], rhs: MortarTuple) -> MortarConstraint {
+    return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
+                            sourceTuple: rhs,
+                               relation: .GreaterThanOrEqual)
+}
+
+public func |<|(lhs: [MortarAttributable], rhs: MortarTuple) -> MortarConstraint {
+    return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
+                            sourceTuple: rhs,
+                               relation: .LessThanOrEqual)
+}
+
+
+public func |=|(lhs: [MortarAttributable], rhs: MortarTwople) -> MortarConstraint {
+    return lhs |=| MortarConvertTwople(rhs)
+}
+
+public func |>|(lhs: [MortarAttributable], rhs: MortarTwople) -> MortarConstraint {
+    return lhs |>| MortarConvertTwople(rhs)
+}
+
+public func |<|(lhs: [MortarAttributable], rhs: MortarTwople) -> MortarConstraint {
+    return lhs |<| MortarConvertTwople(rhs)
+}
+
+public func |=|(lhs: [MortarAttributable], rhs: MortarFourple) -> MortarConstraint {
+    return lhs |=| MortarConvertFourple(rhs)
+}
+
+public func |>|(lhs: [MortarAttributable], rhs: MortarFourple) -> MortarConstraint {
+    return lhs |>| MortarConvertFourple(rhs)
+}
+
+public func |<|(lhs: [MortarAttributable], rhs: MortarFourple) -> MortarConstraint {
+    return lhs |<| MortarConvertFourple(rhs)
+}
+
+
+
 
 
 /**

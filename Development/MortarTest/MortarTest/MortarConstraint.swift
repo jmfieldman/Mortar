@@ -160,4 +160,12 @@ public class MortarConstraint {
         }
         
     }
+    
+    internal convenience init(targetArray: [MortarAttribute], sourceTuple: MortarTuple, relation: NSLayoutRelation) {
+        self.init()
+        
+        for target in targetArray {
+            nsConstraints += MortarConstraint(target: target, source: sourceTuple, relation: relation).nsConstraints
+        }
+    }
 }

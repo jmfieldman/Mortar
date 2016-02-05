@@ -16,15 +16,19 @@ class ViewController: UIViewController {
         
         let t = UIView(frame: CGRectMake(100, 100, 50, 50))
         t.backgroundColor = UIColor.redColor()
-        self.view.addSubview(t)
         
         let s = UIView(frame: CGRectMake(100, 100, 50, 50))
         s.backgroundColor = UIColor(red: 0, green: 1, blue: 0, alpha: 0.5)
-        self.view.addSubview(s)
         
         let r = UIView(frame: CGRectMake(100, 100, 50, 50))
         r.backgroundColor = UIColor(red: 0, green: 0, blue: 1, alpha: 0.5)
-        self.view.addSubview(r)
+        
+        self.view |+| [
+            t,
+            s |+| [
+                r
+            ]
+        ]
         
         //s.m_size |=| t.m_size
         //s.m_left |=| 200
@@ -48,7 +52,15 @@ class ViewController: UIViewController {
         //r.m_cornerBL |=| s.m_cornerTL
         //r.m_size     |=| (self.view, s)
         
-        [r.m_size]     |=| (self.view, s)
+        [r.m_frame]     |=| (100, 200, 30, 30)
+        
+        
+        [r, s].m_frame |=| [ (1,1,1,1), (2,2,2,2) ]
+        r.m_frame |=| s.m_frame - (1,1,1,1)
+            attr - (fourple) -> fourple
+        
+        //r.m_size |=| s.m_size + (4, 5)
+        //r.m_size |=| s.m_size * 2
         
         //r.m_frame |=| (4, 4)
         
