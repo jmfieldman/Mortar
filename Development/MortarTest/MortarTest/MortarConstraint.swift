@@ -168,4 +168,57 @@ public class MortarConstraint {
             nsConstraints += MortarConstraint(target: target, source: sourceTuple, relation: relation).nsConstraints
         }
     }
+    
+    internal convenience init(targetAny: Any, sourceAny: Any, relation: NSLayoutRelation) {
+        if let target = (targetAny as? MortarAttribute) ?? (targetAny as? MortarAttributable)?.m_intoAttribute() {
+            if let source = sourceAny as? MortarAttribute {
+                self.init(target: target, source: source, relation: relation)
+                return
+            }
+            
+            if let source = sourceAny as? MortarTuple {
+                self.init(target: target, source: source, relation: relation)
+                return
+            }
+            
+            if let source = sourceAny as? MortarTwople {
+                self.init(target: target, source: MortarConvertTwople(source), relation: relation)
+                return
+            }
+            
+            if let source = sourceAny as? MortarFourple {
+                self.init(target: target, source: MortarConvertFourple(source), relation: relation)
+                return
+            }
+        }
+        
+        self.init()
+        NSException(name: "Invalid constraint pairing",
+                  reason: "Invalid constraint pair: target: \(targetAny), source: \(sourceAny)",
+                userInfo: nil).raise()
+
+    }
+    
+    internal convenience init(targetAnyArray: [Any], sourceAnyArray: [Any], crosslink: Bool, relation: NSLayoutRelation) {
+        self.init()
+        
+        if crosslink {
+            for target in targetAnyArray {
+                for source in sourceAnyArray {
+                    nsConstraints += MortarConstraint(targetAny: target, sourceAny: source, relation: relation).nsConstraints
+                }
+            }
+        } else {
+            if (targetAnyArray.count != sourceAnyArray.count) {
+                NSException(name: "Constraining two arrays requires them to be the same length",
+                          reason: "Constraining two arrays requires them to be the same length.  target: \(targetAnyArray.count), source: \(sourceAnyArray.count)",
+                        userInfo: nil).raise()
+                return
+            }
+            
+            for i in 0 ..< targetAnyArray.count {
+                nsConstraints += MortarConstraint(targetAny: targetAnyArray[i], sourceAny: sourceAnyArray[i], relation: relation).nsConstraints
+            }
+        }
+    }
 }

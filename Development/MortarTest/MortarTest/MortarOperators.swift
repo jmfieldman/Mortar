@@ -218,7 +218,17 @@ public func |<|(lhs: [MortarAttributable], rhs: MortarFourple) -> MortarConstrai
 }
 
 
+public func |=|(lhs: [Any], rhs: [Any]) -> MortarConstraint {
+    return MortarConstraint(targetAnyArray: lhs, sourceAnyArray: rhs, crosslink: false, relation: .Equal)
+}
 
+public func |>|(lhs: [Any], rhs: [Any]) -> MortarConstraint {
+    return MortarConstraint(targetAnyArray: lhs, sourceAnyArray: rhs, crosslink: false, relation: .GreaterThanOrEqual)
+}
+
+public func |<|(lhs: [Any], rhs: [Any]) -> MortarConstraint {
+    return MortarConstraint(targetAnyArray: lhs, sourceAnyArray: rhs, crosslink: false, relation: .LessThanOrEqual)
+}
 
 
 /**
@@ -299,6 +309,142 @@ public func /(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
     return lhs
 }
 
+
+public func *(lhs: MortarCGFloatable, rhs: CGFloat) -> CGFloat {
+    return lhs.m_cgfloatValue() * rhs
+}
+
+
+/**
+ Attributable (arithmetic) (const-tuple)
+*/
+
+public func +(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarTwople {
+    guard let components = lhs.attribute?.componentAttributes() else {
+        NSException(name: "Attribute has no components for tuple arithmetic",
+                  reason: "Attribute has no components for tuple arithmetic",
+                userInfo: nil).raise()
+        return (0,0)
+    }
+    
+    if (components.count != 2) {
+        NSException(name: "Attribute has wrong component count",
+                  reason: "Attribute has \(components.count) components; requires 2",
+                userInfo: nil).raise()
+        return (0,0)
+    }
+    
+    return ( MortarAttribute(view: lhs.view, attribute: components[0]) + rhs.0,
+             MortarAttribute(view: lhs.view, attribute: components[1]) + rhs.1 )
+}
+
+public func +(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarFourple {
+    guard let components = lhs.attribute?.componentAttributes() else {
+        NSException(name: "Attribute has no components for tuple arithmetic",
+                  reason: "Attribute has no components for tuple arithmetic",
+                userInfo: nil).raise()
+        return (0,0,0,0)
+    }
+    
+    if (components.count != 4) {
+        NSException(name: "Attribute has wrong component count",
+                  reason: "Attribute has \(components.count) components; requires 4",
+                userInfo: nil).raise()
+        return (0,0,0,0)
+    }
+    
+    return ( MortarAttribute(view: lhs.view, attribute: components[0]) + rhs.0,
+             MortarAttribute(view: lhs.view, attribute: components[1]) + rhs.1,
+             MortarAttribute(view: lhs.view, attribute: components[2]) + rhs.2,
+             MortarAttribute(view: lhs.view, attribute: components[3]) + rhs.3 )
+    
+}
+
+public func -(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarTwople {
+    guard let components = lhs.attribute?.componentAttributes() else {
+        NSException(name: "Attribute has no components for tuple arithmetic",
+                  reason: "Attribute has no components for tuple arithmetic",
+                userInfo: nil).raise()
+        return (0,0)
+    }
+    
+    if (components.count != 2) {
+        NSException(name: "Attribute has wrong component count",
+                  reason: "Attribute has \(components.count) components; requires 2",
+                userInfo: nil).raise()
+        return (0,0)
+    }
+    
+    return ( MortarAttribute(view: lhs.view, attribute: components[0]) - rhs.0,
+             MortarAttribute(view: lhs.view, attribute: components[1]) - rhs.1 )
+}
+
+public func -(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarFourple {
+    guard let components = lhs.attribute?.componentAttributes() else {
+        NSException(name: "Attribute has no components for tuple arithmetic",
+                  reason: "Attribute has no components for tuple arithmetic",
+                userInfo: nil).raise()
+        return (0,0,0,0)
+    }
+    
+    if (components.count != 4) {
+        NSException(name: "Attribute has wrong component count",
+                  reason: "Attribute has \(components.count) components; requires 4",
+                userInfo: nil).raise()
+        return (0,0,0,0)
+    }
+    
+    return ( MortarAttribute(view: lhs.view, attribute: components[0]) - rhs.0,
+             MortarAttribute(view: lhs.view, attribute: components[1]) - rhs.1,
+             MortarAttribute(view: lhs.view, attribute: components[2]) - rhs.2,
+             MortarAttribute(view: lhs.view, attribute: components[3]) - rhs.3 )
+}
+
+infix operator ~ { precedence 140 }
+
+public func ~(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarTwople {
+    guard let components = lhs.attribute?.componentAttributes() else {
+        NSException(name: "Attribute has no components for tuple arithmetic",
+                  reason: "Attribute has no components for tuple arithmetic",
+                userInfo: nil).raise()
+        return (0,0)
+    }
+    
+    if (components.count != 2) {
+        NSException(name: "Attribute has wrong component count",
+                  reason: "Attribute has \(components.count) components; requires 2",
+                userInfo: nil).raise()
+        return (0,0)
+    }
+    
+    let mults = components.map { $0.insetConstantModifier() }
+    
+    return ( MortarAttribute(view: lhs.view, attribute: components[0]) + (rhs.0 * mults[0]),
+             MortarAttribute(view: lhs.view, attribute: components[1]) + (rhs.1 * mults[1]) )
+}
+
+public func ~(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarFourple {
+    guard let components = lhs.attribute?.componentAttributes() else {
+        NSException(name: "Attribute has no components for tuple arithmetic",
+                  reason: "Attribute has no components for tuple arithmetic",
+                userInfo: nil).raise()
+        return (0,0,0,0)
+    }
+    
+    if (components.count != 4) {
+        NSException(name: "Attribute has wrong component count",
+                  reason: "Attribute has \(components.count) components; requires 4",
+                userInfo: nil).raise()
+        return (0,0,0,0)
+    }
+    
+    let mults = components.map { $0.insetConstantModifier() }
+    
+    return ( MortarAttribute(view: lhs.view, attribute: components[0]) + (rhs.0 * mults[0]),
+             MortarAttribute(view: lhs.view, attribute: components[1]) + (rhs.1 * mults[1]),
+             MortarAttribute(view: lhs.view, attribute: components[2]) + (rhs.2 * mults[2]),
+             MortarAttribute(view: lhs.view, attribute: components[3]) + (rhs.3 * mults[3]) )
+}
 
 /**
  Priority operators

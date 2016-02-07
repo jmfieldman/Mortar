@@ -125,19 +125,27 @@ internal enum MortarLayoutAttribute {
         default:                        return .NotAnAttribute
         }
     }
+    
+    func insetConstantModifier() -> CGFloat {
+        switch self {
+        case .Right:                    return -1
+        case .Bottom:                   return -1
+        default:                        return 1
+        }
+    }
 }
 
 let UILayoutPriorityDefault = (UILayoutPriorityDefaultHigh + UILayoutPriorityDefaultLow) / 2.0
 
 public enum MortarLayoutPriority {
-    case Low, Normal, High, Req
+    case Low, Normal, High, Required
     
     public func layoutPriority() -> UILayoutPriority {
         switch self {
         case .Low:      return UILayoutPriorityDefaultLow
         case .Normal:   return UILayoutPriorityDefault
         case .High:     return UILayoutPriorityDefaultHigh
-        case .Req:      return UILayoutPriorityRequired
+        case .Required: return UILayoutPriorityRequired
         }
     }
 }
@@ -154,6 +162,36 @@ extension CGFloat : MortarCGFloatable {
 }
 
 extension Int : MortarCGFloatable {
+    @inline(__always) public func m_cgfloatValue() -> CGFloat {
+        return CGFloat(self)
+    }
+}
+
+extension UInt : MortarCGFloatable {
+    @inline(__always) public func m_cgfloatValue() -> CGFloat {
+        return CGFloat(self)
+    }
+}
+
+extension Int64 : MortarCGFloatable {
+    @inline(__always) public func m_cgfloatValue() -> CGFloat {
+        return CGFloat(self)
+    }
+}
+
+extension UInt64 : MortarCGFloatable {
+    @inline(__always) public func m_cgfloatValue() -> CGFloat {
+        return CGFloat(self)
+    }
+}
+
+extension UInt32 : MortarCGFloatable {
+    @inline(__always) public func m_cgfloatValue() -> CGFloat {
+        return CGFloat(self)
+    }
+}
+
+extension Int32 : MortarCGFloatable {
     @inline(__always) public func m_cgfloatValue() -> CGFloat {
         return CGFloat(self)
     }
@@ -211,6 +249,9 @@ extension MortarAttribute : MortarAttributable {
         return self
     }
 }
+
+public typealias MortarConstTwo  = (MortarCGFloatable, MortarCGFloatable)
+public typealias MortarConstFour = (MortarCGFloatable, MortarCGFloatable, MortarCGFloatable, MortarCGFloatable)
 
 public typealias MortarTwople  = (MortarAttributable, MortarAttributable)
 public typealias MortarFourple = (MortarAttributable, MortarAttributable, MortarAttributable, MortarAttributable)
