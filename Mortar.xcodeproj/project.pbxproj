@@ -1,0 +1,424 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		35BBBBDD1C6D3BBD0014B159 /* Mortar.h in Headers */ = {isa = PBXBuildFile; fileRef = 35BBBBDC1C6D3BBD0014B159 /* Mortar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		35BBBBE41C6D3BBD0014B159 /* Mortar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35BBBBD91C6D3BBD0014B159 /* Mortar.framework */; };
+		35BBBBE91C6D3BBD0014B159 /* MortarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BBBBE81C6D3BBD0014B159 /* MortarTests.swift */; };
+		35BBBBFA1C6D3C600014B159 /* MortarConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BBBBF31C6D3C600014B159 /* MortarConstraint.swift */; };
+		35BBBBFB1C6D3C600014B159 /* MortarGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BBBBF41C6D3C600014B159 /* MortarGroup.swift */; };
+		35BBBBFC1C6D3C600014B159 /* MortarOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BBBBF51C6D3C600014B159 /* MortarOperators.swift */; };
+		35BBBBFD1C6D3C600014B159 /* MortarAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BBBBF61C6D3C600014B159 /* MortarAttribute.swift */; };
+		35BBBBFE1C6D3C600014B159 /* Mortar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BBBBF71C6D3C600014B159 /* Mortar.swift */; };
+		35BBBBFF1C6D3C600014B159 /* Array+Mortar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BBBBF81C6D3C600014B159 /* Array+Mortar.swift */; };
+		35BBBC001C6D3C600014B159 /* View+Mortar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BBBBF91C6D3C600014B159 /* View+Mortar.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		35BBBBE51C6D3BBD0014B159 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 35BBBBD01C6D3BBD0014B159 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 35BBBBD81C6D3BBD0014B159;
+			remoteInfo = Mortar;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		35BBBBD91C6D3BBD0014B159 /* Mortar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Mortar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		35BBBBDC1C6D3BBD0014B159 /* Mortar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mortar.h; sourceTree = "<group>"; };
+		35BBBBDE1C6D3BBD0014B159 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		35BBBBE31C6D3BBD0014B159 /* MortarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MortarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		35BBBBE81C6D3BBD0014B159 /* MortarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MortarTests.swift; sourceTree = "<group>"; };
+		35BBBBEA1C6D3BBD0014B159 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		35BBBBF31C6D3C600014B159 /* MortarConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MortarConstraint.swift; sourceTree = "<group>"; };
+		35BBBBF41C6D3C600014B159 /* MortarGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MortarGroup.swift; sourceTree = "<group>"; };
+		35BBBBF51C6D3C600014B159 /* MortarOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MortarOperators.swift; sourceTree = "<group>"; };
+		35BBBBF61C6D3C600014B159 /* MortarAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MortarAttribute.swift; sourceTree = "<group>"; };
+		35BBBBF71C6D3C600014B159 /* Mortar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mortar.swift; sourceTree = "<group>"; };
+		35BBBBF81C6D3C600014B159 /* Array+Mortar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Mortar.swift"; sourceTree = "<group>"; };
+		35BBBBF91C6D3C600014B159 /* View+Mortar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Mortar.swift"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		35BBBBD51C6D3BBD0014B159 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		35BBBBE01C6D3BBD0014B159 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35BBBBE41C6D3BBD0014B159 /* Mortar.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		35BBBBCF1C6D3BBD0014B159 = {
+			isa = PBXGroup;
+			children = (
+				35BBBBDB1C6D3BBD0014B159 /* Mortar */,
+				35BBBBE71C6D3BBD0014B159 /* MortarTests */,
+				35BBBBDA1C6D3BBD0014B159 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		35BBBBDA1C6D3BBD0014B159 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				35BBBBD91C6D3BBD0014B159 /* Mortar.framework */,
+				35BBBBE31C6D3BBD0014B159 /* MortarTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		35BBBBDB1C6D3BBD0014B159 /* Mortar */ = {
+			isa = PBXGroup;
+			children = (
+				35BBBBF71C6D3C600014B159 /* Mortar.swift */,
+				35BBBBF61C6D3C600014B159 /* MortarAttribute.swift */,
+				35BBBBF51C6D3C600014B159 /* MortarOperators.swift */,
+				35BBBBF31C6D3C600014B159 /* MortarConstraint.swift */,
+				35BBBBF41C6D3C600014B159 /* MortarGroup.swift */,
+				35BBBBF81C6D3C600014B159 /* Array+Mortar.swift */,
+				35BBBBF91C6D3C600014B159 /* View+Mortar.swift */,
+				35BBBBDC1C6D3BBD0014B159 /* Mortar.h */,
+				35BBBBDE1C6D3BBD0014B159 /* Info.plist */,
+			);
+			path = Mortar;
+			sourceTree = "<group>";
+		};
+		35BBBBE71C6D3BBD0014B159 /* MortarTests */ = {
+			isa = PBXGroup;
+			children = (
+				35BBBBE81C6D3BBD0014B159 /* MortarTests.swift */,
+				35BBBBEA1C6D3BBD0014B159 /* Info.plist */,
+			);
+			path = MortarTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		35BBBBD61C6D3BBD0014B159 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35BBBBDD1C6D3BBD0014B159 /* Mortar.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		35BBBBD81C6D3BBD0014B159 /* Mortar */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 35BBBBED1C6D3BBD0014B159 /* Build configuration list for PBXNativeTarget "Mortar" */;
+			buildPhases = (
+				35BBBBD41C6D3BBD0014B159 /* Sources */,
+				35BBBBD51C6D3BBD0014B159 /* Frameworks */,
+				35BBBBD61C6D3BBD0014B159 /* Headers */,
+				35BBBBD71C6D3BBD0014B159 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Mortar;
+			productName = Mortar;
+			productReference = 35BBBBD91C6D3BBD0014B159 /* Mortar.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		35BBBBE21C6D3BBD0014B159 /* MortarTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 35BBBBF01C6D3BBD0014B159 /* Build configuration list for PBXNativeTarget "MortarTests" */;
+			buildPhases = (
+				35BBBBDF1C6D3BBD0014B159 /* Sources */,
+				35BBBBE01C6D3BBD0014B159 /* Frameworks */,
+				35BBBBE11C6D3BBD0014B159 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				35BBBBE61C6D3BBD0014B159 /* PBXTargetDependency */,
+			);
+			name = MortarTests;
+			productName = MortarTests;
+			productReference = 35BBBBE31C6D3BBD0014B159 /* MortarTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		35BBBBD01C6D3BBD0014B159 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "Jason Fieldman";
+				TargetAttributes = {
+					35BBBBD81C6D3BBD0014B159 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					35BBBBE21C6D3BBD0014B159 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+				};
+			};
+			buildConfigurationList = 35BBBBD31C6D3BBD0014B159 /* Build configuration list for PBXProject "Mortar" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 35BBBBCF1C6D3BBD0014B159;
+			productRefGroup = 35BBBBDA1C6D3BBD0014B159 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				35BBBBD81C6D3BBD0014B159 /* Mortar */,
+				35BBBBE21C6D3BBD0014B159 /* MortarTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		35BBBBD71C6D3BBD0014B159 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		35BBBBE11C6D3BBD0014B159 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		35BBBBD41C6D3BBD0014B159 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35BBBBFF1C6D3C600014B159 /* Array+Mortar.swift in Sources */,
+				35BBBBFB1C6D3C600014B159 /* MortarGroup.swift in Sources */,
+				35BBBBFE1C6D3C600014B159 /* Mortar.swift in Sources */,
+				35BBBC001C6D3C600014B159 /* View+Mortar.swift in Sources */,
+				35BBBBFD1C6D3C600014B159 /* MortarAttribute.swift in Sources */,
+				35BBBBFC1C6D3C600014B159 /* MortarOperators.swift in Sources */,
+				35BBBBFA1C6D3C600014B159 /* MortarConstraint.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		35BBBBDF1C6D3BBD0014B159 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35BBBBE91C6D3BBD0014B159 /* MortarTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		35BBBBE61C6D3BBD0014B159 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 35BBBBD81C6D3BBD0014B159 /* Mortar */;
+			targetProxy = 35BBBBE51C6D3BBD0014B159 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		35BBBBEB1C6D3BBD0014B159 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		35BBBBEC1C6D3BBD0014B159 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		35BBBBEE1C6D3BBD0014B159 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Mortar/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.fieldman.Mortar;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		35BBBBEF1C6D3BBD0014B159 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Mortar/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.fieldman.Mortar;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		35BBBBF11C6D3BBD0014B159 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = MortarTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.fieldman.MortarTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		35BBBBF21C6D3BBD0014B159 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = MortarTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.fieldman.MortarTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		35BBBBD31C6D3BBD0014B159 /* Build configuration list for PBXProject "Mortar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35BBBBEB1C6D3BBD0014B159 /* Debug */,
+				35BBBBEC1C6D3BBD0014B159 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		35BBBBED1C6D3BBD0014B159 /* Build configuration list for PBXNativeTarget "Mortar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35BBBBEE1C6D3BBD0014B159 /* Debug */,
+				35BBBBEF1C6D3BBD0014B159 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		35BBBBF01C6D3BBD0014B159 /* Build configuration list for PBXNativeTarget "MortarTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35BBBBF11C6D3BBD0014B159 /* Debug */,
+				35BBBBF21C6D3BBD0014B159 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 35BBBBD01C6D3BBD0014B159 /* Project object */;
+}
