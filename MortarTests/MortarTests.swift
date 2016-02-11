@@ -26,26 +26,70 @@ import XCTest
 
 class MortarTests: XCTestCase {
     
+    static let CON_X: CGFloat = 100.0
+    static let CON_Y: CGFloat = 50.0
+    static let CON_W: CGFloat = 1000.0
+    static let CON_H: CGFloat = 500.0
+    
+    let container = MortarView(frame: CGRect(x: CON_X, y: CON_Y, width: CON_W, height: CON_H))
+    
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testBasicConstruction() {
+        let v = MortarView()
+        
+        self.container |+| v
+        
+        /* Installs 4 constraints (one for each edge) */
+        v.m_edges |=| self.container
+        
+        XCTAssertEqual(self.container.constraints.count, 4, "Should have 4 constraints installed (ancestor)")
+        XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock {
-            // Put the code you want to measure the time of here.
-        }
+    func testBasicActivatationToggle() {
+        let v = MortarView()
+        
+        self.container |+| v
+        
+        /* Installs 4 constraints (one for each edge) */
+        let c = v.m_edges |=| self.container
+        
+        XCTAssertEqual(self.container.constraints.count, 4, "Should have 4 constraints installed (ancestor)")
+        XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+        
+        c.deactivate()
+        
+        XCTAssertEqual(self.container.constraints.count, 0, "Should have 0 constraints installed (deactivated)")
+        XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+        
+        c.activate()
+        
+        XCTAssertEqual(self.container.constraints.count, 4, "Should have 4 constraints installed (activated)")
+        XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+    }
+
+    func testBasicFrame() {
+        let v = MortarView()
+        
+        self.container |+| v
+        
+        /* Installs 4 constraints (one for each edge) */
+        v.m_edges |=| self.container
+        
+        self.container.layoutIfNeeded()
+        
+        XCTAssertEqual(v.frame.origin.x, 0, "Frame mismatch")
+        XCTAssertEqual(v.frame.origin.y, 0, "Frame mismatch")
+        XCTAssertEqual(v.frame.size.width,  MortarTests.CON_W, "Frame mismatch")
+        XCTAssertEqual(v.frame.size.height, MortarTests.CON_H, "Frame mismatch")
     }
     
 }
+
