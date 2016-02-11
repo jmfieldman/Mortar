@@ -21,8 +21,11 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.s
 
-import Foundation
+#if os(iOS) || os(tvOS)
 import UIKit
+#else
+import AppKit
+#endif
 
 internal let kMortarConstArrayLen = 4
 
@@ -30,7 +33,7 @@ internal let kMortarConstArrayLen = 4
 public class MortarAttribute {
     
     /** Affected view for this mortar element */
-    internal var view: UIView?
+    internal var view: MortarView?
     
     /** attribute is assigned for Mortar elements of type .ViewAttribute */
     internal var attribute: MortarLayoutAttribute?
@@ -48,12 +51,12 @@ public class MortarAttribute {
     /**
      Initialize a Mortar object to represent the layout attribute of a particular view.
      
-     - parameter view:      The UIView to represent
+     - parameter view:      The view to represent
      - parameter attribute: The layout attribute
      
      - returns: A Mortar object representing the layout property of this view
      */
-    internal init(view: UIView?, attribute: MortarLayoutAttribute?) {
+    internal init(view: MortarView?, attribute: MortarLayoutAttribute?) {
         self.view      = view
         self.attribute = attribute
     }
@@ -65,7 +68,7 @@ public class MortarAttribute {
      
      - returns: The new Mortar Attribute
      */
-    internal convenience init(view: UIView) {
+    internal convenience init(view: MortarView) {
         self.init(view: view, attribute: nil)
     }
     

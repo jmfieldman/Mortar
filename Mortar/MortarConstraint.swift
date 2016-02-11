@@ -21,8 +21,12 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import Foundation
+#if os(iOS) || os(tvOS)
 import UIKit
+#else
+import AppKit
+#endif
+
 
 
 public class MortarConstraint {
@@ -124,7 +128,7 @@ public class MortarConstraint {
         /* For tuples, the target attribute must be explicitly declared */
         guard let targetAttribute = target.attribute else {
             NSException(name: "Target Attribute must be defined",
-                      reason: "Target Attribute must be defined (cannot assign to UIView with declaring attribute)",
+                      reason: "Target Attribute must be defined (cannot assign tuple to view without declaring attribute)",
                     userInfo: nil).raise()
             return
         }

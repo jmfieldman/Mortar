@@ -21,8 +21,14 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import Foundation
+
+#if os(iOS) || os(tvOS)
 import UIKit
+public typealias MortarView = UIView
+#else
+import AppKit
+public typealias MortarView = NSView
+#endif
 
 
 internal enum MortarLayoutAttribute {
@@ -248,7 +254,7 @@ extension Float : MortarAttributable {
     }
 }
 
-extension UIView : MortarAttributable {
+extension MortarView : MortarAttributable {
     @inline(__always) public func m_intoAttribute() -> MortarAttribute {
         return MortarAttribute(view: self)
     }

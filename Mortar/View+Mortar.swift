@@ -21,12 +21,16 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import Foundation
+#if os(iOS) || os(tvOS)
 import UIKit
+#else
+import AppKit
+#endif
 
 
 
-public extension UIView {
+
+public extension MortarView {
     
     public var m_left:                  MortarAttribute { get { return MortarAttribute(view: self, attribute: .Left                   ) } }
     public var m_right:                 MortarAttribute { get { return MortarAttribute(view: self, attribute: .Right                  ) } }

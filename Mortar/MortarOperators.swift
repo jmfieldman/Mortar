@@ -21,39 +21,39 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import Foundation
+#if os(iOS) || os(tvOS)
 import UIKit
+#else
+import AppKit
+#endif
 
 
-/*
 
-view1.m_TLcorner |=| (self.view.m_width * 0.5, self.view.m_height * 0.5 + 10) ! .Low
-view1.m_size     |=| (40, 50)
-view1.m_size     |=| (view1.m_width, view2.m_height)
-view2.m_center   |=| self.view
-view1.m_top      |=| [self.view, view2, view3]
-view1            |=| [self.view.m_bottom, self.view.m_sides]
-view1.m_height   |=| 40 !
+/**
+ The |+| operator is used as an addSubview substitude.  Allows adding arrays, which can be
+ formatted in text into a view hierarchy.
 
-[view1, view2, view3, view4].m_frame |=| (100, 100, 40, 40)  !?
-[view1, view2, view3, view4].m_frame |=| view5               !!
-
+    v1 |+| [
+        v2,
+        v3 |+| [
+            v4
+        ]
+    ]
 */
-
 infix operator |+| { precedence 95 }
 
-public func |+|(lhs: UIView, rhs: UIView) -> UIView {
+public func |+|(lhs: MortarView, rhs: MortarView) -> MortarView {
     lhs.addSubview(rhs)
     return lhs
 }
 
-public func |+|(lhs: UIView, rhs: [UIView]) -> UIView {
+public func |+|(lhs: MortarView, rhs: [MortarView]) -> MortarView {
     rhs.forEach { lhs.addSubview($0) }
     return lhs
 }
 
 
-
+/* The basic mortar operators to create equal, less-than-or-equal, and greater-than-or-equal */
 infix operator |=| { precedence 95 }
 infix operator |>| { precedence 95 }
 infix operator |<| { precedence 95 }
