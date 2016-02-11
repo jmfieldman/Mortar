@@ -244,22 +244,22 @@ public func |<|(lhs: [Any], rhs: [Any]) -> MortarConstraint {
  
 */
 public func +(lhs: MortarAttribute, rhs: MortarCGFloatable) -> MortarAttribute {
-    lhs.constant += rhs.m_cgfloatValue()
+    lhs.constant[0] += rhs.m_cgfloatValue()
     return lhs
 }
 
 public func -(lhs: MortarAttribute, rhs: MortarCGFloatable) -> MortarAttribute {
-    lhs.constant -= rhs.m_cgfloatValue()
+    lhs.constant[0] -= rhs.m_cgfloatValue()
     return lhs
 }
 
 public func *(lhs: MortarAttribute, rhs: MortarCGFloatable) -> MortarAttribute {
-    lhs.multiplier *= rhs.m_cgfloatValue()
+    lhs.multiplier[0] *= rhs.m_cgfloatValue()
     return lhs
 }
 
 public func /(lhs: MortarAttribute, rhs: MortarCGFloatable) -> MortarAttribute {
-    lhs.multiplier /= rhs.m_cgfloatValue()
+    lhs.multiplier[0] /= rhs.m_cgfloatValue()
     return lhs
 }
 
@@ -271,7 +271,11 @@ public func +(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
                   reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
                 userInfo: nil).raise()
     }
-    lhs.constant += rhs.constant
+
+    for i in 0 ..< kMortarConstArrayLen {
+        lhs.constant[i] += rhs.constant[i]
+    }
+    
     lhs.priority =  rhs.priority
     return lhs
 }
@@ -282,7 +286,11 @@ public func -(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
                   reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
                 userInfo: nil).raise()
     }
-    lhs.constant -= rhs.constant
+    
+    for i in 0 ..< kMortarConstArrayLen {
+        lhs.constant[i] -= rhs.constant[i]
+    }
+    
     lhs.priority =  rhs.priority
     return lhs
 }
@@ -293,7 +301,11 @@ public func *(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
                   reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
                 userInfo: nil).raise()
     }
-    lhs.multiplier *= rhs.constant
+    
+    for i in 0 ..< kMortarConstArrayLen {
+        lhs.constant[i] *= rhs.constant[i]
+    }
+    
     lhs.priority    = rhs.priority
     return lhs
 }
@@ -304,7 +316,11 @@ public func /(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
                   reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
                 userInfo: nil).raise()
     }
-    lhs.multiplier /= rhs.constant
+    
+    for i in 0 ..< kMortarConstArrayLen {
+        lhs.constant[i] /= rhs.constant[i]
+    }
+    
     lhs.priority    = rhs.priority
     return lhs
 }
@@ -319,131 +335,136 @@ public func *(lhs: MortarCGFloatable, rhs: CGFloat) -> CGFloat {
  Attributable (arithmetic) (const-tuple)
 */
 
-public func +(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarTwople {
+public func +(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
         NSException(name: "Attribute has no components for tuple arithmetic",
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
-        return (0,0)
+        return lhs
     }
     
     if (components.count != 2) {
         NSException(name: "Attribute has wrong component count",
                   reason: "Attribute has \(components.count) components; requires 2",
                 userInfo: nil).raise()
-        return (0,0)
+        return lhs
     }
     
-    return ( MortarAttribute(view: lhs.view, attribute: components[0]) + rhs.0,
-             MortarAttribute(view: lhs.view, attribute: components[1]) + rhs.1 )
+    lhs.constant[0] += rhs.0.m_cgfloatValue()
+    lhs.constant[1] += rhs.1.m_cgfloatValue()
+    return lhs
 }
 
-public func +(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarFourple {
+public func +(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
         NSException(name: "Attribute has no components for tuple arithmetic",
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
-        return (0,0,0,0)
+        return lhs
     }
     
     if (components.count != 4) {
         NSException(name: "Attribute has wrong component count",
                   reason: "Attribute has \(components.count) components; requires 4",
                 userInfo: nil).raise()
-        return (0,0,0,0)
+        return lhs
     }
     
-    return ( MortarAttribute(view: lhs.view, attribute: components[0]) + rhs.0,
-             MortarAttribute(view: lhs.view, attribute: components[1]) + rhs.1,
-             MortarAttribute(view: lhs.view, attribute: components[2]) + rhs.2,
-             MortarAttribute(view: lhs.view, attribute: components[3]) + rhs.3 )
-    
+    lhs.constant[0] += rhs.0.m_cgfloatValue()
+    lhs.constant[1] += rhs.1.m_cgfloatValue()
+    lhs.constant[2] += rhs.2.m_cgfloatValue()
+    lhs.constant[3] += rhs.3.m_cgfloatValue()
+    return lhs
 }
 
-public func -(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarTwople {
+public func -(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
         NSException(name: "Attribute has no components for tuple arithmetic",
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
-        return (0,0)
+        return lhs
     }
     
     if (components.count != 2) {
         NSException(name: "Attribute has wrong component count",
                   reason: "Attribute has \(components.count) components; requires 2",
                 userInfo: nil).raise()
-        return (0,0)
+        return lhs
     }
     
-    return ( MortarAttribute(view: lhs.view, attribute: components[0]) - rhs.0,
-             MortarAttribute(view: lhs.view, attribute: components[1]) - rhs.1 )
+    lhs.constant[0] -= rhs.0.m_cgfloatValue()
+    lhs.constant[1] -= rhs.1.m_cgfloatValue()
+    return lhs
 }
 
-public func -(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarFourple {
+public func -(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
         NSException(name: "Attribute has no components for tuple arithmetic",
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
-        return (0,0,0,0)
+        return lhs
     }
     
     if (components.count != 4) {
         NSException(name: "Attribute has wrong component count",
                   reason: "Attribute has \(components.count) components; requires 4",
                 userInfo: nil).raise()
-        return (0,0,0,0)
+        return lhs
     }
     
-    return ( MortarAttribute(view: lhs.view, attribute: components[0]) - rhs.0,
-             MortarAttribute(view: lhs.view, attribute: components[1]) - rhs.1,
-             MortarAttribute(view: lhs.view, attribute: components[2]) - rhs.2,
-             MortarAttribute(view: lhs.view, attribute: components[3]) - rhs.3 )
+    lhs.constant[0] -= rhs.0.m_cgfloatValue()
+    lhs.constant[1] -= rhs.1.m_cgfloatValue()
+    lhs.constant[2] -= rhs.2.m_cgfloatValue()
+    lhs.constant[3] -= rhs.3.m_cgfloatValue()
+    return lhs
 }
 
 infix operator ~ { precedence 140 }
 
-public func ~(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarTwople {
+public func ~(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
         NSException(name: "Attribute has no components for tuple arithmetic",
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
-        return (0,0)
+        return lhs
     }
     
     if (components.count != 2) {
         NSException(name: "Attribute has wrong component count",
                   reason: "Attribute has \(components.count) components; requires 2",
                 userInfo: nil).raise()
-        return (0,0)
+        return lhs
     }
     
     let mults = components.map { $0.insetConstantModifier() }
     
-    return ( MortarAttribute(view: lhs.view, attribute: components[0]) + (rhs.0 * mults[0]),
-             MortarAttribute(view: lhs.view, attribute: components[1]) + (rhs.1 * mults[1]) )
+    lhs.constant[0] += rhs.0.m_cgfloatValue() * mults[0]
+    lhs.constant[1] += rhs.1.m_cgfloatValue() * mults[1]
+    return lhs
 }
 
-public func ~(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarFourple {
+public func ~(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
         NSException(name: "Attribute has no components for tuple arithmetic",
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
-        return (0,0,0,0)
+        return lhs
     }
     
     if (components.count != 4) {
         NSException(name: "Attribute has wrong component count",
                   reason: "Attribute has \(components.count) components; requires 4",
                 userInfo: nil).raise()
-        return (0,0,0,0)
+        return lhs
     }
     
     let mults = components.map { $0.insetConstantModifier() }
     
-    return ( MortarAttribute(view: lhs.view, attribute: components[0]) + (rhs.0 * mults[0]),
-             MortarAttribute(view: lhs.view, attribute: components[1]) + (rhs.1 * mults[1]),
-             MortarAttribute(view: lhs.view, attribute: components[2]) + (rhs.2 * mults[2]),
-             MortarAttribute(view: lhs.view, attribute: components[3]) + (rhs.3 * mults[3]) )
+    lhs.constant[0] += rhs.0.m_cgfloatValue() * mults[0]
+    lhs.constant[1] += rhs.1.m_cgfloatValue() * mults[1]
+    lhs.constant[2] += rhs.2.m_cgfloatValue() * mults[2]
+    lhs.constant[3] += rhs.3.m_cgfloatValue() * mults[3]
+    return lhs
 }
 
 /**

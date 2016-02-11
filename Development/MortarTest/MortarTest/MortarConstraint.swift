@@ -13,7 +13,7 @@ import UIKit
 public class MortarConstraint {
     
     /** constraints assigned for Mortar elements of type .LayoutConstraint */
-    internal var nsConstraints: [NSLayoutConstraint] = []
+    public internal(set) var layoutConstraints: [NSLayoutConstraint] = []
     
     
     /**
@@ -84,12 +84,12 @@ public class MortarConstraint {
                                            relatedBy: relation,
                                               toItem: (needsImplicitBaseline ? ( (targetComponents[i].implicitSuperviewBaseline() == .NotAnAttribute) ? nil : targetView.superview ) : sourceView),
                                            attribute: (needsImplicitBaseline ? targetComponents[i].implicitSuperviewBaseline() : sLayoutAttribute),
-                                          multiplier: sourceMortar.multiplier,
-                                            constant: sourceMortar.constant)
+                                          multiplier: sourceMortar.multiplier[i],
+                                            constant: sourceMortar.constant[i])
             
             constraint.priority = (sourceMortar.priority ?? targetMortar.priority) ?? UILayoutPriorityDefault
             constraint.active   = true
-            nsConstraints.append(constraint)
+            layoutConstraints.append(constraint)
         }        
     }
         
@@ -132,7 +132,7 @@ public class MortarConstraint {
             
             let subConstraint = MortarConstraint(target: subAttribute, source: source.0[i], relation: relation)
             
-            nsConstraints += subConstraint.nsConstraints
+            layoutConstraints += subConstraint.layoutConstraints
         }
     }
     
@@ -143,7 +143,7 @@ public class MortarConstraint {
         if crosslink {
             for target in targetArray {
                 for source in sourceArray {
-                    nsConstraints += MortarConstraint(target: target, source: source, relation: relation).nsConstraints
+                    layoutConstraints += MortarConstraint(target: target, source: source, relation: relation).layoutConstraints
                 }
             }
         } else {
@@ -155,7 +155,7 @@ public class MortarConstraint {
             }
             
             for i in 0 ..< targetArray.count {
-                nsConstraints += MortarConstraint(target: targetArray[i], source: sourceArray[i], relation: relation).nsConstraints
+                layoutConstraints += MortarConstraint(target: targetArray[i], source: sourceArray[i], relation: relation).layoutConstraints
             }
         }
         
@@ -165,7 +165,7 @@ public class MortarConstraint {
         self.init()
         
         for target in targetArray {
-            nsConstraints += MortarConstraint(target: target, source: sourceTuple, relation: relation).nsConstraints
+            layoutConstraints += MortarConstraint(target: target, source: sourceTuple, relation: relation).layoutConstraints
         }
     }
     
@@ -205,7 +205,7 @@ public class MortarConstraint {
         if crosslink {
             for target in targetAnyArray {
                 for source in sourceAnyArray {
-                    nsConstraints += MortarConstraint(targetAny: target, sourceAny: source, relation: relation).nsConstraints
+                    layoutConstraints += MortarConstraint(targetAny: target, sourceAny: source, relation: relation).layoutConstraints
                 }
             }
         } else {
@@ -217,8 +217,18 @@ public class MortarConstraint {
             }
             
             for i in 0 ..< targetAnyArray.count {
-                nsConstraints += MortarConstraint(targetAny: targetAnyArray[i], sourceAny: sourceAnyArray[i], relation: relation).nsConstraints
+                layoutConstraints += MortarConstraint(targetAny: targetAnyArray[i], sourceAny: sourceAnyArray[i], relation: relation).layoutConstraints
             }
         }
+    }
+    
+    public func activate() -> MortarConstraint {
+        NSLayoutConstraint.activateConstraints(self.layoutConstraints)
+        return self
+    }
+    
+    public func deactivate() -> MortarConstraint {
+        NSLayoutConstraint.deactivateConstraints(self.layoutConstraints)
+        return self
     }
 }
