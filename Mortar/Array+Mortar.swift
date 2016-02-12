@@ -22,7 +22,7 @@
 //  THE SOFTWARE.
 
 
-public extension Array where Element: MortarAttributable {
+public extension Array where Element: MortarView {
     
     public var m_left:                  [MortarAttribute] { let z = self.map({ $0.m_intoAttribute() }); z.forEach({$0.attribute = .Left                   }); return z }
     public var m_right:                 [MortarAttribute] { let z = self.map({ $0.m_intoAttribute() }); z.forEach({$0.attribute = .Right                  }); return z }

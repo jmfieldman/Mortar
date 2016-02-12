@@ -202,6 +202,28 @@ public func |<|(lhs: [MortarAttributable], rhs: MortarAttributable) -> MortarCon
                                relation: .LessThanOrEqual)
 }
 
+public func |=|(lhs: [MortarAttribute], rhs: MortarAttributable) -> MortarConstraint {
+    return MortarConstraint(targetArray: lhs,
+        sourceArray: [rhs.m_intoAttribute()],
+        crosslink: true,
+        relation: .Equal)
+}
+
+public func |>|(lhs: [MortarAttribute], rhs: MortarAttributable) -> MortarConstraint {
+    return MortarConstraint(targetArray: lhs,
+        sourceArray: [rhs.m_intoAttribute()],
+        crosslink: true,
+        relation: .GreaterThanOrEqual)
+}
+
+public func |<|(lhs: [MortarAttribute], rhs: MortarAttributable) -> MortarConstraint {
+    return MortarConstraint(targetArray: lhs,
+        sourceArray: [rhs.m_intoAttribute()],
+        crosslink: true,
+        relation: .LessThanOrEqual)
+}
+
+
 /**
  Handle the concept of allowing several attributes to join with a tuple
  e.g:
