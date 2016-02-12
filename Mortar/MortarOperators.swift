@@ -81,7 +81,13 @@ public func |<|(lhs: MortarAttributable, rhs: MortarAttributable) -> MortarConst
 
 
 
+/**
+ Handle the basic case of joining a Mortar Attribute with a tuple
+ e.g:
 
+ view1.m_size |=| (50, 50)
+
+*/
 public func |=|(lhs: MortarAttribute, rhs: MortarTwople) -> MortarConstraint {
     return MortarConstraint(target: lhs, source: MortarConvertTwople(rhs), relation: .Equal)
 }
@@ -123,7 +129,15 @@ public func |<|(lhs: MortarAttribute, rhs: MortarTuple) -> MortarConstraint {
 }
 
 
+/**
+ Handle constraints involving arrays
+ e.g:
 
+ view1 |=| [view2.m_bottom, view3.m_left]
+
+ [view1.m_top, view1.m_left] |=| [view2.m_bottom, view3.m_left]
+
+*/
 public func |=|(lhs: [MortarAttributable], rhs: [MortarAttributable]) -> MortarConstraint {
     return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
                             sourceArray: rhs.map { $0.m_intoAttribute() },
@@ -188,7 +202,13 @@ public func |<|(lhs: [MortarAttributable], rhs: MortarAttributable) -> MortarCon
                                relation: .LessThanOrEqual)
 }
 
+/**
+ Handle the concept of allowing several attributes to join with a tuple
+ e.g:
 
+ [view1, view2, view3, view4].m_size |=| (50, 50)
+
+*/
 public func |=|(lhs: [MortarAttributable], rhs: MortarTuple) -> MortarConstraint {
     return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
                             sourceTuple: rhs,
@@ -232,7 +252,7 @@ public func |<|(lhs: [MortarAttributable], rhs: MortarFourple) -> MortarConstrai
     return lhs |<| MortarConvertFourple(rhs)
 }
 
-
+/* Catch-all array operators */
 public func |=|(lhs: [Any], rhs: [Any]) -> MortarConstraint {
     return MortarConstraint(targetAnyArray: lhs, sourceAnyArray: rhs, crosslink: false, relation: .Equal)
 }
