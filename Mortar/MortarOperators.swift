@@ -1,44 +1,59 @@
 //
-//  Mortar+Operators.swift
-//  MortarTest
+//  Mortar
 //
-//  Created by Jason Fieldman on 1/30/16.
-//  Copyright © 2016 Jason Fieldman. All rights reserved.
+//  Copyright (c) 2016-Present Jason Fieldman - https://github.com/jmfieldman/Mortar
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
-import Foundation
+#if os(iOS) || os(tvOS)
 import UIKit
+#else
+import AppKit
+#endif
 
 
-/*
 
-view1.m_TLcorner |=| (self.view.m_width * 0.5, self.view.m_height * 0.5 + 10) ! .Low
-view1.m_size     |=| (40, 50)
-view1.m_size     |=| (view1.m_width, view2.m_height)
-view2.m_center   |=| self.view
-view1.m_top      |=| [self.view, view2, view3]
-view1            |=| [self.view.m_bottom, self.view.m_sides]
-view1.m_height   |=| 40 !
+/**
+ The |+| operator is used as an addSubview substitude.  Allows adding arrays, which can be
+ formatted in text into a view hierarchy.
 
-[view1, view2, view3, view4].m_frame |=| (100, 100, 40, 40)  !?
-[view1, view2, view3, view4].m_frame |=| view5               !!
-
+    v1 |+| [
+        v2,
+        v3 |+| [
+            v4
+        ]
+    ]
 */
-
 infix operator |+| { precedence 95 }
 
-public func |+|(lhs: UIView, rhs: UIView) -> UIView {
+public func |+|(lhs: MortarView, rhs: MortarView) -> MortarView {
     lhs.addSubview(rhs)
     return lhs
 }
 
-public func |+|(lhs: UIView, rhs: [UIView]) -> UIView {
+public func |+|(lhs: MortarView, rhs: [MortarView]) -> MortarView {
     rhs.forEach { lhs.addSubview($0) }
     return lhs
 }
 
 
-
+/* The basic mortar operators to create equal, less-than-or-equal, and greater-than-or-equal */
 infix operator |=| { precedence 95 }
 infix operator |>| { precedence 95 }
 infix operator |<| { precedence 95 }

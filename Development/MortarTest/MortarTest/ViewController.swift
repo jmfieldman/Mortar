@@ -46,9 +46,12 @@ class ViewController: UIViewController {
         
         //s.m_frame |=| (200, 200, 50, 50)
         
-        s.m_bottom |=| self.view.m_bottom - 40
-        s.m_left   |=| self.view.m_left + 40
-        s.m_right  |=| self.view.m_right - 40
+        //s.m_bottom |=| self.view.m_bottom - 40
+        //s.m_left   |=| self.view.m_left + 40
+        //s.m_right  |=| self.view.m_right - 40
+        
+        s |=| [self.view.m_bottom - 40, self.view.m_left + 40, self.view.m_right - 40]
+        
         //s.m_sides  |=| self.view.m_sides ~ (40, 40)
         
         //[s, s] |=| [self.view.m_bottom - 40, self.view.m_sides ~ (40, 40)]
@@ -61,7 +64,7 @@ class ViewController: UIViewController {
         
         
         //[r, s].m_frame |=| [ (1,1,1,1), (2,2,2,2) ]
-        [r.m_edges] |=| [s.m_edges ~ (10,10,10,10)]
+        r |=| s.m_edges ~ (10,10,10,10)
         
         [r.m_edges] |=| [r.m_edges]
         
