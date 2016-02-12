@@ -29,7 +29,6 @@ import AppKit
 
 internal let kMortarConstArrayLen = 4
 
-
 public class MortarAttribute {
     
     /** Affected view for this mortar element */
