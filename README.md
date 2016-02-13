@@ -134,7 +134,7 @@ The special inset operator ```~``` operates on multi-dimension attributes:
 view1         |=| view2.m_edges ~ (20, 20, 20, 20)  // view1 is inset by 20 points on each side
 ```
 
-### Multiple Assignments
+### Multiple Simultaneous Constraints
 
 Multiple constraints can be created using arrays:
 
