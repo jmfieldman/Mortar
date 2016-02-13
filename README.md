@@ -4,10 +4,10 @@ Mortar allows you to create Auto Layout constraints using concise, simple code s
 
 ```swift
 addConstraint(NSLayoutConstraint(
-    item    view1,
+    item:        view1,
     attribute:  .Right,
     relatedBy:  .Equal,
-    toItem  view2,
+    toItem:      view2,
     attribute:  .Left,
     multiplier:  1.0,
     constant:   -12.0
