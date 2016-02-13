@@ -14,7 +14,7 @@ addConstraint(NSLayoutConstraint(
 ))
 ```
 
-with a single line:
+Turns into:
 
 ```swift
 view1.m_right |=| view2.m_left - 12.0
