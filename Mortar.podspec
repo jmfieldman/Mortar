@@ -11,6 +11,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/jmfieldman/Mortar"
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author       = { "Jason Fieldman" => "jason@fieldman.org" }
+  s.social_media_url = 'http://fieldman.org'
 
   s.ios.deployment_target = "8.0"
   s.osx.deployment_target = "10.9"
