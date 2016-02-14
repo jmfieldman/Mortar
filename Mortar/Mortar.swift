@@ -43,6 +43,7 @@ internal enum MortarLayoutAttribute {
     case CenterX
     case CenterY
     case Baseline
+    #if os(iOS) || os(tvOS)
     case FirstBaseline
     case LeftMargin
     case RightMargin
@@ -52,6 +53,7 @@ internal enum MortarLayoutAttribute {
     case TrailingMargin
     case CenterXWithinMargins
     case CenterYWithinMargins
+    #endif
     case NotAnAttribute
     case Sides
     case Caps
@@ -64,6 +66,7 @@ internal enum MortarLayoutAttribute {
     case Frame
     case Center
     
+    #if os(iOS) || os(tvOS)
     func nsLayoutAttribute() -> NSLayoutAttribute? {
         switch self {
         case .Left:                     return .Left
@@ -90,7 +93,27 @@ internal enum MortarLayoutAttribute {
         default:                        return nil
         }
     }
+    #else
+    func nsLayoutAttribute() -> NSLayoutAttribute? {
+        switch self {
+        case .Left:                     return .Left
+        case .Right:                    return .Right
+        case .Top:                      return .Top
+        case .Bottom:                   return .Bottom
+        case .Leading:                  return .Leading
+        case .Trailing:                 return .Trailing
+        case .Width:                    return .Width
+        case .Height:                   return .Height
+        case .CenterX:                  return .CenterX
+        case .CenterY:                  return .CenterY
+        case .Baseline:                 return .Baseline
+        case .NotAnAttribute:           return .NotAnAttribute
+        default:                        return nil
+        }
+    }
+    #endif
     
+    #if os(iOS) || os(tvOS)
     func componentAttributes() -> [MortarLayoutAttribute] {
         switch self {
         case .Left:                     return [.Left                                   ]
@@ -127,7 +150,37 @@ internal enum MortarLayoutAttribute {
         case .Center:                   return [.CenterX, .CenterY                      ]            
         }
     }
+    #else
+    func componentAttributes() -> [MortarLayoutAttribute] {
+        switch self {
+        case .Left:                     return [.Left                                   ]
+        case .Right:                    return [.Right                                  ]
+        case .Top:                      return [.Top                                    ]
+        case .Bottom:                   return [.Bottom                                 ]
+        case .Leading:                  return [.Leading                                ]
+        case .Trailing:                 return [.Trailing                               ]
+        case .Width:                    return [.Width                                  ]
+        case .Height:                   return [.Height                                 ]
+        case .CenterX:                  return [.CenterX                                ]
+        case .CenterY:                  return [.CenterY                                ]
+        case .Baseline:                 return [.Baseline                               ]
+        case .NotAnAttribute:           return [.NotAnAttribute                         ]
+        
+        case .Sides:                    return [.Left,    .Right                        ]
+        case .Caps:                     return [.Top,     .Bottom                       ]
+        case .Size:                     return [.Width,   .Height                       ]
+        case .CornerTL:                 return [.Top,     .Left                         ]
+        case .CornerTR:                 return [.Top,     .Right                        ]
+        case .CornerBL:                 return [.Bottom,  .Left                         ]
+        case .CornerBR:                 return [.Bottom,  .Right                        ]
+        case .Edges:                    return [.Top,     .Left,    .Bottom,  .Right    ]
+        case .Frame:                    return [.Left,    .Top,     .Width,   .Height   ]
+        case .Center:                   return [.CenterX, .CenterY                      ]
+        }
+    }
+    #endif
     
+    #if os(iOS) || os(tvOS)
     func implicitSuperviewBaseline() -> NSLayoutAttribute {
         switch self {
         case .Left:                     return .Left
@@ -141,6 +194,19 @@ internal enum MortarLayoutAttribute {
         default:                        return .NotAnAttribute
         }
     }
+    #else
+    func implicitSuperviewBaseline() -> NSLayoutAttribute {
+        switch self {
+        case .Left:                     return .Left
+        case .Right:                    return .Left
+        case .Top:                      return .Top
+        case .Bottom:                   return .Top
+        case .CenterX:                  return .Left
+        case .CenterY:                  return .Top
+        default:                        return .NotAnAttribute
+        }
+    }
+    #endif
     
     func insetConstantModifier() -> CGFloat {
         switch self {

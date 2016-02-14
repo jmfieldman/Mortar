@@ -35,6 +35,7 @@ public extension Array where Element: MortarView {
     public var m_centerX:               [MortarAttribute] { let z = self.map({ $0.m_intoAttribute() }); z.forEach({$0.attribute = .CenterX                }); return z }
     public var m_centerY:               [MortarAttribute] { let z = self.map({ $0.m_intoAttribute() }); z.forEach({$0.attribute = .CenterY                }); return z }
     public var m_baseline:              [MortarAttribute] { let z = self.map({ $0.m_intoAttribute() }); z.forEach({$0.attribute = .Baseline               }); return z }
+    #if os(iOS) || os(tvOS)
     public var m_firstBaseline:         [MortarAttribute] { let z = self.map({ $0.m_intoAttribute() }); z.forEach({$0.attribute = .FirstBaseline          }); return z }
     public var m_leftMargin:            [MortarAttribute] { let z = self.map({ $0.m_intoAttribute() }); z.forEach({$0.attribute = .LeftMargin             }); return z }
     public var m_rightMargin:           [MortarAttribute] { let z = self.map({ $0.m_intoAttribute() }); z.forEach({$0.attribute = .RightMargin            }); return z }
@@ -44,6 +45,7 @@ public extension Array where Element: MortarView {
     public var m_trailingMargin:        [MortarAttribute] { let z = self.map({ $0.m_intoAttribute() }); z.forEach({$0.attribute = .TrailingMargin         }); return z }
     public var m_centerXWithinMargin:   [MortarAttribute] { let z = self.map({ $0.m_intoAttribute() }); z.forEach({$0.attribute = .CenterXWithinMargins   }); return z }
     public var m_centerYWithinMargin:   [MortarAttribute] { let z = self.map({ $0.m_intoAttribute() }); z.forEach({$0.attribute = .CenterYWithinMargins   }); return z }
+    #endif
     public var m_sides:                 [MortarAttribute] { let z = self.map({ $0.m_intoAttribute() }); z.forEach({$0.attribute = .Sides                  }); return z }
     public var m_caps:                  [MortarAttribute] { let z = self.map({ $0.m_intoAttribute() }); z.forEach({$0.attribute = .Caps                   }); return z }
     public var m_size:                  [MortarAttribute] { let z = self.map({ $0.m_intoAttribute() }); z.forEach({$0.attribute = .Size                   }); return z }
