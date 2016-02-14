@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   #s.osx.deployment_target = "10.10"
   #s.tvos.deployment_target = "9.0"
 
-  s.source = { :git => "https://github.com/jmfieldman/Mortar.git", :tag => "{s.version}" }
+  s.source = { :git => "https://github.com/jmfieldman/Mortar.git", :tag => "#{s.version}" }
   s.source_files = "Mortar/*.swift"
 
   s.requires_arc = true
