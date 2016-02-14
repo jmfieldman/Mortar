@@ -256,4 +256,18 @@ public class MortarConstraint {
         newConstraint.activate()
         return newConstraint
     }
+    
+    public func changePriority(newPriority: UILayoutPriority) -> MortarConstraint {
+        for constraint in layoutConstraints {
+            constraint.priority = newPriority
+        }
+        return self
+    }
+    
+    public func changePriority(newPriority: MortarLayoutPriority) -> MortarConstraint {
+        for constraint in layoutConstraints {
+            constraint.priority = newPriority.layoutPriority()
+        }
+        return self
+    }
 }

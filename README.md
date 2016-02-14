@@ -199,8 +199,36 @@ view1.m_size |=| (view2.m_height ! .High, view2.m_width + 20 ! .Low)  // Inside 
 
 ### Change Priority
 
+You can change the priority of a ```MortarConstraint``` or ```MortarGroup``` by calling the ```changePriority``` method.  This takes either a ```MortarLayoutPriority``` enum, or a ```UILayoutPriority``` value:
+
+```swift
+let c = view1 |=| view2 ! .Low     // Creates 4 low-priority constraints (1 per edge)
+c.changePriority(.High)            // Sets all 4 constraints to high priority
+```
+
+Remember that you can't switch to or from ```Required``` from any other priority level (this is an Auto Layout limitation.)
+
+
 ### Create Deactivated Constraints
 
+You can use the ```~~``` operator as a shorthand for constraint activation and deactivation.  This makes the most sense as part of constraint declarations when you want to create initially-deactivated constraints:
+
+```swift
+let constraint = view1 |=| view2 ~~ .Deactivated
+
+// Later on, it makes more semantic sense to call .activate():
+constraint.activate()
+
+// Even though this is functionally equivalent:
+constraint ~~ .Activated
+
+// It works with groups too:
+let group = [
+    view1 |=| view2
+    view3 |=| view4
+] ~~ .Deactivated
+
+```
 
 # Keeping Constraint References
 

@@ -114,6 +114,44 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
     }
     
+    func testDeactivatedConstraint() {
+        let v = MortarView()
+        
+        self.container |+| v
+        
+        let c = v.m_edges |=| self.container ~~ .Deactivated
+        
+        XCTAssertEqual(self.container.constraints.count, 0, "Should have 4 constraints installed (ancestor)")
+        XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+        
+        c ~~ .Activated
+        
+        XCTAssertEqual(self.container.constraints.count, 4, "Should have 4 constraints installed (activated)")
+        XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+    }
+    
+    func testDeactivatedGroupConstraint() {
+        let v1 = MortarView()
+        let v2 = MortarView()
+        
+        self.container |+| [v1, v2]
+        
+        let c = [
+            v1.m_edges |=| self.container,
+            v2.m_edges |=| self.container
+        ] ~~ .Deactivated
+        
+        XCTAssertEqual(self.container.constraints.count, 0, "Should have 8 constraints installed (ancestor)")
+        XCTAssertEqual(v1.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+        XCTAssertEqual(v2.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+        
+        c ~~ .Activated
+        
+        XCTAssertEqual(self.container.constraints.count, 8, "Should have 8 constraints installed (activated)")
+        XCTAssertEqual(v1.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+        XCTAssertEqual(v2.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+    }
+    
     func testBasicGroup() {
         let v = MortarView()
         
@@ -308,6 +346,45 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(self.container.constraints[3].priority, UILayoutPriorityDefaultHigh, "Priority mismatch")
         XCTAssertEqual(self.container.constraints[4].priority, UILayoutPriorityRequired,    "Priority mismatch")
         XCTAssertEqual(self.container.constraints[5].priority, 300,                         "Priority mismatch")
+    }
+    
+    func testChangePriority() {
+        let v0 = MortarView()
+        let v1 = MortarView()
+        
+        self.container |+| [v0, v1]
+        
+        let c1 = v0 |=| self.container.m_height ! .Low
+        let c2 = v1 |=| self.container.m_height ! .High
+        
+        XCTAssertEqual(self.container.constraints[0].priority, UILayoutPriorityDefaultLow,  "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[1].priority, UILayoutPriorityDefaultHigh, "Priority mismatch")
+        
+        c1.changePriority(.High)
+        c2.changePriority(300)
+        
+        XCTAssertEqual(self.container.constraints[0].priority, UILayoutPriorityDefaultHigh, "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[1].priority, 300,                         "Priority mismatch")
+    }
+    
+    func testChangePriorityGroup() {
+        let v0 = MortarView()
+        let v1 = MortarView()
+        
+        self.container |+| [v0, v1]
+        
+        let g1 = [
+            v0 |=| self.container.m_height ! .Low,
+            v1 |=| self.container.m_height ! .High
+        ]
+        
+        XCTAssertEqual(self.container.constraints[0].priority, UILayoutPriorityDefaultLow,  "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[1].priority, UILayoutPriorityDefaultHigh, "Priority mismatch")
+        
+        g1.changePriority(300)
+        
+        XCTAssertEqual(self.container.constraints[0].priority, 300,                         "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[1].priority, 300,                         "Priority mismatch")
     }
  
     func testTuplePriority() {
