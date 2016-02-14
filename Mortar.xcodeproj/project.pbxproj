@@ -72,6 +72,7 @@
 				35BBBBDA1C6D3BBD0014B159 /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		35BBBBDA1C6D3BBD0014B159 /* Products */ = {
 			isa = PBXGroup;

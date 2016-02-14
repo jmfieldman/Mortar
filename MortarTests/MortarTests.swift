@@ -62,21 +62,21 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(self.container.constraints.count, 4, "Should have 4 constraints installed (ancestor)")
         XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
     }
-	
-	func testBasicMultipleAssignment() {
-		let v1 = MortarView()
-		let v2 = MortarView()
-		let v3 = MortarView()
-		
-		self.container |+| [v1, v2, v3]
-		
-		[v1, v2, v3].m_height |=| self.container
-		
-		XCTAssertEqual(self.container.constraints.count, 3, "Should have 3 constraints installed (ancestor)")
-		XCTAssertEqual(v1.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
-		XCTAssertEqual(v2.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
-		XCTAssertEqual(v3.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
-	}
+    
+    func testBasicMultipleAssignment() {
+        let v1 = MortarView()
+        let v2 = MortarView()
+        let v3 = MortarView()
+        
+        self.container |+| [v1, v2, v3]
+        
+        [v1, v2, v3].m_height |=| self.container
+        
+        XCTAssertEqual(self.container.constraints.count, 3, "Should have 3 constraints installed (ancestor)")
+        XCTAssertEqual(v1.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+        XCTAssertEqual(v2.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+        XCTAssertEqual(v3.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+    }
     
     func testBasicMultipleAssignment2() {
         let v1 = MortarView()
@@ -92,7 +92,7 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(v2.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
         XCTAssertEqual(v3.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
     }
-	
+    
     func testBasicActivatationToggle() {
         let v = MortarView()
         
@@ -230,6 +230,32 @@ class MortarTests: XCTestCase {
         self.container.layoutIfNeeded()
         
         XCTAssertEqual(v.frame.size.height, MortarTests.CON_H * 2 + 5, "Frame mismatch")
+    }
+    
+    func testBasicTupleCombo() {
+        let v = MortarView()
+        
+        self.container |+| v
+        
+        v |=| self.container.m_size * 2 + 5
+        
+        self.container.layoutIfNeeded()
+        
+        XCTAssertEqual(v.frame.size.width,  MortarTests.CON_W * 2 + 5, "Frame mismatch")
+        XCTAssertEqual(v.frame.size.height, MortarTests.CON_H * 2 + 5, "Frame mismatch")
+    }
+    
+    func testBasicTupleCombo2() {
+        let v = MortarView()
+        
+        self.container |+| v
+        
+        v |=| self.container.m_size * (2, 3) + (5, 10)
+        
+        self.container.layoutIfNeeded()
+        
+        XCTAssertEqual(v.frame.size.width,  MortarTests.CON_W * 2 + 5, "Frame mismatch")
+        XCTAssertEqual(v.frame.size.height, MortarTests.CON_H * 3 + 10, "Frame mismatch")
     }
     
     func testBasicPriority() {
