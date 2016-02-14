@@ -20,6 +20,16 @@ Turns into:
 view1.m_right |=| view2.m_left - 12.0
 ```
 
+# Installing
+
+You can install Mortar by adding it to your [CocoaPods](http://cocoapods.org/) ```Podfile```:
+
+```ruby
+pod 'Mortar'
+```
+
+Or you can use a variety of ways to include the ```Mortar.framework``` file from this project into your own.
+
 # Usage
 
 Mortar does not require closures of any kind.  The Mortar operators (```|=|```, ```|>|``` and ```|<|```) instantiate and return constraints that are activated by default.  
