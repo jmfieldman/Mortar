@@ -270,7 +270,7 @@ class MortarTests: XCTestCase {
         
         v0 |=| self.container.m_height
         v1 |=| self.container.m_height ! .Low
-        v2 |=| self.container.m_height ! .Normal
+        v2 |=| self.container.m_height ! .Default
         v3 |=| self.container.m_height ! .High
         v4 |=| self.container.m_height ! .Required
         v5 |=| self.container.m_height ! 300
@@ -281,6 +281,67 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(self.container.constraints[3].priority, UILayoutPriorityDefaultHigh, "Priority mismatch")
         XCTAssertEqual(self.container.constraints[4].priority, UILayoutPriorityRequired,    "Priority mismatch")
         XCTAssertEqual(self.container.constraints[5].priority, 300,                         "Priority mismatch")
+    }
+ 
+    func testTuplePriority() {
+        let v = MortarView()
+        
+        self.container |+| v
+        
+        v.m_size |=| (self.container.m_height ! .High, self.container.m_width + 20 ! .Low)
+        
+        XCTAssertEqual(self.container.constraints[0].priority, UILayoutPriorityDefaultHigh, "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[1].priority, UILayoutPriorityDefaultLow,  "Priority mismatch")
+    }       
+    
+    func testReplace() {
+        let v = MortarView()
+        
+        self.container |+| v
+        
+        let c1 = v.m_sides |=| self.container
+        let c2 = v.m_width |=| self.container ~~ .Deactivated
+        
+        XCTAssertEqual(self.container.constraints.count, 2, "Should have 4 constraints installed (ancestor)")
+        XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+        
+        c1.replaceWith(c2)
+        
+        XCTAssertEqual(self.container.constraints.count, 1, "Should have 1 constraints installed (replaced)")
+        XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+        
+        c2.replaceWith(c1)
+        
+        XCTAssertEqual(self.container.constraints.count, 2, "Should have 4 constraints installed (activated)")
+        XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+    }
+    
+    func testReplaceGroup() {
+        let v = MortarView()
+        
+        self.container |+| v
+        
+        let g1 = [
+            v.m_sides |=| self.container,
+            v.m_caps  |=| self.container,
+        ]
+        
+        let g2 = [
+            v.m_width |=| self.container
+        ] ~~ .Deactivated
+        
+        XCTAssertEqual(self.container.constraints.count, 4, "Should have 4 constraints installed (ancestor)")
+        XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+        
+        g1.replaceWith(g2)
+        
+        XCTAssertEqual(self.container.constraints.count, 1, "Should have 1 constraints installed (replaced)")
+        XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+        
+        g2.replaceWith(g1)
+        
+        XCTAssertEqual(self.container.constraints.count, 4, "Should have 4 constraints installed (activated)")
+        XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
     }
     
 }

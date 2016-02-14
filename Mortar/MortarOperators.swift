@@ -660,6 +660,7 @@ public func !(lhs: MortarFourple, rhs: UILayoutPriority) -> MortarTuple {
     return tup
 }
 
+/* Problem with this: cannot bridge array...
 public func !(lhs: [MortarAttribute], rhs: MortarLayoutPriority) -> [MortarAttribute] {
     lhs.forEach { if $0.priority == nil { $0.priority = rhs.layoutPriority() } }
     return lhs
@@ -669,6 +670,28 @@ public func !(lhs: [MortarAttribute], rhs: UILayoutPriority) -> [MortarAttribute
     lhs.forEach { if $0.priority == nil { $0.priority = rhs } }
     return lhs
 }
+*/
 
+/*
+ Activation Operator
+*/
+
+infix operator ~~ { precedence 30 }
+
+public func ~~(lhs: MortarConstraint, rhs: MortarActivationState) -> MortarConstraint {
+    switch rhs {
+    case .Activated:    lhs.activate()
+    case .Deactivated:  lhs.deactivate()
+    }
+    return lhs
+}
+
+public func ~~(lhs: MortarGroup, rhs: MortarActivationState) -> MortarGroup {
+    switch rhs {
+    case .Activated:    lhs.activate()
+    case .Deactivated:  lhs.deactivate()
+    }
+    return lhs
+}
 
 

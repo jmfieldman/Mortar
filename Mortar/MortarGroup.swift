@@ -50,4 +50,10 @@ public extension Array where Element: MortarConstraint {
         return response
     }
     
+    public func replaceWith(newConstraints: MortarGroup) -> MortarGroup {
+        self.deactivate()
+        newConstraints.activate()
+        return newConstraints
+    }
+    
 }

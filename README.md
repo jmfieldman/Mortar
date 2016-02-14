@@ -134,6 +134,14 @@ The special inset operator ```~``` operates on multi-dimension attributes:
 view1         |=| view2.m_edges ~ (20, 20, 20, 20)  // view1 is inset by 20 points on each side
 ```
 
+### Attributes in Tuples
+
+You are allowed to put attributes inside of tuples:
+
+```swift
+view1.m_size  |=| (view2.m_width, 100)
+```
+
 ### Multiple Simultaneous Constraints
 
 Multiple constraints can be created using arrays:
@@ -166,6 +174,32 @@ This might be a convenient way to align an array of views, for example:
 [view1, view2, view3].m_height  |=| otherView
 ```
 
+### Priority
+
+You can assign priority to constraints using the ```!``` operator.  Valid priorities are:
+
+* ```.Low```, ```.Default```, ```.High```, ```.Required```
+* Any ```UILayoutPriority``` value
+
+```swift
+v0 |=| self.container.m_height
+v1 |=| self.container.m_height ! .Low
+v2 |=| self.container.m_height ! .Default
+v3 |=| self.container.m_height ! .High
+v4 |=| self.container.m_height ! .Required
+v5 |=| self.container.m_height ! 300
+```
+
+You can also put priorities inside tuples or arrays:
+
+```swift
+view1        |=| [view2.m_caps   ! .High, view2.m_sides      ! .Low]  // Inside array
+view1.m_size |=| (view2.m_height ! .High, view2.m_width + 20 ! .Low)  // Inside tuple
+```
+
+### Change Priority
+
+### Create Deactivated Constraints
 
 
 # Keeping Constraint References
@@ -201,3 +235,44 @@ Mortar includes a convenient typealias to refer to arrays of ```MortarConstraint
 ```swift
 public typealias MortarGroup = [MortarConstraint]
 ```
+
+You can now activate/deactivate constraints:
+
+```swift
+let constraint = view1.m_top |=| view2.m_bottom
+
+constraint.activate()
+constraint.deactivate()
+
+let group = [
+    view1.m_origin |=| view2,
+    view1.m_size   |=| (100, 100)
+]
+
+group.activate()
+group.deactivate()
+```
+
+### Replacing Constraints and Groups of Constraints
+
+Constraints and groups have a replaceWith method that deactives the target and activates the parameter:
+
+```swift
+let constraint1 = view1.m_sides |=| view2
+let constraint2 = view1.m_width |=| view2 ~~ .Deactivated
+
+constraint1.replaceWith(constraint2)
+
+let group1 = [
+    view1.m_sides |<| view2,
+    view1.m_caps  |>| view2,
+]
+        
+let group2 = [
+    view1.m_width |=| view2
+] ~~ .Deactivated
+
+group1.replaceWith(group2)
+```
+
+# Visual View Hierarchy Creation

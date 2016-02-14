@@ -154,18 +154,21 @@ internal enum MortarLayoutAttribute {
 let UILayoutPriorityDefault = (UILayoutPriorityDefaultHigh + UILayoutPriorityDefaultLow) / 2.0
 
 public enum MortarLayoutPriority {
-    case Low, Normal, High, Required
+    case Low, Default, High, Required
     
     public func layoutPriority() -> UILayoutPriority {
         switch self {
         case .Low:      return UILayoutPriorityDefaultLow
-        case .Normal:   return UILayoutPriorityDefault
+        case .Default:  return UILayoutPriorityDefault
         case .High:     return UILayoutPriorityDefaultHigh
         case .Required: return UILayoutPriorityRequired
         }
     }
 }
 
+public enum MortarActivationState {
+    case Activated, Deactivated
+}
 
 public protocol MortarCGFloatable {
     @inline(__always) func m_cgfloatValue() -> CGFloat

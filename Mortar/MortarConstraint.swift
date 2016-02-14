@@ -250,4 +250,10 @@ public class MortarConstraint {
         NSLayoutConstraint.deactivateConstraints(self.layoutConstraints)
         return self
     }
+    
+    public func replaceWith(newConstraint: MortarConstraint) -> MortarConstraint {
+        self.deactivate()
+        newConstraint.activate()
+        return newConstraint
+    }
 }
