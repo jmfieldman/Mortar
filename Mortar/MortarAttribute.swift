@@ -44,7 +44,7 @@ public class MortarAttribute {
     internal var constant: Array<CGFloat> = Array<CGFloat>(count: kMortarConstArrayLen, repeatedValue: 0.0)
     
     /** What is the marked priority of this attribute as a source */
-    internal var priority: UILayoutPriority?
+    internal var priority: MortarAliasLayoutPriority?
 
     
     /**

@@ -14,8 +14,8 @@ Pod::Spec.new do |s|
   s.social_media_url = 'http://fieldman.org'
 
   s.ios.deployment_target = "8.0"
-  s.osx.deployment_target = "10.9"
-  s.tvos.deployment_target = "9.0"
+  #s.osx.deployment_target = "10.10"
+  #s.tvos.deployment_target = "9.0"
 
   s.source = { :git => "https://github.com/jmfieldman/Mortar.git", :tag => "#{s.version}" }
   s.source_files = "Mortar/*.swift"

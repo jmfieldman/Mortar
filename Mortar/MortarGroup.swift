@@ -56,7 +56,7 @@ public extension Array where Element: MortarConstraint {
         return newConstraints
     }
     
-    public func changePriority(newPriority: UILayoutPriority) -> MortarGroup {
+    public func changePriority(newPriority: MortarAliasLayoutPriority) -> MortarGroup {
         for constraint in self {
             constraint.changePriority(newPriority)
         }

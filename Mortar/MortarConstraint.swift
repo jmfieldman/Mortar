@@ -106,7 +106,7 @@ public class MortarConstraint {
                                           multiplier: sourceMortar.multiplier[i],
                                             constant: sourceMortar.constant[i])
             
-            constraint.priority = (sourceMortar.priority ?? targetMortar.priority) ?? UILayoutPriorityDefault
+            constraint.priority = (sourceMortar.priority ?? targetMortar.priority) ?? MortarAliasLayoutPriorityDefaultNormal
             constraint.active   = true
             layoutConstraints.append(constraint)
         }        
@@ -257,7 +257,7 @@ public class MortarConstraint {
         return newConstraint
     }
     
-    public func changePriority(newPriority: UILayoutPriority) -> MortarConstraint {
+    public func changePriority(newPriority: MortarAliasLayoutPriority) -> MortarConstraint {
         for constraint in layoutConstraints {
             constraint.priority = newPriority
         }

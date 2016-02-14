@@ -642,7 +642,7 @@ public func !(lhs: MortarAttributable, rhs: MortarLayoutPriority) -> MortarAttri
     return attr
 }
 
-public func !(lhs: MortarAttributable, rhs: UILayoutPriority) -> MortarAttribute {
+public func !(lhs: MortarAttributable, rhs: MortarAliasLayoutPriority) -> MortarAttribute {
     let attr = lhs.m_intoAttribute()
     attr.priority = rhs
     return attr
@@ -655,7 +655,7 @@ public func !(lhs: MortarTwople, rhs: MortarLayoutPriority) -> MortarTuple {
     return tup
 }
 
-public func !(lhs: MortarTwople, rhs: UILayoutPriority) -> MortarTuple {
+public func !(lhs: MortarTwople, rhs: MortarAliasLayoutPriority) -> MortarTuple {
     var tup = MortarConvertTwople(lhs)
     tup.1 = rhs
     return tup
@@ -668,7 +668,7 @@ public func !(lhs: MortarFourple, rhs: MortarLayoutPriority) -> MortarTuple {
     return tup
 }
 
-public func !(lhs: MortarFourple, rhs: UILayoutPriority) -> MortarTuple {
+public func !(lhs: MortarFourple, rhs: MortarAliasLayoutPriority) -> MortarTuple {
     var tup = MortarConvertFourple(lhs)
     tup.1 = rhs
     return tup
@@ -680,7 +680,7 @@ public func !(lhs: [MortarAttribute], rhs: MortarLayoutPriority) -> [MortarAttri
     return lhs
 }
 
-public func !(lhs: [MortarAttribute], rhs: UILayoutPriority) -> [MortarAttribute] {
+public func !(lhs: [MortarAttribute], rhs: MortarAliasLayoutPriority) -> [MortarAttribute] {
     lhs.forEach { if $0.priority == nil { $0.priority = rhs } }
     return lhs
 }

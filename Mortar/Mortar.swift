@@ -25,9 +25,23 @@
 #if os(iOS) || os(tvOS)
 import UIKit
 public typealias MortarView = UIView
+public typealias MortarAliasLayoutPriority = UILayoutPriority
+
+let MortarAliasLayoutPriorityDefaultLow      =  UILayoutPriorityDefaultLow
+let MortarAliasLayoutPriorityDefaultNormal   = (UILayoutPriorityDefaultHigh + UILayoutPriorityDefaultLow) / 2
+let MortarAliasLayoutPriorityDefaultHigh     =  UILayoutPriorityDefaultHigh
+let MortarAliasLayoutPriorityDefaultRequired =  UILayoutPriorityRequired
+    
 #else
 import AppKit
 public typealias MortarView = NSView
+public typealias MortarAliasLayoutPriority = NSLayoutPriority
+
+let MortarAliasLayoutPriorityDefaultLow      =  NSLayoutPriorityDefaultLow
+let MortarAliasLayoutPriorityDefaultNormal   = (NSLayoutPriorityDefaultHigh + NSLayoutPriorityDefaultLow) / 2
+let MortarAliasLayoutPriorityDefaultHigh     =  NSLayoutPriorityDefaultHigh
+let MortarAliasLayoutPriorityDefaultRequired =  NSLayoutPriorityRequired
+
 #endif
 
 
@@ -217,17 +231,15 @@ internal enum MortarLayoutAttribute {
     }
 }
 
-let UILayoutPriorityDefault = (UILayoutPriorityDefaultHigh + UILayoutPriorityDefaultLow) / 2.0
-
 public enum MortarLayoutPriority {
     case Low, Default, High, Required
     
-    public func layoutPriority() -> UILayoutPriority {
+    public func layoutPriority() -> MortarAliasLayoutPriority {
         switch self {
-        case .Low:      return UILayoutPriorityDefaultLow
-        case .Default:  return UILayoutPriorityDefault
-        case .High:     return UILayoutPriorityDefaultHigh
-        case .Required: return UILayoutPriorityRequired
+        case .Low:      return MortarAliasLayoutPriorityDefaultLow
+        case .Default:  return MortarAliasLayoutPriorityDefaultNormal
+        case .High:     return MortarAliasLayoutPriorityDefaultHigh
+        case .Required: return MortarAliasLayoutPriorityDefaultRequired
         }
     }
 }
@@ -340,13 +352,13 @@ public typealias MortarConstFour = (MortarCGFloatable, MortarCGFloatable, Mortar
 
 public typealias MortarTwople  = (MortarAttributable, MortarAttributable)
 public typealias MortarFourple = (MortarAttributable, MortarAttributable, MortarAttributable, MortarAttributable)
-public typealias MortarTuple   = ([MortarAttribute], UILayoutPriority?)
+public typealias MortarTuple   = ([MortarAttribute], MortarAliasLayoutPriority?)
 
 @inline(__always) internal func MortarConvertTwople(twople: MortarTwople) -> MortarTuple {
-    return ([twople.0.m_intoAttribute(), twople.1.m_intoAttribute()], UILayoutPriorityDefault)
+    return ([twople.0.m_intoAttribute(), twople.1.m_intoAttribute()], MortarAliasLayoutPriorityDefaultNormal)
 }
 
 @inline(__always) internal func MortarConvertFourple(fourple: MortarFourple) -> MortarTuple {
-    return ([fourple.0.m_intoAttribute(), fourple.1.m_intoAttribute(), fourple.2.m_intoAttribute(), fourple.3.m_intoAttribute()], UILayoutPriorityDefault)
+    return ([fourple.0.m_intoAttribute(), fourple.1.m_intoAttribute(), fourple.2.m_intoAttribute(), fourple.3.m_intoAttribute()], MortarAliasLayoutPriorityDefaultNormal)
 }
 
