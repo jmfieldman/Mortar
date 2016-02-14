@@ -276,3 +276,38 @@ group1.replaceWith(group2)
 ```
 
 # Visual View Hierarchy Creation
+
+Mortar provides the ```|+|``` and ```|^|``` operators to quickly add a subview or array of subviews.  This can be used to create visual expressions of the view hierarchy.
+
+Now this:
+
+```swift
+self.view.addSubview(backgroundView)
+self.view.addSubview(myCoolPanel)
+myCoolPanel.addSubview(nameLabel)
+myCoolPanel.addSubview(nameField)
+```
+
+Turns into:
+
+```swift
+    self.view |+| [
+        backgroundView,
+        myCoolPanel |+| [
+            nameLabel,
+            nameField
+        ]
+    ]
+```
+
+Alternatively, if you want to see the upper subviews at the beginning of the array (so that visually, the views closer to the top of the file are closer to the user), use the ```|^|``` operator:
+
+```swift
+    self.view |^| [
+        myCoolPanel |^| [      // myCoolPanel is added second and
+            nameField,         // is therefore on top of backgroundView
+            nameLabel
+        ],
+        backgroundView        
+    ]
+```

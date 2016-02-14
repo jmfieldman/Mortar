@@ -41,6 +41,7 @@ import AppKit
     ]
 */
 infix operator |+| { precedence 95 }
+infix operator |^| { precedence 95 }
 
 public func |+|(lhs: MortarView, rhs: MortarView) -> MortarView {
     lhs.addSubview(rhs)
@@ -51,6 +52,19 @@ public func |+|(lhs: MortarView, rhs: [MortarView]) -> MortarView {
     rhs.forEach { lhs.addSubview($0) }
     return lhs
 }
+
+public func |^|(lhs: MortarView, rhs: MortarView) -> MortarView {
+    lhs.addSubview(rhs)
+    return lhs
+}
+
+public func |^|(lhs: MortarView, rhs: [MortarView]) -> MortarView {
+    for i in (0..<rhs.count).reverse() {
+        lhs.addSubview(rhs[i])
+    }    
+    return lhs
+}
+
 
 
 /* The basic mortar operators to create equal, less-than-or-equal, and greater-than-or-equal */

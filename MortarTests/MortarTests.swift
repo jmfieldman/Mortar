@@ -174,6 +174,33 @@ class MortarTests: XCTestCase {
             ]
         ]
         
+        XCTAssertEqual(v1, self.container.subviews[0], "Hierarchy mismatch")
+        XCTAssertEqual(v2, self.container.subviews[1], "Hierarchy mismatch")
+        
+        XCTAssertEqual(v1.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v2.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v3.superview, v2, "Hierarchy mismatch")
+        XCTAssertEqual(v4.superview, v2, "Hierarchy mismatch")
+        
+    }
+    
+    func testAddReverseSubviews() {
+        let v1 = MortarView()
+        let v2 = MortarView()
+        let v3 = MortarView()
+        let v4 = MortarView()
+        
+        self.container |^| [
+            v1,
+            v2 |^| [
+                v3,
+                v4
+            ]
+        ]
+        
+        XCTAssertEqual(v1, self.container.subviews[1], "Hierarchy mismatch")
+        XCTAssertEqual(v2, self.container.subviews[0], "Hierarchy mismatch")
+        
         XCTAssertEqual(v1.superview, self.container, "Hierarchy mismatch")
         XCTAssertEqual(v2.superview, self.container, "Hierarchy mismatch")
         XCTAssertEqual(v3.superview, v2, "Hierarchy mismatch")
