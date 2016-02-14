@@ -174,6 +174,23 @@ This might be a convenient way to align an array of views, for example:
 [view1, view2, view3].m_height  |=| otherView
 ```
 
+If you put arrays on both sides of the constraint, it will only constrain elements at the same index.  That is:
+
+```swift
+[view1.m_left, view2, view3] |=| [view4.m_right, view5, view6]
+
+/* Is equivalent to: */
+view1.m_left |=| view4.m_right
+view2        |=| view5
+view3        |=| view6
+```
+
+You can use this to create complex constraints on one line.  For example, to create a 200-point high view that sits at the bottom of a container view:
+
+```swift
+[view.m_sides, view.m_bottom, view.m_height] |=| [container, container, 200]
+```
+
 ### Priority
 
 You can assign priority to constraints using the ```!``` operator.  Valid priorities are:

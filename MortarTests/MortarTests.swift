@@ -93,6 +93,17 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(v3.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
     }
     
+    func testBasicMultipleAssignment3() {
+        let v1 = MortarView()
+        
+        self.container |+| v1
+        
+        [v1.m_sides, v1.m_top, v1.m_height] |=| [self.container, self.container, 200]
+        
+        XCTAssertEqual(self.container.constraints.count, 3, "Should have 3 constraints installed (ancestor)")
+        XCTAssertEqual(v1.constraints.count, 1, "Should have 1 constraint (fixed height)")
+    }
+    
     func testBasicActivatationToggle() {
         let v = MortarView()
         
