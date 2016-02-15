@@ -28,42 +28,48 @@ import AppKit
 #endif
 
 
-
-
 public extension MortarView {
     
-    public var m_left:                  MortarAttribute { get { return MortarAttribute(view: self, attribute: .Left                   ) } }
-    public var m_right:                 MortarAttribute { get { return MortarAttribute(view: self, attribute: .Right                  ) } }
-    public var m_top:                   MortarAttribute { get { return MortarAttribute(view: self, attribute: .Top                    ) } }
-    public var m_bottom:                MortarAttribute { get { return MortarAttribute(view: self, attribute: .Bottom                 ) } }
-    public var m_leading:               MortarAttribute { get { return MortarAttribute(view: self, attribute: .Leading                ) } }
-    public var m_trailing:              MortarAttribute { get { return MortarAttribute(view: self, attribute: .Trailing               ) } }
-    public var m_width:                 MortarAttribute { get { return MortarAttribute(view: self, attribute: .Width                  ) } }
-    public var m_height:                MortarAttribute { get { return MortarAttribute(view: self, attribute: .Height                 ) } }
-    public var m_centerX:               MortarAttribute { get { return MortarAttribute(view: self, attribute: .CenterX                ) } }
-    public var m_centerY:               MortarAttribute { get { return MortarAttribute(view: self, attribute: .CenterY                ) } }
-    public var m_baseline:              MortarAttribute { get { return MortarAttribute(view: self, attribute: .Baseline               ) } }
+    public var m_left:                  MortarAttribute { get { return MortarAttribute(item: self, attribute: .Left                   ) } }
+    public var m_right:                 MortarAttribute { get { return MortarAttribute(item: self, attribute: .Right                  ) } }
+    public var m_top:                   MortarAttribute { get { return MortarAttribute(item: self, attribute: .Top                    ) } }
+    public var m_bottom:                MortarAttribute { get { return MortarAttribute(item: self, attribute: .Bottom                 ) } }
+    public var m_leading:               MortarAttribute { get { return MortarAttribute(item: self, attribute: .Leading                ) } }
+    public var m_trailing:              MortarAttribute { get { return MortarAttribute(item: self, attribute: .Trailing               ) } }
+    public var m_width:                 MortarAttribute { get { return MortarAttribute(item: self, attribute: .Width                  ) } }
+    public var m_height:                MortarAttribute { get { return MortarAttribute(item: self, attribute: .Height                 ) } }
+    public var m_centerX:               MortarAttribute { get { return MortarAttribute(item: self, attribute: .CenterX                ) } }
+    public var m_centerY:               MortarAttribute { get { return MortarAttribute(item: self, attribute: .CenterY                ) } }
+    public var m_baseline:              MortarAttribute { get { return MortarAttribute(item: self, attribute: .Baseline               ) } }
     #if os(iOS) || os(tvOS)
-    public var m_firstBaseline:         MortarAttribute { get { return MortarAttribute(view: self, attribute: .FirstBaseline          ) } }
-    public var m_leftMargin:            MortarAttribute { get { return MortarAttribute(view: self, attribute: .LeftMargin             ) } }
-    public var m_rightMargin:           MortarAttribute { get { return MortarAttribute(view: self, attribute: .RightMargin            ) } }
-    public var m_topMargin:             MortarAttribute { get { return MortarAttribute(view: self, attribute: .TopMargin              ) } }
-    public var m_bottomMargin:          MortarAttribute { get { return MortarAttribute(view: self, attribute: .BottomMargin           ) } }
-    public var m_leadingMargin:         MortarAttribute { get { return MortarAttribute(view: self, attribute: .LeadingMargin          ) } }
-    public var m_trailingMargin:        MortarAttribute { get { return MortarAttribute(view: self, attribute: .TrailingMargin         ) } }
-    public var m_centerXWithinMargin:   MortarAttribute { get { return MortarAttribute(view: self, attribute: .CenterXWithinMargins   ) } }
-    public var m_centerYWithinMargin:   MortarAttribute { get { return MortarAttribute(view: self, attribute: .CenterYWithinMargins   ) } }
+    public var m_firstBaseline:         MortarAttribute { get { return MortarAttribute(item: self, attribute: .FirstBaseline          ) } }
+    public var m_leftMargin:            MortarAttribute { get { return MortarAttribute(item: self, attribute: .LeftMargin             ) } }
+    public var m_rightMargin:           MortarAttribute { get { return MortarAttribute(item: self, attribute: .RightMargin            ) } }
+    public var m_topMargin:             MortarAttribute { get { return MortarAttribute(item: self, attribute: .TopMargin              ) } }
+    public var m_bottomMargin:          MortarAttribute { get { return MortarAttribute(item: self, attribute: .BottomMargin           ) } }
+    public var m_leadingMargin:         MortarAttribute { get { return MortarAttribute(item: self, attribute: .LeadingMargin          ) } }
+    public var m_trailingMargin:        MortarAttribute { get { return MortarAttribute(item: self, attribute: .TrailingMargin         ) } }
+    public var m_centerXWithinMargin:   MortarAttribute { get { return MortarAttribute(item: self, attribute: .CenterXWithinMargins   ) } }
+    public var m_centerYWithinMargin:   MortarAttribute { get { return MortarAttribute(item: self, attribute: .CenterYWithinMargins   ) } }
     #endif
-    public var m_sides:                 MortarAttribute { get { return MortarAttribute(view: self, attribute: .Sides                  ) } }
-    public var m_caps:                  MortarAttribute { get { return MortarAttribute(view: self, attribute: .Caps                   ) } }
-    public var m_size:                  MortarAttribute { get { return MortarAttribute(view: self, attribute: .Size                   ) } }
-    public var m_cornerTL:              MortarAttribute { get { return MortarAttribute(view: self, attribute: .CornerTL               ) } }
-    public var m_cornerTR:              MortarAttribute { get { return MortarAttribute(view: self, attribute: .CornerTR               ) } }
-    public var m_cornerBL:              MortarAttribute { get { return MortarAttribute(view: self, attribute: .CornerBL               ) } }
-    public var m_cornerBR:              MortarAttribute { get { return MortarAttribute(view: self, attribute: .CornerBR               ) } }
-    public var m_edges:                 MortarAttribute { get { return MortarAttribute(view: self, attribute: .Edges                  ) } }
-    public var m_frame:                 MortarAttribute { get { return MortarAttribute(view: self, attribute: .Frame                  ) } }
-    public var m_center:                MortarAttribute { get { return MortarAttribute(view: self, attribute: .Center                 ) } }
-    
+    public var m_sides:                 MortarAttribute { get { return MortarAttribute(item: self, attribute: .Sides                  ) } }
+    public var m_caps:                  MortarAttribute { get { return MortarAttribute(item: self, attribute: .Caps                   ) } }
+    public var m_size:                  MortarAttribute { get { return MortarAttribute(item: self, attribute: .Size                   ) } }
+    public var m_cornerTL:              MortarAttribute { get { return MortarAttribute(item: self, attribute: .CornerTL               ) } }
+    public var m_cornerTR:              MortarAttribute { get { return MortarAttribute(item: self, attribute: .CornerTR               ) } }
+    public var m_cornerBL:              MortarAttribute { get { return MortarAttribute(item: self, attribute: .CornerBL               ) } }
+    public var m_cornerBR:              MortarAttribute { get { return MortarAttribute(item: self, attribute: .CornerBR               ) } }
+    public var m_edges:                 MortarAttribute { get { return MortarAttribute(item: self, attribute: .Edges                  ) } }
+    public var m_frame:                 MortarAttribute { get { return MortarAttribute(item: self, attribute: .Frame                  ) } }
+    public var m_center:                MortarAttribute { get { return MortarAttribute(item: self, attribute: .Center                 ) } }
     
 }
+
+#if os(iOS)
+public extension UIViewController {
+    public var m_topLayoutGuideTop:       MortarAttribute { return MortarAttribute(item: self.topLayoutGuide,    attribute: .Top)    }
+    public var m_topLayoutGuideBottom:    MortarAttribute { return MortarAttribute(item: self.topLayoutGuide,    attribute: .Bottom) }
+    public var m_bottomLayoutGuideTop:    MortarAttribute { return MortarAttribute(item: self.bottomLayoutGuide, attribute: .Top)    }
+    public var m_bottomLayoutGuideBottom: MortarAttribute { return MortarAttribute(item: self.bottomLayoutGuide, attribute: .Bottom) }
+}
+#endif

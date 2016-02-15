@@ -53,7 +53,7 @@ public class MortarConstraint {
         let sourceMortar = source.m_intoAttribute()
         
         /* The target view must be explicitly declared */
-        guard let targetView = targetMortar.view else {
+        guard let targetView = targetMortar.item as? MortarView else {
             NSException(name: "Target Attribute must have a defined view",
                       reason: "Target Attribute must have a defined view",
                     userInfo: nil).raise()
@@ -62,7 +62,7 @@ public class MortarConstraint {
         
         /* The source view will default to the target superview to allow constants
            to be expressed by themselves (e.g. view1.m_top |=| 100) */
-        let sourceView = sourceMortar.view ?? targetView.superview
+        let sourceItem = (sourceMortar.item == nil) ? targetView.superview : sourceMortar.item
         
         /* Attributes will inherit implicitly from the opposite side.
            If neither is declared, it will try to match edges */
@@ -70,7 +70,7 @@ public class MortarConstraint {
         let sourceAttribute = (sourceMortar.attribute ?? targetMortar.attribute) ?? .Edges
         
         /* Flag if we need baseline constant mod for things like view1.m_width |=| 40 */
-        let needsImplicitBaseline = (targetMortar.attribute != nil) && (sourceMortar.attribute == nil) && (sourceMortar.view == nil)
+        let needsImplicitBaseline = (targetMortar.attribute != nil) && (sourceMortar.attribute == nil) && (sourceMortar.item == nil)
         
         let targetComponents = targetAttribute.componentAttributes()
         let sourceComponents = sourceAttribute.componentAttributes()
@@ -101,7 +101,7 @@ public class MortarConstraint {
             let constraint = NSLayoutConstraint(item: targetView,
                                            attribute: tLayoutAttribute,
                                            relatedBy: relation,
-                                              toItem: (needsImplicitBaseline ? ( (targetComponents[i].implicitSuperviewBaseline() == .NotAnAttribute) ? nil : targetView.superview ) : sourceView),
+                                              toItem: (needsImplicitBaseline ? ( (targetComponents[i].implicitSuperviewBaseline() == .NotAnAttribute) ? nil : targetView.superview ) : sourceItem),
                                            attribute: (needsImplicitBaseline ? targetComponents[i].implicitSuperviewBaseline() : sLayoutAttribute),
                                           multiplier: sourceMortar.multiplier[i],
                                             constant: sourceMortar.constant[i])
@@ -118,7 +118,7 @@ public class MortarConstraint {
         self.init()
         
         /* The target view must be explicitly declared */
-        guard let targetView = target.view else {
+        guard let targetView = target.item as? MortarView else {
             NSException(name: "Target Attribute must have a defined view",
                       reason: "Target Attribute must have a defined view",
                     userInfo: nil).raise()
@@ -143,7 +143,7 @@ public class MortarConstraint {
         }
         
         for i in 0 ..< targetComponents.count {
-            let subAttribute  = MortarAttribute(view: targetView, attribute: targetComponents[i])
+            let subAttribute  = MortarAttribute(item: targetView, attribute: targetComponents[i])
             
             if (subAttribute.priority == nil) {
                 subAttribute.priority = source.1

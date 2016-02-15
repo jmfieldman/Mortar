@@ -112,6 +112,14 @@ You are required to put attributes on both sides if they are not the same:
 view1.m_top   |<| view2.m_bottom
 ```
 
+### Using Layout Guides
+
+On iOS you can use the layout guides of a ```UIViewController```.  An example from inside ```viewDidLoad()``` that puts a view just below the top layout guide:
+
+```swift
+view1.m_top   |<| self.m_topLayoutGuideBottom
+```
+
 ### Multipliers and Constants
 
 Auto Layout constraints can have multipliers and constants applied to them.  This is done with normal arithmetic operators.  Attributes must be explicitly declared on the _right_ side When arthmetic operators are used.

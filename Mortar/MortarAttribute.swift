@@ -31,8 +31,8 @@ internal let kMortarConstArrayLen = 4
 
 public class MortarAttribute {
     
-    /** Affected view for this mortar element */
-    internal var view: MortarView?
+    /** Affected item for this mortar element */
+    internal var item: AnyObject?
     
     /** attribute is assigned for Mortar elements of type .ViewAttribute */
     internal var attribute: MortarLayoutAttribute?
@@ -48,27 +48,27 @@ public class MortarAttribute {
 
     
     /**
-     Initialize a Mortar object to represent the layout attribute of a particular view.
+     Initialize a Mortar object to represent the layout attribute of a particular item.
      
-     - parameter view:      The view to represent
+     - parameter item:      The view to represent
      - parameter attribute: The layout attribute
      
-     - returns: A Mortar object representing the layout property of this view
+     - returns: A Mortar object representing the layout property of this item
      */
-    internal init(view: MortarView?, attribute: MortarLayoutAttribute?) {
-        self.view      = view
+    internal init(item: AnyObject?, attribute: MortarLayoutAttribute?) {
+        self.item      = item
         self.attribute = attribute
     }
     
     /**
-     Create a Mortar Attribute that represents an attribute-less view
+     Create a Mortar Attribute that represents an attribute-less item
      
-     - parameter view: The view to create an attribute for
+     - parameter item: The item to create an attribute for
      
      - returns: The new Mortar Attribute
      */
-    internal convenience init(view: MortarView) {
-        self.init(view: view, attribute: nil)
+    internal convenience init(item: AnyObject) {
+        self.init(item: item, attribute: nil)
     }
     
     /**
@@ -79,13 +79,9 @@ public class MortarAttribute {
      - returns: The new Mortar Attribute
      */
     internal convenience init(constant: MortarCGFloatable) {
-        self.init(view: nil, attribute: nil)
+        self.init(item: nil, attribute: nil)
         self.constant = Array<CGFloat>(count: kMortarConstArrayLen, repeatedValue: constant.m_cgfloatValue())
     }
     
-    //internal convenience init(twople: MortarTwople) {
-    //    self.init(view: nil, attribute: nil)
-    //    self.constant = twople.0.m_intoAttribute()
-   // }
     
 }

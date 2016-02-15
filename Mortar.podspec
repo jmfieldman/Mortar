@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Mortar"
-  s.version      = "0.9.1"
+  s.version      = "0.9.2"
   s.summary      = "Auto Layout in Swift using concise, powerful, flexible syntax"
 
   s.description  = <<-DESC

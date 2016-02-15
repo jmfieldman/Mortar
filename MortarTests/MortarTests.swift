@@ -459,5 +459,24 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
     }
     
+    #if os(iOS)
+    func testLayoutGuides() {
+        let v1  = MortarView()
+        let v2  = MortarView()
+        let v3  = MortarView()
+        let v4  = MortarView()
+        let vc  = UIViewController()
+        vc.view = MortarView()
+        
+        vc.view |+| [v1, v2, v3, v4]
+        
+        v1.m_top |=| vc.m_topLayoutGuideTop
+        v2.m_top |=| vc.m_topLayoutGuideBottom
+        v3.m_top |=| vc.m_bottomLayoutGuideTop
+        v4.m_top |=| vc.m_bottomLayoutGuideBottom
+        
+        XCTAssertEqual(vc.view.constraints.count, 8, "Should have 4 constraints installed (ancestor)")
+    }
+    #endif
 }
 

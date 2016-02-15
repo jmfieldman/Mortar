@@ -345,7 +345,7 @@ public func /(lhs: MortarAttribute, rhs: MortarCGFloatable) -> MortarAttribute {
 /* This is only using for chaining constants with priorities attached */
 
 public func +(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
-    if (rhs.view != nil || rhs.attribute != nil) {
+    if (rhs.item != nil || rhs.attribute != nil) {
         NSException(name: "Right side of arithmetic must be constant",
                   reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
                 userInfo: nil).raise()
@@ -360,7 +360,7 @@ public func +(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
 }
 
 public func -(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
-    if (rhs.view != nil || rhs.attribute != nil) {
+    if (rhs.item != nil || rhs.attribute != nil) {
         NSException(name: "Right side of arithmetic must be constant",
                   reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
                 userInfo: nil).raise()
@@ -375,7 +375,7 @@ public func -(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
 }
 
 public func *(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
-    if (rhs.view != nil || rhs.attribute != nil) {
+    if (rhs.item != nil || rhs.attribute != nil) {
         NSException(name: "Right side of arithmetic must be constant",
                   reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
                 userInfo: nil).raise()
@@ -390,7 +390,7 @@ public func *(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
 }
 
 public func /(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
-    if (rhs.view != nil || rhs.attribute != nil) {
+    if (rhs.item != nil || rhs.attribute != nil) {
         NSException(name: "Right side of arithmetic must be constant",
                   reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
                 userInfo: nil).raise()

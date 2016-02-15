@@ -337,7 +337,7 @@ extension Float : MortarAttributable {
 
 extension MortarView : MortarAttributable {
     @inline(__always) public func m_intoAttribute() -> MortarAttribute {
-        return MortarAttribute(view: self)
+        return MortarAttribute(item: self)
     }
 }
 
