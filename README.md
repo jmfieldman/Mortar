@@ -20,6 +20,24 @@ Turns into:
 view1.m_right |=| view2.m_left - 12.0
 ```
 
+# Why?
+
+Yes, there are many Auto Layout DSLs to choose from.  Mortar was created to fill perceived weaknesses in other offerings:
+
+* Mortar does not use blocks/closures like SnapKit or Cartography. These are distracting and ugly when coding constraints for controllers with many views.
+
+* Mortar is an attempt to get away from chaining methods like SnapKit does.  Chained methods are good for providing semantic meaning to the line of code, but they are hard to parse quickly when you come back to your constraint section later.
+
+* Mortar supports multi-constraint macro properties (like ```m_edges```, ```m_frame```, ```m_size```, etc). SwiftAutoLayout and other operator-based DSLs don't seem to have support for these in a concise form.  Properties are prefixed with m_ to reduce potential for conflict with other View extensions.
+
+* Mortar supports implicit property matching (other frameworks require declared properties on both sides of the statement.)
+
+* Mortar supports implicit tuple processing (you don't need to call out a tuple as a specific element like ```CGRect``` or ```CGSize```).
+
+* Mortar supports multi-view alignment/constraints in a single line.
+
+* Additional goodies, like the ```|+|``` operator to visually construct view hierarchies rather than using tons of sequential calls to ```addSubview()```.
+
 # Installing
 
 You can install Mortar by adding it to your [CocoaPods](http://cocoapods.org/) ```Podfile```:
