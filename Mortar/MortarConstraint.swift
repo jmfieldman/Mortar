@@ -107,7 +107,7 @@ public class MortarConstraint {
                                             constant: sourceMortar.constant[i])
             
             constraint.priority = (sourceMortar.priority ?? targetMortar.priority) ?? MortarAliasLayoutPriorityDefaultNormal
-            constraint.active   = true
+            constraint.m_active = true
             layoutConstraints.append(constraint)
         }        
     }
@@ -242,12 +242,12 @@ public class MortarConstraint {
     }
     
     public func activate() -> MortarConstraint {
-        NSLayoutConstraint.activateConstraints(self.layoutConstraints)
+        NSLayoutConstraint.m_activateConstraints(self.layoutConstraints)
         return self
     }
     
     public func deactivate() -> MortarConstraint {
-        NSLayoutConstraint.deactivateConstraints(self.layoutConstraints)
+        NSLayoutConstraint.m_deactivateConstraints(self.layoutConstraints)
         return self
     }
     

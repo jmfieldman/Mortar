@@ -62,7 +62,35 @@ public extension MortarView {
     public var m_edges:                 MortarAttribute { get { return MortarAttribute(item: self, attribute: .Edges                  ) } }
     public var m_frame:                 MortarAttribute { get { return MortarAttribute(item: self, attribute: .Frame                  ) } }
     public var m_center:                MortarAttribute { get { return MortarAttribute(item: self, attribute: .Center                 ) } }
-    
+
+    public var m_superviews:           [UIView]         { get {
+                var ret = [self]
+                while let view  = ret.last?.superview {
+                    ret.append(view)
+                }
+            return ret.reverse()
+            }
+        }
+
+    public func m_commonSuperview(other: UIView?) -> UIView? {
+        guard let other = other else {
+            return self
+        }
+
+        let array1 = self.m_superviews
+        let array2 = other.m_superviews
+
+        var common: UIView? = nil
+        for (view1, view2) in zip(array1, array2) {
+            if (view1 == view2) {
+                common = view1
+            } else {
+                break
+            }
+        }
+        return common
+    }
+
 }
 
 #if os(iOS)

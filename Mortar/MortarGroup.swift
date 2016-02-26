@@ -33,12 +33,12 @@ public typealias MortarGroup = [MortarConstraint]
 public extension Array where Element: MortarConstraint {
 
     public func activate() -> MortarGroup {
-        NSLayoutConstraint.activateConstraints(self.layoutConstraints)
+        NSLayoutConstraint.m_activateConstraints(self.layoutConstraints)
         return self
     }
     
     public func deactivate() -> MortarGroup {
-        NSLayoutConstraint.deactivateConstraints(self.layoutConstraints)
+        NSLayoutConstraint.m_deactivateConstraints(self.layoutConstraints)
         return self
     }
     

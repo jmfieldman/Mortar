@@ -82,29 +82,48 @@ internal enum MortarLayoutAttribute {
     
     #if os(iOS) || os(tvOS)
     func nsLayoutAttribute() -> NSLayoutAttribute? {
-        switch self {
-        case .Left:                     return .Left
-        case .Right:                    return .Right
-        case .Top:                      return .Top
-        case .Bottom:                   return .Bottom
-        case .Leading:                  return .Leading
-        case .Trailing:                 return .Trailing
-        case .Width:                    return .Width
-        case .Height:                   return .Height
-        case .CenterX:                  return .CenterX
-        case .CenterY:                  return .CenterY
-        case .Baseline:                 return .Baseline
-        case .FirstBaseline:            return .FirstBaseline
-        case .LeftMargin:               return .LeftMargin
-        case .RightMargin:              return .RightMargin
-        case .TopMargin:                return .TopMargin
-        case .BottomMargin:             return .BottomMargin
-        case .LeadingMargin:            return .LeadingMargin
-        case .TrailingMargin:           return .TrailingMargin
-        case .CenterXWithinMargins:     return .CenterXWithinMargins
-        case .CenterYWithinMargins:     return .CenterYWithinMargins
-        case .NotAnAttribute:           return .NotAnAttribute
-        default:                        return nil
+        if #available(iOS 8.0, *) {
+            switch self {
+            case .Left:                     return .Left
+            case .Right:                    return .Right
+            case .Top:                      return .Top
+            case .Bottom:                   return .Bottom
+            case .Leading:                  return .Leading
+            case .Trailing:                 return .Trailing
+            case .Width:                    return .Width
+            case .Height:                   return .Height
+            case .CenterX:                  return .CenterX
+            case .CenterY:                  return .CenterY
+            case .Baseline:                 return .Baseline
+            case .FirstBaseline:            return .FirstBaseline
+            case .LeftMargin:               return .LeftMargin
+            case .RightMargin:              return .RightMargin
+            case .TopMargin:                return .TopMargin
+            case .BottomMargin:             return .BottomMargin
+            case .LeadingMargin:            return .LeadingMargin
+            case .TrailingMargin:           return .TrailingMargin
+            case .CenterXWithinMargins:     return .CenterXWithinMargins
+            case .CenterYWithinMargins:     return .CenterYWithinMargins
+            case .NotAnAttribute:           return .NotAnAttribute
+            default:                        return nil
+            }
+        } else {
+
+            switch self {
+            case .Left:                     return .Left
+            case .Right:                    return .Right
+            case .Top:                      return .Top
+            case .Bottom:                   return .Bottom
+            case .Leading:                  return .Leading
+            case .Trailing:                 return .Trailing
+            case .Width:                    return .Width
+            case .Height:                   return .Height
+            case .CenterX:                  return .CenterX
+            case .CenterY:                  return .CenterY
+            case .Baseline:                 return .Baseline
+            case .NotAnAttribute:           return .NotAnAttribute
+            default:                        return nil
+            }
         }
     }
     #else
