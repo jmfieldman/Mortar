@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Mortar"
-  s.version      = "0.9.2"
+  s.version      = "0.10.1"
   s.summary      = "Auto Layout in Swift using concise, powerful, flexible syntax"
 
   s.description  = <<-DESC
@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.author       = { "Jason Fieldman" => "jason@fieldman.org" }
   s.social_media_url = 'http://fieldman.org'
 
-  s.ios.deployment_target = "8.0"
+  s.ios.deployment_target = "7.0"
   #s.osx.deployment_target = "10.10"
   #s.tvos.deployment_target = "9.0"
 
