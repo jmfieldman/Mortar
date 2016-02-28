@@ -95,9 +95,9 @@
 				35BBBBF41C6D3C600014B159 /* MortarGroup.swift */,
 				35BBBBF81C6D3C600014B159 /* Array+Mortar.swift */,
 				35BBBBF91C6D3C600014B159 /* View+Mortar.swift */,
+				A05F7A1A1C7F98E300428578 /* LayoutConstraint+Mortar.swift */,
 				35BBBBDC1C6D3BBD0014B159 /* Mortar.h */,
 				35BBBBDE1C6D3BBD0014B159 /* Info.plist */,
-				A05F7A1A1C7F98E300428578 /* LayoutConstraint+Mortar.swift */,
 			);
 			path = Mortar;
 			sourceTree = "<group>";
