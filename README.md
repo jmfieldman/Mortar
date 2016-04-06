@@ -2,6 +2,14 @@
 
 Mortar allows you to create Auto Layout constraints using concise, simple code statements.
 
+Use this:
+
+```swift
+view1.m_right |=| view2.m_left - 12.0
+```
+
+Instead of:
+
 ```swift
 addConstraint(NSLayoutConstraint(
     item:        view1,
@@ -14,11 +22,16 @@ addConstraint(NSLayoutConstraint(
 ))
 ```
 
-Turns into:
+Other examples:
 
 ```swift
-view1.m_right |=| view2.m_left - 12.0
+/* Set the size of three views at once */
+[view1, view2, view3].m_size |=| (100, 200)
+
+/* Pin a 200px high, same-width view at the bottom of a container */
+[view.m_sides, view.m_bottom, view.m_height] |=| [container, container, 200]
 ```
+
 
 # Why?
 
