@@ -321,17 +321,24 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(v.frame.size.height, MortarTests.CON_H * 2 + 5, "Frame mismatch")
     }
     
-    func testBasicTupleCombo2() {
-        let v = MortarView()
+    func testBasicArraySizeAttachment() {
+        let v1 = MortarView()
+        let v2 = MortarView()
         
-        self.container |+| v
+        let v3 = MortarView()
+        let v4 = MortarView()
         
-        v |=| self.container.m_size * (2, 3) + (5, 10)
+        self.container |+| [v1, v2, v3, v4]
+    
+        [v1, v2].m_size |=| (7, 11) ! .Required
+        [v3, v4]        |=| v1 ! .Required
         
         self.container.layoutIfNeeded()
         
-        XCTAssertEqual(v.frame.size.width,  MortarTests.CON_W * 2 + 5, "Frame mismatch")
-        XCTAssertEqual(v.frame.size.height, MortarTests.CON_H * 3 + 10, "Frame mismatch")
+        XCTAssertEqual(v1.frame.size.width,  7,  "Frame mismatch")
+        XCTAssertEqual(v2.frame.size.height, 11, "Frame mismatch")
+        XCTAssertEqual(v3.frame.size.width,  7,  "Frame mismatch")
+        XCTAssertEqual(v4.frame.size.height, 11, "Frame mismatch")
     }
     
     func testBasicPriority() {

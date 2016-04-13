@@ -264,6 +264,25 @@ public func |<|(lhs: [MortarAttributable], rhs: MortarTuple) -> MortarConstraint
 }
 
 
+public func |=|(lhs: [MortarAttribute], rhs: MortarTuple) -> MortarConstraint {
+    return MortarConstraint(targetArray: lhs,
+                            sourceTuple: rhs,
+                            relation: .Equal)
+}
+
+public func |>|(lhs: [MortarAttribute], rhs: MortarTuple) -> MortarConstraint {
+    return MortarConstraint(targetArray: lhs,
+                            sourceTuple: rhs,
+                            relation: .GreaterThanOrEqual)
+}
+
+public func |<|(lhs: [MortarAttribute], rhs: MortarTuple) -> MortarConstraint {
+    return MortarConstraint(targetArray: lhs,
+                            sourceTuple: rhs,
+                            relation: .LessThanOrEqual)
+}
+
+
 public func |=|(lhs: [MortarAttributable], rhs: MortarTwople) -> MortarConstraint {
     return lhs |=| MortarConvertTwople(rhs)
 }
@@ -287,6 +306,32 @@ public func |>|(lhs: [MortarAttributable], rhs: MortarFourple) -> MortarConstrai
 public func |<|(lhs: [MortarAttributable], rhs: MortarFourple) -> MortarConstraint {
     return lhs |<| MortarConvertFourple(rhs)
 }
+
+
+public func |=|(lhs: [MortarAttribute], rhs: MortarTwople) -> MortarConstraint {
+    return lhs.map({ $0 as MortarAttributable }) |=| MortarConvertTwople(rhs)
+}
+
+public func |>|(lhs: [MortarAttribute], rhs: MortarTwople) -> MortarConstraint {
+    return lhs.map({ $0 as MortarAttributable }) |>| MortarConvertTwople(rhs)
+}
+
+public func |<|(lhs: [MortarAttribute], rhs: MortarTwople) -> MortarConstraint {
+    return lhs.map({ $0 as MortarAttributable }) |<| MortarConvertTwople(rhs)
+}
+
+public func |=|(lhs: [MortarAttribute], rhs: MortarFourple) -> MortarConstraint {
+    return lhs.map({ $0 as MortarAttributable }) |=| MortarConvertFourple(rhs)
+}
+
+public func |>|(lhs: [MortarAttribute], rhs: MortarFourple) -> MortarConstraint {
+    return lhs.map({ $0 as MortarAttributable }) |>| MortarConvertFourple(rhs)
+}
+
+public func |<|(lhs: [MortarAttribute], rhs: MortarFourple) -> MortarConstraint {
+    return lhs.map({ $0 as MortarAttributable }) |<| MortarConvertFourple(rhs)
+}
+
 
 /* Catch-all array operators */
 public func |=|(lhs: [Any], rhs: [Any]) -> MortarConstraint {

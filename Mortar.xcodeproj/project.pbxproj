@@ -31,6 +31,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		35964B221CBE8E6700E54D22 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		35964B231CBE8E6700E54D22 /* Mortar.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Mortar.podspec; sourceTree = SOURCE_ROOT; };
+		35964B241CBE8E6700E54D22 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = SOURCE_ROOT; };
+		35964B251CBE8E6700E54D22 /* CONTRIBUTORS.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTORS.md; sourceTree = SOURCE_ROOT; };
+		35964B261CBE8E6700E54D22 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
 		35BBBBD91C6D3BBD0014B159 /* Mortar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Mortar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35BBBBDC1C6D3BBD0014B159 /* Mortar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mortar.h; sourceTree = "<group>"; };
 		35BBBBDE1C6D3BBD0014B159 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -88,6 +93,11 @@
 		35BBBBDB1C6D3BBD0014B159 /* Mortar */ = {
 			isa = PBXGroup;
 			children = (
+				35964B221CBE8E6700E54D22 /* README.md */,
+				35964B231CBE8E6700E54D22 /* Mortar.podspec */,
+				35964B241CBE8E6700E54D22 /* CHANGELOG.md */,
+				35964B251CBE8E6700E54D22 /* CONTRIBUTORS.md */,
+				35964B261CBE8E6700E54D22 /* LICENSE */,
 				35BBBBF71C6D3C600014B159 /* Mortar.swift */,
 				35BBBBF61C6D3C600014B159 /* MortarAttribute.swift */,
 				35BBBBF51C6D3C600014B159 /* MortarOperators.swift */,
