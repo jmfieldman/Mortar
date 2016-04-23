@@ -263,6 +263,26 @@ view1        |=| [view2.m_caps   ! .High, view2.m_sides      ! .Low]  // Inside 
 view1.m_size |=| (view2.m_height ! .High, view2.m_width + 20 ! .Low)  // Inside tuple
 ```
 
+### Default Priority
+
+By default, constraints are given priority equal to 500 (out of 1000).  Often times if you
+may want large batches of constraints to have a different priority, and it is messy to include something like 
+```! .Required``` after every constraint.
+
+Use the ```MortarDefault``` stack mechanism to set the default priority used in a given batch of code:
+
+```swift
+MortarDefault.Priority.push(.Required)
+
+v1 |=| v2 // Given priority .Required automatically
+...
+
+MortarDefault.Priority.pop()
+```
+
+You may only call the push/pop methods on the main thread, and Mortar will raise an exception if you do not
+properly balance your pushes and pops.
+
 ### Change Priority
 
 You can change the priority of a ```MortarConstraint``` or ```MortarGroup``` by calling the ```changePriority``` method.  This takes either a ```MortarLayoutPriority``` enum, or a ```UILayoutPriority``` value:

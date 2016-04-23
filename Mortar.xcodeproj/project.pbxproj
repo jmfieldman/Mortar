@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		35A31A8B1CCBACCA007E1068 /* MortarDefaultStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A31A8A1CCBACCA007E1068 /* MortarDefaultStack.swift */; };
 		35BBBBDD1C6D3BBD0014B159 /* Mortar.h in Headers */ = {isa = PBXBuildFile; fileRef = 35BBBBDC1C6D3BBD0014B159 /* Mortar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		35BBBBE41C6D3BBD0014B159 /* Mortar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35BBBBD91C6D3BBD0014B159 /* Mortar.framework */; };
 		35BBBBE91C6D3BBD0014B159 /* MortarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BBBBE81C6D3BBD0014B159 /* MortarTests.swift */; };
@@ -36,6 +37,7 @@
 		35964B241CBE8E6700E54D22 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = SOURCE_ROOT; };
 		35964B251CBE8E6700E54D22 /* CONTRIBUTORS.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTORS.md; sourceTree = SOURCE_ROOT; };
 		35964B261CBE8E6700E54D22 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
+		35A31A8A1CCBACCA007E1068 /* MortarDefaultStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MortarDefaultStack.swift; sourceTree = "<group>"; };
 		35BBBBD91C6D3BBD0014B159 /* Mortar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Mortar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		35BBBBDC1C6D3BBD0014B159 /* Mortar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mortar.h; sourceTree = "<group>"; };
 		35BBBBDE1C6D3BBD0014B159 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 				35BBBBF71C6D3C600014B159 /* Mortar.swift */,
 				35BBBBF61C6D3C600014B159 /* MortarAttribute.swift */,
 				35BBBBF51C6D3C600014B159 /* MortarOperators.swift */,
+				35A31A8A1CCBACCA007E1068 /* MortarDefaultStack.swift */,
 				35BBBBF31C6D3C600014B159 /* MortarConstraint.swift */,
 				35BBBBF41C6D3C600014B159 /* MortarGroup.swift */,
 				35BBBBF81C6D3C600014B159 /* Array+Mortar.swift */,
@@ -233,6 +236,7 @@
 				35BBBBFB1C6D3C600014B159 /* MortarGroup.swift in Sources */,
 				35BBBBFE1C6D3C600014B159 /* Mortar.swift in Sources */,
 				A05F7A1B1C7F98E300428578 /* LayoutConstraint+Mortar.swift in Sources */,
+				35A31A8B1CCBACCA007E1068 /* MortarDefaultStack.swift in Sources */,
 				35BBBC001C6D3C600014B159 /* View+Mortar.swift in Sources */,
 				35BBBBFD1C6D3C600014B159 /* MortarAttribute.swift in Sources */,
 				35BBBBFC1C6D3C600014B159 /* MortarOperators.swift in Sources */,

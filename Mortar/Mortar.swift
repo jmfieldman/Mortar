@@ -374,10 +374,14 @@ public typealias MortarFourple = (MortarAttributable, MortarAttributable, Mortar
 public typealias MortarTuple   = ([MortarAttribute], MortarAliasLayoutPriority?)
 
 @inline(__always) internal func MortarConvertTwople(twople: MortarTwople) -> MortarTuple {
-    return ([twople.0.m_intoAttribute(), twople.1.m_intoAttribute()], MortarAliasLayoutPriorityDefaultNormal)
+    return ([twople.0.m_intoAttribute(), twople.1.m_intoAttribute()], MortarDefault.Priority.current())
 }
 
 @inline(__always) internal func MortarConvertFourple(fourple: MortarFourple) -> MortarTuple {
-    return ([fourple.0.m_intoAttribute(), fourple.1.m_intoAttribute(), fourple.2.m_intoAttribute(), fourple.3.m_intoAttribute()], MortarAliasLayoutPriorityDefaultNormal)
+    return ([fourple.0.m_intoAttribute(), fourple.1.m_intoAttribute(), fourple.2.m_intoAttribute(), fourple.3.m_intoAttribute()], MortarDefault.Priority.current())
 }
+
+
+
+
 

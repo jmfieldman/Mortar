@@ -106,7 +106,7 @@ public class MortarConstraint {
                                           multiplier: sourceMortar.multiplier[i],
                                             constant: sourceMortar.constant[i])
             
-            constraint.priority = (sourceMortar.priority ?? targetMortar.priority) ?? MortarAliasLayoutPriorityDefaultNormal
+            constraint.priority = (sourceMortar.priority ?? targetMortar.priority) ?? MortarDefault.Priority.current()
             constraint.m_active = true
             layoutConstraints.append(constraint)
         }        
