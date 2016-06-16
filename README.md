@@ -61,6 +61,26 @@ pod 'Mortar'
 
 Or you can use a variety of ways to include the ```Mortar.framework``` file from this project into your own.
 
+# Swift Version Support
+
+All versions of Mortar up to 0.10.4 were designed for Swift 2.2.  This is the last release planned for Swift 2.2.  You can
+force the usage of this version by specifying:
+
+```ruby
+pod 'Mortar', '~> 0.10' 
+```
+
+Version 0.11.0 is the planned release for Swift 2.3.  Any bugfixes will be released in the 0.11.x version family.  0.11.x is
+the only version family that will support Swift 2.3.  You can force usage of this version family by specifying:
+
+```ruby
+pod 'Mortar', '~> 0.11' 
+```
+
+Version 1.0 will be the first release of Mortar that is compatible with Swift 3.0.
+
+> Note that 0.11 and 1.0 are not available at the time of writing this README.
+
 # Usage
 
 Mortar does not require closures of any kind.  The Mortar operators (```|=|```, ```|>|``` and ```|<|```) instantiate and return constraints that are activated by default.  
@@ -269,7 +289,18 @@ By default, constraints are given priority equal to 500 (out of 1000).  Often ti
 may want large batches of constraints to have a different priority, and it is messy to include something like 
 ```! .Required``` after every constraint.
 
-Use the ```MortarDefault``` stack mechanism to set the default priority used in a given batch of code:
+You can change the global base default value by using ```setBase```:
+
+```swift
+MortarDefault.Priority.setBase(.Required)
+```
+
+You can use this in the ```AppDelegate``` to change the app-wide default constraint priority.
+
+Because this can only be changed on the main thread, it is safe to call just before your
+layout code.  Keep in mind it will affect all future Mortar contraints!  If you are adjusting
+the default for a single layout section, it is usually wiser to use the stack mechanism
+to change the default priority used in a frame of code:
 
 ```swift
 MortarDefault.Priority.push(.Required)

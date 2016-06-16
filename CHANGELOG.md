@@ -1,5 +1,9 @@
 # Mortar Changelog
 
+## 0.10.4 -- 6/16/16
+
+* Added ```setBase``` to ```MortarDefaults```, allowing you to set the base default for a property.
+
 ## 0.10.3 -- 4/23/16
 
 * Added MortarDefault enum, which lets you change the default layout priority in a stack-based fashion.

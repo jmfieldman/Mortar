@@ -12,7 +12,7 @@ import Foundation
 /* -- Defaults Stack -- */
 
 internal var defaultPriorityStack: [UILayoutPriority] = []
-
+internal var defaultPriorityBase:   UILayoutPriority  = MortarAliasLayoutPriorityDefaultNormal
 
 /**
  The available defaults stacks.
@@ -21,6 +21,40 @@ internal var defaultPriorityStack: [UILayoutPriority] = []
  */
 public enum MortarDefault {
     case Priority
+    
+    
+    /**
+     Updates the new base value for this default (the value used when the stack is empty)
+     
+     - parameter newValue: The new value for the default.
+     */
+    public func setBase(newValue: UILayoutPriority) {
+        if !NSThread.currentThread().isMainThread {
+            NSException(name: "InvalidSetState", reason: "Can only set state on main thread", userInfo: nil).raise()
+        }
+        
+        switch self {
+        case .Priority:
+            defaultPriorityBase = newValue
+        }
+    }
+    
+    /**
+     Updates the new base value for this default (the value used when the stack is empty)
+     
+     - parameter newValue: The new value for the default.
+     */
+    public func setBase(newValue: MortarLayoutPriority) {
+        if !NSThread.currentThread().isMainThread {
+            NSException(name: "InvalidSetState", reason: "Can only set state on main thread", userInfo: nil).raise()
+        }
+        
+        switch self {
+        case .Priority:
+            defaultPriorityBase = newValue.layoutPriority()
+        }
+    }
+    
     
     /**
      For .Priority:
@@ -89,11 +123,14 @@ public enum MortarDefault {
     }
     
     internal func current() -> UILayoutPriority {
-        guard defaultPriorityStack.count > 0 else {
-            return MortarAliasLayoutPriorityDefaultNormal
-        }
+        switch self {
+        case .Priority:
+            guard defaultPriorityStack.count > 0 else {
+                return defaultPriorityBase
+            }
         
-        return defaultPriorityStack.last!
+            return defaultPriorityStack.last!
+        }
     }
 }
 

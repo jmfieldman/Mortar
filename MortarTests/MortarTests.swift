@@ -358,12 +358,54 @@ class MortarTests: XCTestCase {
         v4 |=| self.container.m_height ! .Required
         v5 |=| self.container.m_height ! 300
         
-        XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultNormal,     "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[1].priority, MortarAliasLayoutPriorityDefaultLow,  "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[2].priority, MortarAliasLayoutPriorityDefaultNormal,     "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[3].priority, MortarAliasLayoutPriorityDefaultHigh, "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultNormal,      "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[1].priority, MortarAliasLayoutPriorityDefaultLow,         "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[2].priority, MortarAliasLayoutPriorityDefaultNormal,      "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[3].priority, MortarAliasLayoutPriorityDefaultHigh,        "Priority mismatch")
         XCTAssertEqual(self.container.constraints[4].priority, MortarAliasLayoutPriorityDefaultRequired,    "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[5].priority, 300,                         "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[5].priority, 300,                                         "Priority mismatch")
+    }
+    
+    func testBasicPriorityBase() {
+        let v0 = MortarView()
+        let v1 = MortarView()
+        let v2 = MortarView()
+        let v3 = MortarView()
+        let v4 = MortarView()
+        let v5 = MortarView()
+        
+        self.container |+| [v0, v1, v2, v3, v4, v5]
+        
+        v0 |=| self.container.m_height
+        
+        MortarDefault.Priority.setBase(.Low)
+        
+        v1 |=| self.container.m_height
+        
+        MortarDefault.Priority.setBase(.Default)
+        
+        v2 |=| self.container.m_height
+        
+        MortarDefault.Priority.setBase(.High)
+        
+        v3 |=| self.container.m_height
+        
+        MortarDefault.Priority.setBase(.Required)
+        
+        v4 |=| self.container.m_height
+        
+        MortarDefault.Priority.setBase(300)
+        
+        v5 |=| self.container.m_height
+        
+        MortarDefault.Priority.setBase(.Default)
+        
+        XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultNormal,      "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[1].priority, MortarAliasLayoutPriorityDefaultLow,         "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[2].priority, MortarAliasLayoutPriorityDefaultNormal,      "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[3].priority, MortarAliasLayoutPriorityDefaultHigh,        "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[4].priority, MortarAliasLayoutPriorityDefaultRequired,    "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[5].priority, 300,                                         "Priority mismatch")
     }
     
     func testBasicPriorityStack() {
@@ -433,7 +475,7 @@ class MortarTests: XCTestCase {
         c2.changePriority(300)
         
         XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultHigh, "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[1].priority, 300,                         "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[1].priority, 300,                                  "Priority mismatch")
     }
     
     func testChangePriorityGroup() {
