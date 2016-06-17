@@ -32,12 +32,12 @@ public typealias MortarGroup = [MortarConstraint]
 
 public extension Array where Element: MortarConstraint {
 
-    public func activate() -> MortarGroup {
+    @discardableResult public func activate() -> MortarGroup {
         NSLayoutConstraint.activate(self.layoutConstraints)
         return self
     }
     
-    public func deactivate() -> MortarGroup {
+    @discardableResult public func deactivate() -> MortarGroup {
         NSLayoutConstraint.deactivate(self.layoutConstraints)
         return self
     }
@@ -50,22 +50,21 @@ public extension Array where Element: MortarConstraint {
         return response
     }
     
-    public func replaceWith(_ newConstraints: MortarGroup) -> MortarGroup {
-        _ = self.deactivate()
-        _ = newConstraints.activate()
-        return newConstraints
+    @discardableResult public func replaceWith(_ newConstraints: MortarGroup) -> MortarGroup {
+        self.deactivate()
+        return newConstraints.activate()
     }
     
-    public func changePriority(_ newPriority: MortarAliasLayoutPriority) -> MortarGroup {
+    @discardableResult public func changePriority(_ newPriority: MortarAliasLayoutPriority) -> MortarGroup {
         for constraint in self {
-            _ = constraint.changePriority(newPriority)
+            constraint.changePriority(newPriority)
         }
         return self
     }
     
-    public func changePriority(_ newPriority: MortarLayoutPriority) -> MortarGroup {
+    @discardableResult public func changePriority(_ newPriority: MortarLayoutPriority) -> MortarGroup {
         for constraint in self {
-            _ = constraint.changePriority(newPriority)
+            constraint.changePriority(newPriority)
         }
         return self
     }
