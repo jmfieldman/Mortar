@@ -1,3 +1,5 @@
+> Swift Compatibility: 2.2 use v0.10.4; 2.3 use v0.11.0; 3.0 use v1.0+ 
+
 ![Mortar](/Development/Art/Banner.png)
 
 Mortar allows you to create Auto Layout constraints using concise, simple code statements.
@@ -78,8 +80,6 @@ pod 'Mortar', '~> 0.11'
 ```
 
 Version 1.0 will be the first release of Mortar that is compatible with Swift 3.0.
-
-> Note that 1.0 is not available at the time of writing this README.
 
 # Usage
 
