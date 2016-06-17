@@ -1,8 +1,18 @@
 # Mortar Changelog
 
+## 0.11.0 -- 6/17/16 
+
+* Updated release for Swift 2.3
+
+> last version updated for Swift 2.3
+> Use ```pod 'Mortar', '~> 0.11'```
+
 ## 0.10.4 -- 6/16/16
 
 * Added ```setBase``` to ```MortarDefaults```, allowing you to set the base default for a property.
+
+> last version updated for Swift 2.2
+> Use ```pod 'Mortar', '~> 0.10'```
 
 ## 0.10.3 -- 4/23/16
 

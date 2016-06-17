@@ -79,7 +79,7 @@ pod 'Mortar', '~> 0.11'
 
 Version 1.0 will be the first release of Mortar that is compatible with Swift 3.0.
 
-> Note that 0.11 and 1.0 are not available at the time of writing this README.
+> Note that 1.0 is not available at the time of writing this README.
 
 # Usage
 
