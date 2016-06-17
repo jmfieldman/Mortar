@@ -59,6 +59,7 @@ internal enum MortarLayoutAttribute {
     case Baseline
     #if os(iOS) || os(tvOS)
     case FirstBaseline
+    case LastBaseline
     case LeftMargin
     case RightMargin
     case TopMargin
@@ -94,8 +95,9 @@ internal enum MortarLayoutAttribute {
             case .Height:                   return .Height
             case .CenterX:                  return .CenterX
             case .CenterY:                  return .CenterY
-            case .Baseline:                 return .Baseline
+            case .Baseline:                 return .LastBaseline
             case .FirstBaseline:            return .FirstBaseline
+            case .LastBaseline:             return .LastBaseline
             case .LeftMargin:               return .LeftMargin
             case .RightMargin:              return .RightMargin
             case .TopMargin:                return .TopMargin
@@ -120,7 +122,7 @@ internal enum MortarLayoutAttribute {
             case .Height:                   return .Height
             case .CenterX:                  return .CenterX
             case .CenterY:                  return .CenterY
-            case .Baseline:                 return .Baseline
+            case .Baseline:                 return .LastBaseline
             case .NotAnAttribute:           return .NotAnAttribute
             default:                        return nil
             }
@@ -159,8 +161,9 @@ internal enum MortarLayoutAttribute {
         case .Height:                   return [.Height                                 ]
         case .CenterX:                  return [.CenterX                                ]
         case .CenterY:                  return [.CenterY                                ]
-        case .Baseline:                 return [.Baseline                               ]
+        case .Baseline:                 return [.LastBaseline                           ]
         case .FirstBaseline:            return [.FirstBaseline                          ]
+        case .LastBaseline:             return [.LastBaseline                           ]
         case .LeftMargin:               return [.LeftMargin                             ]
         case .RightMargin:              return [.RightMargin                            ]
         case .TopMargin:                return [.TopMargin                              ]
