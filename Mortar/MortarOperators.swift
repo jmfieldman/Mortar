@@ -739,18 +739,16 @@ infix operator ~~ { precedence 30 }
 
 public func ~~(lhs: MortarConstraint, rhs: MortarActivationState) -> MortarConstraint {
     switch rhs {
-    case .activated:    lhs.activate()
-    case .deactivated:  lhs.deactivate()
+    case .activated:    return lhs.activate()
+    case .deactivated:  return lhs.deactivate()
     }
-    return lhs
 }
 
 public func ~~(lhs: MortarGroup, rhs: MortarActivationState) -> MortarGroup {
     switch rhs {
-    case .activated:    lhs.activate()
-    case .deactivated:  lhs.deactivate()
+    case .activated:    return lhs.activate()
+    case .deactivated:  return lhs.deactivate()
     }
-    return lhs
 }
 
 
