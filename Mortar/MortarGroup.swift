@@ -50,20 +50,20 @@ public extension Array where Element: MortarConstraint {
         return response
     }
     
-    public func replaceWith(newConstraints: MortarGroup) -> MortarGroup {
+    public func replaceWith(_ newConstraints: MortarGroup) -> MortarGroup {
         self.deactivate()
         newConstraints.activate()
         return newConstraints
     }
     
-    public func changePriority(newPriority: MortarAliasLayoutPriority) -> MortarGroup {
+    public func changePriority(_ newPriority: MortarAliasLayoutPriority) -> MortarGroup {
         for constraint in self {
             constraint.changePriority(newPriority)
         }
         return self
     }
     
-    public func changePriority(newPriority: MortarLayoutPriority) -> MortarGroup {
+    public func changePriority(_ newPriority: MortarLayoutPriority) -> MortarGroup {
         for constraint in self {
             constraint.changePriority(newPriority)
         }
