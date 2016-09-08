@@ -29,8 +29,8 @@ public enum MortarDefault {
      - parameter newValue: The new value for the default.
      */
     public func setBase(_ newValue: UILayoutPriority) {
-        if !Thread.current().isMainThread {
-            NSException(name: "InvalidSetState" as NSExceptionName, reason: "Can only set state on main thread", userInfo: nil).raise()
+        if !Thread.current.isMainThread {
+            NSException(name: NSExceptionName("InvalidSetState"), reason: "Can only set state on main thread", userInfo: nil).raise()
         }
         
         switch self {
@@ -45,8 +45,8 @@ public enum MortarDefault {
      - parameter newValue: The new value for the default.
      */
     public func setBase(_ newValue: MortarLayoutPriority) {
-        if !Thread.current().isMainThread {
-            NSException(name: "InvalidSetState" as NSExceptionName, reason: "Can only set state on main thread", userInfo: nil).raise()
+        if !Thread.current.isMainThread {
+            NSException(name: NSExceptionName("InvalidSetState"), reason: "Can only set state on main thread", userInfo: nil).raise()
         }
         
         switch self {
@@ -69,15 +69,15 @@ public enum MortarDefault {
      - parameter value: The new default priority.
      */
     public func push(_ value: UILayoutPriority) {
-        if !Thread.current().isMainThread {
-            NSException(name: "InvalidPushState" as NSExceptionName, reason: "Can only push state on main thread", userInfo: nil).raise()
+        if !Thread.current.isMainThread {
+            NSException(name: NSExceptionName("InvalidPushState"), reason: "Can only push state on main thread", userInfo: nil).raise()
         }
         
         switch self {
         case .priority:
             DispatchQueue.main.async {
                 if defaultPriorityStack.count != 0 {
-                    NSException(name: "InvalidStackState" as NSExceptionName, reason: "You have unbalanced push/pop calls.", userInfo: nil).raise()
+                    NSException(name: NSExceptionName("InvalidStackState"), reason: "You have unbalanced push/pop calls.", userInfo: nil).raise()
                 }
             }
             
@@ -108,14 +108,14 @@ public enum MortarDefault {
      each corresponding push before the main event loop is re-entered.
      */
     public func pop() {
-        if !Thread.current().isMainThread {
-            NSException(name: "InvalidPopState" as NSExceptionName, reason: "Can only pop state on main thread", userInfo: nil).raise()
+        if !Thread.current.isMainThread {
+            NSException(name: NSExceptionName("InvalidPopState"), reason: "Can only pop state on main thread", userInfo: nil).raise()
         }
         
         switch self {
         case .priority:
             if defaultPriorityStack.count < 1 {
-                NSException(name: "InvalidPopState" as NSExceptionName, reason: "There is nothing on the defaults stack to pop", userInfo: nil).raise()
+                NSException(name: NSExceptionName("InvalidPopState"), reason: "There is nothing on the defaults stack to pop", userInfo: nil).raise()
             }
             
             defaultPriorityStack.removeLast()
