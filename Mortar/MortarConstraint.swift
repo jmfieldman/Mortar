@@ -54,7 +54,7 @@ public class MortarConstraint {
         
         /* The target view must be explicitly declared */
         guard let targetView = targetMortar.item as? MortarView else {
-            NSException(name: "Target Attribute must have a defined view" as NSExceptionName,
+            NSException(name: NSExceptionName("Target Attribute must have a defined view"),
                       reason: "Target Attribute must have a defined view",
                     userInfo: nil).raise()
             return
@@ -76,7 +76,7 @@ public class MortarConstraint {
         let sourceComponents = sourceAttribute.componentAttributes()
         
         if (targetComponents.count != sourceComponents.count) {
-            NSException(name: "Attribute size mismatch" as NSExceptionName,
+            NSException(name: NSExceptionName("Attribute size mismatch"),
                       reason: "Binding two attributes of different size [left: \(targetAttribute) -> \(targetComponents.count), right: \(sourceAttribute) -> \(sourceComponents.count)]",
                     userInfo: nil).raise()
         }
@@ -85,14 +85,14 @@ public class MortarConstraint {
         
         for i in 0 ..< targetComponents.count {
             guard let tLayoutAttribute = targetComponents[i].nsLayoutAttribute() else {
-                NSException(name: "Component Attribute does not have corresponding NSLayoutAttribute" as NSExceptionName,
+                NSException(name: NSExceptionName("Component Attribute does not have corresponding NSLayoutAttribute"),
                           reason: "Component Attribute does not have corresponding NSLayoutAttribute: \(targetComponents[i])",
                         userInfo: nil).raise()
                 continue
             }
             
             guard let sLayoutAttribute = sourceComponents[i].nsLayoutAttribute() else {
-                NSException(name: "Component Attribute does not have corresponding NSLayoutAttribute" as NSExceptionName,
+                NSException(name: NSExceptionName("Component Attribute does not have corresponding NSLayoutAttribute"),
                           reason: "Component Attribute does not have corresponding NSLayoutAttribute: \(sourceComponents[i])",
                         userInfo: nil).raise()
                 continue
@@ -119,7 +119,7 @@ public class MortarConstraint {
         
         /* The target view must be explicitly declared */
         guard let targetView = target.item as? MortarView else {
-            NSException(name: "Target Attribute must have a defined view" as NSExceptionName,
+            NSException(name: NSExceptionName("Target Attribute must have a defined view"),
                       reason: "Target Attribute must have a defined view",
                     userInfo: nil).raise()
             return
@@ -127,7 +127,7 @@ public class MortarConstraint {
         
         /* For tuples, the target attribute must be explicitly declared */
         guard let targetAttribute = target.attribute else {
-            NSException(name: "Target Attribute must be defined" as NSExceptionName,
+            NSException(name: NSExceptionName("Target Attribute must be defined"),
                       reason: "Target Attribute must be defined (cannot assign tuple to view without declaring attribute)",
                     userInfo: nil).raise()
             return
@@ -136,7 +136,7 @@ public class MortarConstraint {
         let targetComponents = targetAttribute.componentAttributes()
         
         if (targetComponents.count != source.0.count) {
-            NSException(name: "Invalid component count" as NSExceptionName,
+            NSException(name: NSExceptionName("Invalid component count"),
                       reason: "Target Attribute expected component count \(targetComponents.count), source is \(source.0.count)",
                     userInfo: nil).raise()
             return
@@ -167,7 +167,7 @@ public class MortarConstraint {
             }
         } else {
             if (targetArray.count != sourceArray.count) {
-                NSException(name: "Constraining two arrays requires them to be the same length" as NSExceptionName,
+                NSException(name: NSExceptionName("Constraining two arrays requires them to be the same length"),
                           reason: "Constraining two arrays requires them to be the same length.  target: \(targetArray.count), source: \(sourceArray.count)",
                         userInfo: nil).raise()
                 return
@@ -212,7 +212,7 @@ public class MortarConstraint {
         }
         
         self.init()
-        NSException(name: "Invalid constraint pairing" as NSExceptionName,
+        NSException(name: NSExceptionName("Invalid constraint pairing"),
                   reason: "Invalid constraint pair: target: \(targetAny), source: \(sourceAny)",
                 userInfo: nil).raise()
 
@@ -229,7 +229,7 @@ public class MortarConstraint {
             }
         } else {
             if (targetAnyArray.count != sourceAnyArray.count) {
-                NSException(name: "Constraining two arrays requires them to be the same length" as NSExceptionName,
+                NSException(name: NSExceptionName("Constraining two arrays requires them to be the same length"),
                           reason: "Constraining two arrays requires them to be the same length.  target: \(targetAnyArray.count), source: \(sourceAnyArray.count)",
                         userInfo: nil).raise()
                 return

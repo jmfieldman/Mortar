@@ -391,7 +391,7 @@ public func /(lhs: MortarAttribute, rhs: MortarCGFloatable) -> MortarAttribute {
 
 public func +(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
     if (rhs.item != nil || rhs.attribute != nil) {
-        NSException(name: "Right side of arithmetic must be constant" as NSExceptionName,
+        NSException(name: NSExceptionName("Right side of arithmetic must be constant"),
                   reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
                 userInfo: nil).raise()
     }
@@ -406,7 +406,7 @@ public func +(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
 
 public func -(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
     if (rhs.item != nil || rhs.attribute != nil) {
-        NSException(name: "Right side of arithmetic must be constant" as NSExceptionName,
+        NSException(name: NSExceptionName("Right side of arithmetic must be constant"),
                   reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
                 userInfo: nil).raise()
     }
@@ -421,7 +421,7 @@ public func -(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
 
 public func *(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
     if (rhs.item != nil || rhs.attribute != nil) {
-        NSException(name: "Right side of arithmetic must be constant" as NSExceptionName,
+        NSException(name: NSExceptionName("Right side of arithmetic must be constant"),
                   reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
                 userInfo: nil).raise()
     }
@@ -436,7 +436,7 @@ public func *(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
 
 public func /(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
     if (rhs.item != nil || rhs.attribute != nil) {
-        NSException(name: "Right side of arithmetic must be constant" as NSExceptionName,
+        NSException(name: NSExceptionName("Right side of arithmetic must be constant"),
                   reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
                 userInfo: nil).raise()
     }
@@ -461,14 +461,14 @@ public func *(lhs: MortarCGFloatable, rhs: CGFloat) -> CGFloat {
 
 public func +(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has no components for tuple arithmetic"),
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 2) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has wrong component count"),
                   reason: "Attribute has \(components.count) components; requires 2",
                 userInfo: nil).raise()
         return lhs
@@ -481,14 +481,14 @@ public func +(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
 
 public func +(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has no components for tuple arithmetic"),
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 4) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has wrong component count"),
                   reason: "Attribute has \(components.count) components; requires 4",
                 userInfo: nil).raise()
         return lhs
@@ -503,14 +503,14 @@ public func +(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
 
 public func -(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has no components for tuple arithmetic"),
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 2) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has wrong component count"),
                   reason: "Attribute has \(components.count) components; requires 2",
                 userInfo: nil).raise()
         return lhs
@@ -523,14 +523,14 @@ public func -(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
 
 public func -(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has no components for tuple arithmetic"),
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 4) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has wrong component count"),
                   reason: "Attribute has \(components.count) components; requires 4",
                 userInfo: nil).raise()
         return lhs
@@ -545,14 +545,14 @@ public func -(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
 
 public func *(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has no components for tuple arithmetic"),
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 2) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has wrong component count"),
                   reason: "Attribute has \(components.count) components; requires 2",
                 userInfo: nil).raise()
         return lhs
@@ -565,14 +565,14 @@ public func *(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
 
 public func *(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has no components for tuple arithmetic"),
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 4) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has wrong component count"),
                   reason: "Attribute has \(components.count) components; requires 4",
                 userInfo: nil).raise()
         return lhs
@@ -587,14 +587,14 @@ public func *(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
 
 public func /(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has no components for tuple arithmetic"),
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 2) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has wrong component count"),
                   reason: "Attribute has \(components.count) components; requires 2",
                 userInfo: nil).raise()
         return lhs
@@ -607,14 +607,14 @@ public func /(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
 
 public func /(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has no components for tuple arithmetic"),
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 4) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has wrong component count"),
                   reason: "Attribute has \(components.count) components; requires 4",
                 userInfo: nil).raise()
         return lhs
@@ -631,14 +631,14 @@ infix operator ~ { precedence 140 }
 
 public func ~(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has no components for tuple arithmetic"),
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 2) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has wrong component count"),
                   reason: "Attribute has \(components.count) components; requires 2",
                 userInfo: nil).raise()
         return lhs
@@ -653,14 +653,14 @@ public func ~(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
 
 public func ~(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has no components for tuple arithmetic"),
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 4) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: NSExceptionName("Attribute has wrong component count"),
                   reason: "Attribute has \(components.count) components; requires 4",
                 userInfo: nil).raise()
         return lhs
