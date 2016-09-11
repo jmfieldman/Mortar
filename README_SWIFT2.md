@@ -1,9 +1,5 @@
 ![Mortar](/Development/Art/Banner.png)
 
-![Swift 2.2](https://img.shields.io/badge/Swift_2.2-%7E%3E%200.10-orange.svg?style=flat)
-![Swift 2.3](https://img.shields.io/badge/Swift_2.3-%7E%3E%200.11-orange.svg?style=flat)
-![Swift 3.0](https://img.shields.io/badge/Swift_3.0-%7E%3E%201.0-orange.svg?style=flat)
-
 Mortar allows you to create Auto Layout constraints using concise, simple code statements.
 
 Use this:
@@ -17,10 +13,10 @@ Instead of:
 ```swift
 addConstraint(NSLayoutConstraint(
     item:        view1,
-    attribute:  .right,
-    relatedBy:  .equal,
+    attribute:  .Right,
+    relatedBy:  .Equal,
     toItem:      view2,
-    attribute:  .left,
+    attribute:  .Left,
     multiplier:  1.0,
     constant:   -12.0
 ))
@@ -36,8 +32,6 @@ Other examples:
 [view.m_sides, view.m_bottom, view.m_height] |=| [container, container, 200]
 ```
 
-> This README reflects the updated syntax and constants used in the Swift 3 Mortar release.
-> For the Swift 2.x documentation, refer to the ```README_SWIFT2.md``` file.
 
 # Why?
 
@@ -69,13 +63,6 @@ Or you can use a variety of ways to include the ```Mortar.framework``` file from
 
 # Swift Version Support
 
-![Swift 2.2](https://img.shields.io/badge/Swift_2.2-%7E%3E%200.10-orange.svg?style=flat)
-![Swift 2.3](https://img.shields.io/badge/Swift_2.3-%7E%3E%200.11-orange.svg?style=flat)
-![Swift 3.0](https://img.shields.io/badge/Swift_3.0-%7E%3E%201.0-orange.svg?style=flat)
-
-> This README reflects the updated syntax and constants used in the Swift 3 Mortar release.
-> For the Swift 2.x documentation, refer to the ```README_SWIFT2.md``` file.
-
 All versions of Mortar up to 0.10.4 were designed for Swift 2.2.  This is the last release planned for Swift 2.2.  You can
 force the usage of this version by specifying:
 
@@ -90,11 +77,9 @@ the only version family that will support Swift 2.3.  You can force usage of thi
 pod 'Mortar', '~> 0.11' 
 ```
 
-Version 1.0.0 is the first release of Mortar that is compatible with Swift 3.0.  
+Version 1.0 will be the first release of Mortar that is compatible with Swift 3.0.
 
-```ruby
-pod 'Mortar', '~> 1.0' 
-```
+> Note that 1.0 is not available at the time of writing this README.
 
 # Usage
 
@@ -279,35 +264,35 @@ You can use this to create complex constraints on one line.  For example, to cre
 
 You can assign priority to constraints using the ```!``` operator.  Valid priorities are:
 
-* ```.low```, ```.default```, ```.high```, ```.required```
+* ```.Low```, ```.Default```, ```.High```, ```.Required```
 * Any ```UILayoutPriority``` value
 
 ```swift
 v0 |=| self.container.m_height
-v1 |=| self.container.m_height ! .low
-v2 |=| self.container.m_height ! .default
-v3 |=| self.container.m_height ! .high
-v4 |=| self.container.m_height ! .required
+v1 |=| self.container.m_height ! .Low
+v2 |=| self.container.m_height ! .Default
+v3 |=| self.container.m_height ! .High
+v4 |=| self.container.m_height ! .Required
 v5 |=| self.container.m_height ! 300
 ```
 
 You can also put priorities inside tuples or arrays:
 
 ```swift
-view1        |=| [view2.m_caps   ! .high, view2.m_sides      ! .low]  // Inside array
-view1.m_size |=| (view2.m_height ! .high, view2.m_width + 20 ! .low)  // Inside tuple
+view1        |=| [view2.m_caps   ! .High, view2.m_sides      ! .Low]  // Inside array
+view1.m_size |=| (view2.m_height ! .High, view2.m_width + 20 ! .Low)  // Inside tuple
 ```
 
 ### Default Priority
 
 By default, constraints are given priority equal to 500 (out of 1000).  Often times if you
 may want large batches of constraints to have a different priority, and it is messy to include something like 
-```! .required``` after every constraint.
+```! .Required``` after every constraint.
 
-You can change the global base default value by using ```set```:
+You can change the global base default value by using ```setBase```:
 
 ```swift
-MortarDefault.priority.set(base: .required)
+MortarDefault.Priority.setBase(.Required)
 ```
 
 You can use this in the ```AppDelegate``` to change the app-wide default constraint priority.
@@ -318,12 +303,12 @@ the default for a single layout section, it is usually wiser to use the stack me
 to change the default priority used in a frame of code:
 
 ```swift
-MortarDefault.priority.push(.required)
+MortarDefault.Priority.push(.Required)
 
-v1 |=| v2 // Given priority .required automatically
+v1 |=| v2 // Given priority .Required automatically
 ...
 
-MortarDefault.priority.pop()
+MortarDefault.Priority.pop()
 ```
 
 You may only call the push/pop methods on the main thread, and Mortar will raise an exception if you do not
@@ -334,8 +319,8 @@ properly balance your pushes and pops.
 You can change the priority of a ```MortarConstraint``` or ```MortarGroup``` by calling the ```changePriority``` method.  This takes either a ```MortarLayoutPriority``` enum, or a ```UILayoutPriority``` value:
 
 ```swift
-let c = view1 |=| view2 ! .low     // Creates 4 low-priority constraints (1 per edge)
-c.changePriority(to: .high)            // Sets all 4 constraints to high priority
+let c = view1 |=| view2 ! .Low     // Creates 4 low-priority constraints (1 per edge)
+c.changePriority(.High)            // Sets all 4 constraints to high priority
 ```
 
 Remember that you can't switch to or from ```Required``` from any other priority level (this is an Auto Layout limitation.)
@@ -346,19 +331,19 @@ Remember that you can't switch to or from ```Required``` from any other priority
 You can use the ```~~``` operator as a shorthand for constraint activation and deactivation.  This makes the most sense as part of constraint declarations when you want to create initially-deactivated constraints:
 
 ```swift
-let constraint = view1 |=| view2 ~~ .deactivated
+let constraint = view1 |=| view2 ~~ .Deactivated
 
 // Later on, it makes more semantic sense to call .activate():
 constraint.activate()
 
 // Even though this is functionally equivalent:
-constraint ~~ .activated
+constraint ~~ .Activated
 
 // It works with groups too:
 let group = [
     view1 |=| view2
     view3 |=| view4
-] ~~ .deactivated
+] ~~ .Deactivated
 
 ```
 
@@ -415,13 +400,13 @@ group.deactivate()
 
 ### Replacing Constraints and Groups of Constraints
 
-Constraints and groups have a ```replace``` method that deactives the target and activates the parameter:
+Constraints and groups have a replaceWith method that deactives the target and activates the parameter:
 
 ```swift
 let constraint1 = view1.m_sides |=| view2
-let constraint2 = view1.m_width |=| view2 ~~ .deactivated
+let constraint2 = view1.m_width |=| view2 ~~ .Deactivated
 
-constraint1.replace(with: constraint2)
+constraint1.replaceWith(constraint2)
 
 let group1 = [
     view1.m_sides |<| view2,
@@ -430,9 +415,9 @@ let group1 = [
         
 let group2 = [
     view1.m_width |=| view2
-] ~~ .deactivated
+] ~~ .Deactivated
 
-group1.replace(with: group2)
+group1.replaceWith(group2)
 ```
 
 # Visual View Hierarchy Creation

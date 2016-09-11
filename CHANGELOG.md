@@ -1,5 +1,10 @@
 # Mortar Changelog
 
+## 1.0.0 -- 9/11/16
+
+* Updated to support Swift 3.0
+* Updated ```MortarDefault``` calls to Swift 3.0 syntax.
+
 ## 0.11.1 -- 9/11/16
 
 * Official Swift 2.3 support compiled against Xcode 8 GM seed
