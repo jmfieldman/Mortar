@@ -1,5 +1,9 @@
 # Mortar Changelog
 
+## 0.11.1 -- 9/11/16
+
+* Official Swift 2.3 support compiled against Xcode 8 GM seed
+
 ## 0.11.0 -- 6/17/16 
 
 * Updated release for Swift 2.3
