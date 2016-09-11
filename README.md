@@ -13,10 +13,10 @@ Instead of:
 ```swift
 addConstraint(NSLayoutConstraint(
     item:        view1,
-    attribute:  .Right,
-    relatedBy:  .Equal,
+    attribute:  .right,
+    relatedBy:  .equal,
     toItem:      view2,
-    attribute:  .Left,
+    attribute:  .left,
     multiplier:  1.0,
     constant:   -12.0
 ))
@@ -264,35 +264,35 @@ You can use this to create complex constraints on one line.  For example, to cre
 
 You can assign priority to constraints using the ```!``` operator.  Valid priorities are:
 
-* ```.Low```, ```.Default```, ```.High```, ```.Required```
+* ```.low```, ```.default```, ```.high```, ```.required```
 * Any ```UILayoutPriority``` value
 
 ```swift
 v0 |=| self.container.m_height
-v1 |=| self.container.m_height ! .Low
-v2 |=| self.container.m_height ! .Default
-v3 |=| self.container.m_height ! .High
-v4 |=| self.container.m_height ! .Required
+v1 |=| self.container.m_height ! .low
+v2 |=| self.container.m_height ! .default
+v3 |=| self.container.m_height ! .high
+v4 |=| self.container.m_height ! .required
 v5 |=| self.container.m_height ! 300
 ```
 
 You can also put priorities inside tuples or arrays:
 
 ```swift
-view1        |=| [view2.m_caps   ! .High, view2.m_sides      ! .Low]  // Inside array
-view1.m_size |=| (view2.m_height ! .High, view2.m_width + 20 ! .Low)  // Inside tuple
+view1        |=| [view2.m_caps   ! .high, view2.m_sides      ! .low]  // Inside array
+view1.m_size |=| (view2.m_height ! .high, view2.m_width + 20 ! .low)  // Inside tuple
 ```
 
 ### Default Priority
 
 By default, constraints are given priority equal to 500 (out of 1000).  Often times if you
 may want large batches of constraints to have a different priority, and it is messy to include something like 
-```! .Required``` after every constraint.
+```! .required``` after every constraint.
 
-You can change the global base default value by using ```setBase```:
+You can change the global base default value by using ```set```:
 
 ```swift
-MortarDefault.Priority.setBase(.Required)
+MortarDefault.priority.set(base: .required)
 ```
 
 You can use this in the ```AppDelegate``` to change the app-wide default constraint priority.
@@ -303,12 +303,12 @@ the default for a single layout section, it is usually wiser to use the stack me
 to change the default priority used in a frame of code:
 
 ```swift
-MortarDefault.Priority.push(.Required)
+MortarDefault.priority.push(.required)
 
-v1 |=| v2 // Given priority .Required automatically
+v1 |=| v2 // Given priority .required automatically
 ...
 
-MortarDefault.Priority.pop()
+MortarDefault.priority.pop()
 ```
 
 You may only call the push/pop methods on the main thread, and Mortar will raise an exception if you do not
@@ -319,8 +319,8 @@ properly balance your pushes and pops.
 You can change the priority of a ```MortarConstraint``` or ```MortarGroup``` by calling the ```changePriority``` method.  This takes either a ```MortarLayoutPriority``` enum, or a ```UILayoutPriority``` value:
 
 ```swift
-let c = view1 |=| view2 ! .Low     // Creates 4 low-priority constraints (1 per edge)
-c.changePriority(.High)            // Sets all 4 constraints to high priority
+let c = view1 |=| view2 ! .low     // Creates 4 low-priority constraints (1 per edge)
+c.changePriority(to: .high)            // Sets all 4 constraints to high priority
 ```
 
 Remember that you can't switch to or from ```Required``` from any other priority level (this is an Auto Layout limitation.)
@@ -331,19 +331,19 @@ Remember that you can't switch to or from ```Required``` from any other priority
 You can use the ```~~``` operator as a shorthand for constraint activation and deactivation.  This makes the most sense as part of constraint declarations when you want to create initially-deactivated constraints:
 
 ```swift
-let constraint = view1 |=| view2 ~~ .Deactivated
+let constraint = view1 |=| view2 ~~ .deactivated
 
 // Later on, it makes more semantic sense to call .activate():
 constraint.activate()
 
 // Even though this is functionally equivalent:
-constraint ~~ .Activated
+constraint ~~ .activated
 
 // It works with groups too:
 let group = [
     view1 |=| view2
     view3 |=| view4
-] ~~ .Deactivated
+] ~~ .deactivated
 
 ```
 
@@ -404,7 +404,7 @@ Constraints and groups have a ```replace``` method that deactives the target and
 
 ```swift
 let constraint1 = view1.m_sides |=| view2
-let constraint2 = view1.m_width |=| view2 ~~ .Deactivated
+let constraint2 = view1.m_width |=| view2 ~~ .deactivated
 
 constraint1.replace(with: constraint2)
 
@@ -415,7 +415,7 @@ let group1 = [
         
 let group2 = [
     view1.m_width |=| view2
-] ~~ .Deactivated
+] ~~ .deactivated
 
 group1.replace(with: group2)
 ```
