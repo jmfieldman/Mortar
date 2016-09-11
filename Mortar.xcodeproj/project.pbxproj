@@ -32,6 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3585ABAD1D85C7D60063299C /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = SOURCE_ROOT; };
 		35964B221CBE8E6700E54D22 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		35964B231CBE8E6700E54D22 /* Mortar.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Mortar.podspec; sourceTree = SOURCE_ROOT; };
 		35964B241CBE8E6700E54D22 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = SOURCE_ROOT; };
@@ -95,6 +96,7 @@
 		35BBBBDB1C6D3BBD0014B159 /* Mortar */ = {
 			isa = PBXGroup;
 			children = (
+				3585ABAD1D85C7D60063299C /* .travis.yml */,
 				35964B221CBE8E6700E54D22 /* README.md */,
 				35964B231CBE8E6700E54D22 /* Mortar.podspec */,
 				35964B241CBE8E6700E54D22 /* CHANGELOG.md */,
