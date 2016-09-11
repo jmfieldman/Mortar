@@ -36,6 +36,8 @@ Other examples:
 [view.m_sides, view.m_bottom, view.m_height] |=| [container, container, 200]
 ```
 
+> This README reflects the updated syntax and constants used in the Swift 3 Mortar release.
+> For the Swift 2.x documentation, refer to the ```README_SWIFT2.md``` file.
 
 # Why?
 
@@ -71,6 +73,9 @@ Or you can use a variety of ways to include the ```Mortar.framework``` file from
 ![Swift 2.3](https://img.shields.io/badge/Swift_2.3-%7E%3E%200.11-orange.svg?style=flat)
 ![Swift 3.0](https://img.shields.io/badge/Swift_3.0-%7E%3E%201.0-orange.svg?style=flat)
 
+> This README reflects the updated syntax and constants used in the Swift 3 Mortar release.
+> For the Swift 2.x documentation, refer to the ```README_SWIFT2.md``` file.
+
 All versions of Mortar up to 0.10.4 were designed for Swift 2.2.  This is the last release planned for Swift 2.2.  You can
 force the usage of this version by specifying:
 
@@ -85,7 +90,7 @@ the only version family that will support Swift 2.3.  You can force usage of thi
 pod 'Mortar', '~> 0.11' 
 ```
 
-Version 1.0.0 is the first release of Mortar that is compatible with Swift 3.0.
+Version 1.0.0 is the first release of Mortar that is compatible with Swift 3.0.  
 
 ```ruby
 pod 'Mortar', '~> 1.0' 
