@@ -30,14 +30,14 @@ public extension NSLayoutConstraint {
     public var m_active: Bool {
         get {
             if #available(iOS 8.0, *) {
-                return self.isActive
+                return self.active
             } else {
-                return (self.m_commonSuperview()?.constraints.index(of: self) != nil)
+                return (self.m_commonSuperview()?.constraints.indexOf(self) != nil)
             }
         }
         set(activate) {
             if #available(iOS 8.0, *) {
-                self.isActive   = activate
+                self.active   = activate
             } else if let view = self.m_commonSuperview() {
                 let addOrRemove = activate ? UIView.addConstraint : UIView.removeConstraint
                 addOrRemove(view)(self)
@@ -46,18 +46,18 @@ public extension NSLayoutConstraint {
     }
 
     //! bakport of NSLayoutConstraint.activateConstraints for iOS 7
-    public class func m_activateConstraints(_ constraints: [NSLayoutConstraint]) {
+    public class func m_activateConstraints(constraints: [NSLayoutConstraint]) {
         if #available(iOS 8.0, *) {
-            NSLayoutConstraint.activate(constraints)
+            NSLayoutConstraint.activateConstraints(constraints)
         } else {
             constraints.forEach { $0.m_active = true }
         }
     }
 
     //! bakport of NSLayoutConstraint.deactivateConstraints for iOS 7
-    public class func m_deactivateConstraints(_ constraints: [NSLayoutConstraint]) {
+    public class func m_deactivateConstraints(constraints: [NSLayoutConstraint]) {
         if #available(iOS 8.0, *) {
-            NSLayoutConstraint.deactivate(constraints)
+            NSLayoutConstraint.deactivateConstraints(constraints)
         } else {
             constraints.forEach { $0.m_active = false }
         }

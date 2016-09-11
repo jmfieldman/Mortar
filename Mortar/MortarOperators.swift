@@ -59,7 +59,7 @@ public func |^|(lhs: MortarView, rhs: MortarView) -> MortarView {
 }
 
 public func |^|(lhs: MortarView, rhs: [MortarView]) -> MortarView {
-    for i in (0..<rhs.count).reversed() {
+    for i in (0..<rhs.count).reverse() {
         lhs.addSubview(rhs[i])
     }    
     return lhs
@@ -82,15 +82,15 @@ infix operator |<| { precedence 95 }
  Will set the top of view1 to the bottom of view2
 */
 public func |=|(lhs: MortarAttributable, rhs: MortarAttributable) -> MortarConstraint {
-    return MortarConstraint(target: lhs, source: rhs, relation: .equal)
+    return MortarConstraint(target: lhs, source: rhs, relation: .Equal)
 }
 
 public func |>|(lhs: MortarAttributable, rhs: MortarAttributable) -> MortarConstraint {
-    return MortarConstraint(target: lhs, source: rhs, relation: .greaterThanOrEqual)
+    return MortarConstraint(target: lhs, source: rhs, relation: .GreaterThanOrEqual)
 }
 
 public func |<|(lhs: MortarAttributable, rhs: MortarAttributable) -> MortarConstraint {
-    return MortarConstraint(target: lhs, source: rhs, relation: .lessThanOrEqual)
+    return MortarConstraint(target: lhs, source: rhs, relation: .LessThanOrEqual)
 }
 
 
@@ -103,43 +103,43 @@ public func |<|(lhs: MortarAttributable, rhs: MortarAttributable) -> MortarConst
 
 */
 public func |=|(lhs: MortarAttribute, rhs: MortarTwople) -> MortarConstraint {
-    return MortarConstraint(target: lhs, source: MortarConvertTwople(rhs), relation: .equal)
+    return MortarConstraint(target: lhs, source: MortarConvertTwople(rhs), relation: .Equal)
 }
 
 public func |>|(lhs: MortarAttribute, rhs: MortarTwople) -> MortarConstraint {
-    return MortarConstraint(target: lhs, source: MortarConvertTwople(rhs), relation: .greaterThanOrEqual)
+    return MortarConstraint(target: lhs, source: MortarConvertTwople(rhs), relation: .GreaterThanOrEqual)
 }
 
 public func |<|(lhs: MortarAttribute, rhs: MortarTwople) -> MortarConstraint {
-    return MortarConstraint(target: lhs, source: MortarConvertTwople(rhs), relation: .lessThanOrEqual)
+    return MortarConstraint(target: lhs, source: MortarConvertTwople(rhs), relation: .LessThanOrEqual)
 }
 
 
 
 public func |=|(lhs: MortarAttribute, rhs: MortarFourple) -> MortarConstraint {
-    return MortarConstraint(target: lhs, source: MortarConvertFourple(rhs), relation: .equal)
+    return MortarConstraint(target: lhs, source: MortarConvertFourple(rhs), relation: .Equal)
 }
 
 public func |>|(lhs: MortarAttribute, rhs: MortarFourple) -> MortarConstraint {
-    return MortarConstraint(target: lhs, source: MortarConvertFourple(rhs), relation: .greaterThanOrEqual)
+    return MortarConstraint(target: lhs, source: MortarConvertFourple(rhs), relation: .GreaterThanOrEqual)
 }
 
 public func |<|(lhs: MortarAttribute, rhs: MortarFourple) -> MortarConstraint {
-    return MortarConstraint(target: lhs, source: MortarConvertFourple(rhs), relation: .lessThanOrEqual)
+    return MortarConstraint(target: lhs, source: MortarConvertFourple(rhs), relation: .LessThanOrEqual)
 }
 
 
 
 public func |=|(lhs: MortarAttribute, rhs: MortarTuple) -> MortarConstraint {
-    return MortarConstraint(target: lhs, source: rhs, relation: .equal)
+    return MortarConstraint(target: lhs, source: rhs, relation: .Equal)
 }
 
 public func |>|(lhs: MortarAttribute, rhs: MortarTuple) -> MortarConstraint {
-    return MortarConstraint(target: lhs, source: rhs, relation: .greaterThanOrEqual)
+    return MortarConstraint(target: lhs, source: rhs, relation: .GreaterThanOrEqual)
 }
 
 public func |<|(lhs: MortarAttribute, rhs: MortarTuple) -> MortarConstraint {
-    return MortarConstraint(target: lhs, source: rhs, relation: .lessThanOrEqual)
+    return MortarConstraint(target: lhs, source: rhs, relation: .LessThanOrEqual)
 }
 
 
@@ -156,21 +156,21 @@ public func |=|(lhs: [MortarAttributable], rhs: [MortarAttributable]) -> MortarC
     return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
                             sourceArray: rhs.map { $0.m_intoAttribute() },
                               crosslink: false,
-                               relation: .equal)
+                               relation: .Equal)
 }
 
 public func |>|(lhs: [MortarAttributable], rhs: [MortarAttributable]) -> MortarConstraint {
     return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
                             sourceArray: rhs.map { $0.m_intoAttribute() },
                               crosslink: false,
-                               relation: .greaterThanOrEqual)
+                               relation: .GreaterThanOrEqual)
 }
 
 public func |<|(lhs: [MortarAttributable], rhs: [MortarAttributable]) -> MortarConstraint {
     return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
                             sourceArray: rhs.map { $0.m_intoAttribute() },
                               crosslink: false,
-                               relation: .lessThanOrEqual)
+                               relation: .LessThanOrEqual)
 }
 
 
@@ -178,63 +178,63 @@ public func |=|(lhs: MortarAttributable, rhs: [MortarAttributable]) -> MortarCon
     return MortarConstraint(targetArray: [lhs.m_intoAttribute()],
                             sourceArray: rhs.map { $0.m_intoAttribute() },
                               crosslink: true,
-                               relation: .equal)
+                               relation: .Equal)
 }
 
 public func |>|(lhs: MortarAttributable, rhs: [MortarAttributable]) -> MortarConstraint {
     return MortarConstraint(targetArray: [lhs.m_intoAttribute()],
                             sourceArray: rhs.map { $0.m_intoAttribute() },
                               crosslink: true,
-                               relation: .greaterThanOrEqual)
+                               relation: .GreaterThanOrEqual)
 }
 
 public func |<|(lhs: MortarAttributable, rhs: [MortarAttributable]) -> MortarConstraint {
     return MortarConstraint(targetArray: [lhs.m_intoAttribute()],
                             sourceArray: rhs.map { $0.m_intoAttribute() },
                               crosslink: true,
-                               relation: .lessThanOrEqual)
+                               relation: .LessThanOrEqual)
 }
 
 public func |=|(lhs: [MortarAttributable], rhs: MortarAttributable) -> MortarConstraint {
     return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
                             sourceArray: [rhs.m_intoAttribute()],
                               crosslink: true,
-                               relation: .equal)
+                               relation: .Equal)
 }
 
 public func |>|(lhs: [MortarAttributable], rhs: MortarAttributable) -> MortarConstraint {
     return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
                             sourceArray: [rhs.m_intoAttribute()],
                               crosslink: true,
-                               relation: .greaterThanOrEqual)
+                               relation: .GreaterThanOrEqual)
 }
 
 public func |<|(lhs: [MortarAttributable], rhs: MortarAttributable) -> MortarConstraint {
     return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
                             sourceArray: [rhs.m_intoAttribute()],
                               crosslink: true,
-                               relation: .lessThanOrEqual)
+                               relation: .LessThanOrEqual)
 }
 
 public func |=|(lhs: [MortarAttribute], rhs: MortarAttributable) -> MortarConstraint {
     return MortarConstraint(targetArray: lhs,
                             sourceArray: [rhs.m_intoAttribute()],
                               crosslink: true,
-                               relation: .equal)
+                               relation: .Equal)
 }
 
 public func |>|(lhs: [MortarAttribute], rhs: MortarAttributable) -> MortarConstraint {
     return MortarConstraint(targetArray: lhs,
                             sourceArray: [rhs.m_intoAttribute()],
                               crosslink: true,
-                               relation: .greaterThanOrEqual)
+                               relation: .GreaterThanOrEqual)
 }
 
 public func |<|(lhs: [MortarAttribute], rhs: MortarAttributable) -> MortarConstraint {
     return MortarConstraint(targetArray: lhs,
                             sourceArray: [rhs.m_intoAttribute()],
                               crosslink: true,
-                               relation: .lessThanOrEqual)
+                               relation: .LessThanOrEqual)
 }
 
 
@@ -248,38 +248,38 @@ public func |<|(lhs: [MortarAttribute], rhs: MortarAttributable) -> MortarConstr
 public func |=|(lhs: [MortarAttributable], rhs: MortarTuple) -> MortarConstraint {
     return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
                             sourceTuple: rhs,
-                               relation: .equal)
+                               relation: .Equal)
 }
 
 public func |>|(lhs: [MortarAttributable], rhs: MortarTuple) -> MortarConstraint {
     return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
                             sourceTuple: rhs,
-                               relation: .greaterThanOrEqual)
+                               relation: .GreaterThanOrEqual)
 }
 
 public func |<|(lhs: [MortarAttributable], rhs: MortarTuple) -> MortarConstraint {
     return MortarConstraint(targetArray: lhs.map { $0.m_intoAttribute() },
                             sourceTuple: rhs,
-                               relation: .lessThanOrEqual)
+                               relation: .LessThanOrEqual)
 }
 
 
 public func |=|(lhs: [MortarAttribute], rhs: MortarTuple) -> MortarConstraint {
     return MortarConstraint(targetArray: lhs,
                             sourceTuple: rhs,
-                            relation: .equal)
+                            relation: .Equal)
 }
 
 public func |>|(lhs: [MortarAttribute], rhs: MortarTuple) -> MortarConstraint {
     return MortarConstraint(targetArray: lhs,
                             sourceTuple: rhs,
-                            relation: .greaterThanOrEqual)
+                            relation: .GreaterThanOrEqual)
 }
 
 public func |<|(lhs: [MortarAttribute], rhs: MortarTuple) -> MortarConstraint {
     return MortarConstraint(targetArray: lhs,
                             sourceTuple: rhs,
-                            relation: .lessThanOrEqual)
+                            relation: .LessThanOrEqual)
 }
 
 
@@ -335,15 +335,15 @@ public func |<|(lhs: [MortarAttribute], rhs: MortarFourple) -> MortarConstraint 
 
 /* Catch-all array operators */
 public func |=|(lhs: [Any], rhs: [Any]) -> MortarConstraint {
-    return MortarConstraint(targetAnyArray: lhs, sourceAnyArray: rhs, crosslink: false, relation: .equal)
+    return MortarConstraint(targetAnyArray: lhs, sourceAnyArray: rhs, crosslink: false, relation: .Equal)
 }
 
 public func |>|(lhs: [Any], rhs: [Any]) -> MortarConstraint {
-    return MortarConstraint(targetAnyArray: lhs, sourceAnyArray: rhs, crosslink: false, relation: .greaterThanOrEqual)
+    return MortarConstraint(targetAnyArray: lhs, sourceAnyArray: rhs, crosslink: false, relation: .GreaterThanOrEqual)
 }
 
 public func |<|(lhs: [Any], rhs: [Any]) -> MortarConstraint {
-    return MortarConstraint(targetAnyArray: lhs, sourceAnyArray: rhs, crosslink: false, relation: .lessThanOrEqual)
+    return MortarConstraint(targetAnyArray: lhs, sourceAnyArray: rhs, crosslink: false, relation: .LessThanOrEqual)
 }
 
 
@@ -391,7 +391,7 @@ public func /(lhs: MortarAttribute, rhs: MortarCGFloatable) -> MortarAttribute {
 
 public func +(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
     if (rhs.item != nil || rhs.attribute != nil) {
-        NSException(name: "Right side of arithmetic must be constant" as NSExceptionName,
+        NSException(name: "Right side of arithmetic must be constant",
                   reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
                 userInfo: nil).raise()
     }
@@ -406,7 +406,7 @@ public func +(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
 
 public func -(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
     if (rhs.item != nil || rhs.attribute != nil) {
-        NSException(name: "Right side of arithmetic must be constant" as NSExceptionName,
+        NSException(name: "Right side of arithmetic must be constant",
                   reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
                 userInfo: nil).raise()
     }
@@ -421,7 +421,7 @@ public func -(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
 
 public func *(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
     if (rhs.item != nil || rhs.attribute != nil) {
-        NSException(name: "Right side of arithmetic must be constant" as NSExceptionName,
+        NSException(name: "Right side of arithmetic must be constant",
                   reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
                 userInfo: nil).raise()
     }
@@ -436,7 +436,7 @@ public func *(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
 
 public func /(lhs: MortarAttribute, rhs: MortarAttribute) -> MortarAttribute {
     if (rhs.item != nil || rhs.attribute != nil) {
-        NSException(name: "Right side of arithmetic must be constant" as NSExceptionName,
+        NSException(name: "Right side of arithmetic must be constant",
                   reason: "When performing mortar arithmetic, the right side must be a constant (cannot have view or attribute)",
                 userInfo: nil).raise()
     }
@@ -461,14 +461,14 @@ public func *(lhs: MortarCGFloatable, rhs: CGFloat) -> CGFloat {
 
 public func +(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: "Attribute has no components for tuple arithmetic",
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 2) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: "Attribute has wrong component count",
                   reason: "Attribute has \(components.count) components; requires 2",
                 userInfo: nil).raise()
         return lhs
@@ -481,14 +481,14 @@ public func +(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
 
 public func +(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: "Attribute has no components for tuple arithmetic",
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 4) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: "Attribute has wrong component count",
                   reason: "Attribute has \(components.count) components; requires 4",
                 userInfo: nil).raise()
         return lhs
@@ -503,14 +503,14 @@ public func +(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
 
 public func -(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: "Attribute has no components for tuple arithmetic",
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 2) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: "Attribute has wrong component count",
                   reason: "Attribute has \(components.count) components; requires 2",
                 userInfo: nil).raise()
         return lhs
@@ -523,14 +523,14 @@ public func -(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
 
 public func -(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: "Attribute has no components for tuple arithmetic",
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 4) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: "Attribute has wrong component count",
                   reason: "Attribute has \(components.count) components; requires 4",
                 userInfo: nil).raise()
         return lhs
@@ -545,14 +545,14 @@ public func -(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
 
 public func *(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: "Attribute has no components for tuple arithmetic",
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 2) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: "Attribute has wrong component count",
                   reason: "Attribute has \(components.count) components; requires 2",
                 userInfo: nil).raise()
         return lhs
@@ -565,14 +565,14 @@ public func *(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
 
 public func *(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: "Attribute has no components for tuple arithmetic",
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 4) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: "Attribute has wrong component count",
                   reason: "Attribute has \(components.count) components; requires 4",
                 userInfo: nil).raise()
         return lhs
@@ -587,14 +587,14 @@ public func *(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
 
 public func /(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: "Attribute has no components for tuple arithmetic",
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 2) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: "Attribute has wrong component count",
                   reason: "Attribute has \(components.count) components; requires 2",
                 userInfo: nil).raise()
         return lhs
@@ -607,14 +607,14 @@ public func /(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
 
 public func /(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: "Attribute has no components for tuple arithmetic",
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 4) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: "Attribute has wrong component count",
                   reason: "Attribute has \(components.count) components; requires 4",
                 userInfo: nil).raise()
         return lhs
@@ -631,14 +631,14 @@ infix operator ~ { precedence 140 }
 
 public func ~(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: "Attribute has no components for tuple arithmetic",
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 2) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: "Attribute has wrong component count",
                   reason: "Attribute has \(components.count) components; requires 2",
                 userInfo: nil).raise()
         return lhs
@@ -653,14 +653,14 @@ public func ~(lhs: MortarAttribute, rhs: MortarConstTwo) -> MortarAttribute {
 
 public func ~(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
     guard let components = lhs.attribute?.componentAttributes() else {
-        NSException(name: "Attribute has no components for tuple arithmetic" as NSExceptionName,
+        NSException(name: "Attribute has no components for tuple arithmetic",
                   reason: "Attribute has no components for tuple arithmetic",
                 userInfo: nil).raise()
         return lhs
     }
     
     if (components.count != 4) {
-        NSException(name: "Attribute has wrong component count" as NSExceptionName,
+        NSException(name: "Attribute has wrong component count",
                   reason: "Attribute has \(components.count) components; requires 4",
                 userInfo: nil).raise()
         return lhs
@@ -739,16 +739,16 @@ infix operator ~~ { precedence 30 }
 
 public func ~~(lhs: MortarConstraint, rhs: MortarActivationState) -> MortarConstraint {
     switch rhs {
-    case .activated:    lhs.activate()
-    case .deactivated:  lhs.deactivate()
+    case .Activated:    lhs.activate()
+    case .Deactivated:  lhs.deactivate()
     }
     return lhs
 }
 
 public func ~~(lhs: MortarGroup, rhs: MortarActivationState) -> MortarGroup {
     switch rhs {
-    case .activated:    lhs.activate()
-    case .deactivated:  lhs.deactivate()
+    case .Activated:    lhs.activate()
+    case .Deactivated:  lhs.deactivate()
     }
     return lhs
 }

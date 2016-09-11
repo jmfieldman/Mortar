@@ -54,7 +54,7 @@ public class MortarConstraint {
         
         /* The target view must be explicitly declared */
         guard let targetView = targetMortar.item as? MortarView else {
-            NSException(name: "Target Attribute must have a defined view" as NSExceptionName,
+            NSException(name: "Target Attribute must have a defined view",
                       reason: "Target Attribute must have a defined view",
                     userInfo: nil).raise()
             return
@@ -66,8 +66,8 @@ public class MortarConstraint {
         
         /* Attributes will inherit implicitly from the opposite side.
            If neither is declared, it will try to match edges */
-        let targetAttribute = (targetMortar.attribute ?? sourceMortar.attribute) ?? .edges
-        let sourceAttribute = (sourceMortar.attribute ?? targetMortar.attribute) ?? .edges
+        let targetAttribute = (targetMortar.attribute ?? sourceMortar.attribute) ?? .Edges
+        let sourceAttribute = (sourceMortar.attribute ?? targetMortar.attribute) ?? .Edges
         
         /* Flag if we need baseline constant mod for things like view1.m_width |=| 40 */
         let needsImplicitBaseline = (targetMortar.attribute != nil) && (sourceMortar.attribute == nil) && (sourceMortar.item == nil)
@@ -101,12 +101,12 @@ public class MortarConstraint {
             let constraint = NSLayoutConstraint(item: targetView,
                                            attribute: tLayoutAttribute,
                                            relatedBy: relation,
-                                              toItem: (needsImplicitBaseline ? ( (targetComponents[i].implicitSuperviewBaseline() == .notAnAttribute) ? nil : targetView.superview ) : sourceItem),
+                                              toItem: (needsImplicitBaseline ? ( (targetComponents[i].implicitSuperviewBaseline() == .NotAnAttribute) ? nil : targetView.superview ) : sourceItem),
                                            attribute: (needsImplicitBaseline ? targetComponents[i].implicitSuperviewBaseline() : sLayoutAttribute),
                                           multiplier: sourceMortar.multiplier[i],
                                             constant: sourceMortar.constant[i])
             
-            constraint.priority = (sourceMortar.priority ?? targetMortar.priority) ?? MortarDefault.priority.current()
+            constraint.priority = (sourceMortar.priority ?? targetMortar.priority) ?? MortarDefault.Priority.current()
             constraint.m_active = true
             layoutConstraints.append(constraint)
         }        
@@ -119,7 +119,7 @@ public class MortarConstraint {
         
         /* The target view must be explicitly declared */
         guard let targetView = target.item as? MortarView else {
-            NSException(name: "Target Attribute must have a defined view" as NSExceptionName,
+            NSException(name: "Target Attribute must have a defined view",
                       reason: "Target Attribute must have a defined view",
                     userInfo: nil).raise()
             return
@@ -127,7 +127,7 @@ public class MortarConstraint {
         
         /* For tuples, the target attribute must be explicitly declared */
         guard let targetAttribute = target.attribute else {
-            NSException(name: "Target Attribute must be defined" as NSExceptionName,
+            NSException(name: "Target Attribute must be defined",
                       reason: "Target Attribute must be defined (cannot assign tuple to view without declaring attribute)",
                     userInfo: nil).raise()
             return
@@ -136,7 +136,7 @@ public class MortarConstraint {
         let targetComponents = targetAttribute.componentAttributes()
         
         if (targetComponents.count != source.0.count) {
-            NSException(name: "Invalid component count" as NSExceptionName,
+            NSException(name: "Invalid component count",
                       reason: "Target Attribute expected component count \(targetComponents.count), source is \(source.0.count)",
                     userInfo: nil).raise()
             return
@@ -167,7 +167,7 @@ public class MortarConstraint {
             }
         } else {
             if (targetArray.count != sourceArray.count) {
-                NSException(name: "Constraining two arrays requires them to be the same length" as NSExceptionName,
+                NSException(name: "Constraining two arrays requires them to be the same length",
                           reason: "Constraining two arrays requires them to be the same length.  target: \(targetArray.count), source: \(sourceArray.count)",
                         userInfo: nil).raise()
                 return
@@ -212,7 +212,7 @@ public class MortarConstraint {
         }
         
         self.init()
-        NSException(name: "Invalid constraint pairing" as NSExceptionName,
+        NSException(name: "Invalid constraint pairing",
                   reason: "Invalid constraint pair: target: \(targetAny), source: \(sourceAny)",
                 userInfo: nil).raise()
 
@@ -229,7 +229,7 @@ public class MortarConstraint {
             }
         } else {
             if (targetAnyArray.count != sourceAnyArray.count) {
-                NSException(name: "Constraining two arrays requires them to be the same length" as NSExceptionName,
+                NSException(name: "Constraining two arrays requires them to be the same length",
                           reason: "Constraining two arrays requires them to be the same length.  target: \(targetAnyArray.count), source: \(sourceAnyArray.count)",
                         userInfo: nil).raise()
                 return
@@ -251,20 +251,20 @@ public class MortarConstraint {
         return self
     }
     
-    public func replaceWith(_ newConstraint: MortarConstraint) -> MortarConstraint {
+    public func replaceWith(newConstraint: MortarConstraint) -> MortarConstraint {
         self.deactivate()
         newConstraint.activate()
         return newConstraint
     }
     
-    public func changePriority(_ newPriority: MortarAliasLayoutPriority) -> MortarConstraint {
+    public func changePriority(newPriority: MortarAliasLayoutPriority) -> MortarConstraint {
         for constraint in layoutConstraints {
             constraint.priority = newPriority
         }
         return self
     }
     
-    public func changePriority(_ newPriority: MortarLayoutPriority) -> MortarConstraint {
+    public func changePriority(newPriority: MortarLayoutPriority) -> MortarConstraint {
         for constraint in layoutConstraints {
             constraint.priority = newPriority.layoutPriority()
         }

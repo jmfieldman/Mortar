@@ -20,7 +20,7 @@ internal var defaultPriorityBase:   UILayoutPriority  = MortarAliasLayoutPriorit
  - Priority: The default priority stack.
  */
 public enum MortarDefault {
-    case priority
+    case Priority
     
     
     /**
@@ -28,13 +28,13 @@ public enum MortarDefault {
      
      - parameter newValue: The new value for the default.
      */
-    public func setBase(_ newValue: UILayoutPriority) {
-        if !Thread.current().isMainThread {
-            NSException(name: "InvalidSetState" as NSExceptionName, reason: "Can only set state on main thread", userInfo: nil).raise()
+    public func setBase(newValue: UILayoutPriority) {
+        if !NSThread.currentThread().isMainThread {
+            NSException(name: "InvalidSetState", reason: "Can only set state on main thread", userInfo: nil).raise()
         }
         
         switch self {
-        case .priority:
+        case .Priority:
             defaultPriorityBase = newValue
         }
     }
@@ -44,13 +44,13 @@ public enum MortarDefault {
      
      - parameter newValue: The new value for the default.
      */
-    public func setBase(_ newValue: MortarLayoutPriority) {
-        if !Thread.current().isMainThread {
-            NSException(name: "InvalidSetState" as NSExceptionName, reason: "Can only set state on main thread", userInfo: nil).raise()
+    public func setBase(newValue: MortarLayoutPriority) {
+        if !NSThread.currentThread().isMainThread {
+            NSException(name: "InvalidSetState", reason: "Can only set state on main thread", userInfo: nil).raise()
         }
         
         switch self {
-        case .priority:
+        case .Priority:
             defaultPriorityBase = newValue.layoutPriority()
         }
     }
@@ -68,16 +68,16 @@ public enum MortarDefault {
      
      - parameter value: The new default priority.
      */
-    public func push(_ value: UILayoutPriority) {
-        if !Thread.current().isMainThread {
-            NSException(name: "InvalidPushState" as NSExceptionName, reason: "Can only push state on main thread", userInfo: nil).raise()
+    public func push(value: UILayoutPriority) {
+        if !NSThread.currentThread().isMainThread {
+            NSException(name: "InvalidPushState", reason: "Can only push state on main thread", userInfo: nil).raise()
         }
         
         switch self {
-        case .priority:
-            DispatchQueue.main.async {
+        case .Priority:
+            dispatch_async(dispatch_get_main_queue()) {
                 if defaultPriorityStack.count != 0 {
-                    NSException(name: "InvalidStackState" as NSExceptionName, reason: "You have unbalanced push/pop calls.", userInfo: nil).raise()
+                    NSException(name: "InvalidStackState", reason: "You have unbalanced push/pop calls.", userInfo: nil).raise()
                 }
             }
             
@@ -97,7 +97,7 @@ public enum MortarDefault {
      
      - parameter value: The new default priority.
      */
-    public func push(_ value: MortarLayoutPriority) {
+    public func push(value: MortarLayoutPriority) {
         push(value.layoutPriority())
     }
     
@@ -108,14 +108,14 @@ public enum MortarDefault {
      each corresponding push before the main event loop is re-entered.
      */
     public func pop() {
-        if !Thread.current().isMainThread {
-            NSException(name: "InvalidPopState" as NSExceptionName, reason: "Can only pop state on main thread", userInfo: nil).raise()
+        if !NSThread.currentThread().isMainThread {
+            NSException(name: "InvalidPopState", reason: "Can only pop state on main thread", userInfo: nil).raise()
         }
         
         switch self {
-        case .priority:
+        case .Priority:
             if defaultPriorityStack.count < 1 {
-                NSException(name: "InvalidPopState" as NSExceptionName, reason: "There is nothing on the defaults stack to pop", userInfo: nil).raise()
+                NSException(name: "InvalidPopState", reason: "There is nothing on the defaults stack to pop", userInfo: nil).raise()
             }
             
             defaultPriorityStack.removeLast()
@@ -124,7 +124,7 @@ public enum MortarDefault {
     
     internal func current() -> UILayoutPriority {
         switch self {
-        case .priority:
+        case .Priority:
             guard defaultPriorityStack.count > 0 else {
                 return defaultPriorityBase
             }

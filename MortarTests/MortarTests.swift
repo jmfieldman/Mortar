@@ -130,12 +130,12 @@ class MortarTests: XCTestCase {
         
         self.container |+| v
         
-        let c = v.m_edges |=| self.container ~~ .deactivated
+        let c = v.m_edges |=| self.container ~~ .Deactivated
         
         XCTAssertEqual(self.container.constraints.count, 0, "Should have 4 constraints installed (ancestor)")
         XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
         
-        c ~~ .activated
+        c ~~ .Activated
         
         XCTAssertEqual(self.container.constraints.count, 4, "Should have 4 constraints installed (activated)")
         XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
@@ -150,13 +150,13 @@ class MortarTests: XCTestCase {
         let c = [
             v1.m_edges |=| self.container,
             v2.m_edges |=| self.container
-        ] ~~ .deactivated
+        ] ~~ .Deactivated
         
         XCTAssertEqual(self.container.constraints.count, 0, "Should have 8 constraints installed (ancestor)")
         XCTAssertEqual(v1.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
         XCTAssertEqual(v2.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
         
-        c ~~ .activated
+        c ~~ .Activated
         
         XCTAssertEqual(self.container.constraints.count, 8, "Should have 8 constraints installed (activated)")
         XCTAssertEqual(v1.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
@@ -330,8 +330,8 @@ class MortarTests: XCTestCase {
         
         self.container |+| [v1, v2, v3, v4]
     
-        [v1, v2].m_size |=| (7, 11) ! .required
-        [v3, v4]        |=| v1 ! .required
+        [v1, v2].m_size |=| (7, 11) ! .Required
+        [v3, v4]        |=| v1 ! .Required
         
         self.container.layoutIfNeeded()
         
@@ -352,10 +352,10 @@ class MortarTests: XCTestCase {
         self.container |+| [v0, v1, v2, v3, v4, v5]
         
         v0 |=| self.container.m_height
-        v1 |=| self.container.m_height ! .low
-        v2 |=| self.container.m_height ! .default
-        v3 |=| self.container.m_height ! .high
-        v4 |=| self.container.m_height ! .required
+        v1 |=| self.container.m_height ! .Low
+        v2 |=| self.container.m_height ! .Default
+        v3 |=| self.container.m_height ! .High
+        v4 |=| self.container.m_height ! .Required
         v5 |=| self.container.m_height ! 300
         
         XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultNormal,      "Priority mismatch")
@@ -378,27 +378,27 @@ class MortarTests: XCTestCase {
         
         v0 |=| self.container.m_height
         
-        MortarDefault.priority.setBase(.low)
+        MortarDefault.Priority.setBase(.Low)
         
         v1 |=| self.container.m_height
         
-        MortarDefault.priority.setBase(.default)
+        MortarDefault.Priority.setBase(.Default)
         
         v2 |=| self.container.m_height
         
-        MortarDefault.priority.setBase(.high)
+        MortarDefault.Priority.setBase(.High)
         
         v3 |=| self.container.m_height
         
-        MortarDefault.priority.setBase(.required)
+        MortarDefault.Priority.setBase(.Required)
         
         v4 |=| self.container.m_height
         
-        MortarDefault.priority.setBase(300)
+        MortarDefault.Priority.setBase(300)
         
         v5 |=| self.container.m_height
         
-        MortarDefault.priority.setBase(.default)
+        MortarDefault.Priority.setBase(.Default)
         
         XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultNormal,      "Priority mismatch")
         XCTAssertEqual(self.container.constraints[1].priority, MortarAliasLayoutPriorityDefaultLow,         "Priority mismatch")
@@ -422,29 +422,29 @@ class MortarTests: XCTestCase {
         self.container |+| [v0, v1, v2, v3, v4, v5, v6, v7, v8]
         
         v0 |=| self.container.m_height
-        v1 |=| self.container.m_height ! .low
-        v2 |=| self.container.m_height ! .default
+        v1 |=| self.container.m_height ! .Low
+        v2 |=| self.container.m_height ! .Default
         
-        MortarDefault.priority.push(.high)
+        MortarDefault.Priority.push(.High)
         
-        v3 |=| self.container.m_height ! .required
-        v4 |=| self.container.m_height ! .low
+        v3 |=| self.container.m_height ! .Required
+        v4 |=| self.container.m_height ! .Low
         v5 |=| self.container.m_height
         
-        MortarDefault.priority.pop()
+        MortarDefault.Priority.pop()
         
-        MortarDefault.priority.push(.required)
+        MortarDefault.Priority.push(.Required)
         
-        v6 |=| self.container.m_height ! .low
+        v6 |=| self.container.m_height ! .Low
         
-        MortarDefault.priority.push(400)
+        MortarDefault.Priority.push(400)
         
         v7 |=| self.container.m_height
-        v8 |=| self.container.m_height ! .required
+        v8 |=| self.container.m_height ! .Required
         
-        MortarDefault.priority.pop()
+        MortarDefault.Priority.pop()
         
-        MortarDefault.priority.pop()
+        MortarDefault.Priority.pop()
         
         
         
@@ -465,13 +465,13 @@ class MortarTests: XCTestCase {
         
         self.container |+| [v0, v1]
         
-        let c1 = v0 |=| self.container.m_height ! .low
-        let c2 = v1 |=| self.container.m_height ! .high
+        let c1 = v0 |=| self.container.m_height ! .Low
+        let c2 = v1 |=| self.container.m_height ! .High
         
         XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultLow,  "Priority mismatch")
         XCTAssertEqual(self.container.constraints[1].priority, MortarAliasLayoutPriorityDefaultHigh, "Priority mismatch")
         
-        c1.changePriority(.high)
+        c1.changePriority(.High)
         c2.changePriority(300)
         
         XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultHigh, "Priority mismatch")
@@ -485,8 +485,8 @@ class MortarTests: XCTestCase {
         self.container |+| [v0, v1]
         
         let g1 = [
-            v0 |=| self.container.m_height ! .low,
-            v1 |=| self.container.m_height ! .high
+            v0 |=| self.container.m_height ! .Low,
+            v1 |=| self.container.m_height ! .High
         ]
         
         XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultLow,  "Priority mismatch")
@@ -503,7 +503,7 @@ class MortarTests: XCTestCase {
         
         self.container |+| v
         
-        v.m_size |=| (self.container.m_height ! .high, self.container.m_width + 20 ! .low)
+        v.m_size |=| (self.container.m_height ! .High, self.container.m_width + 20 ! .Low)
         
         XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultHigh, "Priority mismatch")
         XCTAssertEqual(self.container.constraints[1].priority, MortarAliasLayoutPriorityDefaultLow,  "Priority mismatch")
@@ -515,7 +515,7 @@ class MortarTests: XCTestCase {
         self.container |+| v
         
         let c1 = v.m_sides |=| self.container
-        let c2 = v.m_width |=| self.container ~~ .deactivated
+        let c2 = v.m_width |=| self.container ~~ .Deactivated
         
         XCTAssertEqual(self.container.constraints.count, 2, "Should have 4 constraints installed (ancestor)")
         XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
@@ -543,7 +543,7 @@ class MortarTests: XCTestCase {
         
         let g2 = [
             v.m_width |=| self.container
-        ] ~~ .deactivated
+        ] ~~ .Deactivated
         
         XCTAssertEqual(self.container.constraints.count, 4, "Should have 4 constraints installed (ancestor)")
         XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
