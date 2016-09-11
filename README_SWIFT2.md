@@ -400,13 +400,13 @@ group.deactivate()
 
 ### Replacing Constraints and Groups of Constraints
 
-Constraints and groups have a ```replace``` method that deactives the target and activates the parameter:
+Constraints and groups have a replaceWith method that deactives the target and activates the parameter:
 
 ```swift
 let constraint1 = view1.m_sides |=| view2
 let constraint2 = view1.m_width |=| view2 ~~ .Deactivated
 
-constraint1.replace(with: constraint2)
+constraint1.replaceWith(constraint2)
 
 let group1 = [
     view1.m_sides |<| view2,
@@ -417,7 +417,7 @@ let group2 = [
     view1.m_width |=| view2
 ] ~~ .Deactivated
 
-group1.replace(with: group2)
+group1.replaceWith(group2)
 ```
 
 # Visual View Hierarchy Creation
