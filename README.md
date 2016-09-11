@@ -1,5 +1,9 @@
 ![Mortar](/Development/Art/Banner.png)
 
+![Swift 2.2](https://img.shields.io/badge/Swift_2.2-%7E%3E%200.10-orange.svg?style=flat)
+![Swift 2.3](https://img.shields.io/badge/Swift_2.3-%7E%3E%200.11-orange.svg?style=flat)
+![Swift 3.0](https://img.shields.io/badge/Swift_3.0-%7E%3E%201.0-orange.svg?style=flat)
+
 Mortar allows you to create Auto Layout constraints using concise, simple code statements.
 
 Use this:
@@ -63,6 +67,10 @@ Or you can use a variety of ways to include the ```Mortar.framework``` file from
 
 # Swift Version Support
 
+![Swift 2.2](https://img.shields.io/badge/Swift_2.2-%7E%3E%200.10-orange.svg?style=flat)
+![Swift 2.3](https://img.shields.io/badge/Swift_2.3-%7E%3E%200.11-orange.svg?style=flat)
+![Swift 3.0](https://img.shields.io/badge/Swift_3.0-%7E%3E%201.0-orange.svg?style=flat)
+
 All versions of Mortar up to 0.10.4 were designed for Swift 2.2.  This is the last release planned for Swift 2.2.  You can
 force the usage of this version by specifying:
 
@@ -77,9 +85,11 @@ the only version family that will support Swift 2.3.  You can force usage of thi
 pod 'Mortar', '~> 0.11' 
 ```
 
-Version 1.0 will be the first release of Mortar that is compatible with Swift 3.0.
+Version 1.0.0 is the first release of Mortar that is compatible with Swift 3.0.
 
-> Note that 1.0 is not available at the time of writing this README.
+```ruby
+pod 'Mortar', '~> 1.0' 
+```
 
 # Usage
 
