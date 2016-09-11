@@ -1,10 +1,5 @@
 # Mortar Changelog
 
-## 1.0.0 -- 6/17/16
-
-* Initial release for Swift 3.0
-* Removed iOS7 compatibility code (use version 0.10.4 or 0.11.0)
-
 ## 0.11.0 -- 6/17/16 
 
 * Updated release for Swift 2.3
