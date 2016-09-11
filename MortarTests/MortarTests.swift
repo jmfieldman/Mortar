@@ -471,8 +471,8 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultLow,  "Priority mismatch")
         XCTAssertEqual(self.container.constraints[1].priority, MortarAliasLayoutPriorityDefaultHigh, "Priority mismatch")
         
-        c1.changePriority(.high)
-        c2.changePriority(300)
+        c1.changePriority(to: .high)
+        c2.changePriority(to: 300)
         
         XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultHigh, "Priority mismatch")
         XCTAssertEqual(self.container.constraints[1].priority, 300,                                  "Priority mismatch")
@@ -492,7 +492,7 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultLow,  "Priority mismatch")
         XCTAssertEqual(self.container.constraints[1].priority, MortarAliasLayoutPriorityDefaultHigh, "Priority mismatch")
         
-        g1.changePriority(300)
+        g1.changePriority(to: 300)
         
         XCTAssertEqual(self.container.constraints[0].priority, 300,                         "Priority mismatch")
         XCTAssertEqual(self.container.constraints[1].priority, 300,                         "Priority mismatch")
@@ -520,12 +520,12 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(self.container.constraints.count, 2, "Should have 4 constraints installed (ancestor)")
         XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
         
-        c1.replaceWith(c2)
+        c1.replace(with: c2)
         
         XCTAssertEqual(self.container.constraints.count, 1, "Should have 1 constraints installed (replaced)")
         XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
         
-        c2.replaceWith(c1)
+        c2.replace(with: c1)
         
         XCTAssertEqual(self.container.constraints.count, 2, "Should have 4 constraints installed (activated)")
         XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
@@ -548,12 +548,12 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(self.container.constraints.count, 4, "Should have 4 constraints installed (ancestor)")
         XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
         
-        g1.replaceWith(g2)
+        g1.replace(with: g2)
         
         XCTAssertEqual(self.container.constraints.count, 1, "Should have 1 constraints installed (replaced)")
         XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
         
-        g2.replaceWith(g1)
+        g2.replace(with: g1)
         
         XCTAssertEqual(self.container.constraints.count, 4, "Should have 4 constraints installed (activated)")
         XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
