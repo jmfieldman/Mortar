@@ -76,7 +76,7 @@ public class MortarConstraint {
         let sourceComponents = sourceAttribute.componentAttributes()
         
         if (targetComponents.count != sourceComponents.count) {
-            NSException(name: "Attribute size mismatch" as NSExceptionName,
+            NSException(name: "Attribute size mismatch",
                       reason: "Binding two attributes of different size [left: \(targetAttribute) -> \(targetComponents.count), right: \(sourceAttribute) -> \(sourceComponents.count)]",
                     userInfo: nil).raise()
         }
@@ -85,14 +85,14 @@ public class MortarConstraint {
         
         for i in 0 ..< targetComponents.count {
             guard let tLayoutAttribute = targetComponents[i].nsLayoutAttribute() else {
-                NSException(name: "Component Attribute does not have corresponding NSLayoutAttribute" as NSExceptionName,
+                NSException(name: "Component Attribute does not have corresponding NSLayoutAttribute",
                           reason: "Component Attribute does not have corresponding NSLayoutAttribute: \(targetComponents[i])",
                         userInfo: nil).raise()
                 continue
             }
             
             guard let sLayoutAttribute = sourceComponents[i].nsLayoutAttribute() else {
-                NSException(name: "Component Attribute does not have corresponding NSLayoutAttribute" as NSExceptionName,
+                NSException(name: "Component Attribute does not have corresponding NSLayoutAttribute",
                           reason: "Component Attribute does not have corresponding NSLayoutAttribute: \(sourceComponents[i])",
                         userInfo: nil).raise()
                 continue
@@ -107,7 +107,7 @@ public class MortarConstraint {
                                             constant: sourceMortar.constant[i])
             
             constraint.priority = (sourceMortar.priority ?? targetMortar.priority) ?? MortarDefault.priority.current()
-            constraint.isActive = true
+            constraint.m_active = true
             layoutConstraints.append(constraint)
         }        
     }
@@ -242,18 +242,19 @@ public class MortarConstraint {
     }
     
     public func activate() -> MortarConstraint {
-        NSLayoutConstraint.activate(self.layoutConstraints)
+        NSLayoutConstraint.m_activateConstraints(self.layoutConstraints)
         return self
     }
     
     public func deactivate() -> MortarConstraint {
-        NSLayoutConstraint.deactivate(self.layoutConstraints)
+        NSLayoutConstraint.m_deactivateConstraints(self.layoutConstraints)
         return self
     }
     
     public func replaceWith(_ newConstraint: MortarConstraint) -> MortarConstraint {
-        _ = self.deactivate()
-        return newConstraint.activate()
+        self.deactivate()
+        newConstraint.activate()
+        return newConstraint
     }
     
     public func changePriority(_ newPriority: MortarAliasLayoutPriority) -> MortarConstraint {

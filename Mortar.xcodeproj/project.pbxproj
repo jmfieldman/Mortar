@@ -18,6 +18,7 @@
 		35BBBBFE1C6D3C600014B159 /* Mortar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BBBBF71C6D3C600014B159 /* Mortar.swift */; };
 		35BBBBFF1C6D3C600014B159 /* Array+Mortar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BBBBF81C6D3C600014B159 /* Array+Mortar.swift */; };
 		35BBBC001C6D3C600014B159 /* View+Mortar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BBBBF91C6D3C600014B159 /* View+Mortar.swift */; };
+		A05F7A1B1C7F98E300428578 /* LayoutConstraint+Mortar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05F7A1A1C7F98E300428578 /* LayoutConstraint+Mortar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		35BBBBF71C6D3C600014B159 /* Mortar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mortar.swift; sourceTree = "<group>"; };
 		35BBBBF81C6D3C600014B159 /* Array+Mortar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Mortar.swift"; sourceTree = "<group>"; };
 		35BBBBF91C6D3C600014B159 /* View+Mortar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Mortar.swift"; sourceTree = "<group>"; };
+		A05F7A1A1C7F98E300428578 /* LayoutConstraint+Mortar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LayoutConstraint+Mortar.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				35BBBBF41C6D3C600014B159 /* MortarGroup.swift */,
 				35BBBBF81C6D3C600014B159 /* Array+Mortar.swift */,
 				35BBBBF91C6D3C600014B159 /* View+Mortar.swift */,
+				A05F7A1A1C7F98E300428578 /* LayoutConstraint+Mortar.swift */,
 				35BBBBDC1C6D3BBD0014B159 /* Mortar.h */,
 				35BBBBDE1C6D3BBD0014B159 /* Info.plist */,
 			);
@@ -178,7 +181,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Jason Fieldman";
 				TargetAttributes = {
 					35BBBBD81C6D3BBD0014B159 = {
@@ -234,6 +237,7 @@
 				35BBBBFF1C6D3C600014B159 /* Array+Mortar.swift in Sources */,
 				35BBBBFB1C6D3C600014B159 /* MortarGroup.swift in Sources */,
 				35BBBBFE1C6D3C600014B159 /* Mortar.swift in Sources */,
+				A05F7A1B1C7F98E300428578 /* LayoutConstraint+Mortar.swift in Sources */,
 				35A31A8B1CCBACCA007E1068 /* MortarDefaultStack.swift in Sources */,
 				35BBBC001C6D3C600014B159 /* View+Mortar.swift in Sources */,
 				35BBBBFD1C6D3C600014B159 /* MortarAttribute.swift in Sources */,
@@ -298,7 +302,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -340,7 +344,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
