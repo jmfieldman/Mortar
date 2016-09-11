@@ -47,7 +47,6 @@ public class MortarAttribute {
     internal var priority: MortarAliasLayoutPriority?
 
     
-    
     /**
      Initialize a Mortar object to represent the layout attribute of a particular item.
      
@@ -61,8 +60,6 @@ public class MortarAttribute {
         self.attribute = attribute
     }
     
-    
-    
     /**
      Create a Mortar Attribute that represents an attribute-less item
      
@@ -73,8 +70,6 @@ public class MortarAttribute {
     internal convenience init(item: AnyObject) {
         self.init(item: item, attribute: nil)
     }
-    
-    
     
     /**
      Create a Mortar Attribute that represents a constant metric

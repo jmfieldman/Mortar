@@ -241,29 +241,29 @@ public class MortarConstraint {
         }
     }
     
-    @discardableResult public func activate() -> MortarConstraint {
+    public func activate() -> MortarConstraint {
         NSLayoutConstraint.activate(self.layoutConstraints)
         return self
     }
     
-    @discardableResult public func deactivate() -> MortarConstraint {
+    public func deactivate() -> MortarConstraint {
         NSLayoutConstraint.deactivate(self.layoutConstraints)
         return self
     }
     
-    @discardableResult public func replaceWith(_ newConstraint: MortarConstraint) -> MortarConstraint {
+    public func replaceWith(_ newConstraint: MortarConstraint) -> MortarConstraint {
         _ = self.deactivate()
         return newConstraint.activate()
     }
     
-    @discardableResult public func changePriority(_ newPriority: MortarAliasLayoutPriority) -> MortarConstraint {
+    public func changePriority(_ newPriority: MortarAliasLayoutPriority) -> MortarConstraint {
         for constraint in layoutConstraints {
             constraint.priority = newPriority
         }
         return self
     }
     
-    @discardableResult public func changePriority(_ newPriority: MortarLayoutPriority) -> MortarConstraint {
+    public func changePriority(_ newPriority: MortarLayoutPriority) -> MortarConstraint {
         for constraint in layoutConstraints {
             constraint.priority = newPriority.layoutPriority()
         }
