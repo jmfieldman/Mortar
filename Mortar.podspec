@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Mortar"
-  s.version      = "0.11.0"
+  s.version      = "0.11.1"
   s.summary      = "Auto Layout in Swift using concise, powerful, flexible syntax"
 
   s.description  = <<-DESC
@@ -21,5 +21,8 @@ Pod::Spec.new do |s|
   s.source_files = "Mortar/*.swift"
 
   s.requires_arc = true
+
+  #s.swift_version = '2.3'
+  s.xcconfig = { 'SWIFT_VERSION' => '2.3' }
 
 end

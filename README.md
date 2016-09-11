@@ -70,7 +70,7 @@ force the usage of this version by specifying:
 pod 'Mortar', '~> 0.10' 
 ```
 
-Version 0.11.0 is the planned release for Swift 2.3.  Any bugfixes will be released in the 0.11.x version family.  0.11.x is
+Version 0.11.1 is the release for Swift 2.3 compiled against the Xcode8 GM seed.  Any bugfixes will be released in the 0.11.x version family.  0.11.x is
 the only version family that will support Swift 2.3.  You can force usage of this version family by specifying:
 
 ```ruby
