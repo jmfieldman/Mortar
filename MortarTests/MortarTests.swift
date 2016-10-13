@@ -559,6 +559,36 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
     }
     
+    func testCreate() {
+        let v = MortarView.m_create { obj in
+            
+        }
+        
+        self.container |+| v
+        
+        let g1 = [
+            v.m_sides |=| self.container,
+            v.m_caps  |=| self.container,
+            ]
+        
+        let g2 = [
+            v.m_width |=| self.container
+            ] ~~ .deactivated
+        
+        XCTAssertEqual(self.container.constraints.count, 4, "Should have 4 constraints installed (ancestor)")
+        XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+        
+        g1.replace(with: g2)
+        
+        XCTAssertEqual(self.container.constraints.count, 1, "Should have 1 constraints installed (replaced)")
+        XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+        
+        g2.replace(with: g1)
+        
+        XCTAssertEqual(self.container.constraints.count, 4, "Should have 4 constraints installed (activated)")
+        XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+    }
+    
     #if os(iOS)
     func testLayoutGuides() {
         let v1  = MortarView()

@@ -471,3 +471,39 @@ Alternatively, if you want to see the upper subviews at the beginning of the arr
         backgroundView        
     ]
 ```
+
+### Initializing NSObject at Creation
+
+Mortar extends ```NSObject``` with the ```m_create``` class function.  This class function performs a parameter-less
+instantiation of the class, and passes the new instance into the provided closure.  This allows you to configure
+an instance at creation-time, which is really nice for compartmentalizing view configuration.
+
+As you can see in the below example, configuration of the view is separated from the code needed to attach it
+to the view controller hierarchy and layout.
+
+```swift
+class MyController: UIViewController {
+
+    // Instantiation/configuration
+    let myLabel = UILabel.m_create {
+        $0.text          = "Some Text"
+        $0.textAlignment = .center
+        $0.textColor     = .red
+    }
+
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Hierarchy
+        self.view |+| [
+            myLabel
+        ]
+
+        // Layout
+        myLabel.m_top     |=| self.view
+        myLabel.m_centerX |=| self.view
+    }
+}
+```
+

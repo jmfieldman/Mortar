@@ -1,5 +1,10 @@
 # Mortar Changelog
 
+## 1.0.1 -- 10/13/16
+
+* Addressed podspec issues for cocoapods
+* Added ```m_create```
+
 ## 1.0.0 -- 9/11/16
 
 * Updated to support Swift 3.0
