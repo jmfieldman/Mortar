@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		355FCD251DAFDD3F0095C596 /* NSObject+Mortar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355FCD241DAFDD3F0095C596 /* NSObject+Mortar.swift */; };
-		3585ABAF1D85DD630063299C /* README_SWIFT2.md in Sources */ = {isa = PBXBuildFile; fileRef = 3585ABAE1D85DD630063299C /* README_SWIFT2.md */; };
 		35A31A8B1CCBACCA007E1068 /* MortarDefaultStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A31A8A1CCBACCA007E1068 /* MortarDefaultStack.swift */; };
 		35BBBBDD1C6D3BBD0014B159 /* Mortar.h in Headers */ = {isa = PBXBuildFile; fileRef = 35BBBBDC1C6D3BBD0014B159 /* Mortar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		35BBBBE41C6D3BBD0014B159 /* Mortar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35BBBBD91C6D3BBD0014B159 /* Mortar.framework */; };
@@ -249,7 +248,6 @@
 				35BBBC001C6D3C600014B159 /* View+Mortar.swift in Sources */,
 				35BBBBFD1C6D3C600014B159 /* MortarAttribute.swift in Sources */,
 				35BBBBFC1C6D3C600014B159 /* MortarOperators.swift in Sources */,
-				3585ABAF1D85DD630063299C /* README_SWIFT2.md in Sources */,
 				35BBBBFA1C6D3C600014B159 /* MortarConstraint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
