@@ -112,18 +112,18 @@ internal enum MortarLayoutAttribute {
     #else
     func nsLayoutAttribute() -> NSLayoutAttribute? {
         switch self {
-        case .Left:                     return .Left
-        case .Right:                    return .Right
-        case .Top:                      return .Top
-        case .Bottom:                   return .Bottom
-        case .Leading:                  return .Leading
-        case .Trailing:                 return .Trailing
-        case .Width:                    return .Width
-        case .Height:                   return .Height
-        case .CenterX:                  return .CenterX
-        case .CenterY:                  return .CenterY
-        case .Baseline:                 return .Baseline
-        case .NotAnAttribute:           return .NotAnAttribute
+        case .left:                     return .left
+        case .right:                    return .right
+        case .top:                      return .top
+        case .bottom:                   return .bottom
+        case .leading:                  return .leading
+        case .trailing:                 return .trailing
+        case .width:                    return .width
+        case .height:                   return .height
+        case .centerX:                  return .centerX
+        case .centerY:                  return .centerY
+        case .baseline:                 return .lastBaseline
+        case .notAnAttribute:           return .notAnAttribute
         default:                        return nil
         }
     }
@@ -170,29 +170,29 @@ internal enum MortarLayoutAttribute {
     #else
     func componentAttributes() -> [MortarLayoutAttribute] {
         switch self {
-        case .Left:                     return [.Left                                   ]
-        case .Right:                    return [.Right                                  ]
-        case .Top:                      return [.Top                                    ]
-        case .Bottom:                   return [.Bottom                                 ]
-        case .Leading:                  return [.Leading                                ]
-        case .Trailing:                 return [.Trailing                               ]
-        case .Width:                    return [.Width                                  ]
-        case .Height:                   return [.Height                                 ]
-        case .CenterX:                  return [.CenterX                                ]
-        case .CenterY:                  return [.CenterY                                ]
-        case .Baseline:                 return [.Baseline                               ]
-        case .NotAnAttribute:           return [.NotAnAttribute                         ]
+        case .left:                     return [.left                                   ]
+        case .right:                    return [.right                                  ]
+        case .top:                      return [.top                                    ]
+        case .bottom:                   return [.bottom                                 ]
+        case .leading:                  return [.leading                                ]
+        case .trailing:                 return [.trailing                               ]
+        case .width:                    return [.width                                  ]
+        case .height:                   return [.height                                 ]
+        case .centerX:                  return [.centerX                                ]
+        case .centerY:                  return [.centerY                                ]
+        case .baseline:                 return [.baseline                               ]
+        case .notAnAttribute:           return [.notAnAttribute                         ]
         
-        case .Sides:                    return [.Left,    .Right                        ]
-        case .Caps:                     return [.Top,     .Bottom                       ]
-        case .Size:                     return [.Width,   .Height                       ]
-        case .CornerTL:                 return [.Top,     .Left                         ]
-        case .CornerTR:                 return [.Top,     .Right                        ]
-        case .CornerBL:                 return [.Bottom,  .Left                         ]
-        case .CornerBR:                 return [.Bottom,  .Right                        ]
-        case .Edges:                    return [.Top,     .Left,    .Bottom,  .Right    ]
-        case .Frame:                    return [.Left,    .Top,     .Width,   .Height   ]
-        case .Center:                   return [.CenterX, .CenterY                      ]
+        case .sides:                    return [.left,    .right                        ]
+        case .caps:                     return [.top,     .bottom                       ]
+        case .size:                     return [.width,   .height                       ]
+        case .cornerTL:                 return [.top,     .left                         ]
+        case .cornerTR:                 return [.top,     .right                        ]
+        case .cornerBL:                 return [.bottom,  .left                         ]
+        case .cornerBR:                 return [.bottom,  .right                        ]
+        case .edges:                    return [.top,     .left,    .bottom,  .right    ]
+        case .frame:                    return [.left,    .top,     .width,   .height   ]
+        case .center:                   return [.centerX, .centerY                      ]
         }
     }
     #endif
@@ -214,13 +214,13 @@ internal enum MortarLayoutAttribute {
     #else
     func implicitSuperviewBaseline() -> NSLayoutAttribute {
         switch self {
-        case .Left:                     return .Left
-        case .Right:                    return .Left
-        case .Top:                      return .Top
-        case .Bottom:                   return .Top
-        case .CenterX:                  return .Left
-        case .CenterY:                  return .Top
-        default:                        return .NotAnAttribute
+        case .left:                     return .left
+        case .right:                    return .left
+        case .top:                      return .top
+        case .bottom:                   return .top
+        case .centerX:                  return .left
+        case .centerY:                  return .top
+        default:                        return .notAnAttribute
         }
     }
     #endif
