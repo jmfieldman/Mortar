@@ -1,5 +1,9 @@
 # Mortar Changelog
 
+## 1.0.2 -- 11/5/16
+
+* Fixes for macOS support
+
 ## 1.0.1 -- 10/13/16
 
 * Addressed podspec issues for cocoapods

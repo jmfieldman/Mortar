@@ -11,8 +11,8 @@ import Foundation
 
 /* -- Defaults Stack -- */
 
-internal var defaultPriorityStack: [UILayoutPriority] = []
-internal var defaultPriorityBase:   UILayoutPriority  = MortarAliasLayoutPriorityDefaultNormal
+internal var defaultPriorityStack: [MortarAliasLayoutPriority] = []
+internal var defaultPriorityBase:   MortarAliasLayoutPriority  = MortarAliasLayoutPriorityDefaultNormal
 
 /**
  The available defaults stacks.
@@ -28,7 +28,7 @@ public enum MortarDefault {
      
      - parameter newValue: The new value for the default.
      */
-    public func set(base newValue: UILayoutPriority) {
+    public func set(base newValue: MortarAliasLayoutPriority) {
         if !Thread.current.isMainThread {
             NSException(name: NSExceptionName(rawValue: "InvalidSetState"), reason: "Can only set state on main thread", userInfo: nil).raise()
         }
@@ -68,7 +68,7 @@ public enum MortarDefault {
      
      - parameter value: The new default priority.
      */
-    public func push(_ value: UILayoutPriority) {
+    public func push(_ value: MortarAliasLayoutPriority) {
         if !Thread.current.isMainThread {
             NSException(name: NSExceptionName(rawValue: "InvalidPushState"), reason: "Can only push state on main thread", userInfo: nil).raise()
         }
@@ -122,7 +122,7 @@ public enum MortarDefault {
         }
     }
     
-    internal func current() -> UILayoutPriority {
+    internal func current() -> MortarAliasLayoutPriority {
         switch self {
         case .priority:
             guard defaultPriorityStack.count > 0 else {
