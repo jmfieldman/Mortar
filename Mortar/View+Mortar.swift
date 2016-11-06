@@ -67,17 +67,17 @@ public extension MortarView {
     
     // -------- Compression Resistance --------
     
-    public var m_compressionH: MortarAliasLayoutPriority {
+    public var m_compResistH: MortarAliasLayoutPriority {
         set { self.setContentCompressionResistancePriority(newValue, for: .horizontal) }
         get { return self.contentCompressionResistancePriority(for: .horizontal) }
     }
     
-    public var m_compressionV: MortarAliasLayoutPriority {
+    public var m_compResistV: MortarAliasLayoutPriority {
         set { self.setContentCompressionResistancePriority(newValue, for: .vertical) }
         get { return self.contentCompressionResistancePriority(for: .vertical) }
     }
     
-    public var m_compression: MortarAliasLayoutPriority {
+    public var m_compResist: MortarAliasLayoutPriority {
         set {
             self.setContentCompressionResistancePriority(newValue, for: .horizontal)
             self.setContentCompressionResistancePriority(newValue, for: .vertical)

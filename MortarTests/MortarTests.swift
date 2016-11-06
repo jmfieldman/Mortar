@@ -594,18 +594,18 @@ class MortarTests: XCTestCase {
         let v2 = MortarView()
         let v3 = MortarView()
         
-        v1.m_compression  = 343
-        v2.m_compressionH = 341
-        v3.m_compressionV = 342
+        v1.m_compResist  = 343
+        v2.m_compResistH = 341
+        v3.m_compResistV = 342
         
-        XCTAssertEqual(v1.m_compressionH, 343, "Compression Issue")
-        XCTAssertEqual(v1.m_compressionV, 343, "Compression Issue")
+        XCTAssertEqual(v1.m_compResistH, 343, "Compression Issue")
+        XCTAssertEqual(v1.m_compResistV, 343, "Compression Issue")
         
-        XCTAssertEqual(v2.m_compressionH, 341, "Compression Issue")
-        XCTAssertNotEqual(v2.m_compressionV, 341, "Compression Issue")
+        XCTAssertEqual(v2.m_compResistH, 341, "Compression Issue")
+        XCTAssertNotEqual(v2.m_compResistV, 341, "Compression Issue")
         
-        XCTAssertNotEqual(v3.m_compressionH, 342, "Compression Issue")
-        XCTAssertEqual(v3.m_compressionV, 342, "Compression Issue")
+        XCTAssertNotEqual(v3.m_compResistH, 342, "Compression Issue")
+        XCTAssertEqual(v3.m_compResistV, 342, "Compression Issue")
     }
     
     func testHugging() {
