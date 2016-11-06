@@ -353,12 +353,12 @@ class MortarTests: XCTestCase {
         
         v0 |=| self.container.m_height
         v1 |=| self.container.m_height ! .low
-        v2 |=| self.container.m_height ! .default
+        v2 |=| self.container.m_height ! .medium
         v3 |=| self.container.m_height ! .high
         v4 |=| self.container.m_height ! .required
         v5 |=| self.container.m_height ! 300
         
-        XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultMedium,      "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultRequired,    "Priority mismatch")
         XCTAssertEqual(self.container.constraints[1].priority, MortarAliasLayoutPriorityDefaultLow,         "Priority mismatch")
         XCTAssertEqual(self.container.constraints[2].priority, MortarAliasLayoutPriorityDefaultMedium,      "Priority mismatch")
         XCTAssertEqual(self.container.constraints[3].priority, MortarAliasLayoutPriorityDefaultHigh,        "Priority mismatch")
@@ -382,7 +382,7 @@ class MortarTests: XCTestCase {
         
         v1 |=| self.container.m_height
         
-        MortarDefault.priority.set(base: .default)
+        MortarDefault.priority.set(base: .medium)
         
         v2 |=| self.container.m_height
         
@@ -398,9 +398,9 @@ class MortarTests: XCTestCase {
         
         v5 |=| self.container.m_height
         
-        MortarDefault.priority.set(base: .default)
+        MortarDefault.priority.set(base: .medium)
         
-        XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultMedium,      "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultRequired,    "Priority mismatch")
         XCTAssertEqual(self.container.constraints[1].priority, MortarAliasLayoutPriorityDefaultLow,         "Priority mismatch")
         XCTAssertEqual(self.container.constraints[2].priority, MortarAliasLayoutPriorityDefaultMedium,      "Priority mismatch")
         XCTAssertEqual(self.container.constraints[3].priority, MortarAliasLayoutPriorityDefaultHigh,        "Priority mismatch")
@@ -423,7 +423,7 @@ class MortarTests: XCTestCase {
         
         v0 |=| self.container.m_height
         v1 |=| self.container.m_height ! .low
-        v2 |=| self.container.m_height ! .default
+        v2 |=| self.container.m_height ! .medium
         
         MortarDefault.priority.push(.high)
         
@@ -587,6 +587,44 @@ class MortarTests: XCTestCase {
         
         XCTAssertEqual(self.container.constraints.count, 4, "Should have 4 constraints installed (activated)")
         XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+    }
+    
+    func testCompression() {
+        let v1 = MortarView()
+        let v2 = MortarView()
+        let v3 = MortarView()
+        
+        v1.m_compression  = 343
+        v2.m_compressionH = 341
+        v3.m_compressionV = 342
+        
+        XCTAssertEqual(v1.m_compressionH, 343, "Compression Issue")
+        XCTAssertEqual(v1.m_compressionV, 343, "Compression Issue")
+        
+        XCTAssertEqual(v2.m_compressionH, 341, "Compression Issue")
+        XCTAssertNotEqual(v2.m_compressionV, 341, "Compression Issue")
+        
+        XCTAssertNotEqual(v3.m_compressionH, 342, "Compression Issue")
+        XCTAssertEqual(v3.m_compressionV, 342, "Compression Issue")
+    }
+    
+    func testHugging() {
+        let v1 = MortarView()
+        let v2 = MortarView()
+        let v3 = MortarView()
+        
+        v1.m_hugging  = 343
+        v2.m_huggingH = 341
+        v3.m_huggingV = 342
+        
+        XCTAssertEqual(v1.m_huggingH, 343, "Hugging Issue")
+        XCTAssertEqual(v1.m_huggingV, 343, "Hugging Issue")
+        
+        XCTAssertEqual(v2.m_huggingH, 341, "Hugging Issue")
+        XCTAssertNotEqual(v2.m_huggingV, 341, "Hugging Issue")
+        
+        XCTAssertNotEqual(v3.m_huggingH, 342, "Hugging Issue")
+        XCTAssertEqual(v3.m_huggingV, 342, "Hugging Issue")
     }
     
     #if os(iOS)

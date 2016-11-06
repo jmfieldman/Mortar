@@ -243,7 +243,7 @@ public enum MortarLayoutPriority {
     @available(*, deprecated, message: "The default priority enumeration has been renamed medium")
     case `default`
     
-    public func layoutPriority() -> MortarAliasLayoutPriority {
+    @inline(__always) public func layoutPriority() -> MortarAliasLayoutPriority {
         switch self {
         case .low:      return MortarAliasLayoutPriorityDefaultLow
         case .medium:   return MortarAliasLayoutPriorityDefaultMedium
@@ -318,7 +318,6 @@ extension Float : MortarCGFloatable {
         return CGFloat(self)
     }
 }
-
 
 public protocol MortarAttributable {
     @inline(__always) func m_intoAttribute() -> MortarAttribute
