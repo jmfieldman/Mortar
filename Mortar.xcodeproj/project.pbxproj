@@ -34,6 +34,7 @@
 /* Begin PBXFileReference section */
 		355FCD241DAFDD3F0095C596 /* NSObject+Mortar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+Mortar.swift"; sourceTree = "<group>"; };
 		355FCD261DAFE2290095C596 /* .swift-version */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ".swift-version"; sourceTree = SOURCE_ROOT; };
+		356CCBEC1DCFBCE400F25AE2 /* README_DEFAULTS.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README_DEFAULTS.md; sourceTree = SOURCE_ROOT; };
 		3585ABAD1D85C7D60063299C /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = SOURCE_ROOT; };
 		3585ABAE1D85DD630063299C /* README_SWIFT2.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README_SWIFT2.md; sourceTree = SOURCE_ROOT; };
 		35964B221CBE8E6700E54D22 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
@@ -102,6 +103,7 @@
 				3585ABAD1D85C7D60063299C /* .travis.yml */,
 				35964B221CBE8E6700E54D22 /* README.md */,
 				3585ABAE1D85DD630063299C /* README_SWIFT2.md */,
+				356CCBEC1DCFBCE400F25AE2 /* README_DEFAULTS.md */,
 				35964B231CBE8E6700E54D22 /* Mortar.podspec */,
 				35964B241CBE8E6700E54D22 /* CHANGELOG.md */,
 				35964B251CBE8E6700E54D22 /* CONTRIBUTORS.md */,

@@ -36,8 +36,9 @@ Other examples:
 [view.m_sides, view.m_bottom, view.m_height] |=| [container, container, 200]
 ```
 
-> This README reflects the updated syntax and constants used in the Swift 3 Mortar release.
-> For the Swift 2.x documentation, refer to the ```README_SWIFT2.md``` file.
+#### Updating from a version prior to v1.1? Read this!
+
+> A change in the default Mortar constraint priority took effect in v1.1.  Please read the README_DEFAULTS.md file for more information. 
 
 # Why?
 
