@@ -27,20 +27,20 @@ import UIKit
 public typealias MortarView = UIView
 public typealias MortarAliasLayoutPriority = UILayoutPriority
 
-let MortarAliasLayoutPriorityDefaultLow      =  UILayoutPriorityDefaultLow
-let MortarAliasLayoutPriorityDefaultNormal   = (UILayoutPriorityDefaultHigh + UILayoutPriorityDefaultLow) / 2
-let MortarAliasLayoutPriorityDefaultHigh     =  UILayoutPriorityDefaultHigh
-let MortarAliasLayoutPriorityDefaultRequired =  UILayoutPriorityRequired
+internal let MortarAliasLayoutPriorityDefaultLow      =  UILayoutPriorityDefaultLow
+internal let MortarAliasLayoutPriorityDefaultMedium   = (UILayoutPriorityDefaultHigh + UILayoutPriorityDefaultLow) / 2
+internal let MortarAliasLayoutPriorityDefaultHigh     =  UILayoutPriorityDefaultHigh
+internal let MortarAliasLayoutPriorityDefaultRequired =  UILayoutPriorityRequired
     
 #else
 import AppKit
 public typealias MortarView = NSView
 public typealias MortarAliasLayoutPriority = NSLayoutPriority
 
-let MortarAliasLayoutPriorityDefaultLow      =  NSLayoutPriorityDefaultLow
-let MortarAliasLayoutPriorityDefaultNormal   = (NSLayoutPriorityDefaultHigh + NSLayoutPriorityDefaultLow) / 2
-let MortarAliasLayoutPriorityDefaultHigh     =  NSLayoutPriorityDefaultHigh
-let MortarAliasLayoutPriorityDefaultRequired =  NSLayoutPriorityRequired
+internal let MortarAliasLayoutPriorityDefaultLow      =  NSLayoutPriorityDefaultLow
+internal let MortarAliasLayoutPriorityDefaultMedium   = (NSLayoutPriorityDefaultHigh + NSLayoutPriorityDefaultLow) / 2
+internal let MortarAliasLayoutPriorityDefaultHigh     =  NSLayoutPriorityDefaultHigh
+internal let MortarAliasLayoutPriorityDefaultRequired =  NSLayoutPriorityRequired
 
 #endif
 
@@ -235,14 +235,24 @@ internal enum MortarLayoutAttribute {
 }
 
 public enum MortarLayoutPriority {
-    case low, `default`, high, required
+    case low, medium, high, required
     
-    public func layoutPriority() -> MortarAliasLayoutPriority {
+    // As of v1.1, the actual default priority is .required.  
+    // "default" is a misleading term for this enum.
+    // Medium is a better term for the priority between low and high.
+    @available(*, deprecated, message: "The default priority enumeration has been renamed medium")
+    case `default`
+    
+    @inline(__always) public func layoutPriority() -> MortarAliasLayoutPriority {
         switch self {
         case .low:      return MortarAliasLayoutPriorityDefaultLow
-        case .default:  return MortarAliasLayoutPriorityDefaultNormal
+        case .medium:   return MortarAliasLayoutPriorityDefaultMedium
         case .high:     return MortarAliasLayoutPriorityDefaultHigh
         case .required: return MortarAliasLayoutPriorityDefaultRequired
+        
+        // Please note that this is a misleading enum value that remains MortarAliasLayoutPriorityDefaultMedium
+        // for compatibility reasons.  The actual default priority of a constraint is now 1000/.required
+        case .default:  return MortarAliasLayoutPriorityDefaultMedium
         }
     }
 }
@@ -308,7 +318,6 @@ extension Float : MortarCGFloatable {
         return CGFloat(self)
     }
 }
-
 
 public protocol MortarAttributable {
     @inline(__always) func m_intoAttribute() -> MortarAttribute

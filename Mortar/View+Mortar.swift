@@ -30,6 +30,8 @@ import AppKit
 
 public extension MortarView {
     
+    // -------- Mortar Attributes --------
+    
     public var m_left:                  MortarAttribute { get { return MortarAttribute(item: self, attribute: .left                   ) } }
     public var m_right:                 MortarAttribute { get { return MortarAttribute(item: self, attribute: .right                  ) } }
     public var m_top:                   MortarAttribute { get { return MortarAttribute(item: self, attribute: .top                    ) } }
@@ -62,6 +64,52 @@ public extension MortarView {
     public var m_edges:                 MortarAttribute { get { return MortarAttribute(item: self, attribute: .edges                  ) } }
     public var m_frame:                 MortarAttribute { get { return MortarAttribute(item: self, attribute: .frame                  ) } }
     public var m_center:                MortarAttribute { get { return MortarAttribute(item: self, attribute: .center                 ) } }
+    
+    // -------- Compression Resistance --------
+    
+    public var m_compResistH: MortarAliasLayoutPriority {
+        set { self.setContentCompressionResistancePriority(newValue, for: .horizontal) }
+        get { return self.contentCompressionResistancePriority(for: .horizontal) }
+    }
+    
+    public var m_compResistV: MortarAliasLayoutPriority {
+        set { self.setContentCompressionResistancePriority(newValue, for: .vertical) }
+        get { return self.contentCompressionResistancePriority(for: .vertical) }
+    }
+    
+    public var m_compResist: MortarAliasLayoutPriority {
+        set {
+            self.setContentCompressionResistancePriority(newValue, for: .horizontal)
+            self.setContentCompressionResistancePriority(newValue, for: .vertical)
+        }
+        get {
+            NSException(name: NSExceptionName(rawValue: "InvalidGetter"), reason: "You must get m_compressionH and m_compressionV independently", userInfo: nil).raise()
+            return 0
+        }
+    }
+    
+    // -------- Content Hugging --------
+    
+    public var m_huggingH: MortarAliasLayoutPriority {
+        set { self.setContentHuggingPriority(newValue, for: .horizontal) }
+        get { return self.contentHuggingPriority(for: .horizontal) }
+    }
+    
+    public var m_huggingV: MortarAliasLayoutPriority {
+        set { self.setContentHuggingPriority(newValue, for: .vertical) }
+        get { return self.contentHuggingPriority(for: .vertical) }
+    }
+    
+    public var m_hugging: MortarAliasLayoutPriority {
+        set {
+            self.setContentHuggingPriority(newValue, for: .horizontal)
+            self.setContentHuggingPriority(newValue, for: .vertical)
+        }
+        get {
+            NSException(name: NSExceptionName(rawValue: "InvalidGetter"), reason: "You must get m_compressionH and m_compressionV independently", userInfo: nil).raise()
+            return 0
+        }
+    }
     
 }
 

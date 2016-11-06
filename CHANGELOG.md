@@ -1,5 +1,9 @@
 # Mortar Changelog
 
+## 1.1.0 -- 11/6/16
+
+* Changed default constaint priority to .required
+
 ## 1.0.2 -- 11/5/16
 
 * Fixes for macOS support

@@ -12,7 +12,7 @@ import Foundation
 /* -- Defaults Stack -- */
 
 internal var defaultPriorityStack: [MortarAliasLayoutPriority] = []
-internal var defaultPriorityBase:   MortarAliasLayoutPriority  = MortarAliasLayoutPriorityDefaultNormal
+internal var defaultPriorityBase:   MortarAliasLayoutPriority  = MortarAliasLayoutPriorityDefaultRequired
 
 /**
  The available defaults stacks.

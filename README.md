@@ -36,8 +36,9 @@ Other examples:
 [view.m_sides, view.m_bottom, view.m_height] |=| [container, container, 200]
 ```
 
-> This README reflects the updated syntax and constants used in the Swift 3 Mortar release.
-> For the Swift 2.x documentation, refer to the ```README_SWIFT2.md``` file.
+#### Updating from a version prior to v1.1? Read this!
+
+> A change in the default Mortar constraint priority took effect in v1.1.  Please read the README_DEFAULTS.md file for more information. 
 
 # Why?
 
@@ -434,6 +435,41 @@ let group2 = [
 
 group1.replace(with: group2)
 ```
+
+## Compression Resistance and Content Hugging
+
+Mortar provides some shorthand properties to adjust a view's compression resistance and content hugging priorities:
+
+```swift
+// Set both horizontal and vertical compression resistance priority simultaneously:
+view1.m_compResist = 1
+
+// Set horizontal and vertical compression resistance independently:
+view1.m_compResistH = 300
+view1.m_compResistV = 800
+
+// Set both horizontal and vertical content hugging priority simultaneously:
+view1.m_hugging = 1
+
+// Set horizontal and vertical content hugging independently:
+view1.m_huggingH = 300
+view1.m_huggingV = 800
+```
+
+You can get the horizontal and vertical values independently, but not together:
+
+```swift
+// These getters are fine:
+let c1 = view1.m_compResistH
+let c2 = view1.m_compResistV
+let h1 = view1.m_huggingH
+let h2 = view1.m_huggingV
+
+// These getters raise exceptions:
+let cr = view1.m_compResist
+let hg = view1.m_hugging
+```
+
 
 # Visual View Hierarchy Creation
 
