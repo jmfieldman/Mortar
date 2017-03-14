@@ -56,5 +56,15 @@ public extension Array where Element: MortarView {
     public var m_edges:                 [MortarAttribute] { let z = self.map({ $0.m_intoAttribute() }); z.forEach({$0.attribute = .edges                  }); return z }
     public var m_frame:                 [MortarAttribute] { let z = self.map({ $0.m_intoAttribute() }); z.forEach({$0.attribute = .frame                  }); return z }
     public var m_center:                [MortarAttribute] { let z = self.map({ $0.m_intoAttribute() }); z.forEach({$0.attribute = .center                 }); return z }
-    
+
+    @discardableResult
+    public func constrainH(inside: UIView? = nil, from: MortarAttribute? = nil, to: MortarAttribute? = nil, debug: Bool = false) -> [MortarConstraint] {
+        return linearConstrain(self, axis: .horizontal, inside: inside, from: from, to: to, debug: debug)
+    }
+
+    @discardableResult
+    public func constrainV(inside: UIView? = nil, from: MortarAttribute? = nil, to: MortarAttribute? = nil, debug: Bool = false) -> [MortarConstraint] {
+        return linearConstrain(self, axis: .vertical, inside: inside, from: from, to: to, debug: debug)
+    }
+
 }

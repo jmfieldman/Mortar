@@ -646,5 +646,118 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(vc.view.constraints.count, 8, "Should have 4 constraints installed (ancestor)")
     }
     #endif
+
+    func testLinearLayoutV() {
+        let v1 = UILabel()
+        let v2 = UILabel()
+        let v3 = UILabel()
+        let s1 = MortarPadView(wt:1)
+        let s2 = MortarPadView(c:10)
+        let s3 = MortarPadView(wt:0.5)
+
+        let views = [v1, s1, v2, s2, v3, s3]
+        self.container |+| views
+
+        let linearConstraints = views.constrainV(inside: container)
+
+        let nsConstraints = linearConstraints.flatMap { $0.layoutConstraints}
+
+        let attributesIn = { (c: NSLayoutConstraint) -> [NSLayoutAttribute] in  [c.firstAttribute, c.secondAttribute] }
+        let viewsIn = {(c: NSLayoutConstraint) -> [MortarView]  in [c.firstItem , c.secondItem].flatMap({$0 as? MortarView})}
+        let spacersIn = { v in viewsIn(v).flatMap({$0 as? MortarPadView })}
+
+        XCTAssertEqual(nsConstraints.count, 9, "Should create 9 constraints (7 edge pins, 1 spacer const, 1 spacer weight)")
+
+        XCTAssertEqual(nsConstraints.filter{ $0.constant == 10 }.count, 1, "Should create 1 height 10 constraint")
+
+        XCTAssertEqual(nsConstraints.filter({ c in
+            spacersIn(c).contains(s3) && attributesIn(c).contains(.height)  && c.multiplier == 0.5
+        }).count, 1, "Should create 1 weighted constraint connecting the two weighted spacers(s3 = S1.m_height * 0.5)")
+
+        XCTAssertEqual(nsConstraints.filter({ c in  attributesIn(c).contains(.top) }).count, 6, "Should create 6 constrains with a m_top")
+
+        XCTAssertEqual(nsConstraints.filter({ c in  attributesIn(c).contains(.bottom) }).count, 6, "Should create 6 constrains with a m_bottom")
+
+        XCTAssertEqual(nsConstraints.filter({ c in
+            (c.firstItem as? MortarPadView != nil  && c.firstAttribute == .top) || (c.secondItem as? MortarPadView != nil  && c.secondAttribute == .top)
+        }).count, 3, "Should create 3 constrains on MortarPadView's top")
+    }
+
+    func testLinearLayoutH() {
+        let v1 = UILabel()
+        let v2 = UILabel()
+        let v3 = UILabel()
+        let s1 = MortarPadView(wt:1)
+        let s2 = MortarPadView(c:10)
+        let s3 = MortarPadView(wt:0.5)
+
+        let views = [v1, s1, v2, s2, v3, s3]
+        self.container |+| views
+
+        let linearConstraints = views.constrainH(from: container.m_left, to: container.m_right)
+
+        let nsConstraints = linearConstraints.flatMap { $0.layoutConstraints}
+
+        let attributesIn = { (c: NSLayoutConstraint) -> [NSLayoutAttribute] in  [c.firstAttribute, c.secondAttribute] }
+        let viewsIn = {(c: NSLayoutConstraint) -> [MortarView]  in [c.firstItem , c.secondItem].flatMap({$0 as? MortarView})}
+        let spacersIn = { v in viewsIn(v).flatMap({$0 as? MortarPadView })}
+
+        XCTAssertEqual(nsConstraints.count, 9, "Should create 9 constraints (7 edge pins, 1 spacer const, 1 spacer weight)")
+
+        XCTAssertEqual(nsConstraints.filter{ $0.constant == 10 }.count, 1, "Should create 1 width 10 constraint")
+
+        XCTAssertEqual(nsConstraints.filter({ c in
+            spacersIn(c).contains(s3) && attributesIn(c).contains(.width)  && c.multiplier == 0.5
+        }).count, 1, "Should create 1 weighted constraint connecting the two weighted spacers(s3 = S1.m_width * 0.5)")
+
+        XCTAssertEqual(nsConstraints.filter({ c in  attributesIn(c).contains(.left) }).count, 6, "Should create 6 constrains with a m_top")
+
+        XCTAssertEqual(nsConstraints.filter({ c in  attributesIn(c).contains(.right) }).count, 6, "Should create 6 constrains with a m_right")
+
+        XCTAssertEqual(nsConstraints.filter({ c in
+            (c.firstItem as? MortarPadView != nil  && c.firstAttribute == .left) || (c.secondItem as? MortarPadView != nil  && c.secondAttribute == .left)
+        }).count, 3, "Should create 3 constrains on MortarPadView's left")
+    }
+
+
+    func testLinearLayoutHV() {
+
+        let center = MortarPadView(c: 50, axis: .vertical).m_linear(wt: 1, axis: .horizontal)
+
+        let viewsH = [UILabel().m_linear(wt: 1), center, UILabel().m_linear(wt: 1)]
+        let viewsV = [UILabel().m_linear(wt: 1), center, UILabel().m_linear(wt: 1)]
+
+        self.container |+| viewsH + viewsV
+
+        let constraintsH = viewsH.constrainH(inside: container)
+        let constraintsV = viewsV.constrainV(from: container.m_top)
+
+        let nsConstraintsH = constraintsH.flatMap { $0.layoutConstraints}
+        let nsConstraintsV = constraintsV.flatMap { $0.layoutConstraints}
+        let nsConstraints = nsConstraintsH + nsConstraintsV
+
+        let attributesIn = { (c: NSLayoutConstraint) -> [NSLayoutAttribute] in  [c.firstAttribute, c.secondAttribute] }
+
+        XCTAssertEqual(nsConstraintsH.count, 6, "Should create 6 horizontal constraints")
+        XCTAssertEqual(nsConstraintsV.count, 5, "Should create 6 vertical constraints")
+
+        XCTAssertEqual(nsConstraints.filter{ $0.constant == 50 }.count, 1, "Should create 1 height 50 constraint")
+
+        XCTAssertEqual(nsConstraints.filter({ c in  attributesIn(c).contains(.top) }).count, 3, "Should create 3 constrains with a m_top")
+        XCTAssertEqual(nsConstraints.filter({ c in  attributesIn(c).contains(.bottom) }).count, 2, "Should create 2 constrains with a m_bottom")
+
+        XCTAssertEqual(nsConstraints.filter({ c in  attributesIn(c).contains(.left) }).count, 3, "Should create 3 constrains with a m_left")
+        XCTAssertEqual(nsConstraints.filter({ c in  attributesIn(c).contains(.right) }).count, 3, "Should create 3 constrains with a m_right")
+
+
+        XCTAssertEqual(nsConstraints.filter({ c in
+            attributesIn(c).contains(.width)  && c.multiplier == 1 && c.constant == 0
+        }).count, 2, "Should create 2 constraints on width with multiplier 1")
+
+        XCTAssertEqual(nsConstraints.filter({ c in
+            attributesIn(c).contains(.height)  && c.multiplier == 1 && c.constant == 0
+        }).count, 1, "Should create 1 constraint on height with multiplier 1")
+    }
+
 }
 

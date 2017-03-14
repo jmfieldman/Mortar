@@ -301,14 +301,14 @@ view1.m_size |=| (view2.m_height ! .high, view2.m_width + 20 ! .low)  // Inside 
 
 ### Default Priority
 
-By default, constraints are given priority equal to 500 (out of 1000).  Often times if you
+By default, constraints are given priority of ```.required``` which is equal to 1000 (out of 1000) and is the same default used by Apple's constraint methods. (Note: this was changed in Mortar v1.1)  Sometimes you
 may want large batches of constraints to have a different priority, and it is messy to include something like 
-```! .required``` after every constraint.
+```! .medium``` after every constraint.
 
 You can change the global base default value by using ```set```:
 
 ```swift
-MortarDefault.priority.set(base: .required)
+MortarDefault.priority.set(base: .medium)
 ```
 
 You can use this in the ```AppDelegate``` to change the app-wide default constraint priority.
@@ -319,9 +319,9 @@ the default for a single layout section, it is usually wiser to use the stack me
 to change the default priority used in a frame of code:
 
 ```swift
-MortarDefault.priority.push(.required)
+MortarDefault.priority.push(.low)
 
-v1 |=| v2 // Given priority .required automatically
+v1 |=| v2 // Given priority .low automatically
 ...
 
 MortarDefault.priority.pop()
@@ -542,4 +542,59 @@ class MyController: UIViewController {
     }
 }
 ```
+
+
+# Linear Layouts
+
+Mortar provides a mechanism constraining several views edge to edge vertically or horizontally. The simplest use of this is ```[view1,view2].constrainH()``` which is equivelent to ```view1.m_right |=| view2.m_left```.  In the example below the first line constrains 3 views horizontally between the edges of their superview.  The second does the same verically.  The parameter ```inside:``` is equivelent  to a combinaton of ```to:``` and ```from:``` and all are optional.
+
+```
+[view1, view2, view3].constrainH(inside: superview)
+[view1, view4, view5].constrainV(from: superview.m_top, to: superview.m_bottom)
+```
+
+### Weighted Sizes/Padding
+It is also possible to specify for any view either a simple consant size or else a weighted size with optional min and max. This can be used to size visible views, but is perhaps more often used in MortarPadView for fine grained control of the spacing between visible views. If you use this much you may want to typealias MortarPadView to something like MPad for brevity. Generally only the ```c:``` (constant) or ```wt:``` (weight) parameters are required since everything else is optional, and ```axis:``` can be inferred from the subsequent ```constrainH/V``` call. If any views are weighted, then the linearly constrained views must have a fixed height/width to be laid out within.  This is generally provided by passing ```inside:``` a view with a fixed size, for example ```YourVC.view```.  The constant sized views use as much space as they need, and the remainder gets divided among the weighted views according to their weights.  Under the hood, the weights you use are normalized to a 0.0 to 1.0 range and the weighted views heights/widths are constrained relative to the largest weighted view.
+
+```
+MortarPadView(c:50)
+MortarPadView(wt:1)
+UILabel().m_linear(c: 50)
+UILabel().m_linear(wt: 1)
+UILabel().m_linear(c: 50, axis: .vertical).m_linear(wt: 1, min: 0, max: 100, axis: .horizontal)
+```
+Note that ```m_linear``` is a builder style method(returns the view it opperates on) so it can be chained as shown in the last line. This is also important in understanding the following example. 
+
+### Full Example
+To make this a little more concrete, here is a worked example of a splash screen with logo, login, and register buttons that tries to show how this is all used in practice.
+
+```
+class LoginViewController: UIViewController {
+
+    let logo = UIImageView.m_create {
+        $0.image = UIImage(named: "logo.png")
+        //more styling code
+    }
+    let loginBtn = UIButton.m_create { /* styling code */ }
+    let registerBtn = UIButton.m_create { /* styling code */ }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let views = [MortarPadView(wt: 1),
+                     logo,
+                     MortarPadView(wt: 1),
+                     loginBtn.m_linear(c: 50),
+                     MortarPadView(c: 10),
+                     registerBtn.m_linear(c: 50),
+                     MortarPadView(wt: 0.5)]
+
+        self.view |+| views
+        views.constrainV(inside: self.view)
+        views.m_centerX |=| self.view
+        [loginBtn, registerBtn] |=| self.view.m_left + 10
+    }
+}
+```
+This lays out a logo and 2 buttons. All views are centered horizontally.  The logo is sized to its intrinsic content size which comes from the png file. The buttons are 50px high and screen width minus 20px (10px margin) wide and separated by 10px vertically.  The remaining vertical space goes above and blow the icon and below the buttons, with the icon spaces each getting twice as much space as the one under the buttons.
 
