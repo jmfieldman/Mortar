@@ -70,31 +70,14 @@ Or you can use a variety of ways to include the ```Mortar.framework``` file from
 
 # Swift Version Support
 
-![Swift 2.2](https://img.shields.io/badge/Swift_2.2-%7E%3E%200.10-orange.svg?style=flat)
-![Swift 2.3](https://img.shields.io/badge/Swift_2.3-%7E%3E%200.11-orange.svg?style=flat)
-![Swift 3.0](https://img.shields.io/badge/Swift_3.0-latest-orange.svg?style=flat)
-
 > This README reflects the updated syntax and constants used in the Swift 3 Mortar release.
 > For the Swift 2.x documentation, refer to the ```README_SWIFT2.md``` file.
 
-All versions of Mortar up to 0.10.4 were designed for Swift 2.2.  This is the last release planned for Swift 2.2.  You can
-force the usage of this version by specifying:
-
 ```ruby
-pod 'Mortar', '~> 0.10' 
-```
-
-Version 0.11.1 is the release for Swift 2.3 compiled against the Xcode8 GM seed.  Any bugfixes will be released in the 0.11.x version family.  0.11.x is
-the only version family that will support Swift 2.3.  You can force usage of this version family by specifying:
-
-```ruby
-pod 'Mortar', '~> 0.11' 
-```
-
-All versions of Mortar are compatible with Swift 3.0 as of 1.0.0.  
-
-```ruby
-pod 'Mortar' 
+pod 'Mortar', '~> 1.2'  # Swift 3.1 
+pod 'Mortar', '~> 1.1'  # Swift 3.0
+pod 'Mortar', '~> 0.11' # Swift 2.3
+pod 'Mortar', '~> 0.10' # Swift 2.2
 ```
 
 # Usage
