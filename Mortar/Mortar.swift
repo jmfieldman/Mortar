@@ -324,31 +324,31 @@ public protocol MortarAttributable {
 }
 
 extension CGFloat : MortarAttributable {
-    @inline(__always) public func m_intoAttribute() -> MortarAttribute {
+    public func m_intoAttribute() -> MortarAttribute {
         return MortarAttribute(constant: self)
     }
 }
 
 extension Int : MortarAttributable {
-    @inline(__always) public func m_intoAttribute() -> MortarAttribute {
+    public func m_intoAttribute() -> MortarAttribute {
         return MortarAttribute(constant: self)
     }
 }
 
 extension Double : MortarAttributable {
-    @inline(__always) public func m_intoAttribute() -> MortarAttribute {
+    public func m_intoAttribute() -> MortarAttribute {
         return MortarAttribute(constant: self)
     }
 }
 
 extension Float : MortarAttributable {
-    @inline(__always) public func m_intoAttribute() -> MortarAttribute {
+    public func m_intoAttribute() -> MortarAttribute {
         return MortarAttribute(constant: self)
     }
 }
 
 extension MortarView : MortarAttributable {
-    @inline(__always) public func m_intoAttribute() -> MortarAttribute {
+    public func m_intoAttribute() -> MortarAttribute {
         return MortarAttribute(item: self)
     }
 }
