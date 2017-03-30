@@ -1,5 +1,9 @@
 # Mortar Changelog
 
+## 1.2.0 -- 3/30/17
+
+* Updates for Xcode 8.3/Swift 3.1 support
+
 ## 1.1.0 -- 11/6/16
 
 * Changed default constaint priority to .required

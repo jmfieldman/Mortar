@@ -27,20 +27,20 @@ import UIKit
 public typealias MortarView = UIView
 public typealias MortarAliasLayoutPriority = UILayoutPriority
 
-internal let MortarAliasLayoutPriorityDefaultLow      =  UILayoutPriorityDefaultLow
-internal let MortarAliasLayoutPriorityDefaultMedium   = (UILayoutPriorityDefaultHigh + UILayoutPriorityDefaultLow) / 2
-internal let MortarAliasLayoutPriorityDefaultHigh     =  UILayoutPriorityDefaultHigh
-internal let MortarAliasLayoutPriorityDefaultRequired =  UILayoutPriorityRequired
+public let MortarAliasLayoutPriorityDefaultLow      =  UILayoutPriorityDefaultLow
+public let MortarAliasLayoutPriorityDefaultMedium   = (UILayoutPriorityDefaultHigh + UILayoutPriorityDefaultLow) / 2
+public let MortarAliasLayoutPriorityDefaultHigh     =  UILayoutPriorityDefaultHigh
+public let MortarAliasLayoutPriorityDefaultRequired =  UILayoutPriorityRequired
     
 #else
 import AppKit
 public typealias MortarView = NSView
 public typealias MortarAliasLayoutPriority = NSLayoutPriority
 
-internal let MortarAliasLayoutPriorityDefaultLow      =  NSLayoutPriorityDefaultLow
-internal let MortarAliasLayoutPriorityDefaultMedium   = (NSLayoutPriorityDefaultHigh + NSLayoutPriorityDefaultLow) / 2
-internal let MortarAliasLayoutPriorityDefaultHigh     =  NSLayoutPriorityDefaultHigh
-internal let MortarAliasLayoutPriorityDefaultRequired =  NSLayoutPriorityRequired
+public let MortarAliasLayoutPriorityDefaultLow      =  NSLayoutPriorityDefaultLow
+public let MortarAliasLayoutPriorityDefaultMedium   = (NSLayoutPriorityDefaultHigh + NSLayoutPriorityDefaultLow) / 2
+public let MortarAliasLayoutPriorityDefaultHigh     =  NSLayoutPriorityDefaultHigh
+public let MortarAliasLayoutPriorityDefaultRequired =  NSLayoutPriorityRequired
 
 #endif
 
