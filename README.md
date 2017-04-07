@@ -263,13 +263,13 @@ You can use this to create complex constraints on one line.  For example, to cre
 
 You can assign priority to constraints using the ```!``` operator.  Valid priorities are:
 
-* ```.low```, ```.default```, ```.high```, ```.required```
+* ```.low```, ```.medium```, ```.high```, ```.required```
 * Any ```UILayoutPriority``` value
 
 ```swift
 v0 |=| self.container.m_height
 v1 |=| self.container.m_height ! .low
-v2 |=| self.container.m_height ! .default
+v2 |=| self.container.m_height ! .medium
 v3 |=| self.container.m_height ! .high
 v4 |=| self.container.m_height ! .required
 v5 |=| self.container.m_height ! 300
@@ -284,14 +284,16 @@ view1.m_size |=| (view2.m_height ! .high, view2.m_width + 20 ! .low)  // Inside 
 
 ### Default Priority
 
-By default, constraints are given priority equal to 500 (out of 1000).  Often times if you
+> Defaults have changed in Mortar v1.1; See README_DEFAULTS.md if you are updating.
+
+By default, constraints are given priority of ```.required``` which is equal to 1000 (out of 1000) and is the same default used by Apple's constraint methods. Sometimes you
 may want large batches of constraints to have a different priority, and it is messy to include something like 
-```! .required``` after every constraint.
+```! .medium``` after every constraint.
 
 You can change the global base default value by using ```set```:
 
 ```swift
-MortarDefault.priority.set(base: .required)
+MortarDefault.priority.set(base: .medium)
 ```
 
 You can use this in the ```AppDelegate``` to change the app-wide default constraint priority.
@@ -302,9 +304,9 @@ the default for a single layout section, it is usually wiser to use the stack me
 to change the default priority used in a frame of code:
 
 ```swift
-MortarDefault.priority.push(.required)
+MortarDefault.priority.push(.low)
 
-v1 |=| v2 // Given priority .required automatically
+v1 |=| v2 // Given priority .low automatically
 ...
 
 MortarDefault.priority.pop()
