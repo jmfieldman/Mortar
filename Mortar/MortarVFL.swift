@@ -191,14 +191,14 @@ public final class _MortarVFLListCapture {
 
 // MARK: - Sizing Node Operators
 
-prefix operator ~
+prefix operator ~~
 prefix operator ==
 
-public prefix func ~(view: MortarView) -> _MortarSizingNode {
+public prefix func ~~(view: MortarView) -> _MortarSizingNode {
     return _MortarSizingNode(view: view)
 }
 
-public prefix func ~(floatable: MortarCGFloatable) -> _MortarSizingNode {
+public prefix func ~~(floatable: MortarCGFloatable) -> _MortarSizingNode {
     return _MortarSizingNode(floatable: floatable, sizingType: .weight)
 }
 
@@ -301,7 +301,6 @@ extension _MortarVFLNode: _MortarVFLNodable {
 
 precedencegroup MortarVFLDividerPrecendence {
     higherThan:     MortarVFLListCapturePrecendence
-    lowerThan:      MultiplicationPrecedence
     associativity:  left
 }
 
@@ -314,19 +313,21 @@ public func |(lhs: _MortarVFLNodable, rhs: _MortarVFLNodable) -> [_MortarVFLNode
     return [lhs.__asNode(), rhs.__asNode()]
 }
 
-public func |(lhs: inout [_MortarVFLNode], rhs: _MortarVFLNodable) -> [_MortarVFLNode] {
-    lhs.append(rhs.__asNode())
-    return lhs
+public func |(lhs: [_MortarVFLNode], rhs: _MortarVFLNodable) -> [_MortarVFLNode] {
+    var accum = lhs
+    accum.append(rhs.__asNode())
+    return accum
 }
 
 public func ||(lhs: _MortarVFLNodable, rhs: _MortarVFLNodable) -> [_MortarVFLNode] {
     return [lhs.__asNode(), kMortarDefaultVFLPaddingNode, rhs.__asNode()]
 }
 
-public func ||(lhs: inout [_MortarVFLNode], rhs: _MortarVFLNodable) -> [_MortarVFLNode] {
-    lhs.append(kMortarDefaultVFLPaddingNode)
-    lhs.append(rhs.__asNode())
-    return lhs
+public func ||(lhs: [_MortarVFLNode], rhs: _MortarVFLNodable) -> [_MortarVFLNode] {
+    var accum = lhs
+    accum.append(kMortarDefaultVFLPaddingNode)
+    accum.append(rhs.__asNode())
+    return accum
 }
 
 
@@ -334,6 +335,7 @@ public func ||(lhs: inout [_MortarVFLNode], rhs: _MortarVFLNodable) -> [_MortarV
 
 precedencegroup MortarVFLListCapturePrecendence {
     higherThan:     MortarVFLListBeginPrecendence
+    lowerThan:      AdditionPrecedence
     associativity:  left
 }
 
@@ -364,18 +366,20 @@ public func <||(lhs: _MortarVFLNodable, rhs: MortarView) -> _MortarVFLListCaptur
     return _MortarVFLListCapture(axis: .horizontal, list: [lhs.__asNode(), kMortarDefaultVFLPaddingNode], trailingView: rhs)
 }
 
-public func <||(lhs: inout [_MortarVFLNode], rhs: MortarView) -> _MortarVFLListCapture {
-    lhs.append(kMortarDefaultVFLPaddingNode)
-    return _MortarVFLListCapture(axis: .horizontal, list: lhs, trailingView: rhs)
+public func <||(lhs: [_MortarVFLNode], rhs: MortarView) -> _MortarVFLListCapture {
+    var accum = lhs
+    accum.append(kMortarDefaultVFLPaddingNode)
+    return _MortarVFLListCapture(axis: .horizontal, list: accum, trailingView: rhs)
 }
 
 public func <||(lhs: _MortarVFLNodable, rhs: MortarAttribute) -> _MortarVFLListCapture {
     return _MortarVFLListCapture(axis: .horizontal, list: [lhs.__asNode(), kMortarDefaultVFLPaddingNode], trailingAttr: rhs)
 }
 
-public func <||(lhs: inout [_MortarVFLNode], rhs: MortarAttribute) -> _MortarVFLListCapture {
-    lhs.append(kMortarDefaultVFLPaddingNode)
-    return _MortarVFLListCapture(axis: .horizontal, list: lhs, trailingAttr: rhs)
+public func <||(lhs: [_MortarVFLNode], rhs: MortarAttribute) -> _MortarVFLListCapture {
+    var accum = lhs
+    accum.append(kMortarDefaultVFLPaddingNode)
+    return _MortarVFLListCapture(axis: .horizontal, list: accum, trailingAttr: rhs)
 }
 
 // Vertical 
@@ -400,24 +404,27 @@ public func ^||(lhs: _MortarVFLNodable, rhs: MortarView) -> _MortarVFLListCaptur
     return _MortarVFLListCapture(axis: .vertical, list: [lhs.__asNode(), kMortarDefaultVFLPaddingNode], trailingView: rhs)
 }
 
-public func ^||(lhs: inout [_MortarVFLNode], rhs: MortarView) -> _MortarVFLListCapture {
-    lhs.append(kMortarDefaultVFLPaddingNode)
-    return _MortarVFLListCapture(axis: .vertical, list: lhs, trailingView: rhs)
+public func ^||(lhs: [_MortarVFLNode], rhs: MortarView) -> _MortarVFLListCapture {
+    var accum = lhs
+    accum.append(kMortarDefaultVFLPaddingNode)
+    return _MortarVFLListCapture(axis: .vertical, list: accum, trailingView: rhs)
 }
 
 public func ^||(lhs: _MortarVFLNodable, rhs: MortarAttribute) -> _MortarVFLListCapture {
     return _MortarVFLListCapture(axis: .vertical, list: [lhs.__asNode(), kMortarDefaultVFLPaddingNode], trailingAttr: rhs)
 }
 
-public func ^||(lhs: inout [_MortarVFLNode], rhs: MortarAttribute) -> _MortarVFLListCapture {
-    lhs.append(kMortarDefaultVFLPaddingNode)
-    return _MortarVFLListCapture(axis: .vertical, list: lhs, trailingAttr: rhs)
+public func ^||(lhs: [_MortarVFLNode], rhs: MortarAttribute) -> _MortarVFLListCapture {
+    var accum = lhs
+    accum.append(kMortarDefaultVFLPaddingNode)
+    return _MortarVFLListCapture(axis: .vertical, list: accum, trailingAttr: rhs)
 }
 
 // MARK: - Final Parsing
 
 precedencegroup MortarVFLListBeginPrecendence {
     higherThan:     RangeFormationPrecedence
+    lowerThan:      AdditionPrecedence
     associativity:  left
 }
 
@@ -433,7 +440,7 @@ infix operator ||^^ : MortarVFLListBeginPrecendence
 // For one >, Left side can have a view or attribute, right size must have capture!
 // For two >>, Left size must be view and right cannot be capture!
 
-public func |>(lhs: MortarView, rhs: _MortarVFLListCapture) -> MortarGroup {
+@discardableResult public func |>(lhs: MortarView, rhs: _MortarVFLListCapture) -> MortarGroup {
     if rhs.axis != .horizontal {
         NSException(name: NSExceptionName(rawValue: "Mortar VFL Operator Error"),
                   reason: "Mismatched VFL axis operators (e.g. |> with ^|)",
@@ -443,7 +450,7 @@ public func |>(lhs: MortarView, rhs: _MortarVFLListCapture) -> MortarGroup {
     return try! rhs.toGroup()
 }
 
-public func |>(lhs: MortarAttribute, rhs: _MortarVFLListCapture) -> MortarGroup {
+@discardableResult public func |>(lhs: MortarAttribute, rhs: _MortarVFLListCapture) -> MortarGroup {
     if rhs.axis != .horizontal {
         NSException(name: NSExceptionName(rawValue: "Mortar VFL Operator Error"),
                   reason: "Mismatched VFL axis operators (e.g. |> with ^|)",
@@ -453,7 +460,7 @@ public func |>(lhs: MortarAttribute, rhs: _MortarVFLListCapture) -> MortarGroup 
     return try! rhs.toGroup()
 }
 
-public func ||>(lhs: MortarView, rhs: _MortarVFLListCapture) -> MortarGroup {
+@discardableResult public func ||>(lhs: MortarView, rhs: _MortarVFLListCapture) -> MortarGroup {
     if rhs.axis != .horizontal {
         NSException(name: NSExceptionName(rawValue: "Mortar VFL Operator Error"),
                   reason: "Mismatched VFL axis operators (e.g. |> with ^|)",
@@ -464,7 +471,7 @@ public func ||>(lhs: MortarView, rhs: _MortarVFLListCapture) -> MortarGroup {
     return try! rhs.toGroup()
 }
 
-public func ||>(lhs: MortarAttribute, rhs: _MortarVFLListCapture) -> MortarGroup {
+@discardableResult public func ||>(lhs: MortarAttribute, rhs: _MortarVFLListCapture) -> MortarGroup {
     if rhs.axis != .horizontal {
         NSException(name: NSExceptionName(rawValue: "Mortar VFL Operator Error"),
                   reason: "Mismatched VFL axis operators (e.g. |> with ^|)",
@@ -475,31 +482,32 @@ public func ||>(lhs: MortarAttribute, rhs: _MortarVFLListCapture) -> MortarGroup
     return try! rhs.toGroup()
 }
 
-public func |>>(lhs: MortarView, rhs: _MortarVFLNodable) -> MortarGroup {
+@discardableResult public func |>>(lhs: MortarView, rhs: _MortarVFLNodable) -> MortarGroup {
     return lhs |>> [rhs.__asNode()]
 }
 
-public func |>>(lhs: MortarView, rhs: [_MortarVFLNode]) -> MortarGroup {
+@discardableResult public func |>>(lhs: MortarView, rhs: [_MortarVFLNode]) -> MortarGroup {
     let capture = _MortarVFLListCapture(axis: .horizontal, list: rhs, trailingView: lhs)
     capture.setLeadingView(lhs)
     return try! capture.toGroup()
 }
 
-public func ||>>(lhs: MortarView, rhs: _MortarVFLNodable) -> MortarGroup {
-    var nodeArray = [rhs.__asNode()]
-    return lhs ||>> nodeArray
+@discardableResult public func ||>>(lhs: MortarView, rhs: _MortarVFLNodable) -> MortarGroup {
+    return lhs ||>> [rhs.__asNode()]
 }
 
-public func ||>>(lhs: MortarView, rhs: inout [_MortarVFLNode]) -> MortarGroup {
-    rhs.insert(kMortarDefaultVFLPaddingNode, at: 0)
-    let capture = _MortarVFLListCapture(axis: .horizontal, list: rhs, trailingView: lhs)
+@discardableResult public func ||>>(lhs: MortarView, rhs: [_MortarVFLNode]) -> MortarGroup {
+    var accum = rhs
+    accum.insert(kMortarDefaultVFLPaddingNode, at: 0)
+    accum.append(kMortarDefaultVFLPaddingNode)
+    let capture = _MortarVFLListCapture(axis: .horizontal, list: accum, trailingView: lhs)
     capture.setLeadingView(lhs)
     return try! capture.toGroup()
 }
 
 // Vertical
 
-public func |^(lhs: MortarView, rhs: _MortarVFLListCapture) -> MortarGroup {
+@discardableResult public func |^(lhs: MortarView, rhs: _MortarVFLListCapture) -> MortarGroup {
     if rhs.axis != .vertical {
         NSException(name: NSExceptionName(rawValue: "Mortar VFL Operator Error"),
                   reason: "Mismatched VFL axis operators (e.g. |> with ^|)",
@@ -509,7 +517,7 @@ public func |^(lhs: MortarView, rhs: _MortarVFLListCapture) -> MortarGroup {
     return try! rhs.toGroup()
 }
 
-public func |^(lhs: MortarAttribute, rhs: _MortarVFLListCapture) -> MortarGroup {
+@discardableResult public func |^(lhs: MortarAttribute, rhs: _MortarVFLListCapture) -> MortarGroup {
     if rhs.axis != .vertical {
         NSException(name: NSExceptionName(rawValue: "Mortar VFL Operator Error"),
                   reason: "Mismatched VFL axis operators (e.g. |> with ^|)",
@@ -519,7 +527,7 @@ public func |^(lhs: MortarAttribute, rhs: _MortarVFLListCapture) -> MortarGroup 
     return try! rhs.toGroup()
 }
 
-public func ||^(lhs: MortarView, rhs: _MortarVFLListCapture) -> MortarGroup {
+@discardableResult public func ||^(lhs: MortarView, rhs: _MortarVFLListCapture) -> MortarGroup {
     if rhs.axis != .vertical {
         NSException(name: NSExceptionName(rawValue: "Mortar VFL Operator Error"),
                   reason: "Mismatched VFL axis operators (e.g. |> with ^|)",
@@ -530,7 +538,7 @@ public func ||^(lhs: MortarView, rhs: _MortarVFLListCapture) -> MortarGroup {
     return try! rhs.toGroup()
 }
 
-public func ||^(lhs: MortarAttribute, rhs: _MortarVFLListCapture) -> MortarGroup {
+@discardableResult public func ||^(lhs: MortarAttribute, rhs: _MortarVFLListCapture) -> MortarGroup {
     if rhs.axis != .vertical {
         NSException(name: NSExceptionName(rawValue: "Mortar VFL Operator Error"),
                   reason: "Mismatched VFL axis operators (e.g. |> with ^|)",
@@ -541,24 +549,25 @@ public func ||^(lhs: MortarAttribute, rhs: _MortarVFLListCapture) -> MortarGroup
     return try! rhs.toGroup()
 }
 
-public func |^^(lhs: MortarView, rhs: _MortarVFLNodable) -> MortarGroup {
+@discardableResult public func |^^(lhs: MortarView, rhs: _MortarVFLNodable) -> MortarGroup {
     return lhs |^^ [rhs.__asNode()]
 }
 
-public func |^^(lhs: MortarView, rhs: [_MortarVFLNode]) -> MortarGroup {
+@discardableResult public func |^^(lhs: MortarView, rhs: [_MortarVFLNode]) -> MortarGroup {
     let capture = _MortarVFLListCapture(axis: .vertical, list: rhs, trailingView: lhs)
     capture.setLeadingView(lhs)
     return try! capture.toGroup()
 }
 
-public func ||^^(lhs: MortarView, rhs: _MortarVFLNodable) -> MortarGroup {
-    var nodeArray = [rhs.__asNode()]
-    return lhs ||^^ nodeArray
+@discardableResult public func ||^^(lhs: MortarView, rhs: _MortarVFLNodable) -> MortarGroup {
+    return lhs ||^^ [rhs.__asNode()]
 }
 
-public func ||^^(lhs: MortarView, rhs: inout [_MortarVFLNode]) -> MortarGroup {
-    rhs.insert(kMortarDefaultVFLPaddingNode, at: 0)
-    let capture = _MortarVFLListCapture(axis: .vertical, list: rhs, trailingView: lhs)
+@discardableResult public func ||^^(lhs: MortarView, rhs: [_MortarVFLNode]) -> MortarGroup {
+    var accum = rhs
+    accum.insert(kMortarDefaultVFLPaddingNode, at: 0)
+    accum.append(kMortarDefaultVFLPaddingNode)
+    let capture = _MortarVFLListCapture(axis: .vertical, list: accum, trailingView: lhs)
     capture.setLeadingView(lhs)
     return try! capture.toGroup()
 }
@@ -748,7 +757,7 @@ fileprivate extension _MortarVFLListCapture {
         }
         
         // Link final previous up to trailing bounds
-        result.append( trailingAttr |=| previousTrailing + previousFixed )
+        result.append( previousTrailing |=| trailingAttr - previousFixed )
         
         return result
     }
@@ -824,3 +833,36 @@ private extension MortarLayoutAttribute {
     }
 }
 
+// MARK: - ViewController visible region
+
+#if os(iOS) || os(tvOS)
+public extension UIViewController {
+    
+    @nonobjc private static let kVisibleRegionGhostTag: Int = Int.min + 10
+    
+    /// Creates a _MortarVFLGhostView that is sized between the
+    /// view controller's guide anchors.
+    /// Will reuse the existing one if it exists, based on tag lookup
+    var m_visibleRegion: MortarView {
+        for view in self.view.subviews {
+            if view.tag != UIViewController.kVisibleRegionGhostTag {
+                continue
+            }
+            
+            if let v = view as? _MortarVFLGhostView {
+                return v
+            } else {
+                try! raise("You cannot use m_visibleRegion unless you reserve the tag \(UIViewController.kVisibleRegionGhostTag) for its use")
+            }
+        }
+        
+        // Create it
+        let ghost = mGhostView(for: self.view)
+        ghost.tag = UIViewController.kVisibleRegionGhostTag
+        ghost.m_sides  |=| self.view
+        ghost.m_top    |=| self.m_topLayoutGuideBottom
+        ghost.m_bottom |=| self.m_bottomLayoutGuideTop
+        return ghost
+    }
+}
+#endif
