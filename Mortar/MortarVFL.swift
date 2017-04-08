@@ -66,11 +66,12 @@ public enum _MortarSizingType {
 }
 
 /// Return a completely non-interactive view for layout purposes
-private func mGhostView() -> _MortarVFLGhostView {
+private func mGhostView(for parent: MortarView?) -> _MortarVFLGhostView {
     return _MortarVFLGhostView.m_create {
         $0.backgroundColor = .clear
         $0.alpha = 0
         $0.isUserInteractionEnabled = false
+        parent?.addSubview($0)
     }
 }
 
@@ -117,6 +118,11 @@ public final class _MortarVFLNode {
             
             guard let refNode = ref[ObjectIdentifier(refView)] else {
                 try raise("You cannot reference a view for relative sizing unless it is also the base view for a node in the VFL statement")
+                return
+            }
+            
+            if refNode === self.sizingNode {
+                try raise("You have a cyclical sizing reference loop in the VFL statement")
                 return
             }
             
@@ -269,6 +275,12 @@ extension Double : _MortarVFLNodable {
 extension Float : _MortarVFLNodable {
     @inline(__always) public func __asNode() -> _MortarVFLNode {
         return _MortarVFLNode(sizingNode: _MortarSizingNode(floatable: self, sizingType: .equals))
+    }
+}
+
+extension MortarView : _MortarVFLNodable {
+    @inline(__always) public func __asNode() -> _MortarVFLNode {
+        return _MortarVFLNode(view: self, sizingNode: _MortarSizingNode(floatable: 1, sizingType: .weight))
     }
 }
 
@@ -562,10 +574,12 @@ private func raise(_ reason: String) throws {
 fileprivate extension _MortarVFLListCapture {
     
     fileprivate func toGroup() throws -> MortarGroup {
+        // Accumulate the constraints
+        var result: MortarGroup = MortarGroup()
+        
         // Basic sanity
         guard let leadingView  = self.leadingView,
               let leadingAttr  = self.leadingAttr,
-              let trailingView = self.trailingView,
               let trailingAttr = self.trailingAttr
         else {
             try! raise("missing border views")
@@ -627,7 +641,186 @@ fileprivate extension _MortarVFLListCapture {
             }
         }
         
-        return []
+        // The total weight in our nodes (for normalizing)
+        var weightTotal: CGFloat = 0
+        
+        // The total fixed spacing
+        var spacingTotal: CGFloat = 0
+        
+        // If we only have one weight node there aren't any fancy calculations
+        // since it will just get sandwiched between its neighbors.
+        // otherwise we'll normalize the weights
+        if weightNodeCount > 1 {
+            for node in self.list {
+                guard let floatable = node.sizingNode.floatable?.m_cgfloatValue() else {
+                    try! raise("Internal error: node has no floatable")
+                    return []
+                }
+                
+                guard floatable > 0 else {
+                    try! raise("You cannot use a negative or zero weight/spacing.")
+                    return []
+                }
+                
+                switch node.sizingNode.sizingType {
+                case .equals: spacingTotal += floatable
+                case .weight: weightTotal  += floatable
+                }
+            }
+        }
+        
+        // Ensure sandwich attributes are valid
+        guard leadingAttr.attribute?.suitableVFLAxis == self.axis else {
+            try! raise("Your leading attribute is not appropriate for axis: \(axis)")
+            return []
+        }
+        
+        guard trailingAttr.attribute?.suitableVFLAxis == self.axis else {
+            try! raise("Your trailing attribute is not appropriate for axis: \(axis)")
+            return []
+        }
+        
+        // ---- We should have done all prep; begin operation  ----
+        
+        // Our master weight view to base all other sizes from
+        let masterSpanView:   MortarView? = (weightNodeCount > 1) ? mGhostView(for: leadingView)    : nil
+        let masterWeightView: MortarView? = (weightNodeCount > 1) ? mGhostView(for: masterSpanView) : nil
+        
+        // Size the masters
+        if let spanView = masterSpanView {
+            result.append( spanView.vflLeadingAttributeFor(axis: axis)  |=| leadingAttr )
+            result.append( spanView.vflTrailingAttributeFor(axis: axis) |=| trailingAttr )
+            if let weightView = masterWeightView {
+                result.append( weightView.vflSizingAttributeFor(axis: axis) |=| spanView.vflSizingAttributeFor(axis: axis) - spacingTotal )
+            }
+        }
+        
+        // Previous keeps track of our "last" node state so that we can
+        // link into it
+        var previousTrailing:   MortarAttribute = leadingAttr
+        var previousFixed:      CGFloat         = 0
+        
+        // We don't explicitly size the first weighted node
+        // so that there is some flexibility
+        var hasSkippedFirstWeighted: Bool = false
+        
+        for node in self.list {
+            guard let sizingFloat = node.sizingNode.floatable?.m_cgfloatValue() else {
+                try! raise("Internal consistency error: vfl node has no floatable value during processing")
+                return []
+            }
+            
+            // First off, check for fixed size padding.  If it's true
+            // we know that we cannot be adjacent to another, so we
+            // assign it to the previousFixed
+            if node.isFixedSizedPadding {
+                previousFixed = sizingFloat
+                continue
+            }
+            
+            // If we're not fixed spacing, it must be view-based.
+            let currentView: MortarView = node.view ?? mGhostView(for: leadingView)
+            
+            // link backwards
+            result.append( currentView.vflLeadingAttributeFor(axis: axis) |=| previousTrailing + previousFixed )
+            
+            // width
+            switch node.sizingNode.sizingType {
+            case .equals:
+                result.append( currentView.vflSizingAttributeFor(axis: axis) |=| sizingFloat )
+                
+            case .weight:
+                // Always skip the first weighted node for flexibility
+                if !hasSkippedFirstWeighted {
+                    hasSkippedFirstWeighted = true
+                } else {
+                    guard let weightView = masterWeightView else {
+                        try! raise("Internal inconsistency error: no masterweight view")
+                        return []
+                    }
+                    result.append( currentView.vflSizingAttributeFor(axis: axis) |=| weightView.vflSizingAttributeFor(axis: axis) * (sizingFloat / weightTotal) )
+                }
+            }
+            
+            // Adjust previous values for next node
+            previousTrailing = currentView.vflTrailingAttributeFor(axis: axis)
+            previousFixed    = 0
+        }
+        
+        // Link final previous up to trailing bounds
+        result.append( trailingAttr |=| previousTrailing + previousFixed )
+        
+        return result
     }
     
 }
+
+// MARK: - MortarView helpers for linking VFL nodes
+
+private extension MortarView {
+    func vflLeadingAttributeFor(axis: MortarAxis) -> MortarAttribute {
+        switch axis {
+        case .horizontal:   return self.m_left
+        case .vertical:     return self.m_top
+        }
+    }
+    
+    func vflTrailingAttributeFor(axis: MortarAxis) -> MortarAttribute {
+        switch axis {
+        case .horizontal:   return self.m_right
+        case .vertical:     return self.m_bottom
+        }
+    }
+    
+    func vflSizingAttributeFor(axis: MortarAxis) -> MortarAttribute {
+        switch axis {
+        case .horizontal:   return self.m_width
+        case .vertical:     return self.m_height
+        }
+    }
+}
+
+// MARK: - Axis/Attribute verification
+
+private extension MortarLayoutAttribute {
+    var suitableVFLAxis: MortarAxis? {
+        #if os(iOS) || os(tvOS)
+            switch self {
+            case .left:                     return .horizontal
+            case .right:                    return .horizontal
+            case .top:                      return .vertical
+            case .bottom:                   return .vertical
+            case .leading:                  return .horizontal
+            case .trailing:                 return .horizontal
+            case .centerX:                  return .horizontal
+            case .centerY:                  return .vertical
+            case .baseline:                 return .vertical
+            case .firstBaseline:            return .vertical
+            case .lastBaseline:             return .vertical
+            case .leftMargin:               return .horizontal
+            case .rightMargin:              return .horizontal
+            case .topMargin:                return .vertical
+            case .bottomMargin:             return .vertical
+            case .leadingMargin:            return .horizontal
+            case .trailingMargin:           return .horizontal
+            case .centerXWithinMargins:     return .horizontal
+            case .centerYWithinMargins:     return .vertical
+            default:                        return nil
+            }
+        #else
+            switch self {
+            case .left:                     return .horizontal
+            case .right:                    return .horizontal
+            case .top:                      return .vertical
+            case .bottom:                   return .vertical
+            case .leading:                  return .horizontal
+            case .trailing:                 return .horizontal
+            case .centerX:                  return .horizontal
+            case .centerY:                  return .vertical
+            case .baseline:                 return .vertical
+            default:                        return nil
+            }
+        #endif
+    }
+}
+
