@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		353709701E97D36700EC138F /* MortarVFL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3537096F1E97D36700EC138F /* MortarVFL.swift */; };
 		355FCD251DAFDD3F0095C596 /* NSObject+Mortar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355FCD241DAFDD3F0095C596 /* NSObject+Mortar.swift */; };
 		35A31A8B1CCBACCA007E1068 /* MortarDefaultStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A31A8A1CCBACCA007E1068 /* MortarDefaultStack.swift */; };
 		35BBBBDD1C6D3BBD0014B159 /* Mortar.h in Headers */ = {isa = PBXBuildFile; fileRef = 35BBBBDC1C6D3BBD0014B159 /* Mortar.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -32,6 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3537096F1E97D36700EC138F /* MortarVFL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MortarVFL.swift; sourceTree = "<group>"; };
 		355FCD241DAFDD3F0095C596 /* NSObject+Mortar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+Mortar.swift"; sourceTree = "<group>"; };
 		355FCD261DAFE2290095C596 /* .swift-version */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ".swift-version"; sourceTree = SOURCE_ROOT; };
 		356CCBEC1DCFBCE400F25AE2 /* README_DEFAULTS.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README_DEFAULTS.md; sourceTree = SOURCE_ROOT; };
@@ -114,6 +116,7 @@
 				35A31A8A1CCBACCA007E1068 /* MortarDefaultStack.swift */,
 				35BBBBF31C6D3C600014B159 /* MortarConstraint.swift */,
 				35BBBBF41C6D3C600014B159 /* MortarGroup.swift */,
+				3537096F1E97D36700EC138F /* MortarVFL.swift */,
 				35BBBBF81C6D3C600014B159 /* Array+Mortar.swift */,
 				35BBBBF91C6D3C600014B159 /* View+Mortar.swift */,
 				355FCD241DAFDD3F0095C596 /* NSObject+Mortar.swift */,
@@ -251,6 +254,7 @@
 				35BBBBFD1C6D3C600014B159 /* MortarAttribute.swift in Sources */,
 				35BBBBFC1C6D3C600014B159 /* MortarOperators.swift in Sources */,
 				35BBBBFA1C6D3C600014B159 /* MortarConstraint.swift in Sources */,
+				353709701E97D36700EC138F /* MortarVFL.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
