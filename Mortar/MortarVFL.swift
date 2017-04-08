@@ -185,14 +185,14 @@ public final class _MortarVFLListCapture {
 
 // MARK: - Sizing Node Operators
 
-prefix operator %
+prefix operator ~
 prefix operator ==
 
-public prefix func %(view: MortarView) -> _MortarSizingNode {
+public prefix func ~(view: MortarView) -> _MortarSizingNode {
     return _MortarSizingNode(view: view)
 }
 
-public prefix func %(floatable: MortarCGFloatable) -> _MortarSizingNode {
+public prefix func ~(floatable: MortarCGFloatable) -> _MortarSizingNode {
     return _MortarSizingNode(floatable: floatable, sizingType: .weight)
 }
 
