@@ -43,11 +43,11 @@ class VFL_Example4ViewController: UIViewController {
             g1, g2, g3,
         ]
         
-        self.m_topLayoutGuideBottom ||^ v1[~~44] || v2[~~44] || v3[~~44]
-        self.view ||> [v1, v2, v3][~~44]
+        self.m_topLayoutGuideBottom ||^ v1[==44] || v2[==v1] || v3[==v1]
+        self.view ||> [v1, v2, v3][==44]
         
-        g1[~~44] || g2[~~44] || g3[~~44] ^!! self.m_bottomLayoutGuideTop
-        [g1, g2, g3][~~44] <!! self.view
+        g1[==44] || g2[==g1] || g3[==g1] ^!! self.m_bottomLayoutGuideTop
+        [g1, g2, g3][==44] <!! self.view
     }
     
 }

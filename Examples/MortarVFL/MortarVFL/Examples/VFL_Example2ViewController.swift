@@ -29,7 +29,7 @@ class VFL_Example2ViewController: UIViewController {
         self.view |^| [v1, v2, v3]
         
         self.view |>> 40 | v1 | 40
-        self.view |>> %%1 | v2[~~40] | %%2
+        self.view |>> ~~1 | v2[==40] | ~~2
         self.view ||>> v3
         
         self.m_visibleRegion |^^ v1 | v2 | v3

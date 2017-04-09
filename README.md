@@ -484,6 +484,10 @@ Mortar supports a VFL language that is roughly equivalent to Apple's own [Auto L
 
 ## MortarVFL Internal Composition 
 
+The heart of a MortarVFL statement is a list of views that are positioned sequentially along either the horizontal or vertical axis.
+
+
+
 MortarVFL support horizontal and vertical spacing in a similar manner.  The horizontal operators use the ```>``` character while the vertical operators use the ```^``` character.  Otherwise they act similarly.  
 
 

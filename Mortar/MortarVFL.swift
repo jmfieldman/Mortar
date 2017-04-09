@@ -121,7 +121,7 @@ public final class _MortarVFLNode {
                 return
             }
             
-            if refNode === self.sizingNode {
+            if refNode === self {
                 try raise("You have a cyclical sizing reference loop in the VFL statement")
                 return
             }
@@ -186,22 +186,22 @@ public final class _MortarVFLListCapture {
 
 // MARK: - Sizing Node Operators
 
-prefix operator %%
 prefix operator ~~
-
-public prefix func %%(view: MortarView) -> _MortarSizingNode {
-    return _MortarSizingNode(view: view)
-}
-
-public prefix func %%(floatable: MortarCGFloatable) -> _MortarSizingNode {
-    return _MortarSizingNode(floatable: floatable, sizingType: .weight)
-}
+prefix operator ==
 
 public prefix func ~~(view: MortarView) -> _MortarSizingNode {
     return _MortarSizingNode(view: view)
 }
 
 public prefix func ~~(floatable: MortarCGFloatable) -> _MortarSizingNode {
+    return _MortarSizingNode(floatable: floatable, sizingType: .weight)
+}
+
+public prefix func ==(view: MortarView) -> _MortarSizingNode {
+    return _MortarSizingNode(view: view)
+}
+
+public prefix func ==(floatable: MortarCGFloatable) -> _MortarSizingNode {
     return _MortarSizingNode(floatable: floatable, sizingType: .equals)
 }
 
