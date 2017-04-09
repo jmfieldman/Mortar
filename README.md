@@ -37,7 +37,7 @@ Other examples:
 [view.m_sides, view.m_bottom, view.m_height] |=| [container, container, 200]
 
 /* VFL syntax */
-view1 |>> viewA || viewB[~~44] |20| viewC[%%2]  
+view1 |>> viewA || viewB[==44] |20| viewC[~~2]  
 ```
 
 #### Updating from a version prior to v1.1? Read this!
@@ -484,12 +484,80 @@ Mortar supports a VFL language that is roughly equivalent to Apple's own [Auto L
 
 ## MortarVFL Internal Composition 
 
-The heart of a MortarVFL statement is a list of views that are positioned sequentially along either the horizontal or vertical axis.
+The heart of a MortarVFL statement is a list of VFL nodes that are positioned sequentially along either the horizontal or vertical axis.  A node list might look like:
+
+```swift
+viewA |30| viewB[~~2] | viewC[==40] || viewD[==viewA]
+
+// viewA has a weighted size of 1 
+// viewA is separated from viewB by 30 points
+// viewB has a weighted size of 2
+// viewB is separated from viewB by 0 points (| operator)
+// viewC has a fixed size of 40
+// viewC is separated from viewD by the default padding (8 points; || operator)
+// viewD has a size equal to viewA
+```
+
+VFL nodes:
+* Represent either whitespace, one view, or multiple views
+* Have either fixed spacing or weighted spacing
+
+Nodes are separated by either a ```|``` or ```||``` operator.  
+
+The ```|``` operator introduces zero extra distance between nodes.  You can use this operator to connect nodes directly with zero spacing, or insert your own fixed/weighted numerical value between them (e.g. ```|30|``` or ```|~~2|```).  In these cases, the ```30``` and ```~~2``` are considered nodes that represent whitespace (no attached view).
+
+The ```||``` operator separates nodes by the default padding (8 points).
+
+Nodes that represent views can contain a subscript that gives them a size constraint.  You can use ```[==#]``` to give the view a fixed size, or ```[~~#]``` to give the view a weighted size.  You can also reference other views, e.g. ```[==viewA]``` to give the node's view the same constraint as the one it references. 
+
+View nodes without subscripts are considered weighted value 1, e.g. ```[~~1]```
+
+### Arrays in a Node
+
+As an advanced technique, you can use an array of views in a node.  It would look something like this:
+
+```swift
+viewA || [viewB, viewC, viewD][=40] || viewE
+```
+
+This positions the arrayed nodes in parallel with each other.  In the above example, all three of viewB, viewC and viewD will be sized 40 points and be adjacent to viewA and viewE.  This is very useful for complex grid-based layouts.
 
 
+## Capture
 
-MortarVFL support horizontal and vertical spacing in a similar manner.  The horizontal operators use the ```>``` character while the vertical operators use the ```^``` character.  Otherwise they act similarly.  
+MortarVFL statements must be captured on at least one end by a view attribute.  These captures look something like:
 
+```swift
+// viewB and viewC will take equal width between the 
+// right edge of viewA and the left edge of viewD
+viewA.m_right |> viewB | viewC <| viewD.m_left
+``` 
+
+MortarVFL support horizontal and vertical spacing in a similar manner.  The horizontal operators use the ```>``` character while the vertical operators use the ```^``` character.  Otherwise they act similarly.  For example, the vertical version of the above statement would be:
+
+```swift
+// viewB and viewC will take equal height between the 
+// bottom edge of viewA and the top edge of viewD
+viewA.m_bottom |^ viewB | viewC ^| viewD.m_top
+``` 
+
+Mortar will make sure your operators are compatible with the attributes you've selected.  For example, using ```|>``` with ```m_top``` would be an axis mismatch and raise an exception.
+
+### Implicit Capture Attributes
+
+If you don't provide attributes on the capture terminals, Mortar will derive them based on the axis and position:
+
+```swift
+// These are equivalent:
+viewA.m_left |> viewB | viewC <| viewD.m_right
+viewA        |> viewB | viewC <| viewD
+
+// These are equivalent:
+viewA.m_top  |^ viewB | viewC ^| viewD.m_bottom
+viewA        |^ viewB | viewC ^| viewD
+```
+
+***Important Observation:*** Implicit attributes might be opposite of what you expect.  This is because implicit attributes are normally used to capture views inside the bounds of parent views and so we use the outer edges, not the inner edges. 
 
 # Visual View Hierarchy Creation
 
