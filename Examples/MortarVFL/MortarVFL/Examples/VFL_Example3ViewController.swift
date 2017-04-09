@@ -57,20 +57,20 @@ class VFL_Example3ViewController: UIViewController {
             magenta
         ]
         
-        self.view ||>> red || blue[==40] || green[~~2]
+        self.view ||>> red || blue[~~40] || green[%%2]
         self.view ||>> [orange, yellow]
         
-        self.m_visibleRegion ||^^ [red, blue, green] || orange[==44] || yellow[==44]
+        self.m_visibleRegion ||^^ [red, blue, green] || orange[~~44] || yellow[~~44]
         
         // Insert gray in green
         
-        green |>> ~~1 | [darkGray, lightGray][==44] | ~~1
-        green |^^ ~~1 | darkGray[==44] | ~~1 | lightGray[==44] | ~~1
+        green |>> %%1 | [darkGray, lightGray][~~44] | %%1
+        green |^^ %%1 | darkGray[~~44] | %%1 | lightGray[~~44] | %%1
         
         // Insert magenta between grays
         
-        darkGray.m_bottom |^ ~~1 | magenta[==22] | ~~1 ^| lightGray.m_top
-        darkGray |>> ~~1 | magenta[==22] | ~~1
+        darkGray.m_bottom |^ %%1 | magenta[~~22] | %%1 ^| lightGray.m_top
+        darkGray |>> %%1 | magenta[~~22] | %%1
     }
     
 }

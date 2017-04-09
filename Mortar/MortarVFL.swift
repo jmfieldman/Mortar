@@ -154,10 +154,6 @@ public final class _MortarVFLListCapture {
         self.leadingAttr = leadingAttr
         if let view = leadingAttr.item as? MortarView {
             leadingView = view
-        } else {
-            NSException(name: NSExceptionName(rawValue: "Invalid attribute"),
-                      reason: "Leading VFL attributes must be attached to a view",
-                    userInfo: nil).raise()
         }
     }
     
@@ -166,11 +162,14 @@ public final class _MortarVFLListCapture {
         self.leadingAttr = (axis == .horizontal) ? leadingView.m_left : leadingView.m_top
     }
     
-    init(axis: MortarAxis, list: [_MortarVFLNode], trailingView: MortarView) {
+    init(axis: MortarAxis, list: [_MortarVFLNode], trailingView: MortarView?) {
         self.axis         = axis
         self.list         = list
         self.trailingView = trailingView
-        self.trailingAttr = (axis == .horizontal) ? trailingView.m_right : trailingView.m_bottom
+        
+        if let view = trailingView {
+            self.trailingAttr = (axis == .horizontal) ? view.m_right : view.m_bottom
+        }
     }
     
     init(axis: MortarAxis, list: [_MortarVFLNode], trailingAttr: MortarAttribute) {
@@ -180,10 +179,6 @@ public final class _MortarVFLListCapture {
         
         if let view = trailingAttr.item as? MortarView {
             self.trailingView = view
-        } else {
-            NSException(name: NSExceptionName(rawValue: "Invalid attribute"),
-                      reason: "Trailing VFL attributes must be attached to a view",
-                    userInfo: nil).raise()
         }
     }
 }
@@ -191,22 +186,22 @@ public final class _MortarVFLListCapture {
 
 // MARK: - Sizing Node Operators
 
+prefix operator %%
 prefix operator ~~
-prefix operator ==
+
+public prefix func %%(view: MortarView) -> _MortarSizingNode {
+    return _MortarSizingNode(view: view)
+}
+
+public prefix func %%(floatable: MortarCGFloatable) -> _MortarSizingNode {
+    return _MortarSizingNode(floatable: floatable, sizingType: .weight)
+}
 
 public prefix func ~~(view: MortarView) -> _MortarSizingNode {
     return _MortarSizingNode(view: view)
 }
 
 public prefix func ~~(floatable: MortarCGFloatable) -> _MortarSizingNode {
-    return _MortarSizingNode(floatable: floatable, sizingType: .weight)
-}
-
-public prefix func ==(view: MortarView) -> _MortarSizingNode {
-    return _MortarSizingNode(view: view)
-}
-
-public prefix func ==(floatable: MortarCGFloatable) -> _MortarSizingNode {
     return _MortarSizingNode(floatable: floatable, sizingType: .equals)
 }
 
@@ -313,6 +308,7 @@ extension _MortarVFLNode: _MortarVFLNodable {
 
 precedencegroup MortarVFLDividerPrecendence {
     higherThan:     MortarVFLListCapturePrecendence
+    lowerThan:      LogicalDisjunctionPrecedence
     associativity:  left
 }
 
@@ -381,7 +377,7 @@ public func ||(lhs: [_MortarVFLNode], rhs: [MortarView]) -> [_MortarVFLNode] {
 
 precedencegroup MortarVFLListCapturePrecendence {
     higherThan:     MortarVFLListBeginPrecendence
-    lowerThan:      LogicalDisjunctionPrecedence
+    lowerThan:      LogicalConjunctionPrecedence
     associativity:  left
 }
 
@@ -469,7 +465,7 @@ public func ^||(lhs: [_MortarVFLNode], rhs: MortarAttribute) -> _MortarVFLListCa
 // MARK: - Final Parsing
 
 precedencegroup MortarVFLListBeginPrecendence {
-    //higherThan:     RangeFormationPrecedence
+    higherThan:     TernaryPrecedence
     lowerThan:      LogicalDisjunctionPrecedence
     associativity:  left
 }
@@ -496,6 +492,18 @@ infix operator ||^^ : MortarVFLListBeginPrecendence
     return try! rhs.toGroup()
 }
 
+@discardableResult public func |>(lhs: MortarView, rhs: _MortarVFLNodable) -> MortarGroup {
+    return lhs |> [rhs.__asNode()]
+}
+
+@discardableResult public func |>(lhs: MortarView, rhs: [MortarView]) -> MortarGroup {
+    return lhs |> [rhs.__asNode()]
+}
+
+@discardableResult public func |>(lhs: MortarView, rhs: [_MortarVFLNode]) -> MortarGroup {
+    return lhs |> _MortarVFLListCapture(axis: .horizontal, list: rhs, trailingView: nil)
+}
+
 @discardableResult public func |>(lhs: MortarAttribute, rhs: _MortarVFLListCapture) -> MortarGroup {
     if rhs.axis != .horizontal {
         NSException(name: NSExceptionName(rawValue: "Mortar VFL Operator Error"),
@@ -504,6 +512,18 @@ infix operator ||^^ : MortarVFLListBeginPrecendence
     }
     rhs.setLeadingAttr(lhs)
     return try! rhs.toGroup()
+}
+
+@discardableResult public func |>(lhs: MortarAttribute, rhs: _MortarVFLNodable) -> MortarGroup {
+    return lhs |> [rhs.__asNode()]
+}
+
+@discardableResult public func |>(lhs: MortarAttribute, rhs: [MortarView]) -> MortarGroup {
+    return lhs |> [rhs.__asNode()]
+}
+
+@discardableResult public func |>(lhs: MortarAttribute, rhs: [_MortarVFLNode]) -> MortarGroup {
+    return lhs |> _MortarVFLListCapture(axis: .horizontal, list: rhs, trailingView: nil)
 }
 
 @discardableResult public func ||>(lhs: MortarView, rhs: _MortarVFLListCapture) -> MortarGroup {
@@ -517,6 +537,18 @@ infix operator ||^^ : MortarVFLListBeginPrecendence
     return try! rhs.toGroup()
 }
 
+@discardableResult public func ||>(lhs: MortarView, rhs: _MortarVFLNodable) -> MortarGroup {
+    return lhs ||> [rhs.__asNode()]
+}
+
+@discardableResult public func ||>(lhs: MortarView, rhs: [MortarView]) -> MortarGroup {
+    return lhs ||> [rhs.__asNode()]
+}
+
+@discardableResult public func ||>(lhs: MortarView, rhs: [_MortarVFLNode]) -> MortarGroup {
+    return lhs ||> _MortarVFLListCapture(axis: .horizontal, list: rhs, trailingView: nil)
+}
+
 @discardableResult public func ||>(lhs: MortarAttribute, rhs: _MortarVFLListCapture) -> MortarGroup {
     if rhs.axis != .horizontal {
         NSException(name: NSExceptionName(rawValue: "Mortar VFL Operator Error"),
@@ -527,6 +559,19 @@ infix operator ||^^ : MortarVFLListBeginPrecendence
     rhs.setLeadingAttr(lhs)
     return try! rhs.toGroup()
 }
+
+@discardableResult public func ||>(lhs: MortarAttribute, rhs: _MortarVFLNodable) -> MortarGroup {
+    return lhs ||> [rhs.__asNode()]
+}
+
+@discardableResult public func ||>(lhs: MortarAttribute, rhs: [MortarView]) -> MortarGroup {
+    return lhs ||> [rhs.__asNode()]
+}
+
+@discardableResult public func ||>(lhs: MortarAttribute, rhs: [_MortarVFLNode]) -> MortarGroup {
+    return lhs ||> _MortarVFLListCapture(axis: .horizontal, list: rhs, trailingView: nil)
+}
+
 
 @discardableResult public func |>>(lhs: MortarView, rhs: _MortarVFLNodable) -> MortarGroup {
     return lhs |>> [rhs.__asNode()]
@@ -571,6 +616,18 @@ infix operator ||^^ : MortarVFLListBeginPrecendence
     return try! rhs.toGroup()
 }
 
+@discardableResult public func |^(lhs: MortarView, rhs: _MortarVFLNodable) -> MortarGroup {
+    return lhs |^ [rhs.__asNode()]
+}
+
+@discardableResult public func |^(lhs: MortarView, rhs: [MortarView]) -> MortarGroup {
+    return lhs |^ [rhs.__asNode()]
+}
+
+@discardableResult public func |^(lhs: MortarView, rhs: [_MortarVFLNode]) -> MortarGroup {
+    return lhs |^ _MortarVFLListCapture(axis: .vertical, list: rhs, trailingView: nil)
+}
+
 @discardableResult public func |^(lhs: MortarAttribute, rhs: _MortarVFLListCapture) -> MortarGroup {
     if rhs.axis != .vertical {
         NSException(name: NSExceptionName(rawValue: "Mortar VFL Operator Error"),
@@ -579,6 +636,18 @@ infix operator ||^^ : MortarVFLListBeginPrecendence
     }
     rhs.setLeadingAttr(lhs)
     return try! rhs.toGroup()
+}
+
+@discardableResult public func |^(lhs: MortarAttribute, rhs: _MortarVFLNodable) -> MortarGroup {
+    return lhs |^ [rhs.__asNode()]
+}
+
+@discardableResult public func |^(lhs: MortarAttribute, rhs: [MortarView]) -> MortarGroup {
+    return lhs |^ [rhs.__asNode()]
+}
+
+@discardableResult public func |^(lhs: MortarAttribute, rhs: [_MortarVFLNode]) -> MortarGroup {
+    return lhs |^ _MortarVFLListCapture(axis: .vertical, list: rhs, trailingView: nil)
 }
 
 @discardableResult public func ||^(lhs: MortarView, rhs: _MortarVFLListCapture) -> MortarGroup {
@@ -592,6 +661,18 @@ infix operator ||^^ : MortarVFLListBeginPrecendence
     return try! rhs.toGroup()
 }
 
+@discardableResult public func ||^(lhs: MortarView, rhs: _MortarVFLNodable) -> MortarGroup {
+    return lhs ||^ [rhs.__asNode()]
+}
+
+@discardableResult public func ||^(lhs: MortarView, rhs: [MortarView]) -> MortarGroup {
+    return lhs ||^ [rhs.__asNode()]
+}
+
+@discardableResult public func ||^(lhs: MortarView, rhs: [_MortarVFLNode]) -> MortarGroup {
+    return lhs ||^ _MortarVFLListCapture(axis: .vertical, list: rhs, trailingView: nil)
+}
+
 @discardableResult public func ||^(lhs: MortarAttribute, rhs: _MortarVFLListCapture) -> MortarGroup {
     if rhs.axis != .vertical {
         NSException(name: NSExceptionName(rawValue: "Mortar VFL Operator Error"),
@@ -602,6 +683,19 @@ infix operator ||^^ : MortarVFLListBeginPrecendence
     rhs.setLeadingAttr(lhs)
     return try! rhs.toGroup()
 }
+
+@discardableResult public func ||^(lhs: MortarAttribute, rhs: _MortarVFLNodable) -> MortarGroup {
+    return lhs ||^ [rhs.__asNode()]
+}
+
+@discardableResult public func ||^(lhs: MortarAttribute, rhs: [MortarView]) -> MortarGroup {
+    return lhs ||^ [rhs.__asNode()]
+}
+
+@discardableResult public func ||^(lhs: MortarAttribute, rhs: [_MortarVFLNode]) -> MortarGroup {
+    return lhs ||^ _MortarVFLListCapture(axis: .vertical, list: rhs, trailingView: nil)
+}
+
 
 @discardableResult public func |^^(lhs: MortarView, rhs: _MortarVFLNodable) -> MortarGroup {
     return lhs |^^ [rhs.__asNode()]
@@ -649,9 +743,7 @@ fileprivate extension _MortarVFLListCapture {
         var result: MortarGroup = MortarGroup()
         
         // Basic sanity
-        guard let leadingView  = self.leadingView,
-              let leadingAttr  = self.leadingAttr,
-              let trailingAttr = self.trailingAttr
+        guard let leadingAttr  = self.leadingAttr
         else {
             try! raise("missing border views")
             return []
@@ -688,8 +780,8 @@ fileprivate extension _MortarVFLListCapture {
             return []
         }
         
-        guard weightNodeCount > 0 else {
-            try! raise("You must have at least one weight-based node in the VFL list.  If you do not need weight-based constraints, use normal Mortar operators.")
+        guard weightNodeCount > 0 || trailingAttr == nil else {
+            try! raise("You must have at least one weight-based node in the wrapped VFL list.  If you do not need weight-based constraints, use normal Mortar operators.")
             return []
         }
         
@@ -742,15 +834,23 @@ fileprivate extension _MortarVFLListCapture {
             }
         }
         
+        // Ensure no weight nodes if missing trailing capture
+        if (trailingView == nil || leadingView == nil) && weightNodeCount > 0 {
+            try! raise("You may not use any weighted nodes without both leading and trailing capture operators (all nodes must have specific size)")
+            return []
+        }
+        
         // Ensure sandwich attributes are valid
         guard leadingAttr.attribute?.suitableVFLAxis == self.axis else {
             try! raise("Your leading attribute is not appropriate for axis: \(axis)")
             return []
         }
         
-        guard trailingAttr.attribute?.suitableVFLAxis == self.axis else {
-            try! raise("Your trailing attribute is not appropriate for axis: \(axis)")
-            return []
+        if let suitableVFLAxis = trailingAttr?.attribute?.suitableVFLAxis {
+            guard suitableVFLAxis == self.axis else {
+                try! raise("Your trailing attribute is not appropriate for axis: \(axis)")
+                return []
+            }
         }
         
         // ---- We should have done all prep; begin operation  ----
@@ -761,6 +861,10 @@ fileprivate extension _MortarVFLListCapture {
         
         // Size the masters
         if let spanView = masterSpanView {
+            guard let trailingAttr = self.trailingAttr else {
+                try! raise("Internal consistency error: no trailingAttr for statement with weights.")
+                return []
+            }
             result.append( spanView.vflLeadingAttributeFor(axis: axis)  |=| leadingAttr )
             result.append( spanView.vflTrailingAttributeFor(axis: axis) |=| trailingAttr )
             if let weightView = masterWeightView {
@@ -828,7 +932,9 @@ fileprivate extension _MortarVFLListCapture {
         }
         
         // Link final previous up to trailing bounds
-        result.append( previousTrailing |=| trailingAttr - previousFixed )
+        if let trailingAttr = self.trailingAttr {
+            result.append( previousTrailing |=| trailingAttr - previousFixed )
+        }
         
         return result
     }

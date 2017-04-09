@@ -15,6 +15,7 @@ class ListController: UITableViewController {
         VFL_Example1ViewController.self,
         VFL_Example2ViewController.self,
         VFL_Example3ViewController.self,
+        VFL_Example4ViewController.self,
     ]
     
     override func viewDidLoad() {
