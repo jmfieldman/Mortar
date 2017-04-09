@@ -101,11 +101,11 @@ public final class _MortarSizingNode {
 
 /// Nodes are anything inside the VFL statement divided by | or ||
 public final class _MortarVFLNode {
-    let view:       MortarView?
+    let views:      [MortarView]
     var sizingNode: _MortarSizingNode
     
-    init(view: MortarView? = nil, sizingNode: _MortarSizingNode) {
-        self.view       = view
+    init(views: [MortarView] = [], sizingNode: _MortarSizingNode) {
+        self.views      = views
         self.sizingNode = sizingNode
     }
     
@@ -131,7 +131,7 @@ public final class _MortarVFLNode {
     }
     
     var isFixedSizedPadding: Bool {
-        return view == nil && sizingNode.sizingType == .equals && sizingNode.view == nil
+        return views.count == 0 && sizingNode.sizingType == .equals && sizingNode.view == nil
     }
 }
 
@@ -214,7 +214,19 @@ public prefix func ==(floatable: MortarCGFloatable) -> _MortarSizingNode {
 
 public extension MortarView {
     public subscript(sizingNode: _MortarSizingNode) -> _MortarVFLNode {
-        return _MortarVFLNode(view: self, sizingNode: sizingNode)
+        return _MortarVFLNode(views: [self], sizingNode: sizingNode)
+    }
+}
+
+// MARK: - Making an array of MortarView with size -> VFL Node
+
+public extension Array where Element: MortarView {
+    public subscript(sizingNode: _MortarSizingNode) -> _MortarVFLNode {
+        return _MortarVFLNode(views: self, sizingNode: sizingNode)
+    }
+    
+    public func __asNode() -> _MortarVFLNode {
+        return _MortarVFLNode(views: self, sizingNode: _MortarSizingNode(floatable: 1, sizingType: .weight))
     }
 }
 
@@ -280,7 +292,7 @@ extension Float : _MortarVFLNodable {
 
 extension MortarView : _MortarVFLNodable {
     @inline(__always) public func __asNode() -> _MortarVFLNode {
-        return _MortarVFLNode(view: self, sizingNode: _MortarSizingNode(floatable: 1, sizingType: .weight))
+        return _MortarVFLNode(views: [self], sizingNode: _MortarSizingNode(floatable: 1, sizingType: .weight))
     }
 }
 
@@ -330,6 +342,40 @@ public func ||(lhs: [_MortarVFLNode], rhs: _MortarVFLNodable) -> [_MortarVFLNode
     return accum
 }
 
+// Now for arrays of MortarView
+
+// On LHS
+
+public func |(lhs: [MortarView], rhs: _MortarVFLNodable) -> [_MortarVFLNode] {
+    return [lhs.__asNode(), rhs.__asNode()]
+}
+
+public func ||(lhs: [MortarView], rhs: _MortarVFLNodable) -> [_MortarVFLNode] {
+    return [lhs.__asNode(), kMortarDefaultVFLPaddingNode, rhs.__asNode()]
+}
+
+// On RHS
+
+public func |(lhs: _MortarVFLNodable, rhs: [MortarView]) -> [_MortarVFLNode] {
+    return [lhs.__asNode(), rhs.__asNode()]
+}
+
+public func |(lhs: [_MortarVFLNode], rhs: [MortarView]) -> [_MortarVFLNode] {
+    var accum = lhs
+    accum.append(rhs.__asNode())
+    return accum
+}
+
+public func ||(lhs: _MortarVFLNodable, rhs: [MortarView]) -> [_MortarVFLNode] {
+    return [lhs.__asNode(), kMortarDefaultVFLPaddingNode, rhs.__asNode()]
+}
+
+public func ||(lhs: [_MortarVFLNode], rhs: [MortarView]) -> [_MortarVFLNode] {
+    var accum = lhs
+    accum.append(kMortarDefaultVFLPaddingNode)
+    accum.append(rhs.__asNode())
+    return accum
+}
 
 // MARK: - List Capture
 
@@ -609,13 +655,15 @@ fileprivate extension _MortarVFLListCapture {
                 weightNodeCount += 1
             }
             
-            if let view = node.view {
+            if node.views.count > 0 {
                 hasViewNode = true
-                guard nodeForView[ObjectIdentifier(view)] == nil else {
-                    try! raise("The same view cannot appaer multiple times in the VFL list")
-                    return []
+                for view in node.views {
+                    guard nodeForView[ObjectIdentifier(view)] == nil else {
+                        try! raise("The same view cannot appaer multiple times in the VFL list")
+                        return []
+                    }
+                    nodeForView[ObjectIdentifier(view)] = node
                 }
-                nodeForView[ObjectIdentifier(view)] = node
             }
         }
         
@@ -728,7 +776,7 @@ fileprivate extension _MortarVFLListCapture {
             }
             
             // If we're not fixed spacing, it must be view-based.
-            let currentView: MortarView = node.view ?? mGhostView(for: leadingView)
+            let currentView: MortarView = (node.views.count > 0) ? node.views[0] : mGhostView(for: leadingView)
             
             // link backwards
             result.append( currentView.vflLeadingAttributeFor(axis: axis) |=| previousTrailing + previousFixed )
@@ -748,6 +796,13 @@ fileprivate extension _MortarVFLListCapture {
                         return []
                     }
                     result.append( currentView.vflSizingAttributeFor(axis: axis) |=| weightView.vflSizingAttributeFor(axis: axis) * (sizingFloat / weightTotal) )
+                }
+            }
+            
+            // If we had more views in the array, match 'em
+            if node.views.count > 1 {
+                for idx in 1 ..< node.views.count {
+                    node.views[idx].vflBondingAttributeFor(axis: axis) |=| currentView
                 }
             }
             
@@ -785,6 +840,13 @@ private extension MortarView {
         switch axis {
         case .horizontal:   return self.m_width
         case .vertical:     return self.m_height
+        }
+    }
+    
+    func vflBondingAttributeFor(axis: MortarAxis) -> MortarAttribute {
+        switch axis {
+        case .horizontal:   return self.m_sides
+        case .vertical:     return self.m_caps
         }
     }
 }

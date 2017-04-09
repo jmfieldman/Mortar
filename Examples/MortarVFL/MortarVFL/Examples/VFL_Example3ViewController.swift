@@ -52,16 +52,12 @@ class VFL_Example3ViewController: UIViewController {
         self.view ||>> v4
         self.view ||>> v5
         
-        self.m_visibleRegion ||^^ v1 || v4[==44] || v5[==44]
-        
-        [v2, v3].m_caps |=| v1
+        self.m_visibleRegion ||^^ [v1, v2, v3] || v4[==44] || v5[==44]
         
         // Insert gray in green
         
-        v3 |>> ~~1 | g1[==44] | ~~1
+        v3 |>> ~~1 | [g1, g2][==44] | ~~1
         v3 |^^ ~~1 | g1[==44] | ~~1 | g2[==44] | ~~1
-        
-        g2.m_sides |=| g1
         
         // Insert magenta between grays
         
