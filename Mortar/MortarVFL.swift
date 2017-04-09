@@ -335,7 +335,7 @@ public func ||(lhs: [_MortarVFLNode], rhs: _MortarVFLNodable) -> [_MortarVFLNode
 
 precedencegroup MortarVFLListCapturePrecendence {
     higherThan:     MortarVFLListBeginPrecendence
-    lowerThan:      AdditionPrecedence
+    lowerThan:      LogicalDisjunctionPrecedence
     associativity:  left
 }
 
@@ -423,8 +423,8 @@ public func ^||(lhs: [_MortarVFLNode], rhs: MortarAttribute) -> _MortarVFLListCa
 // MARK: - Final Parsing
 
 precedencegroup MortarVFLListBeginPrecendence {
-    higherThan:     RangeFormationPrecedence
-    lowerThan:      AdditionPrecedence
+    //higherThan:     RangeFormationPrecedence
+    lowerThan:      LogicalDisjunctionPrecedence
     associativity:  left
 }
 

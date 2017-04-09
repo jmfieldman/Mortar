@@ -24,6 +24,7 @@
 		356F53E21E999BE3003A6905 /* NSObject+Mortar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F53D81E999BE3003A6905 /* NSObject+Mortar.swift */; };
 		356F53E41E999F4E003A6905 /* VFL_Example1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F53E31E999F4E003A6905 /* VFL_Example1ViewController.swift */; };
 		356F53E61E99A7E0003A6905 /* VFL_Example2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F53E51E99A7E0003A6905 /* VFL_Example2ViewController.swift */; };
+		356F53E81E99AD3A003A6905 /* VFL_Example3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F53E71E99AD3A003A6905 /* VFL_Example3ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		356F53D81E999BE3003A6905 /* NSObject+Mortar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSObject+Mortar.swift"; path = "../../Mortar/NSObject+Mortar.swift"; sourceTree = "<group>"; };
 		356F53E31E999F4E003A6905 /* VFL_Example1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFL_Example1ViewController.swift; sourceTree = "<group>"; };
 		356F53E51E99A7E0003A6905 /* VFL_Example2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFL_Example2ViewController.swift; sourceTree = "<group>"; };
+		356F53E71E99AD3A003A6905 /* VFL_Example3ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFL_Example3ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 				356F53CC1E999BBE003A6905 /* Example1ViewController.swift */,
 				356F53E31E999F4E003A6905 /* VFL_Example1ViewController.swift */,
 				356F53E51E99A7E0003A6905 /* VFL_Example2ViewController.swift */,
+				356F53E71E99AD3A003A6905 /* VFL_Example3ViewController.swift */,
 			);
 			path = Examples;
 			sourceTree = "<group>";
@@ -189,6 +192,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				356F53E81E99AD3A003A6905 /* VFL_Example3ViewController.swift in Sources */,
 				356F53BC1E999AC8003A6905 /* ListController.swift in Sources */,
 				356F53DC1E999BE3003A6905 /* MortarAttribute.swift in Sources */,
 				356F53DB1E999BE3003A6905 /* MortarDefaultStack.swift in Sources */,
