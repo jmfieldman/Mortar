@@ -2,7 +2,8 @@
 
 ![Swift 2.2](https://img.shields.io/badge/Swift_2.2-%7E%3E%200.10-orange.svg?style=flat)
 ![Swift 2.3](https://img.shields.io/badge/Swift_2.3-%7E%3E%200.11-orange.svg?style=flat)
-![Swift 3.0](https://img.shields.io/badge/Swift_3.0-latest-orange.svg?style=flat)
+![Swift 3.0](https://img.shields.io/badge/Swift_3.0-%7E%3E%201.1-orange.svg?style=flat)
+![Swift 3.1](https://img.shields.io/badge/Swift_3.1-%7E%3E%201.2-orange.svg?style=flat)
 
 Mortar allows you to create Auto Layout constraints using concise, simple code statements.
 
@@ -34,6 +35,9 @@ Other examples:
 
 /* Pin a 200px high, same-width view at the bottom of a container */
 [view.m_sides, view.m_bottom, view.m_height] |=| [container, container, 200]
+
+/* VFL syntax */
+view1 |>> viewA || viewB[~~44] |20| viewC[%%2]  
 ```
 
 #### Updating from a version prior to v1.1? Read this!
@@ -55,6 +59,8 @@ Yes, there are many Auto Layout DSLs to choose from.  Mortar was created to fill
 * Mortar supports implicit tuple processing (you don't need to call out a tuple as a specific element like ```CGRect``` or ```CGSize```).
 
 * Mortar supports multi-view alignment/constraints in a single line.
+
+* Mortar supports a robust compile-time VFL syntax that uses views directly (instead of dictionary lookups).
 
 * Additional goodies, like the ```|+|``` operator to visually construct view hierarchies rather than using tons of sequential calls to ```addSubview()```.
 
@@ -164,11 +170,23 @@ view1.m_top   |<| view2.m_bottom
 
 ### Using Layout Guides
 
-On iOS you can use the layout guides of a ```UIViewController```.  An example from inside ```viewDidLoad()``` that puts a view just below the top layout guide:
+On iOS you can access the layout guides of a ```UIViewController```.  An example from inside ```viewDidLoad()``` that puts a view just below the top layout guide:
 
 ```swift
+// Super useful when trying to position views inside a navigation/tab controller!
 view1.m_top   |<| self.m_topLayoutGuideBottom
 ```
+
+There is also a new ```UIViewController``` property ```m_visibleRegion``` to help align views to the region of controller's view that is below the top layout guide and above the bottom layout guide.
+
+```swift
+// Center a view inside the visible region of a UIViewController that is a child of
+// a navigation controller or tab controller
+textField.m_center |=| self.m_visibleRegion
+```
+
+Using ```m_visibleRegion``` will create a "ghost" view as a subview of the controller's root view.  This ghost view is hidden and non-interactive, and used only for positioning.  Its class name is ```_MortarVFLGhostView``` in case you see it inside the view debugger.
+
 
 ### Multipliers and Constants
 
@@ -455,6 +473,19 @@ let cr = view1.m_compResist
 let hg = view1.m_hugging
 ```
 
+# MortarVFL
+
+Mortar supports a VFL language that is roughly equivalent to Apple's own [Auto Layout VFL langauge](https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/VisualFormatLanguage.html).  The primary advanges are:
+
+* You can use it directly with existing Mortar attribute support
+* Views are referenced directly (instead of using dictionaries) for compile-time checking
+* Full weight-based support for relative sizing
+* More concise: Operator-based instead of function/string-based 
+
+## MortarVFL Internal Composition 
+
+MortarVFL support horizontal and vertical spacing in a similar manner.  The horizontal operators use the ```>``` character while the vertical operators use the ```^``` character.  Otherwise they act similarly.  
+
 
 # Visual View Hierarchy Creation
 
@@ -527,4 +558,3 @@ class MyController: UIViewController {
     }
 }
 ```
-

@@ -23,16 +23,31 @@ class VFL_Example4ViewController: UIViewController {
         $0.backgroundColor = .red
     }
     
+    let g1 = UIView.m_create {
+        $0.backgroundColor = .green
+    }
+    
+    let g2 = UIView.m_create {
+        $0.backgroundColor = .green
+    }
+    
+    let g3 = UIView.m_create {
+        $0.backgroundColor = .green
+    }
+    
     override func viewDidLoad() {
         
         self.view.backgroundColor = .white
         self.view |+| [
-            v1, v2, v3
+            v1, v2, v3,
+            g1, g2, g3,
         ]
         
         self.m_topLayoutGuideBottom ||^ v1[~~44] || v2[~~44] || v3[~~44]
         self.view ||> [v1, v2, v3][~~44]
         
+        g1[~~44] || g2[~~44] || g3[~~44] ^!! self.m_bottomLayoutGuideTop
+        [g1, g2, g3][~~44] <!! self.view
     }
     
 }

@@ -377,7 +377,7 @@ public func ||(lhs: [_MortarVFLNode], rhs: [MortarView]) -> [_MortarVFLNode] {
 
 precedencegroup MortarVFLListCapturePrecendence {
     higherThan:     MortarVFLListBeginPrecendence
-    lowerThan:      LogicalConjunctionPrecedence
+    lowerThan:      LogicalDisjunctionPrecedence
     associativity:  left
 }
 
@@ -385,6 +385,14 @@ infix operator <|   : MortarVFLListCapturePrecendence
 infix operator <||  : MortarVFLListCapturePrecendence
 infix operator ^|   : MortarVFLListCapturePrecendence
 infix operator ^||  : MortarVFLListCapturePrecendence
+
+// -- ! operators immediately create trailing-only constraint groups
+
+infix operator <!   : MortarVFLListCapturePrecendence
+infix operator <!!  : MortarVFLListCapturePrecendence
+infix operator ^!   : MortarVFLListCapturePrecendence
+infix operator ^!!  : MortarVFLListCapturePrecendence
+
 
 // Each list capture can take either a nodable or list on the left, and a view or attribute on the right
 
@@ -424,6 +432,41 @@ public func <||(lhs: [_MortarVFLNode], rhs: MortarAttribute) -> _MortarVFLListCa
     return _MortarVFLListCapture(axis: .horizontal, list: accum, trailingAttr: rhs)
 }
 
+// !
+
+@discardableResult public func <!(lhs: _MortarVFLNodable, rhs: MortarView) -> MortarGroup {
+    return try! (lhs <| rhs).toGroup()
+}
+
+@discardableResult public func <!(lhs: [_MortarVFLNode], rhs: MortarView) -> MortarGroup {
+    return try! (lhs <| rhs).toGroup()
+}
+
+@discardableResult public func <!(lhs: _MortarVFLNodable, rhs: MortarAttribute) -> MortarGroup {
+    return try! (lhs <| rhs).toGroup()
+}
+
+@discardableResult public func <!(lhs: [_MortarVFLNode], rhs: MortarAttribute) -> MortarGroup {
+    return try! (lhs <| rhs).toGroup()
+}
+
+@discardableResult public func <!!(lhs: _MortarVFLNodable, rhs: MortarView) -> MortarGroup {
+    return try! (lhs <|| rhs).toGroup()
+}
+
+@discardableResult public func <!!(lhs: [_MortarVFLNode], rhs: MortarView) -> MortarGroup {
+    return try! (lhs <|| rhs).toGroup()
+}
+
+@discardableResult public func <!!(lhs: _MortarVFLNodable, rhs: MortarAttribute) -> MortarGroup {
+    return try! (lhs <|| rhs).toGroup()
+}
+
+@discardableResult public func <!!(lhs: [_MortarVFLNode], rhs: MortarAttribute) -> MortarGroup {
+    return try! (lhs <|| rhs).toGroup()
+}
+
+
 // Vertical 
 
 public func ^|(lhs: _MortarVFLNodable, rhs: MortarView) -> _MortarVFLListCapture {
@@ -461,6 +504,41 @@ public func ^||(lhs: [_MortarVFLNode], rhs: MortarAttribute) -> _MortarVFLListCa
     accum.append(kMortarDefaultVFLPaddingNode)
     return _MortarVFLListCapture(axis: .vertical, list: accum, trailingAttr: rhs)
 }
+
+// !
+
+@discardableResult public func ^!(lhs: _MortarVFLNodable, rhs: MortarView) -> MortarGroup {
+    return try! (lhs ^| rhs).toGroup()
+}
+
+@discardableResult public func ^!(lhs: [_MortarVFLNode], rhs: MortarView) -> MortarGroup {
+    return try! (lhs ^| rhs).toGroup()
+}
+
+@discardableResult public func ^!(lhs: _MortarVFLNodable, rhs: MortarAttribute) -> MortarGroup {
+    return try! (lhs ^| rhs).toGroup()
+}
+
+@discardableResult public func ^!(lhs: [_MortarVFLNode], rhs: MortarAttribute) -> MortarGroup {
+    return try! (lhs ^| rhs).toGroup()
+}
+
+@discardableResult public func ^!!(lhs: _MortarVFLNodable, rhs: MortarView) -> MortarGroup {
+    return try! (lhs ^|| rhs).toGroup()
+}
+
+@discardableResult public func ^!!(lhs: [_MortarVFLNode], rhs: MortarView) -> MortarGroup {
+    return try! (lhs ^|| rhs).toGroup()
+}
+
+@discardableResult public func ^!!(lhs: _MortarVFLNodable, rhs: MortarAttribute) -> MortarGroup {
+    return try! (lhs ^|| rhs).toGroup()
+}
+
+@discardableResult public func ^!!(lhs: [_MortarVFLNode], rhs: MortarAttribute) -> MortarGroup {
+    return try! (lhs ^|| rhs).toGroup()
+}
+
 
 // MARK: - Final Parsing
 
@@ -742,13 +820,6 @@ fileprivate extension _MortarVFLListCapture {
         // Accumulate the constraints
         var result: MortarGroup = MortarGroup()
         
-        // Basic sanity
-        guard let leadingAttr  = self.leadingAttr
-        else {
-            try! raise("missing border views")
-            return []
-        }
-        
         // Tracks nodes by their view
         var nodeForView: [ObjectIdentifier: _MortarVFLNode] = [:]
         
@@ -780,7 +851,7 @@ fileprivate extension _MortarVFLListCapture {
             return []
         }
         
-        guard weightNodeCount > 0 || trailingAttr == nil else {
+        guard weightNodeCount > 0 || trailingAttr == nil || leadingAttr == nil else {
             try! raise("You must have at least one weight-based node in the wrapped VFL list.  If you do not need weight-based constraints, use normal Mortar operators.")
             return []
         }
@@ -841,9 +912,11 @@ fileprivate extension _MortarVFLListCapture {
         }
         
         // Ensure sandwich attributes are valid
-        guard leadingAttr.attribute?.suitableVFLAxis == self.axis else {
-            try! raise("Your leading attribute is not appropriate for axis: \(axis)")
-            return []
+        if let suitableVFLAxis = leadingAttr?.attribute?.suitableVFLAxis {
+            guard suitableVFLAxis == self.axis else {
+                try! raise("Your leading attribute is not appropriate for axis: \(axis)")
+                return []
+            }
         }
         
         if let suitableVFLAxis = trailingAttr?.attribute?.suitableVFLAxis {
@@ -861,8 +934,10 @@ fileprivate extension _MortarVFLListCapture {
         
         // Size the masters
         if let spanView = masterSpanView {
-            guard let trailingAttr = self.trailingAttr else {
-                try! raise("Internal consistency error: no trailingAttr for statement with weights.")
+            guard let leadingAttr = self.leadingAttr,
+                  let trailingAttr = self.trailingAttr
+            else {
+                try! raise("Internal consistency error: need both leadingAttr and trailingAttr for statement with weights.")
                 return []
             }
             result.append( spanView.vflLeadingAttributeFor(axis: axis)  |=| leadingAttr )
@@ -874,8 +949,8 @@ fileprivate extension _MortarVFLListCapture {
         
         // Previous keeps track of our "last" node state so that we can
         // link into it
-        var previousTrailing:   MortarAttribute = leadingAttr
-        var previousFixed:      CGFloat         = 0
+        var previousTrailing:   MortarAttribute? = leadingAttr
+        var previousFixed:      CGFloat          = 0
         
         // We don't explicitly size the first weighted node
         // so that there is some flexibility
@@ -899,7 +974,9 @@ fileprivate extension _MortarVFLListCapture {
             let currentView: MortarView = (node.views.count > 0) ? node.views[0] : mGhostView(for: leadingView)
             
             // link backwards
-            result.append( currentView.vflLeadingAttributeFor(axis: axis) |=| previousTrailing + previousFixed )
+            if let previousTrailing = previousTrailing {
+                result.append( currentView.vflLeadingAttributeFor(axis: axis) |=| previousTrailing + previousFixed )
+            }
             
             // width
             switch node.sizingNode.sizingType {
@@ -932,7 +1009,8 @@ fileprivate extension _MortarVFLListCapture {
         }
         
         // Link final previous up to trailing bounds
-        if let trailingAttr = self.trailingAttr {
+        if let trailingAttr = self.trailingAttr,
+           let previousTrailing = previousTrailing {
             result.append( previousTrailing |=| trailingAttr - previousFixed )
         }
         
