@@ -532,6 +532,10 @@ infix operator ||^^ : MortarVFLListBeginPrecendence
     return lhs |>> [rhs.__asNode()]
 }
 
+@discardableResult public func |>>(lhs: MortarView, rhs: [MortarView]) -> MortarGroup {
+    return lhs |>> [rhs.__asNode()]
+}
+
 @discardableResult public func |>>(lhs: MortarView, rhs: [_MortarVFLNode]) -> MortarGroup {
     let capture = _MortarVFLListCapture(axis: .horizontal, list: rhs, trailingView: lhs)
     capture.setLeadingView(lhs)
@@ -539,6 +543,10 @@ infix operator ||^^ : MortarVFLListBeginPrecendence
 }
 
 @discardableResult public func ||>>(lhs: MortarView, rhs: _MortarVFLNodable) -> MortarGroup {
+    return lhs ||>> [rhs.__asNode()]
+}
+
+@discardableResult public func ||>>(lhs: MortarView, rhs: [MortarView]) -> MortarGroup {
     return lhs ||>> [rhs.__asNode()]
 }
 
@@ -599,6 +607,10 @@ infix operator ||^^ : MortarVFLListBeginPrecendence
     return lhs |^^ [rhs.__asNode()]
 }
 
+@discardableResult public func |^^(lhs: MortarView, rhs: [MortarView]) -> MortarGroup {
+    return lhs |^^ [rhs.__asNode()]
+}
+
 @discardableResult public func |^^(lhs: MortarView, rhs: [_MortarVFLNode]) -> MortarGroup {
     let capture = _MortarVFLListCapture(axis: .vertical, list: rhs, trailingView: lhs)
     capture.setLeadingView(lhs)
@@ -606,6 +618,10 @@ infix operator ||^^ : MortarVFLListBeginPrecendence
 }
 
 @discardableResult public func ||^^(lhs: MortarView, rhs: _MortarVFLNodable) -> MortarGroup {
+    return lhs ||^^ [rhs.__asNode()]
+}
+
+@discardableResult public func ||^^(lhs: MortarView, rhs: [MortarView]) -> MortarGroup {
     return lhs ||^^ [rhs.__asNode()]
 }
 
