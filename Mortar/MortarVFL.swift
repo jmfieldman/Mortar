@@ -68,9 +68,14 @@ public enum _MortarSizingType {
 /// Return a completely non-interactive view for layout purposes
 private func mGhostView(for parent: MortarView?) -> _MortarVFLGhostView {
     return _MortarVFLGhostView.m_create {
+        #if os(iOS) || os(tvOS)
         $0.backgroundColor = .clear
         $0.alpha = 0
         $0.isUserInteractionEnabled = false
+        #else
+        $0.wantsLayer = true
+        $0.layer?.backgroundColor = CGColor.init(red: 0, green: 0, blue: 0, alpha: 0)
+        #endif
         parent?.addSubview($0)
     }
 }
