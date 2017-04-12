@@ -531,6 +531,11 @@ MortarVFL statements must be captured on at least one end by a view attribute.  
 // viewB and viewC will take equal width between the 
 // right edge of viewA and the left edge of viewD
 viewA.m_right |> viewB | viewC <| viewD.m_left
+
+// viewB and viewV will be equal width between the
+// left/right edges of viewA, inset by 8pt padding
+// and separated by 40pts.
+viewA ||>> viewB |40| viewC
 ``` 
 
 MortarVFL support horizontal and vertical spacing in a similar manner.  The horizontal operators use the ```>``` character while the vertical operators use the ```^``` character.  Otherwise they act similarly.  For example, the vertical version of the above statement would be:
@@ -558,6 +563,61 @@ viewA        |^ viewB | viewC ^| viewD
 ```
 
 ***Important Observation:*** Implicit attributes might be opposite of what you expect.  This is because implicit attributes are normally used to capture views inside the bounds of parent views and so we use the outer edges, not the inner edges. 
+
+### Implicit Surround
+
+If you want the MortarVFL nodes to be inside the bounds of a single view, you can use the surround operators instead of placing the same view at both terminals. 
+
+The surround operators use either ```>>``` or ```^^```:
+
+```swift
+// viewB and viewV will be equal width between the
+// left/right edges of viewA, inset by 8pt padding
+// and separated by 40pts.
+viewA ||>> viewB |40| viewC
+
+// viewB will be twice as tall as viewC; both will be between
+// the top/bottom edges of viewA.
+viewA |^^ viewB[~~2] | viewC
+
+// Using m_visibleRegion is helpful for layouts in child view controllers
+// to get views laid out inside the visible region, not under nav/tab bars
+self.m_visibleRegion ||^^ viewA | viewB | viewC
+```
+
+### Single-Ended Statements
+
+Up until now, all of the examples have shown statements bordered by two attributes (left and right, top and bottom).
+
+For statements surrounded on both sides, you ***must*** have at least one node that is weight-based and not an explicitly fixed size.  This allows Mortar to make your constraints flexible between the terminals.
+
+For statements that have a single terminal, the opposite is true.  ***You cannot use any*** weight-based nodes, and they must all be fixed spacing.  This is because there is no second endpoing to use as an anchor for relative sizing.
+
+Single-terminal statements look the same as the others, but use operators with a bang: ```!```  Unfortunately this looks very much like the pipe operator, so don't be confused.
+
+```swift
+// viewB will be placed at the right edge of viewA and be 44pts wide.
+// viewC will be placed 8pts (padding) right of viewB and will be 88pts wide.
+viewA.m_right !> viewB[==44] || viewC[==88]
+
+// viewC will be placed at the left edge of viewA and be 88pts wide.
+// viewB will be placed 8pts (padding) left of viewC and will be 44pts wide.
+viewB[==44] || viewC[==88] <! viewA.m_left
+
+// viewB will be placed at the bottom edge of viewA and be 44pts high.
+// viewC will be placed 8pts (padding) below of viewB and will be 88pts high.
+viewA.m_bottom !^ viewB[==44] || viewC[==88]
+
+// viewC will be placed at the top edge of viewA and be 88pts high.
+// viewB will be placed 8pts (padding) above viewC and will be 44pts high.
+viewB[==44] || viewC[==88] ^! viewA.m_top
+```
+
+Again, note the use of the ```!``` bang symbol for single-ended statements, and that there are no weight-based nodes.
+
+## Examples
+
+There are several examples of MortarVFL in the Examples/MortarVFL project.
 
 # Visual View Hierarchy Creation
 
