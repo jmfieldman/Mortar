@@ -53,6 +53,11 @@ class MortarTests: XCTestCase {
         z |>> z || x || x | z
         z ||>> z || x | z | x | 40 || 4 | z
         z ||> z[==x] | 30 | 4||x[~~z]
+        [x, z, x, z, x][==44] ^! z
+        z |>> x | x | x[~~2] | z | x
+        z |>> x[==44] || x || z[==44]
+        z.m_right |> 30 | x | 30 | z || 30 <|| z.m_left
+        
     }
     
     func testBasicConstruction() {
