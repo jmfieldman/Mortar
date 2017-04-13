@@ -12,7 +12,6 @@
 		356F53C11E999AC8003A6905 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 356F53C01E999AC8003A6905 /* Assets.xcassets */; };
 		356F53C41E999AC8003A6905 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 356F53C21E999AC8003A6905 /* LaunchScreen.storyboard */; };
 		356F53CD1E999BBE003A6905 /* Example1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F53CC1E999BBE003A6905 /* Example1ViewController.swift */; };
-		356F53D91E999BE3003A6905 /* MortarVFL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F53CF1E999BE3003A6905 /* MortarVFL.swift */; };
 		356F53DA1E999BE3003A6905 /* Mortar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F53D01E999BE3003A6905 /* Mortar.swift */; };
 		356F53DB1E999BE3003A6905 /* MortarDefaultStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F53D11E999BE3003A6905 /* MortarDefaultStack.swift */; };
 		356F53DC1E999BE3003A6905 /* MortarAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F53D21E999BE3003A6905 /* MortarAttribute.swift */; };
@@ -26,6 +25,7 @@
 		356F53E61E99A7E0003A6905 /* VFL_Example2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F53E51E99A7E0003A6905 /* VFL_Example2ViewController.swift */; };
 		356F53E81E99AD3A003A6905 /* VFL_Example3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F53E71E99AD3A003A6905 /* VFL_Example3ViewController.swift */; };
 		35E850F61E9ABC6A00EB3D86 /* VFL_Example4ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E850F51E9ABC6A00EB3D86 /* VFL_Example4ViewController.swift */; };
+		35E850FE1E9FC75C00EB3D86 /* MortarVFL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E850FD1E9FC75C00EB3D86 /* MortarVFL.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,7 +36,6 @@
 		356F53C31E999AC8003A6905 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		356F53C51E999AC8003A6905 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		356F53CC1E999BBE003A6905 /* Example1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Example1ViewController.swift; sourceTree = "<group>"; };
-		356F53CF1E999BE3003A6905 /* MortarVFL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MortarVFL.swift; path = ../../Mortar/MortarVFL.swift; sourceTree = "<group>"; };
 		356F53D01E999BE3003A6905 /* Mortar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Mortar.swift; path = ../../Mortar/Mortar.swift; sourceTree = "<group>"; };
 		356F53D11E999BE3003A6905 /* MortarDefaultStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MortarDefaultStack.swift; path = ../../Mortar/MortarDefaultStack.swift; sourceTree = "<group>"; };
 		356F53D21E999BE3003A6905 /* MortarAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MortarAttribute.swift; path = ../../Mortar/MortarAttribute.swift; sourceTree = "<group>"; };
@@ -50,6 +49,7 @@
 		356F53E51E99A7E0003A6905 /* VFL_Example2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFL_Example2ViewController.swift; sourceTree = "<group>"; };
 		356F53E71E99AD3A003A6905 /* VFL_Example3ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFL_Example3ViewController.swift; sourceTree = "<group>"; };
 		35E850F51E9ABC6A00EB3D86 /* VFL_Example4ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFL_Example4ViewController.swift; sourceTree = "<group>"; };
+		35E850FD1E9FC75C00EB3D86 /* MortarVFL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MortarVFL.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,7 +109,7 @@
 		356F53CE1E999BD3003A6905 /* Mortar */ = {
 			isa = PBXGroup;
 			children = (
-				356F53CF1E999BE3003A6905 /* MortarVFL.swift */,
+				35E850FB1E9FC75C00EB3D86 /* Extensions */,
 				356F53D01E999BE3003A6905 /* Mortar.swift */,
 				356F53D11E999BE3003A6905 /* MortarDefaultStack.swift */,
 				356F53D21E999BE3003A6905 /* MortarAttribute.swift */,
@@ -121,6 +121,23 @@
 				356F53D81E999BE3003A6905 /* NSObject+Mortar.swift */,
 			);
 			name = Mortar;
+			sourceTree = "<group>";
+		};
+		35E850FB1E9FC75C00EB3D86 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				35E850FC1E9FC75C00EB3D86 /* MortarVFL */,
+			);
+			name = Extensions;
+			path = ../../Extensions;
+			sourceTree = "<group>";
+		};
+		35E850FC1E9FC75C00EB3D86 /* MortarVFL */ = {
+			isa = PBXGroup;
+			children = (
+				35E850FD1E9FC75C00EB3D86 /* MortarVFL.swift */,
+			);
+			path = MortarVFL;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -209,9 +226,9 @@
 				356F53CD1E999BBE003A6905 /* Example1ViewController.swift in Sources */,
 				356F53DF1E999BE3003A6905 /* MortarConstraint.swift in Sources */,
 				356F53E21E999BE3003A6905 /* NSObject+Mortar.swift in Sources */,
+				35E850FE1E9FC75C00EB3D86 /* MortarVFL.swift in Sources */,
 				356F53DE1E999BE3003A6905 /* View+Mortar.swift in Sources */,
 				356F53E11E999BE3003A6905 /* MortarGroup.swift in Sources */,
-				356F53D91E999BE3003A6905 /* MortarVFL.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

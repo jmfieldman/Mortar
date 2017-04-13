@@ -27,7 +27,6 @@ import UIKit
 import AppKit
 #endif
 
-
 /*
  
  | means edges are abutted
@@ -237,73 +236,73 @@ public protocol _MortarVFLNodable {
 }
 
 extension CGFloat : _MortarVFLNodable {
-    @inline(__always) public func __asNode() -> _MortarVFLNode {
+    public func __asNode() -> _MortarVFLNode {
         return _MortarVFLNode(sizingNode: _MortarSizingNode(floatable: self, sizingType: .equals))
     }
 }
 
 extension Int : _MortarVFLNodable {
-    @inline(__always) public func __asNode() -> _MortarVFLNode {
+    public func __asNode() -> _MortarVFLNode {
         return _MortarVFLNode(sizingNode: _MortarSizingNode(floatable: self, sizingType: .equals))
     }
 }
 
 extension UInt : _MortarVFLNodable {
-    @inline(__always) public func __asNode() -> _MortarVFLNode {
+    public func __asNode() -> _MortarVFLNode {
         return _MortarVFLNode(sizingNode: _MortarSizingNode(floatable: self, sizingType: .equals))
     }
 }
 
 extension Int64 : _MortarVFLNodable {
-    @inline(__always) public func __asNode() -> _MortarVFLNode {
+    public func __asNode() -> _MortarVFLNode {
         return _MortarVFLNode(sizingNode: _MortarSizingNode(floatable: self, sizingType: .equals))
     }
 }
 
 extension UInt64 : _MortarVFLNodable {
-    @inline(__always) public func __asNode() -> _MortarVFLNode {
+    public func __asNode() -> _MortarVFLNode {
         return _MortarVFLNode(sizingNode: _MortarSizingNode(floatable: self, sizingType: .equals))
     }
 }
 
 extension UInt32 : _MortarVFLNodable {
-    @inline(__always) public func __asNode() -> _MortarVFLNode {
+    public func __asNode() -> _MortarVFLNode {
         return _MortarVFLNode(sizingNode: _MortarSizingNode(floatable: self, sizingType: .equals))
     }
 }
 
 extension Int32 : _MortarVFLNodable {
-    @inline(__always) public func __asNode() -> _MortarVFLNode {
+    public func __asNode() -> _MortarVFLNode {
         return _MortarVFLNode(sizingNode: _MortarSizingNode(floatable: self, sizingType: .equals))
     }
 }
 
 extension Double : _MortarVFLNodable {
-    @inline(__always) public func __asNode() -> _MortarVFLNode {
+    public func __asNode() -> _MortarVFLNode {
         return _MortarVFLNode(sizingNode: _MortarSizingNode(floatable: self, sizingType: .equals))
     }
 }
 
 extension Float : _MortarVFLNodable {
-    @inline(__always) public func __asNode() -> _MortarVFLNode {
+    public func __asNode() -> _MortarVFLNode {
         return _MortarVFLNode(sizingNode: _MortarSizingNode(floatable: self, sizingType: .equals))
     }
 }
 
 extension MortarView : _MortarVFLNodable {
-    @inline(__always) public func __asNode() -> _MortarVFLNode {
+    public func __asNode() -> _MortarVFLNode {
         return _MortarVFLNode(views: [self], sizingNode: _MortarSizingNode(floatable: 1, sizingType: .weight))
     }
 }
 
 extension _MortarSizingNode : _MortarVFLNodable {
-    @inline(__always) public func __asNode() -> _MortarVFLNode {
+    public func __asNode() -> _MortarVFLNode {
         return _MortarVFLNode(sizingNode: self)
     }
 }
 
 extension _MortarVFLNode: _MortarVFLNodable {
-    @inline(__always) public func __asNode() -> _MortarVFLNode {
+    public func __asNode() -> _MortarVFLNode {
         return self
     }
 }
@@ -1123,7 +1122,7 @@ private extension MortarLayoutAttribute {
 
 // MARK: - ViewController visible region
 
-#if os(iOS) || os(tvOS)
+#if os(iOS)
 public extension UIViewController {
     
     @nonobjc private static let kVisibleRegionGhostTag: Int = Int.min + 10
@@ -1131,7 +1130,7 @@ public extension UIViewController {
     /// Creates a _MortarVFLGhostView that is sized between the
     /// view controller's guide anchors.
     /// Will reuse the existing one if it exists, based on tag lookup
-    var m_visibleRegion: MortarView {
+    public var m_visibleRegion: MortarView {
         for view in self.view.subviews {
             if view.tag != UIViewController.kVisibleRegionGhostTag {
                 continue
