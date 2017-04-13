@@ -524,12 +524,14 @@ Nodes that represent views can contain a subscript that gives them a size constr
 
 View nodes without subscripts are considered weighted value 1, e.g. ```[~~1]```
 
+MortarVFL will throw an error if you have cyclic view references, e.g. ```viewA[==viewB] | viewB[==viewA]```
+
 ### Arrays in a Node
 
 As an advanced technique, you can use an array of views in a node.  It would look something like this:
 
 ```swift
-viewA || [viewB, viewC, viewD][=40] || viewE
+viewA || [viewB, viewC, viewD][==40] || viewE
 ```
 
 This positions the arrayed nodes in parallel with each other.  In the above example, all three of viewB, viewC and viewD will be sized 40 points and be adjacent to viewA and viewE.  This is very useful for complex grid-based layouts.
