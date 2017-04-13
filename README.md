@@ -72,6 +72,12 @@ You can install Mortar by adding it to your [CocoaPods](http://cocoapods.org/) `
 pod 'Mortar'
 ```
 
+If you would like to use the Mortar VFL language:
+
+```ruby
+pod 'Mortar/MortarVFL'
+```
+
 Or you can use a variety of ways to include the ```Mortar.framework``` file from this project into your own.
 
 # Swift Version Support
@@ -177,7 +183,7 @@ On iOS you can access the layout guides of a ```UIViewController```.  An example
 view1.m_top   |<| self.m_topLayoutGuideBottom
 ```
 
-There is also a new ```UIViewController``` property ```m_visibleRegion``` to help align views to the region of controller's view that is below the top layout guide and above the bottom layout guide.
+There is also a new ```UIViewController``` property ```m_visibleRegion``` to help align views to the region of controller's view that is below the top layout guide and above the bottom layout guide.  *To use this property you must have the MortarVFL extension installed.*
 
 ```swift
 // Center a view inside the visible region of a UIViewController that is a child of
@@ -481,6 +487,12 @@ Mortar supports a VFL language that is roughly equivalent to Apple's own [Auto L
 * Views are referenced directly (instead of using dictionaries) for compile-time checking
 * Full weight-based support for relative sizing
 * More concise: Operator-based instead of function/string-based 
+
+MortarVFL is contrained to its own extension because it makes heavy use of custom operators.  These operators may not be compatible with other libraries you are using, so we don't want Mortar core to conflict with those.
+
+```ruby
+pod 'Mortar/MortarVFL'
+```
 
 ## MortarVFL Internal Composition 
 
