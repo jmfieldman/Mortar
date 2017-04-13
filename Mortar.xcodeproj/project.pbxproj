@@ -19,6 +19,7 @@
 		35BBBBFE1C6D3C600014B159 /* Mortar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BBBBF71C6D3C600014B159 /* Mortar.swift */; };
 		35BBBBFF1C6D3C600014B159 /* Array+Mortar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BBBBF81C6D3C600014B159 /* Array+Mortar.swift */; };
 		35BBBC001C6D3C600014B159 /* View+Mortar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BBBBF91C6D3C600014B159 /* View+Mortar.swift */; };
+		35E850FA1E9FC23700EB3D86 /* MortarVFL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E850F91E9FC23700EB3D86 /* MortarVFL.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		35BBBBF71C6D3C600014B159 /* Mortar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mortar.swift; sourceTree = "<group>"; };
 		35BBBBF81C6D3C600014B159 /* Array+Mortar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Mortar.swift"; sourceTree = "<group>"; };
 		35BBBBF91C6D3C600014B159 /* View+Mortar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Mortar.swift"; sourceTree = "<group>"; };
+		35E850F91E9FC23700EB3D86 /* MortarVFL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MortarVFL.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 		35BBBBDB1C6D3BBD0014B159 /* Mortar */ = {
 			isa = PBXGroup;
 			children = (
+				35E850F71E9FC23700EB3D86 /* Extensions */,
 				355FCD261DAFE2290095C596 /* .swift-version */,
 				3585ABAD1D85C7D60063299C /* .travis.yml */,
 				35964B221CBE8E6700E54D22 /* README.md */,
@@ -130,6 +133,22 @@
 				35BBBBEA1C6D3BBD0014B159 /* Info.plist */,
 			);
 			path = MortarTests;
+			sourceTree = "<group>";
+		};
+		35E850F71E9FC23700EB3D86 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				35E850F81E9FC23700EB3D86 /* MortarVFL */,
+			);
+			path = Extensions;
+			sourceTree = SOURCE_ROOT;
+		};
+		35E850F81E9FC23700EB3D86 /* MortarVFL */ = {
+			isa = PBXGroup;
+			children = (
+				35E850F91E9FC23700EB3D86 /* MortarVFL.swift */,
+			);
+			path = MortarVFL;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -251,6 +270,7 @@
 				35BBBBFD1C6D3C600014B159 /* MortarAttribute.swift in Sources */,
 				35BBBBFC1C6D3C600014B159 /* MortarOperators.swift in Sources */,
 				35BBBBFA1C6D3C600014B159 /* MortarConstraint.swift in Sources */,
+				35E850FA1E9FC23700EB3D86 /* MortarVFL.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

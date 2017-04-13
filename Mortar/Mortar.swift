@@ -374,7 +374,9 @@ public typealias MortarTuple   = ([MortarAttribute], MortarAliasLayoutPriority?)
     return ([fourple.0.m_intoAttribute(), fourple.1.m_intoAttribute(), fourple.2.m_intoAttribute(), fourple.3.m_intoAttribute()], MortarDefault.priority.current())
 }
 
-
+public enum MortarAxis {
+    case horizontal, vertical
+}
 
 
 

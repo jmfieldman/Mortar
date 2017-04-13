@@ -24,5 +24,10 @@
 import PackageDescription
 
 let package = Package(
-    name: "Mortar"
+    name: "Mortar",
+    exclude: [
+		"Examples",
+		"Development",
+		"MortarTests"
+	]
 )

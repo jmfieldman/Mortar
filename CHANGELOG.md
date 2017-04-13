@@ -1,5 +1,9 @@
 # Mortar Changelog
 
+## 1.2.1 -- 4/13/17
+
+* Added MortarVFL extension
+
 ## 1.2.0 -- 3/30/17
 
 * Updates for Xcode 8.3/Swift 3.1 support

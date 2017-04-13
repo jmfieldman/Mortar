@@ -2,7 +2,8 @@
 
 ![Swift 2.2](https://img.shields.io/badge/Swift_2.2-%7E%3E%200.10-orange.svg?style=flat)
 ![Swift 2.3](https://img.shields.io/badge/Swift_2.3-%7E%3E%200.11-orange.svg?style=flat)
-![Swift 3.0](https://img.shields.io/badge/Swift_3.0-latest-orange.svg?style=flat)
+![Swift 3.0](https://img.shields.io/badge/Swift_3.0-%7E%3E%201.1-orange.svg?style=flat)
+![Swift 3.1](https://img.shields.io/badge/Swift_3.1-%7E%3E%201.2-orange.svg?style=flat)
 
 Mortar allows you to create Auto Layout constraints using concise, simple code statements.
 
@@ -34,6 +35,9 @@ Other examples:
 
 /* Pin a 200px high, same-width view at the bottom of a container */
 [view.m_sides, view.m_bottom, view.m_height] |=| [container, container, 200]
+
+/* VFL syntax */
+view1 |>> viewA || viewB[==44] |20| viewC[~~2]  
 ```
 
 #### Updating from a version prior to v1.1? Read this!
@@ -56,6 +60,8 @@ Yes, there are many Auto Layout DSLs to choose from.  Mortar was created to fill
 
 * Mortar supports multi-view alignment/constraints in a single line.
 
+* Mortar supports a robust compile-time VFL syntax that uses views directly (instead of dictionary lookups).
+
 * Additional goodies, like the ```|+|``` operator to visually construct view hierarchies rather than using tons of sequential calls to ```addSubview()```.
 
 # Installing
@@ -64,6 +70,12 @@ You can install Mortar by adding it to your [CocoaPods](http://cocoapods.org/) `
 
 ```ruby
 pod 'Mortar'
+```
+
+If you would like to use the Mortar VFL language:
+
+```ruby
+pod 'Mortar/MortarVFL'
 ```
 
 Or you can use a variety of ways to include the ```Mortar.framework``` file from this project into your own.
@@ -164,11 +176,23 @@ view1.m_top   |<| view2.m_bottom
 
 ### Using Layout Guides
 
-On iOS you can use the layout guides of a ```UIViewController```.  An example from inside ```viewDidLoad()``` that puts a view just below the top layout guide:
+On iOS you can access the layout guides of a ```UIViewController```.  An example from inside ```viewDidLoad()``` that puts a view just below the top layout guide:
 
 ```swift
+// Super useful when trying to position views inside a navigation/tab controller!
 view1.m_top   |<| self.m_topLayoutGuideBottom
 ```
+
+There is also a new ```UIViewController``` property ```m_visibleRegion``` to help align views to the region of controller's view that is below the top layout guide and above the bottom layout guide.  *To use this property you must have the MortarVFL extension installed.*
+
+```swift
+// Center a view inside the visible region of a UIViewController that is a child of
+// a navigation controller or tab controller
+textField.m_center |=| self.m_visibleRegion
+```
+
+Using ```m_visibleRegion``` will create a "ghost" view as a subview of the controller's root view.  This ghost view is hidden and non-interactive, and used only for positioning.  Its class name is ```_MortarVFLGhostView``` in case you see it inside the view debugger.
+
 
 ### Multipliers and Constants
 
@@ -455,6 +479,157 @@ let cr = view1.m_compResist
 let hg = view1.m_hugging
 ```
 
+# MortarVFL
+
+Mortar supports a VFL language that is roughly equivalent to Apple's own [Auto Layout VFL langauge](https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/VisualFormatLanguage.html).  The primary advanges are:
+
+* You can use it directly with existing Mortar attribute support
+* Views are referenced directly (instead of using dictionaries) for compile-time checking
+* Full weight-based support for relative sizing
+* More concise: Operator-based instead of function/string-based 
+
+MortarVFL is contrained to its own extension because it makes heavy use of custom operators.  These operators may not be compatible with other libraries you are using, so we don't want Mortar core to conflict with those.
+
+```ruby
+pod 'Mortar/MortarVFL'
+```
+
+## MortarVFL Internal Composition 
+
+The heart of a MortarVFL statement is a list of VFL nodes that are positioned sequentially along either the horizontal or vertical axis.  A node list might look like:
+
+```swift
+viewA |30| viewB[~~2] | viewC[==40] || viewD[==viewA]
+
+// viewA has a weighted size of 1 
+// viewA is separated from viewB by 30 points
+// viewB has a weighted size of 2
+// viewB is separated from viewB by 0 points (| operator)
+// viewC has a fixed size of 40
+// viewC is separated from viewD by the default padding (8 points; || operator)
+// viewD has a size equal to viewA
+```
+
+VFL nodes:
+* Represent either whitespace, one view, or multiple views
+* Have either fixed spacing or weighted spacing
+
+Nodes are separated by either a ```|``` or ```||``` operator.  
+
+The ```|``` operator introduces zero extra distance between nodes.  You can use this operator to connect nodes directly with zero spacing, or insert your own fixed/weighted numerical value between them (e.g. ```|30|``` or ```|~~2|```).  In these cases, the ```30``` and ```~~2``` are considered nodes that represent whitespace (no attached view).
+
+The ```||``` operator separates nodes by the default padding (8 points).
+
+Nodes that represent views can contain a subscript that gives them a size constraint.  You can use ```[==#]``` to give the view a fixed size, or ```[~~#]``` to give the view a weighted size.  You can also reference other views, e.g. ```[==viewA]``` to give the node's view the same constraint as the one it references. 
+
+View nodes without subscripts are considered weighted value 1, e.g. ```[~~1]```
+
+### Arrays in a Node
+
+As an advanced technique, you can use an array of views in a node.  It would look something like this:
+
+```swift
+viewA || [viewB, viewC, viewD][=40] || viewE
+```
+
+This positions the arrayed nodes in parallel with each other.  In the above example, all three of viewB, viewC and viewD will be sized 40 points and be adjacent to viewA and viewE.  This is very useful for complex grid-based layouts.
+
+
+## Capture
+
+MortarVFL statements must be captured on at least one end by a view attribute.  These captures look something like:
+
+```swift
+// viewB and viewC will take equal width between the 
+// right edge of viewA and the left edge of viewD
+viewA.m_right |> viewB | viewC <| viewD.m_left
+
+// viewB and viewV will be equal width between the
+// left/right edges of viewA, inset by 8pt padding
+// and separated by 40pts.
+viewA ||>> viewB |40| viewC
+``` 
+
+MortarVFL support horizontal and vertical spacing in a similar manner.  The horizontal operators use the ```>``` character while the vertical operators use the ```^``` character.  Otherwise they act similarly.  For example, the vertical version of the above statement would be:
+
+```swift
+// viewB and viewC will take equal height between the 
+// bottom edge of viewA and the top edge of viewD
+viewA.m_bottom |^ viewB | viewC ^| viewD.m_top
+``` 
+
+Mortar will make sure your operators are compatible with the attributes you've selected.  For example, using ```|>``` with ```m_top``` would be an axis mismatch and raise an exception.
+
+### Implicit Capture Attributes
+
+If you don't provide attributes on the capture terminals, Mortar will derive them based on the axis and position:
+
+```swift
+// These are equivalent:
+viewA.m_left |> viewB | viewC <| viewD.m_right
+viewA        |> viewB | viewC <| viewD
+
+// These are equivalent:
+viewA.m_top  |^ viewB | viewC ^| viewD.m_bottom
+viewA        |^ viewB | viewC ^| viewD
+```
+
+***Important Observation:*** Implicit attributes might be opposite of what you expect.  This is because implicit attributes are normally used to capture views inside the bounds of parent views and so we use the outer edges, not the inner edges. 
+
+### Implicit Surround
+
+If you want the MortarVFL nodes to be inside the bounds of a single view, you can use the surround operators instead of placing the same view at both terminals. 
+
+The surround operators use either ```>>``` or ```^^```:
+
+```swift
+// viewB and viewV will be equal width between the
+// left/right edges of viewA, inset by 8pt padding
+// and separated by 40pts.
+viewA ||>> viewB |40| viewC
+
+// viewB will be twice as tall as viewC; both will be between
+// the top/bottom edges of viewA.
+viewA |^^ viewB[~~2] | viewC
+
+// Using m_visibleRegion is helpful for layouts in child view controllers
+// to get views laid out inside the visible region, not under nav/tab bars
+self.m_visibleRegion ||^^ viewA | viewB | viewC
+```
+
+### Single-Ended Statements
+
+Up until now, all of the examples have shown statements bordered by two attributes (left and right, top and bottom).
+
+For statements surrounded on both sides, you ***must*** have at least one node that is weight-based and not an explicitly fixed size.  This allows Mortar to make your constraints flexible between the terminals.
+
+For statements that have a single terminal, the opposite is true.  ***You cannot use any*** weight-based nodes, and they must all be fixed spacing.  This is because there is no second endpoing to use as an anchor for relative sizing.
+
+Single-terminal statements look the same as the others, but trailing operators use a bang: ```!```  Unfortunately this looks very much like the pipe operator, so don't be confused.  Specifically, when just attaching a statement to a trailing attribute, use ```<!```, ```<!!```,  ```^!``` or ```^!!```.
+
+```swift
+// viewB will be placed at the right edge of viewA and be 44pts wide.
+// viewC will be placed 8pts (padding) right of viewB and will be 88pts wide.
+viewA.m_right |> viewB[==44] || viewC[==88]
+
+// viewC will be placed at the left edge of viewA and be 88pts wide.
+// viewB will be placed 8pts (padding) left of viewC and will be 44pts wide.
+viewB[==44] || viewC[==88] <! viewA.m_left
+
+// viewB will be placed at the bottom edge of viewA and be 44pts high.
+// viewC will be placed 8pts (padding) below of viewB and will be 88pts high.
+viewA.m_bottom |^ viewB[==44] || viewC[==88]
+
+// viewC will be placed at the top edge of viewA and be 88pts high.
+// viewB will be placed 8pts (padding) above viewC and will be 44pts high.
+viewB[==44] || viewC[==88] ^! viewA.m_top
+```
+
+Again, note the use of the ```!``` bang symbol for trailing single-ended statements, and that there are no weight-based nodes.  Leading single-ended statements use the operator with the pipe: ```|>```
+
+## Examples
+
+There are several examples of MortarVFL in the Examples/MortarVFL project.
 
 # Visual View Hierarchy Creation
 
@@ -527,4 +702,3 @@ class MyController: UIViewController {
     }
 }
 ```
-
