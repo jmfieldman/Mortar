@@ -41,6 +41,20 @@ class MortarTests: XCTestCase {
         super.tearDown()
     }
     
+    func compiling() {
+        let z = MortarView()
+        let x = MortarView()
+        
+        x |>> z
+        x |> z
+        x <! x
+        x | z | x <! z
+        x[==44] | x[==x] <! z
+        z |>> z || x || x | z
+        z ||>> z || x | z | x | 40 || 4 | z
+        z ||> z[==x] | 30 | 4||x[~~z]
+    }
+    
     func testBasicConstruction() {
         let v = MortarView()
         
@@ -625,6 +639,108 @@ class MortarTests: XCTestCase {
         
         XCTAssertNotEqual(v3.m_huggingH, 342, "Hugging Issue")
         XCTAssertEqual(v3.m_huggingV, 342, "Hugging Issue")
+    }
+    
+    func XCTAssertApprox(_ v1: CGFloat, _ v2: CGFloat, _ err: String) {
+        let closeEnough = fabs(v1 - v2) < 0.1
+        XCTAssertEqual(closeEnough, true, err)
+    }
+    
+    func testVFL1() {
+        let v1 = MortarView()
+        let v2 = MortarView()
+        let v3 = MortarView()
+        
+        v1 |+| [v2, v3]
+        
+        v1.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        
+        v1 |>> v2 | v3
+        v1 |^^ v2 | v3[~~3]
+        v1.layoutIfNeeded()
+        
+        XCTAssertEqual(v2.bounds.size.width, 50, "VFL Issue A")
+        XCTAssertEqual(v3.bounds.size.width, 50, "VFL Issue B")
+        
+        XCTAssertEqual(v2.bounds.size.height, 25, "VFL Issue C")
+        XCTAssertEqual(v3.bounds.size.height, 75, "VFL Issue D")
+    }
+    
+    func testVFL2() {
+        let v1 = MortarView()
+        let v2 = MortarView()
+        let v3 = MortarView()
+        let v4 = MortarView()
+        
+        v1 |+| [v2, v3, v4]
+        
+        v1.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        v4.frame = CGRect(x: 100, y: 100, width: 100, height: 100)
+        
+        v1 |> v2 | v3 <| v4
+        v1 |^ v2 | v3[~~3] ^| v4
+        v1.layoutIfNeeded()
+        
+        XCTAssertEqual(v2.frame.size.width, 100, "VFL Issue A")
+        XCTAssertEqual(v3.frame.size.width, 100, "VFL Issue B")
+        XCTAssertEqual(v3.frame.origin.x, 100, "VFL Issue B")
+        
+        XCTAssertEqual(v2.frame.size.height, 50, "VFL Issue C")
+        XCTAssertEqual(v3.frame.size.height, 150, "VFL Issue D")
+        XCTAssertEqual(v3.frame.origin.y, 50, "VFL Issue B")
+    }
+    
+    func testVFL3() {
+        let v1 = MortarView()
+        let v2 = MortarView()
+        let v3 = MortarView()
+        let v4 = MortarView()
+        let v5 = MortarView()
+        
+        v1 |+| [v2, v3, v4, v5]
+        
+        v1.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        v4.frame = CGRect(x: 100, y: 100, width: 100, height: 100)
+        
+        v1 |> v2 | [v3, v5] <| v4
+        v1 |^ v2 | [v3, v5][~~3] ^| v4
+        v1.layoutIfNeeded()
+        
+        XCTAssertEqual(v2.frame.size.width, 100, "VFL Issue A")
+        XCTAssertEqual(v3.frame.size.width, 100, "VFL Issue B")
+        XCTAssertEqual(v3.frame.origin.x, 100, "VFL Issue B")
+        
+        XCTAssertEqual(v2.frame.size.height, 50, "VFL Issue C")
+        XCTAssertEqual(v3.frame.size.height, 150, "VFL Issue D")
+        XCTAssertEqual(v3.frame.origin.y, 50, "VFL Issue B")
+        
+        XCTAssertEqual(v3.frame.origin.y, v5.frame.origin.y, "VFL Issue B")
+        XCTAssertEqual(v3.frame.origin.x, v5.frame.origin.x, "VFL Issue B")
+        XCTAssertEqual(v3.frame.size.width, v5.frame.size.width, "VFL Issue B")
+        XCTAssertEqual(v3.frame.size.height, v5.frame.size.height, "VFL Issue B")
+    }
+    
+    func testVFL4() {
+        let v1 = MortarView()
+        let v2 = MortarView()
+        let v3 = MortarView()
+        
+        v1 |+| [v2, v3]
+        
+        v1.frame = CGRect(x: 0, y: 0, width: 124, height: 124)
+        
+        v1 ||> v2 || v3 <|| v1
+        v1 ||^ v2 || v3 ^|| v1
+        v1.layoutIfNeeded()
+        
+        XCTAssertEqual(v2.frame.size.width, 50, "VFL Issue A")
+        XCTAssertEqual(v3.frame.size.width, 50, "VFL Issue B")
+        XCTAssertEqual(v3.frame.origin.x, 66, "VFL Issue B")
+        
+        XCTAssertEqual(v2.frame.size.height, 50, "VFL Issue C")
+        XCTAssertEqual(v3.frame.size.height, 50, "VFL Issue D")
+        XCTAssertEqual(v3.frame.origin.y, 66, "VFL Issue B")
+        
     }
     
     #if os(iOS)
