@@ -311,15 +311,6 @@ extension _MortarVFLNode: _MortarVFLNodable {
 
 // MARK: - Divider Operator
 
-precedencegroup MortarVFLDividerPrecendence {
-    higherThan:     MortarVFLListCapturePrecendence
-    lowerThan:      LogicalDisjunctionPrecedence
-    associativity:  left
-}
-
-infix operator |  : MortarVFLDividerPrecendence
-infix operator || : MortarVFLDividerPrecendence
-
 // Accumulate Nodes into a list
 
 public func |(lhs: _MortarVFLNodable, rhs: _MortarVFLNodable) -> [_MortarVFLNode] {
@@ -343,19 +334,32 @@ public func ||(lhs: [_MortarVFLNode], rhs: _MortarVFLNodable) -> [_MortarVFLNode
     return accum
 }
 
+public func ||(lhs: _MortarVFLNodable, rhs: [_MortarVFLNode]) -> [_MortarVFLNode] {
+    var accum = rhs
+    accum.insert(kMortarDefaultVFLPaddingNode, at: 0)
+    accum.insert(lhs.__asNode(), at: 0)
+    return accum
+}
+
+public func ||(lhs: [_MortarVFLNode], rhs: [_MortarVFLNode]) -> [_MortarVFLNode] {
+    var accum = lhs
+    accum.append(kMortarDefaultVFLPaddingNode)
+    rhs.forEach { accum.append($0) }
+    return accum
+}
+
+
 // Now for arrays of MortarView
 
-// On LHS
+// |
 
 public func |(lhs: [MortarView], rhs: _MortarVFLNodable) -> [_MortarVFLNode] {
     return [lhs.__asNode(), rhs.__asNode()]
 }
 
-public func ||(lhs: [MortarView], rhs: _MortarVFLNodable) -> [_MortarVFLNode] {
-    return [lhs.__asNode(), kMortarDefaultVFLPaddingNode, rhs.__asNode()]
+public func |(lhs: [MortarView], rhs: [MortarView]) -> [_MortarVFLNode] {
+    return [lhs.__asNode(), rhs.__asNode()]
 }
-
-// On RHS
 
 public func |(lhs: _MortarVFLNodable, rhs: [MortarView]) -> [_MortarVFLNode] {
     return [lhs.__asNode(), rhs.__asNode()]
@@ -367,8 +371,25 @@ public func |(lhs: [_MortarVFLNode], rhs: [MortarView]) -> [_MortarVFLNode] {
     return accum
 }
 
+// ||
+
+public func ||(lhs: [MortarView], rhs: [MortarView]) -> [_MortarVFLNode] {
+    return [lhs.__asNode(), kMortarDefaultVFLPaddingNode, rhs.__asNode()]
+}
+
+public func ||(lhs: [MortarView], rhs: _MortarVFLNodable) -> [_MortarVFLNode] {
+    return [lhs.__asNode(), kMortarDefaultVFLPaddingNode, rhs.__asNode()]
+}
+
 public func ||(lhs: _MortarVFLNodable, rhs: [MortarView]) -> [_MortarVFLNode] {
     return [lhs.__asNode(), kMortarDefaultVFLPaddingNode, rhs.__asNode()]
+}
+
+public func ||(lhs: [MortarView], rhs: [_MortarVFLNode]) -> [_MortarVFLNode] {
+    var accum = rhs
+    accum.insert(kMortarDefaultVFLPaddingNode, at: 0)
+    accum.insert(lhs.__asNode(), at: 0)
+    return accum
 }
 
 public func ||(lhs: [_MortarVFLNode], rhs: [MortarView]) -> [_MortarVFLNode] {

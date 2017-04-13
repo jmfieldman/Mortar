@@ -593,12 +593,12 @@ For statements surrounded on both sides, you ***must*** have at least one node t
 
 For statements that have a single terminal, the opposite is true.  ***You cannot use any*** weight-based nodes, and they must all be fixed spacing.  This is because there is no second endpoing to use as an anchor for relative sizing.
 
-Single-terminal statements look the same as the others, but use operators with a bang: ```!```  Unfortunately this looks very much like the pipe operator, so don't be confused.
+Single-terminal statements look the same as the others, but trailing operators use a bang: ```!```  Unfortunately this looks very much like the pipe operator, so don't be confused.  Specifically, when just attaching a statement to a trailing attribute, use ```<!```, ```<!!```,  ```^!``` or ```^!!```.
 
 ```swift
 // viewB will be placed at the right edge of viewA and be 44pts wide.
 // viewC will be placed 8pts (padding) right of viewB and will be 88pts wide.
-viewA.m_right !> viewB[==44] || viewC[==88]
+viewA.m_right |> viewB[==44] || viewC[==88]
 
 // viewC will be placed at the left edge of viewA and be 88pts wide.
 // viewB will be placed 8pts (padding) left of viewC and will be 44pts wide.
@@ -606,14 +606,14 @@ viewB[==44] || viewC[==88] <! viewA.m_left
 
 // viewB will be placed at the bottom edge of viewA and be 44pts high.
 // viewC will be placed 8pts (padding) below of viewB and will be 88pts high.
-viewA.m_bottom !^ viewB[==44] || viewC[==88]
+viewA.m_bottom |^ viewB[==44] || viewC[==88]
 
 // viewC will be placed at the top edge of viewA and be 88pts high.
 // viewB will be placed 8pts (padding) above viewC and will be 44pts high.
 viewB[==44] || viewC[==88] ^! viewA.m_top
 ```
 
-Again, note the use of the ```!``` bang symbol for single-ended statements, and that there are no weight-based nodes.
+Again, note the use of the ```!``` bang symbol for trailing single-ended statements, and that there are no weight-based nodes.  Leading single-ended statements use the operator with the pipe: ```|>```
 
 ## Examples
 
