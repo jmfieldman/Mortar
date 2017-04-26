@@ -37,7 +37,7 @@ Other examples:
 [view.m_sides, view.m_bottom, view.m_height] |=| [container, container, 200]
 
 /* VFL syntax */
-view1 |>> viewA || viewB[==44] |20| viewC[~~2]  
+view1 |>> viewA || viewB[==44] | 20 | viewC[~~2]  
 ```
 
 #### Updating from a version prior to v1.1? Read this!
@@ -499,15 +499,17 @@ pod 'Mortar/MortarVFL'
 The heart of a MortarVFL statement is a list of VFL nodes that are positioned sequentially along either the horizontal or vertical axis.  A node list might look like:
 
 ```swift
-viewA |30| viewB[~~2] | viewC[==40] || viewD[==viewA]
+viewA | viewB[==viewA] || viewC[==40] | 30 | viewD[~~1] | ~~1 | viewE[~~2]
 
-// viewA has a weighted size of 1 
-// viewA is separated from viewB by 30 points
-// viewB has a weighted size of 2
-// viewB is separated from viewB by 0 points (| operator)
+// viewA has a size determinde by its intrinsic content size
+// viewA is separated from viewB by 0 points (| operator)
+// viewB has a size equal to viewA
+// viewB is separated from viewC by the default padding (8 points; || operator)
 // viewC has a fixed size of 40
-// viewC is separated from viewD by the default padding (8 points; || operator)
-// viewD has a size equal to viewA
+// viewC is separated from viewD by a space of 30 points
+// viewD has a weighted size of 1
+// viewD is separated fom viewE by a weighted space of 1
+// viewE has a weighted size of 2
 ```
 
 VFL nodes:
@@ -516,13 +518,11 @@ VFL nodes:
 
 Nodes are separated by either a ```|``` or ```||``` operator.  
 
-The ```|``` operator introduces zero extra distance between nodes.  You can use this operator to connect nodes directly with zero spacing, or insert your own fixed/weighted numerical value between them (e.g. ```|30|``` or ```|~~2|```).  In these cases, the ```30``` and ```~~2``` are considered nodes that represent whitespace (no attached view).
+The ```|``` operator introduces zero extra distance between nodes.  You can use this operator to connect nodes directly with zero spacing, or insert your own fixed/weighted numerical value between them (e.g. ```| 30 |``` or ```| ~~2 |```).  In these cases, the ```30``` and ```~~2``` are considered nodes that represent whitespace (no attached view).
 
 The ```||``` operator separates nodes by the default padding (8 points).
 
-Nodes that represent views can contain a subscript that gives them a size constraint.  You can use ```[==#]``` to give the view a fixed size, or ```[~~#]``` to give the view a weighted size.  You can also reference other views, e.g. ```[==viewA]``` to give the node's view the same constraint as the one it references. 
-
-View nodes without subscripts are considered weighted value 1, e.g. ```[~~1]```
+Nodes that represent views respect their intrinsic content as much as possible given the realvent constraints and priorities. View nodes can also constain a subscript that gives them a size constraint.  You can use ```[==#]``` to give the view a fixed size, or ```[~~#]``` to give the view a weighted size.  You can also reference other views, e.g. ```[==viewA]``` to give the node's view the same constraint as the one it references. 
 
 MortarVFL will throw an error if you have cyclic view references, e.g. ```viewA[==viewB] | viewB[==viewA]```
 
@@ -544,12 +544,12 @@ MortarVFL statements must be captured on at least one end by a view attribute.  
 ```swift
 // viewB and viewC will take equal width between the 
 // right edge of viewA and the left edge of viewD
-viewA.m_right |> viewB | viewC <| viewD.m_left
+viewA.m_right |> viewB[~~1] | viewC[~~1] <| viewD.m_left
 
-// viewB and viewV will be equal width between the
+// viewB and viewC will be equal width between the
 // left/right edges of viewA, inset by 8pt padding
 // and separated by 40pts.
-viewA ||>> viewB |40| viewC
+viewA ||>> viewB[~~1] | 40 | viewC[~~1]
 ``` 
 
 MortarVFL support horizontal and vertical spacing in a similar manner.  The horizontal operators use the ```>``` character while the vertical operators use the ```^``` character.  Otherwise they act similarly.  For example, the vertical version of the above statement would be:
@@ -557,7 +557,7 @@ MortarVFL support horizontal and vertical spacing in a similar manner.  The hori
 ```swift
 // viewB and viewC will take equal height between the 
 // bottom edge of viewA and the top edge of viewD
-viewA.m_bottom |^ viewB | viewC ^| viewD.m_top
+viewA.m_bottom |^ viewB[~~1] | viewC[~~1] ^| viewD.m_top
 ``` 
 
 Mortar will make sure your operators are compatible with the attributes you've selected.  For example, using ```|>``` with ```m_top``` would be an axis mismatch and raise an exception.
@@ -585,14 +585,14 @@ If you want the MortarVFL nodes to be inside the bounds of a single view, you ca
 The surround operators use either ```>>``` or ```^^```:
 
 ```swift
-// viewB and viewV will be equal width between the
+// viewB and viewc will be equal width between the
 // left/right edges of viewA, inset by 8pt padding
 // and separated by 40pts.
-viewA ||>> viewB |40| viewC
+viewA ||>> viewB[~~1] | 40 | viewC[~~1]
 
 // viewB will be twice as tall as viewC; both will be between
 // the top/bottom edges of viewA.
-viewA |^^ viewB[~~2] | viewC
+viewA |^^ viewB[~~2] | viewC[~~1]
 
 // Using m_visibleRegion is helpful for layouts in child view controllers
 // to get views laid out inside the visible region, not under nav/tab bars
@@ -603,9 +603,9 @@ self.m_visibleRegion ||^^ viewA | viewB | viewC
 
 Up until now, all of the examples have shown statements bordered by two attributes (left and right, top and bottom).
 
-For statements surrounded on both sides, you ***must*** have at least one node that is weight-based and not an explicitly fixed size.  This allows Mortar to make your constraints flexible between the terminals.
+For statements surrounded on both sides, you generally ***cannot have all*** fixed spacing.  In most cases this means you will need at least one weighted node, though intrinsic content sized will do provided you are mindful of content hugging and compression resistance values.  This allows Mortar to make your constraints flexible between the terminals.
 
-For statements that have a single terminal, the opposite is true.  ***You cannot use any*** weight-based nodes, and they must all be fixed spacing.  This is because there is no second endpoing to use as an anchor for relative sizing.
+For statements that have a single terminal, the opposite is true.  ***You cannot use any*** weight-based nodes, and they must all be fixed size or intrinsic content size.  This is because there is no second endpoing to use as an anchor for relative sizing.
 
 Single-terminal statements look the same as the others, but trailing operators use a bang: ```!```  Unfortunately this looks very much like the pipe operator, so don't be confused.  Specifically, when just attaching a statement to a trailing attribute, use ```<!```, ```<!!```,  ```^!``` or ```^!!```.
 
@@ -619,11 +619,11 @@ viewA.m_right |> viewB[==44] || viewC[==88]
 viewB[==44] || viewC[==88] <! viewA.m_left
 
 // viewB will be placed at the bottom edge of viewA and be 44pts high.
-// viewC will be placed 8pts (padding) below of viewB and will be 88pts high.
-viewA.m_bottom |^ viewB[==44] || viewC[==88]
+// viewC will be placed 8pts below viewB and respect its intrinsic content height.
+viewA.m_bottom |^ viewB[==44] || viewC
 
 // viewC will be placed at the top edge of viewA and be 88pts high.
-// viewB will be placed 8pts (padding) above viewC and will be 44pts high.
+// viewB will be placed 8pts above viewC and will be 44pts high.
 viewB[==44] || viewC[==88] ^! viewA.m_top
 ```
 
