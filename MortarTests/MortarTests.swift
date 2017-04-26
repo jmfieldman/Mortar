@@ -527,6 +527,10 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultHigh, "Priority mismatch")
         XCTAssertEqual(self.container.constraints[1].priority, MortarAliasLayoutPriorityDefaultLow,  "Priority mismatch")
     }       
+
+    func testRestoreDefaultPriority() {
+        MortarDefault.priority.set(base: .required)
+    }
     
     func testReplace() {
         let v = MortarView()
@@ -660,8 +664,8 @@ class MortarTests: XCTestCase {
         
         v1.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         
-        v1 |>> v2 | v3
-        v1 |^^ v2 | v3[~~3]
+        v1 |>> v2[~~1] | v3[~~1]
+        v1 |^^ v2[~~1] | v3[~~3]
         v1.layoutIfNeeded()
         
         XCTAssertEqual(v2.bounds.size.width, 50, "VFL Issue A")
@@ -682,8 +686,8 @@ class MortarTests: XCTestCase {
         v1.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         v4.frame = CGRect(x: 100, y: 100, width: 100, height: 100)
         
-        v1 |> v2 | v3 <| v4
-        v1 |^ v2 | v3[~~3] ^| v4
+        v1 |> v2[~~1] | v3[~~1] <| v4
+        v1 |^ v2[~~1] | v3[~~3] ^| v4
         v1.layoutIfNeeded()
         
         XCTAssertEqual(v2.frame.size.width, 100, "VFL Issue A")
@@ -707,8 +711,8 @@ class MortarTests: XCTestCase {
         v1.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         v4.frame = CGRect(x: 100, y: 100, width: 100, height: 100)
         
-        v1 |> v2 | [v3, v5] <| v4
-        v1 |^ v2 | [v3, v5][~~3] ^| v4
+        v1 |> v2[~~1] | [v3, v5][~~1] <| v4
+        v1 |^ v2[~~1] | [v3, v5][~~3] ^| v4
         v1.layoutIfNeeded()
         
         XCTAssertEqual(v2.frame.size.width, 100, "VFL Issue A")
@@ -734,8 +738,8 @@ class MortarTests: XCTestCase {
         
         v1.frame = CGRect(x: 0, y: 0, width: 124, height: 124)
         
-        v1 ||> v2 || v3 <|| v1
-        v1 ||^ v2 || v3 ^|| v1
+        v1 ||> v2[~~1] || v3[~~1] <|| v1
+        v1 ||^ v2[~~1] || v3[~~1] ^|| v1
         v1.layoutIfNeeded()
         
         XCTAssertEqual(v2.frame.size.width, 50, "VFL Issue A")
@@ -747,7 +751,98 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(v3.frame.origin.y, 66, "VFL Issue B")
         
     }
-    
+
+    func testVFL5() {
+        let c = MortarView()
+        let v1 = MortarView()
+        let v2 = MortarView()
+        let v3 = MortarView()
+        let l1 = UILabel()
+        let l2 = UILabel()
+        let l3 = UILabel()
+
+        l1.text = "wide string"
+        l2.text = "tall\nstring"
+        l2.numberOfLines = 0
+        l3.text = "test"
+
+        let l1size = l1.sizeThatFits(CGSize(width: 500, height: 500))
+        let l2size = l2.sizeThatFits(CGSize(width: 500, height: 500))
+
+        c.frame = CGRect(x: 0, y: 0, width: 500, height: 500)
+        c |+| [v1, v2, v3, l1, l2, l3]
+
+        c ||>> v1[~~1] || v2[~~2] || v3[==5] || l1 || l2 || l3[~~2]
+        c ||^^ v1 || v2[==10] || v3[==5] || l1 || l2 || l3[==20]
+
+        c.layoutIfNeeded()
+
+        //check a few || paddings
+        XCTAssertEqualWithAccuracy(v1.frame.origin.x, 8, accuracy: 1, "Leftmost || pad")
+        XCTAssertEqualWithAccuracy(v1.frame.origin.y, 8, accuracy: 1, "Topmost || pad ")
+
+        XCTAssertEqualWithAccuracy(l1.frame.origin.x + l1.frame.size.width + 8, l2.frame.origin.x , accuracy: 1, "spot check inner horizontal || pad")
+        XCTAssertEqualWithAccuracy(l1.frame.origin.y + l1.frame.size.height + 8, l2.frame.origin.y , accuracy: 1, "spot check inner vertical || pad")
+
+        XCTAssertEqualWithAccuracy(l3.frame.origin.y + l3.frame.size.height + 8 , 500, accuracy: 1, "Bottommost || pad")
+        XCTAssertEqualWithAccuracy(l3.frame.origin.x + l3.frame.size.width + 8, 500, accuracy: 1, "Rightmost || pad")
+
+        //plain veiw sizes
+        XCTAssertEqualWithAccuracy(v1.frame.size.width, 0.5 * v2.frame.size.width, accuracy: 1, "v1,2 weighted widths")
+        XCTAssertEqualWithAccuracy(v1.frame.size.height, 500 - (8 * 7) - l1size.height - l2size.height - 20 - 10 - 5, accuracy:1, "v1 intinsic height w/ low content hugging")
+        XCTAssertEqualWithAccuracy(v2.frame.size.height, 10, accuracy: 1,"v2 fixed height")
+        XCTAssertEqualWithAccuracy(v3.frame.size.height, 5, accuracy: 1,"v3 fixed height")
+        XCTAssertEqualWithAccuracy(v3.frame.size.width, 5, accuracy: 1,"v3 fixed height")
+
+
+        //label sizes
+        XCTAssertEqualWithAccuracy(l1.frame.size.width , l1size.width, accuracy: 1, "l1 instrinsic width")
+        XCTAssertEqualWithAccuracy(l1.frame.size.height , l1size.height, accuracy: 1, "l1 instrinsic height")
+
+        XCTAssertEqualWithAccuracy(l2.frame.size.width , l2size.width, accuracy: 1, "l2 instrinsic width")
+        XCTAssertEqualWithAccuracy(l2.frame.size.height , l2size.height, accuracy: 1, "l2 instrinsic height")
+
+        XCTAssertGreaterThan(l1.frame.size.width , l2.frame.size.width, "l1 is wider than l2(more characters per line)")
+        XCTAssertGreaterThan(l2.frame.size.height , l1.frame.size.height, "l2 is taller than l1 (it's milti-line)")
+
+        XCTAssertEqualWithAccuracy(l3.frame.size.width, v1.frame.size.width * 2, accuracy: 1,"l3 is weighted 2 horiontally")
+        XCTAssertEqualWithAccuracy(l3.frame.size.height, 20, accuracy: 1,"l3 is fixed 20px vertically")
+    }
+
+    func testVFL6() {
+        let c = MortarView()
+        let label = UILabel()
+        label.text = "This is three lines."
+        label.numberOfLines = 0
+        label.lineBreakMode = .byCharWrapping
+
+        c |+| [label]
+        c.frame = CGRect(x: 0, y: 0, width: 150, height: 150)
+
+        c |>> 50 | label | 50
+        c |^^ ~~1 | label | ~~1
+        c.layoutIfNeeded()
+
+        let lineHeight = label.sizeThatFits(CGSize(width: 500, height: 500)).height
+        let lineLength = label.sizeThatFits(CGSize(width: 500, height: 500)).width
+
+        XCTAssertEqualWithAccuracy(label.frame.origin.x, 50, accuracy: 1, "Left indent")
+        XCTAssertEqualWithAccuracy(label.frame.size.height, lineHeight * ceil(lineLength/50), accuracy: 1, "Right indent")
+        XCTAssertEqualWithAccuracy(label.frame.origin.y, 150 - label.frame.origin.y - label.frame.size.height, accuracy: 1, "top/bottom pad are equal")
+        let originalHeight = label.frame.size.height
+
+        label.text = "This string is four lines."
+        c.setNeedsLayout()
+        c.layoutIfNeeded()
+
+        let lineLength2 = label.sizeThatFits(CGSize(width: 500, height: 500)).width
+
+        XCTAssertEqualWithAccuracy(label.frame.origin.x, 50, accuracy: 1, "Left indent")
+        XCTAssertEqualWithAccuracy(label.frame.size.height, lineHeight * ceil(lineLength2/50), accuracy: 1, "Right indent")
+        XCTAssertEqualWithAccuracy(label.frame.origin.y, 150 - label.frame.origin.y - label.frame.size.height, accuracy: 1, "top/bottom pad are equal")
+        XCTAssertGreaterThan(label.frame.size.height, originalHeight, "four line label shoudl be taller than 3 line label")
+    }
+
     #if os(iOS)
     func testLayoutGuides() {
         let v1  = MortarView()
