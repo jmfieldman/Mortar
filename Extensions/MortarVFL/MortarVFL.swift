@@ -61,7 +61,7 @@ private let kMortarDefaultVFLPaddingNode: _MortarVFLNode = _MortarSizingNode(flo
 
 /// Sizing can either be explicit value or weight-based
 public enum _MortarSizingType {
-    case equals, weight
+    case equals, weight, intrinsic
 }
 
 /// Return a completely non-interactive view for layout purposes
@@ -225,7 +225,7 @@ public extension Array where Element: MortarView {
     }
     
     public func __asNode() -> _MortarVFLNode {
-        return _MortarVFLNode(views: self, sizingNode: _MortarSizingNode(floatable: 1, sizingType: .weight))
+        return _MortarVFLNode(views: self, sizingNode: _MortarSizingNode(floatable: 1, sizingType: .intrinsic))
     }
 }
 
@@ -291,7 +291,7 @@ extension Float : _MortarVFLNodable {
 
 extension MortarView : _MortarVFLNodable {
     public func __asNode() -> _MortarVFLNode {
-        return _MortarVFLNode(views: [self], sizingNode: _MortarSizingNode(floatable: 1, sizingType: .weight))
+        return _MortarVFLNode(views: [self], sizingNode: _MortarSizingNode(floatable: 1, sizingType: .intrinsic))
     }
 }
 
@@ -875,12 +875,7 @@ fileprivate extension _MortarVFLListCapture {
             try! raise("You must have at least one view in the VFL list")
             return []
         }
-        
-        guard weightNodeCount > 0 || trailingAttr == nil || leadingAttr == nil else {
-            try! raise("You must have at least one weight-based node in the wrapped VFL list.  If you do not need weight-based constraints, use normal Mortar operators.")
-            return []
-        }
-        
+
         // Resolve sizingNodes pointing to other views
         for node in self.list {
             try! node.resolveSizingNode(ref: nodeForView)
@@ -926,6 +921,7 @@ fileprivate extension _MortarVFLListCapture {
                 switch node.sizingNode.sizingType {
                 case .equals: spacingTotal += floatable
                 case .weight: weightTotal  += floatable
+                case .intrinsic: break
                 }
             }
         }
@@ -979,8 +975,9 @@ fileprivate extension _MortarVFLListCapture {
         
         // We don't explicitly size the first weighted node
         // so that there is some flexibility
-        var hasSkippedFirstWeighted: Bool = false
-        
+        var firstWeightedNode: _MortarVFLNode? = nil
+        var firstWeightedView: MortarView? = nil
+
         for node in self.list {
             guard let sizingFloat = node.sizingNode.floatable?.m_cgfloatValue() else {
                 try! raise("Internal consistency error: vfl node has no floatable value during processing")
@@ -1005,19 +1002,21 @@ fileprivate extension _MortarVFLListCapture {
             
             // width
             switch node.sizingNode.sizingType {
+            case .intrinsic: break
             case .equals:
                 result.append( currentView.vflSizingAttributeFor(axis: axis) |=| sizingFloat )
                 
             case .weight:
                 // Always skip the first weighted node for flexibility
-                if !hasSkippedFirstWeighted {
-                    hasSkippedFirstWeighted = true
+                if firstWeightedNode == nil {
+                    firstWeightedNode = node
+                    firstWeightedView = currentView
                 } else {
-                    guard let weightView = masterWeightView else {
-                        try! raise("Internal inconsistency error: no masterweight view")
-                        return []
-                    }
-                    result.append( currentView.vflSizingAttributeFor(axis: axis) |=| weightView.vflSizingAttributeFor(axis: axis) * (sizingFloat / weightTotal) )
+                    guard let firstWeightedNode = firstWeightedNode,
+                        let firstWeightedView = firstWeightedView,
+                        let firstWeight = firstWeightedNode.sizingNode.floatable?.m_cgfloatValue() else { return [] }
+
+                    result.append( currentView.vflSizingAttributeFor(axis: axis) |=| firstWeightedView.vflSizingAttributeFor(axis: axis) * (sizingFloat / firstWeight) )
                 }
             }
             

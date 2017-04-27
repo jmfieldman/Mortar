@@ -26,6 +26,7 @@
 		356F53E81E99AD3A003A6905 /* VFL_Example3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356F53E71E99AD3A003A6905 /* VFL_Example3ViewController.swift */; };
 		35E850F61E9ABC6A00EB3D86 /* VFL_Example4ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E850F51E9ABC6A00EB3D86 /* VFL_Example4ViewController.swift */; };
 		35E850FE1E9FC75C00EB3D86 /* MortarVFL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E850FD1E9FC75C00EB3D86 /* MortarVFL.swift */; };
+		A04031DB1EAEF5BF00E3398E /* VFL_Example5ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04031DA1EAEF5BE00E3398E /* VFL_Example5ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		356F53E71E99AD3A003A6905 /* VFL_Example3ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFL_Example3ViewController.swift; sourceTree = "<group>"; };
 		35E850F51E9ABC6A00EB3D86 /* VFL_Example4ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFL_Example4ViewController.swift; sourceTree = "<group>"; };
 		35E850FD1E9FC75C00EB3D86 /* MortarVFL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MortarVFL.swift; sourceTree = "<group>"; };
+		A04031DA1EAEF5BE00E3398E /* VFL_Example5ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VFL_Example5ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				356F53E51E99A7E0003A6905 /* VFL_Example2ViewController.swift */,
 				356F53E71E99AD3A003A6905 /* VFL_Example3ViewController.swift */,
 				35E850F51E9ABC6A00EB3D86 /* VFL_Example4ViewController.swift */,
+				A04031DA1EAEF5BE00E3398E /* VFL_Example5ViewController.swift */,
 			);
 			path = Examples;
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 				356F53DD1E999BE3003A6905 /* MortarOperators.swift in Sources */,
 				356F53BA1E999AC8003A6905 /* AppDelegate.swift in Sources */,
 				356F53CD1E999BBE003A6905 /* Example1ViewController.swift in Sources */,
+				A04031DB1EAEF5BF00E3398E /* VFL_Example5ViewController.swift in Sources */,
 				356F53DF1E999BE3003A6905 /* MortarConstraint.swift in Sources */,
 				356F53E21E999BE3003A6905 /* NSObject+Mortar.swift in Sources */,
 				35E850FE1E9FC75C00EB3D86 /* MortarVFL.swift in Sources */,
