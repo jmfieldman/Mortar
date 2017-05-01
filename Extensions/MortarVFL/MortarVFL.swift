@@ -867,7 +867,7 @@ fileprivate extension _MortarVFLListCapture {
                 fallbackParent = node.views[0]
                 for view in node.views {
                     guard nodeForView[ObjectIdentifier(view)] == nil else {
-                        try! raise("The same view cannot appaer multiple times in the VFL list")
+                        try! raise("The same view cannot appear multiple times in the VFL list")
                         return []
                     }
                     nodeForView[ObjectIdentifier(view)] = node
@@ -902,7 +902,7 @@ fileprivate extension _MortarVFLListCapture {
         }
         
         // Ensure no weight nodes if missing trailing capture
-        if (trailingView == nil || leadingView == nil) && weightNodeCount > 0 {
+        if (trailingAttr == nil || leadingAttr == nil) && weightNodeCount > 0 {
             try! raise("You may not use any weighted nodes without both leading and trailing capture operators")
             return []
         }

@@ -86,7 +86,7 @@ Or you can use a variety of ways to include the ```Mortar.framework``` file from
 > For the Swift 2.x documentation, refer to the ```README_SWIFT2.md``` file.
 
 ```ruby
-pod 'Mortar', '~> 1.2'  # Swift 3.1 
+pod 'Mortar', '~> 1.3'  # Swift 3.1
 pod 'Mortar', '~> 1.1'  # Swift 3.0
 pod 'Mortar', '~> 0.11' # Swift 2.3
 pod 'Mortar', '~> 0.10' # Swift 2.2
@@ -345,7 +345,7 @@ You can change the priority of a ```MortarConstraint``` or ```MortarGroup``` by 
 
 ```swift
 let c = view1 |=| view2 ! .low     // Creates 4 low-priority constraints (1 per edge)
-c.changePriority(to: .high)            // Sets all 4 constraints to high priority
+c.changePriority(to: .high)        // Sets all 4 constraints to high priority
 ```
 
 Remember that you can't switch to or from ```Required``` from any other priority level (this is an Auto Layout limitation.)
@@ -603,7 +603,7 @@ self.m_visibleRegion ||^^ viewA | viewB | viewC
 
 Up until now, all of the examples have shown statements bordered by two attributes (left and right, top and bottom).
 
-For statements surrounded on both sides, you generally ***cannot have all*** fixed spacing.  In most cases this means you will need at least one weighted node, though intrinsic content sized will do provided you are mindful of content hugging and compression resistance values.  This allows Mortar to make your constraints flexible between the terminals.
+For statements surrounded on both sides, you ***cannot have all*** fixed spacing.  This means you will need at least one weighted or intrinsically sized node.  This allows Mortar to make your constraints flexible between the terminals.  You may see odd behavior if you only have intrinsically sized nodes, and their compression resistance and content hugging are artificially forced to .required.
 
 For statements that have a single terminal, the opposite is true.  ***You cannot use any*** weight-based nodes, and they must all be fixed size or intrinsic content size.  This is because there is no second endpoing to use as an anchor for relative sizing.
 
