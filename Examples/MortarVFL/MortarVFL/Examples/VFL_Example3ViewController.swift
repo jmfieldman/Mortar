@@ -58,7 +58,7 @@ class VFL_Example3ViewController: UIViewController {
         ]
         
         self.view ||>> red[~~1] || blue[==40] || green[~~2]
-        self.view ||>> [orange[~~1], yellow[~~1]]
+        self.view ||>> [orange, yellow][~~1]
         
         self.m_visibleRegion ||^^ [red, blue, green][~~1] || orange[==44] || yellow[==44]
         
