@@ -57,10 +57,10 @@ class VFL_Example3ViewController: UIViewController {
             magenta
         ]
         
-        self.view ||>> red || blue[==40] || green[~~2]
-        self.view ||>> [orange, yellow]
+        self.view ||>> red[~~1] || blue[==40] || green[~~2]
+        self.view ||>> [orange, yellow][~~1]
         
-        self.m_visibleRegion ||^^ [red, blue, green] || orange[==44] || yellow[==44]
+        self.m_visibleRegion ||^^ [red, blue, green][~~1] || orange[==44] || yellow[==44]
         
         // Insert gray in green
         

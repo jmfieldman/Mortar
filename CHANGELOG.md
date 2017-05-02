@@ -1,5 +1,9 @@
 # Mortar Changelog
 
+## 1.3.0 -- 5/1/17
+
+* Changed default MortarVFL sizing to intrinsic
+
 ## 1.2.1 -- 4/13/17
 
 * Added MortarVFL extension

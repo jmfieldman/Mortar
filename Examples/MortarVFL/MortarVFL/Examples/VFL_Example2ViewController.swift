@@ -32,7 +32,7 @@ class VFL_Example2ViewController: UIViewController {
         self.view |>> ~~1 | v2[==40] | ~~2
         self.view ||>> v3
         
-        self.m_visibleRegion |^^ v1 | v2 | v3
+        self.m_visibleRegion |^^ v1[~~1] | v2[~~1] | v3[~~1]
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             print("\(self.v1.frame)")

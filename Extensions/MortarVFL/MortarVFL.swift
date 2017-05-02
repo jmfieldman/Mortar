@@ -61,11 +61,11 @@ private let kMortarDefaultVFLPaddingNode: _MortarVFLNode = _MortarSizingNode(flo
 
 /// Sizing can either be explicit value or weight-based
 public enum _MortarSizingType {
-    case equals, weight
+    case equals, weight, intrinsic
 }
 
 /// Return a completely non-interactive view for layout purposes
-private func mGhostView(for parent: MortarView?) -> _MortarVFLGhostView {
+private func mGhostView(in parent: MortarView?) -> _MortarVFLGhostView {
     return _MortarVFLGhostView.m_create {
         #if os(iOS) || os(tvOS)
         $0.backgroundColor = .clear
@@ -225,7 +225,7 @@ public extension Array where Element: MortarView {
     }
     
     public func __asNode() -> _MortarVFLNode {
-        return _MortarVFLNode(views: self, sizingNode: _MortarSizingNode(floatable: 1, sizingType: .weight))
+        return _MortarVFLNode(views: self, sizingNode: _MortarSizingNode(floatable: 1, sizingType: .intrinsic))
     }
 }
 
@@ -291,7 +291,7 @@ extension Float : _MortarVFLNodable {
 
 extension MortarView : _MortarVFLNodable {
     public func __asNode() -> _MortarVFLNode {
-        return _MortarVFLNode(views: [self], sizingNode: _MortarSizingNode(floatable: 1, sizingType: .weight))
+        return _MortarVFLNode(views: [self], sizingNode: _MortarSizingNode(floatable: 1, sizingType: .intrinsic))
     }
 }
 
@@ -854,6 +854,9 @@ fileprivate extension _MortarVFLListCapture {
         // There must be at least one view-based node
         var hasViewNode: Bool = false
         
+        // This is the fallback spacing parent if closures are controller attributes
+        var fallbackParent: MortarView? = nil
+        
         for node in self.list {
             if node.sizingNode.sizingType == .weight {
                 weightNodeCount += 1
@@ -861,9 +864,10 @@ fileprivate extension _MortarVFLListCapture {
             
             if node.views.count > 0 {
                 hasViewNode = true
+                fallbackParent = node.views[0]
                 for view in node.views {
                     guard nodeForView[ObjectIdentifier(view)] == nil else {
-                        try! raise("The same view cannot appaer multiple times in the VFL list")
+                        try! raise("The same view cannot appear multiple times in the VFL list")
                         return []
                     }
                     nodeForView[ObjectIdentifier(view)] = node
@@ -875,12 +879,7 @@ fileprivate extension _MortarVFLListCapture {
             try! raise("You must have at least one view in the VFL list")
             return []
         }
-        
-        guard weightNodeCount > 0 || trailingAttr == nil || leadingAttr == nil else {
-            try! raise("You must have at least one weight-based node in the wrapped VFL list.  If you do not need weight-based constraints, use normal Mortar operators.")
-            return []
-        }
-        
+
         // Resolve sizingNodes pointing to other views
         for node in self.list {
             try! node.resolveSizingNode(ref: nodeForView)
@@ -902,37 +901,20 @@ fileprivate extension _MortarVFLListCapture {
             }
         }
         
-        // The total weight in our nodes (for normalizing)
-        var weightTotal: CGFloat = 0
-        
-        // The total fixed spacing
-        var spacingTotal: CGFloat = 0
-        
-        // If we only have one weight node there aren't any fancy calculations
-        // since it will just get sandwiched between its neighbors.
-        // otherwise we'll normalize the weights
-        if weightNodeCount > 1 {
-            for node in self.list {
-                guard let floatable = node.sizingNode.floatable?.m_cgfloatValue() else {
-                    try! raise("Internal error: node has no floatable")
-                    return []
-                }
-                
-                guard floatable > 0 else {
-                    try! raise("You cannot use a negative or zero weight/spacing.")
-                    return []
-                }
-                
-                switch node.sizingNode.sizingType {
-                case .equals: spacingTotal += floatable
-                case .weight: weightTotal  += floatable
-                }
-            }
+        // Ensure no weight nodes if missing trailing capture
+        if (trailingAttr == nil || leadingAttr == nil) && weightNodeCount > 0 {
+            try! raise("You may not use any weighted nodes without both leading and trailing capture operators")
+            return []
         }
         
-        // Ensure no weight nodes if missing trailing capture
-        if (trailingView == nil || leadingView == nil) && weightNodeCount > 0 {
-            try! raise("You may not use any weighted nodes without both leading and trailing capture operators (all nodes must have specific size)")
+        // Ensure that unbounded lists are not capped with fixed padding
+        if trailingAttr == nil && self.list[self.list.count - 1].views.count == 0 {
+            try! raise("A VFL statement without a trailing closure may not end in non-view padding.")
+            return []
+        }
+        
+        if leadingAttr == nil && self.list[0].views.count == 0 {
+            try! raise("A VFL statement without a leading closure may not begin with non-view padding.")
             return []
         }
         
@@ -953,25 +935,6 @@ fileprivate extension _MortarVFLListCapture {
         
         // ---- We should have done all prep; begin operation  ----
         
-        // Our master weight view to base all other sizes from
-        let masterSpanView:   MortarView? = (weightNodeCount > 1) ? mGhostView(for: leadingView)    : nil
-        let masterWeightView: MortarView? = (weightNodeCount > 1) ? mGhostView(for: masterSpanView) : nil
-        
-        // Size the masters
-        if let spanView = masterSpanView {
-            guard let leadingAttr = self.leadingAttr,
-                  let trailingAttr = self.trailingAttr
-            else {
-                try! raise("Internal consistency error: need both leadingAttr and trailingAttr for statement with weights.")
-                return []
-            }
-            result.append( spanView.vflLeadingAttributeFor(axis: axis)  |=| leadingAttr )
-            result.append( spanView.vflTrailingAttributeFor(axis: axis) |=| trailingAttr )
-            if let weightView = masterWeightView {
-                result.append( weightView.vflSizingAttributeFor(axis: axis) |=| spanView.vflSizingAttributeFor(axis: axis) - spacingTotal )
-            }
-        }
-        
         // Previous keeps track of our "last" node state so that we can
         // link into it
         var previousTrailing:   MortarAttribute? = leadingAttr
@@ -979,8 +942,9 @@ fileprivate extension _MortarVFLListCapture {
         
         // We don't explicitly size the first weighted node
         // so that there is some flexibility
-        var hasSkippedFirstWeighted: Bool = false
-        
+        var firstWeightedNode: _MortarVFLNode? = nil
+        var firstWeightedView: MortarView? = nil
+
         for node in self.list {
             guard let sizingFloat = node.sizingNode.floatable?.m_cgfloatValue() else {
                 try! raise("Internal consistency error: vfl node has no floatable value during processing")
@@ -996,7 +960,7 @@ fileprivate extension _MortarVFLListCapture {
             }
             
             // If we're not fixed spacing, it must be view-based.
-            let currentView: MortarView = (node.views.count > 0) ? node.views[0] : mGhostView(for: leadingView)
+            let currentView: MortarView = (node.views.count > 0) ? node.views[0] : mGhostView(in: leadingView ?? trailingView ?? fallbackParent)
             
             // link backwards
             if let previousTrailing = previousTrailing {
@@ -1005,19 +969,18 @@ fileprivate extension _MortarVFLListCapture {
             
             // width
             switch node.sizingNode.sizingType {
+            case .intrinsic: break
             case .equals:
                 result.append( currentView.vflSizingAttributeFor(axis: axis) |=| sizingFloat )
                 
             case .weight:
-                // Always skip the first weighted node for flexibility
-                if !hasSkippedFirstWeighted {
-                    hasSkippedFirstWeighted = true
+                if let fWeightedView = firstWeightedView,
+                   let fWeight       = firstWeightedNode?.sizingNode.floatable?.m_cgfloatValue() {
+                    result.append( currentView.vflSizingAttributeFor(axis: axis) |=| fWeightedView.vflSizingAttributeFor(axis: axis) * (sizingFloat / fWeight) )
                 } else {
-                    guard let weightView = masterWeightView else {
-                        try! raise("Internal inconsistency error: no masterweight view")
-                        return []
-                    }
-                    result.append( currentView.vflSizingAttributeFor(axis: axis) |=| weightView.vflSizingAttributeFor(axis: axis) * (sizingFloat / weightTotal) )
+                    // Set and skip the first weighted node for flexibility
+                    firstWeightedNode = node
+                    firstWeightedView = currentView
                 }
             }
             
@@ -1144,7 +1107,7 @@ public extension UIViewController {
         }
         
         // Create it
-        let ghost = mGhostView(for: self.view)
+        let ghost = mGhostView(in: self.view)
         ghost.tag = UIViewController.kVisibleRegionGhostTag
         ghost.m_sides  |=| self.view
         ghost.m_top    |=| self.m_topLayoutGuideBottom
