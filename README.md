@@ -3,7 +3,7 @@
 ![Swift 2.2](https://img.shields.io/badge/Swift_2.2-%7E%3E%200.10-orange.svg?style=flat)
 ![Swift 2.3](https://img.shields.io/badge/Swift_2.3-%7E%3E%200.11-orange.svg?style=flat)
 ![Swift 3.0](https://img.shields.io/badge/Swift_3.0-%7E%3E%201.1-orange.svg?style=flat)
-![Swift 3.1](https://img.shields.io/badge/Swift_3.1-%7E%3E%201.2-orange.svg?style=flat)
+![Swift 3.1](https://img.shields.io/badge/Swift_3.1-latest-orange.svg?style=flat)
 
 Mortar allows you to create Auto Layout constraints using concise, simple code statements.
 
