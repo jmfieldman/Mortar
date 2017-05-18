@@ -629,6 +629,52 @@ viewB[==44] || viewC[==88] ^! viewA.m_top
 
 Again, note the use of the ```!``` bang symbol for trailing single-ended statements, and that there are no weight-based nodes.  Leading single-ended statements use the operator with the pipe: ```|>```
 
+### Inferred Superview
+Mortar VFL will attempt to infer a superview for all nodes which do not have one at the time constraints are created. Generally this will be the leading capture view or, when not present, the trailing capture view. 
+
+```swift
+self.view |+| [v1,  v2, v3]	 //This line can be omited
+self.view |>> v1 | v2 | v3
+
+self.view |+| [v1,  v2, v3]	 //This line can be omited
+self.view |> v1 | v2 | v3
+
+// The |+| line can't be omitted here because the inferred
+// superview is v1, which is probably not what you wanted
+self.view |+| [v1,  v2, v3]	 
+v1.m_right |>  | v2 | v3
+
+```
+### Return Values
+The capture operators(```|^^, |^, |>```, etc) return a 2 tuple with named elements containing mortar constraints and views. The former is usefull for modifying constraints at a later time.  The later can be convenient to reduce code repetition.
+
+```swift
+// Using destructuring
+let (c, v) = self.view |>> v1 | v2 | v3
+// c will be a set of constraints
+// v will be the array [v1, v2, v3]
+
+// Using element names  
+let r = self.view |^ v1 || v2 || v3
+self.view |>> 20 | r.views | 20
+
+// A complex example formatted for better readability. 
+// This adds 4 views to self.view(via inferred superview).
+// It constrains them vertically with padding and some heights.
+// It constrains them horizontally to fill self.view minus 20pt margins.
+(self.view |^^ 20 
+           | someView 
+           | 10 
+           | someOtherView 
+           | 10 
+           | yetAnotherView[==50]
+           | ~~1
+           | bottomButton[==44]
+           | 20
+).views |=| self.view.m_sides ~ (20, 20)
+
+```
+ 
 ## Examples
 
 There are several examples of MortarVFL in the Examples/MortarVFL project.

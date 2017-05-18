@@ -660,8 +660,6 @@ class MortarTests: XCTestCase {
         let v2 = MortarView()
         let v3 = MortarView()
         
-        v1 |+| [v2, v3]
-        
         v1.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         
         v1 |>> v2[~~1] | v3[~~1]
@@ -681,7 +679,7 @@ class MortarTests: XCTestCase {
         let v3 = MortarView()
         let v4 = MortarView()
         
-        v1 |+| [v2, v3, v4]
+        v1 |+| [v2, v3, v4] //required: view heirarchy is not inferable from VFL
         
         v1.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         v4.frame = CGRect(x: 100, y: 100, width: 100, height: 100)
@@ -705,8 +703,8 @@ class MortarTests: XCTestCase {
         let v3 = MortarView()
         let v4 = MortarView()
         let v5 = MortarView()
-        
-        v1 |+| [v2, v3, v4, v5]
+
+        v1 |+| [v2, v3, v4, v5] //required: view heirarchy is not inferable from VFL
         
         v1.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         v4.frame = CGRect(x: 100, y: 100, width: 100, height: 100)
@@ -733,8 +731,6 @@ class MortarTests: XCTestCase {
         let v1 = MortarView()
         let v2 = MortarView()
         let v3 = MortarView()
-        
-        v1 |+| [v2, v3]
         
         v1.frame = CGRect(x: 0, y: 0, width: 124, height: 124)
         
@@ -770,7 +766,6 @@ class MortarTests: XCTestCase {
         let l2size = l2.sizeThatFits(CGSize(width: 500, height: 500))
 
         c.frame = CGRect(x: 0, y: 0, width: 500, height: 500)
-        c |+| [v1, v2, v3, l1, l2, l3]
 
         c ||>> v1[~~1] || v2[~~2] || v3[==5] || l1 || l2 || l3[~~2]
         c ||^^ v1 || v2[==10] || v3[==5] || l1 || l2 || l3[==20]
@@ -816,7 +811,6 @@ class MortarTests: XCTestCase {
         label.numberOfLines = 0
         label.lineBreakMode = .byCharWrapping
 
-        c |+| [label]
         c.frame = CGRect(x: 0, y: 0, width: 150, height: 150)
 
         c |>> 50 | label | 50
@@ -841,6 +835,26 @@ class MortarTests: XCTestCase {
         XCTAssertEqualWithAccuracy(label.frame.size.height, lineHeight * ceil(lineLength2/50), accuracy: 1, "Right indent")
         XCTAssertEqualWithAccuracy(label.frame.origin.y, 150 - label.frame.origin.y - label.frame.size.height, accuracy: 1, "top/bottom pad are equal")
         XCTAssertGreaterThan(label.frame.size.height, originalHeight, "four line label shoudl be taller than 3 line label")
+    }
+
+    func testVFL7() {
+        let v1 = MortarView()
+        let v2 = MortarView()
+        let v3 = MortarView()
+        let v4 = MortarView()
+        let v5 = MortarView()
+
+        v2 |+| v3
+
+        v1 |> v2 | v3
+        v4 ^! v1
+        v4 ||^^ v5
+        v1.layoutIfNeeded()
+
+        XCTAssertEqual(v2.superview, v1, "VFL should infer v2's superview")
+        XCTAssertEqual(v3.superview, v2, "VFL should not infer v3's superview as it is already set")
+        XCTAssertEqual(v4.superview, v1, "VFL should infer v4's superview")
+        XCTAssertEqual(v5.superview, v4, "VFL should infer v5's superview")
     }
 
     #if os(iOS)
