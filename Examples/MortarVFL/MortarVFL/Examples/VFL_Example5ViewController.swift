@@ -53,26 +53,21 @@ class VFL_Example5ViewController: UIViewController {
     override func viewDidLoad() {
         self.view.backgroundColor = .white
 
-        let allViews = [label1, label2, button1, view1, view2]
-
-        // Give everything a border so the label frames are clearly visible
-        allViews.forEach {
-            $0.layer.borderColor = UIColor.lightGray.cgColor
-            $0.layer.borderWidth = 1
-        }
-
-        self.view |+| allViews
+        // vertical: pin all the views in the given order with a variety of heights and spacers
+        // note: this adds all veiws on the right as subviews of m_visibleRegion(since they don't already have a superview)
+        // the ||^^ operator returns a tuple of all the constraints and (non parrent) views, of which we only need the veiws for later work
+        let (_, allViews) = m_visibleRegion ||^^ view1 | ~~2 | label1 || label2 | ~~1 | button1[==44] | 20 |  view2[~~1]
 
         // horizontal: pin all views between edges of m_visibleRegion with || padding(8pt) on both sides
         m_visibleRegion ||>> allViews
 
-
-        // vertical: pin all the views in the given order with a variety of heights and spacers
-        m_visibleRegion ||^^ view1 | ~~2 | label1 || label2 | ~~1 | button1[==44] | 20 |  view2[~~1]
-
         button1.addTarget(self, action: #selector(tap), for: .touchUpInside)
         tap()
 
+        allViews.forEach {
+            $0.layer.borderColor = UIColor.lightGray.cgColor
+            $0.layer.borderWidth = 1
+        }
     }
 
     func tap() {

@@ -1,5 +1,9 @@
 # Mortar Changelog
 
+## 1.4.0 -- 5/18/17
+
+* VFL: inferred superview & capture operators return tuple of constraints and veiws 
+
 ## 1.3.0 -- 5/1/17
 
 * Changed default MortarVFL sizing to intrinsic
