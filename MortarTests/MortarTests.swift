@@ -377,12 +377,12 @@ class MortarTests: XCTestCase {
         v4 |=| self.container.m_height ! .required
         v5 |=| self.container.m_height ! 300
         
-        XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultRequired,    "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[1].priority, MortarAliasLayoutPriorityDefaultLow,         "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[2].priority, MortarAliasLayoutPriorityDefaultMedium,      "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[3].priority, MortarAliasLayoutPriorityDefaultHigh,        "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[4].priority, MortarAliasLayoutPriorityDefaultRequired,    "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[5].priority, 300,                                         "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[0].priority.rawValue, MortarAliasLayoutPriorityDefaultRequired.rawValue,    "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[1].priority.rawValue, MortarAliasLayoutPriorityDefaultLow.rawValue,         "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[2].priority.rawValue, MortarAliasLayoutPriorityDefaultMedium.rawValue,      "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[3].priority.rawValue, MortarAliasLayoutPriorityDefaultHigh.rawValue,        "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[4].priority.rawValue, MortarAliasLayoutPriorityDefaultRequired.rawValue,    "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[5].priority.rawValue, 300,                                                  "Priority mismatch")
     }
     
     func testBasicPriorityBase() {
@@ -419,12 +419,12 @@ class MortarTests: XCTestCase {
         
         MortarDefault.priority.set(base: .medium)
         
-        XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultRequired,    "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[1].priority, MortarAliasLayoutPriorityDefaultLow,         "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[2].priority, MortarAliasLayoutPriorityDefaultMedium,      "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[3].priority, MortarAliasLayoutPriorityDefaultHigh,        "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[4].priority, MortarAliasLayoutPriorityDefaultRequired,    "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[5].priority, 300,                                         "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[0].priority.rawValue, MortarAliasLayoutPriorityDefaultRequired.rawValue,    "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[1].priority.rawValue, MortarAliasLayoutPriorityDefaultLow.rawValue,         "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[2].priority.rawValue, MortarAliasLayoutPriorityDefaultMedium.rawValue,      "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[3].priority.rawValue, MortarAliasLayoutPriorityDefaultHigh.rawValue,        "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[4].priority.rawValue, MortarAliasLayoutPriorityDefaultRequired.rawValue,    "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[5].priority.rawValue, 300,                                                  "Priority mismatch")
     }
     
     func testBasicPriorityStack() {
@@ -467,15 +467,15 @@ class MortarTests: XCTestCase {
         
         
         
-        XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultMedium,      "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[1].priority, MortarAliasLayoutPriorityDefaultLow,         "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[2].priority, MortarAliasLayoutPriorityDefaultMedium,      "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[3].priority, MortarAliasLayoutPriorityDefaultRequired,    "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[4].priority, MortarAliasLayoutPriorityDefaultLow,         "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[5].priority, MortarAliasLayoutPriorityDefaultHigh,        "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[6].priority, MortarAliasLayoutPriorityDefaultLow,         "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[7].priority, 400,                                         "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[8].priority, MortarAliasLayoutPriorityDefaultRequired,    "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[0].priority.rawValue, MortarAliasLayoutPriorityDefaultMedium.rawValue,      "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[1].priority.rawValue, MortarAliasLayoutPriorityDefaultLow.rawValue,         "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[2].priority.rawValue, MortarAliasLayoutPriorityDefaultMedium.rawValue,      "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[3].priority.rawValue, MortarAliasLayoutPriorityDefaultRequired.rawValue,    "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[4].priority.rawValue, MortarAliasLayoutPriorityDefaultLow.rawValue,         "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[5].priority.rawValue, MortarAliasLayoutPriorityDefaultHigh.rawValue,        "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[6].priority.rawValue, MortarAliasLayoutPriorityDefaultLow.rawValue,         "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[7].priority.rawValue, 400,                                                  "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[8].priority.rawValue, MortarAliasLayoutPriorityDefaultRequired.rawValue,    "Priority mismatch")
     }
     
     func testChangePriority() {
@@ -487,14 +487,14 @@ class MortarTests: XCTestCase {
         let c1 = v0 |=| self.container.m_height ! .low
         let c2 = v1 |=| self.container.m_height ! .high
         
-        XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultLow,  "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[1].priority, MortarAliasLayoutPriorityDefaultHigh, "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[0].priority.rawValue, MortarAliasLayoutPriorityDefaultLow.rawValue,  "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[1].priority.rawValue, MortarAliasLayoutPriorityDefaultHigh.rawValue, "Priority mismatch")
         
         c1.changePriority(to: .high)
         c2.changePriority(to: 300)
         
-        XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultHigh, "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[1].priority, 300,                                  "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[0].priority.rawValue, MortarAliasLayoutPriorityDefaultHigh.rawValue, "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[1].priority.rawValue, 300,                                           "Priority mismatch")
     }
     
     func testChangePriorityGroup() {
@@ -508,13 +508,13 @@ class MortarTests: XCTestCase {
             v1 |=| self.container.m_height ! .high
         ]
         
-        XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultLow,  "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[1].priority, MortarAliasLayoutPriorityDefaultHigh, "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[0].priority.rawValue, MortarAliasLayoutPriorityDefaultLow.rawValue,  "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[1].priority.rawValue, MortarAliasLayoutPriorityDefaultHigh.rawValue, "Priority mismatch")
         
         g1.changePriority(to: 300)
         
-        XCTAssertEqual(self.container.constraints[0].priority, 300,                         "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[1].priority, 300,                         "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[0].priority.rawValue, 300,                         "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[1].priority.rawValue, 300,                         "Priority mismatch")
     }
  
     func testTuplePriority() {
@@ -524,8 +524,8 @@ class MortarTests: XCTestCase {
         
         v.m_size |=| (self.container.m_height ! .high, self.container.m_width + 20 ! .low)
         
-        XCTAssertEqual(self.container.constraints[0].priority, MortarAliasLayoutPriorityDefaultHigh, "Priority mismatch")
-        XCTAssertEqual(self.container.constraints[1].priority, MortarAliasLayoutPriorityDefaultLow,  "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[0].priority.rawValue, MortarAliasLayoutPriorityDefaultHigh.rawValue, "Priority mismatch")
+        XCTAssertEqual(self.container.constraints[1].priority.rawValue, MortarAliasLayoutPriorityDefaultLow.rawValue,  "Priority mismatch")
     }       
 
     func testRestoreDefaultPriority() {
@@ -621,14 +621,14 @@ class MortarTests: XCTestCase {
         v2.m_compResistH = 341
         v3.m_compResistV = 342
         
-        XCTAssertEqual(v1.m_compResistH, 343, "Compression Issue")
-        XCTAssertEqual(v1.m_compResistV, 343, "Compression Issue")
+        XCTAssertEqual(v1.m_compResistH.rawValue, 343, "Compression Issue")
+        XCTAssertEqual(v1.m_compResistV.rawValue, 343, "Compression Issue")
         
-        XCTAssertEqual(v2.m_compResistH, 341, "Compression Issue")
-        XCTAssertNotEqual(v2.m_compResistV, 341, "Compression Issue")
+        XCTAssertEqual(v2.m_compResistH.rawValue, 341, "Compression Issue")
+        XCTAssertNotEqual(v2.m_compResistV.rawValue, 341, "Compression Issue")
         
-        XCTAssertNotEqual(v3.m_compResistH, 342, "Compression Issue")
-        XCTAssertEqual(v3.m_compResistV, 342, "Compression Issue")
+        XCTAssertNotEqual(v3.m_compResistH.rawValue, 342, "Compression Issue")
+        XCTAssertEqual(v3.m_compResistV.rawValue, 342, "Compression Issue")
     }
     
     func testHugging() {
@@ -640,14 +640,14 @@ class MortarTests: XCTestCase {
         v2.m_huggingH = 341
         v3.m_huggingV = 342
         
-        XCTAssertEqual(v1.m_huggingH, 343, "Hugging Issue")
-        XCTAssertEqual(v1.m_huggingV, 343, "Hugging Issue")
+        XCTAssertEqual(v1.m_huggingH.rawValue, 343, "Hugging Issue")
+        XCTAssertEqual(v1.m_huggingV.rawValue, 343, "Hugging Issue")
         
-        XCTAssertEqual(v2.m_huggingH, 341, "Hugging Issue")
-        XCTAssertNotEqual(v2.m_huggingV, 341, "Hugging Issue")
+        XCTAssertEqual(v2.m_huggingH.rawValue, 341, "Hugging Issue")
+        XCTAssertNotEqual(v2.m_huggingV.rawValue, 341, "Hugging Issue")
         
-        XCTAssertNotEqual(v3.m_huggingH, 342, "Hugging Issue")
-        XCTAssertEqual(v3.m_huggingV, 342, "Hugging Issue")
+        XCTAssertNotEqual(v3.m_huggingH.rawValue, 342, "Hugging Issue")
+        XCTAssertEqual(v3.m_huggingV.rawValue, 342, "Hugging Issue")
     }
     
     func XCTAssertApprox(_ v1: CGFloat, _ v2: CGFloat, _ err: String) {
@@ -778,35 +778,35 @@ class MortarTests: XCTestCase {
         c.layoutIfNeeded()
 
         //check a few || paddings
-        XCTAssertEqualWithAccuracy(v1.frame.origin.x, 8, accuracy: 1, "Leftmost || pad")
-        XCTAssertEqualWithAccuracy(v1.frame.origin.y, 8, accuracy: 1, "Topmost || pad ")
+        XCTAssertEqual(v1.frame.origin.x, 8, accuracy: 1, "Leftmost || pad")
+        XCTAssertEqual(v1.frame.origin.y, 8, accuracy: 1, "Topmost || pad ")
 
-        XCTAssertEqualWithAccuracy(l1.frame.origin.x + l1.frame.size.width + 8, l2.frame.origin.x , accuracy: 1, "spot check inner horizontal || pad")
-        XCTAssertEqualWithAccuracy(l1.frame.origin.y + l1.frame.size.height + 8, l2.frame.origin.y , accuracy: 1, "spot check inner vertical || pad")
+        XCTAssertEqual(l1.frame.origin.x + l1.frame.size.width + 8, l2.frame.origin.x , accuracy: 1, "spot check inner horizontal || pad")
+        XCTAssertEqual(l1.frame.origin.y + l1.frame.size.height + 8, l2.frame.origin.y , accuracy: 1, "spot check inner vertical || pad")
 
-        XCTAssertEqualWithAccuracy(l3.frame.origin.y + l3.frame.size.height + 8 , 500, accuracy: 1, "Bottommost || pad")
-        XCTAssertEqualWithAccuracy(l3.frame.origin.x + l3.frame.size.width + 8, 500, accuracy: 1, "Rightmost || pad")
+        XCTAssertEqual(l3.frame.origin.y + l3.frame.size.height + 8 , 500, accuracy: 1, "Bottommost || pad")
+        XCTAssertEqual(l3.frame.origin.x + l3.frame.size.width + 8, 500, accuracy: 1, "Rightmost || pad")
 
         //plain veiw sizes
-        XCTAssertEqualWithAccuracy(v1.frame.size.width, 0.5 * v2.frame.size.width, accuracy: 1, "v1,2 weighted widths")
-        XCTAssertEqualWithAccuracy(v1.frame.size.height, 500 - (8 * 7) - l1size.height - l2size.height - 20 - 10 - 5, accuracy:1, "v1 intinsic height w/ low content hugging")
-        XCTAssertEqualWithAccuracy(v2.frame.size.height, 10, accuracy: 1,"v2 fixed height")
-        XCTAssertEqualWithAccuracy(v3.frame.size.height, 5, accuracy: 1,"v3 fixed height")
-        XCTAssertEqualWithAccuracy(v3.frame.size.width, 5, accuracy: 1,"v3 fixed height")
+        XCTAssertEqual(v1.frame.size.width, 0.5 * v2.frame.size.width, accuracy: 1, "v1,2 weighted widths")
+        XCTAssertEqual(v1.frame.size.height, 500 - (8 * 7) - l1size.height - l2size.height - 20 - 10 - 5, accuracy:1, "v1 intinsic height w/ low content hugging")
+        XCTAssertEqual(v2.frame.size.height, 10, accuracy: 1,"v2 fixed height")
+        XCTAssertEqual(v3.frame.size.height, 5, accuracy: 1,"v3 fixed height")
+        XCTAssertEqual(v3.frame.size.width, 5, accuracy: 1,"v3 fixed height")
 
 
         //label sizes
-        XCTAssertEqualWithAccuracy(l1.frame.size.width , l1size.width, accuracy: 1, "l1 instrinsic width")
-        XCTAssertEqualWithAccuracy(l1.frame.size.height , l1size.height, accuracy: 1, "l1 instrinsic height")
+        XCTAssertEqual(l1.frame.size.width , l1size.width, accuracy: 1, "l1 instrinsic width")
+        XCTAssertEqual(l1.frame.size.height , l1size.height, accuracy: 1, "l1 instrinsic height")
 
-        XCTAssertEqualWithAccuracy(l2.frame.size.width , l2size.width, accuracy: 1, "l2 instrinsic width")
-        XCTAssertEqualWithAccuracy(l2.frame.size.height , l2size.height, accuracy: 1, "l2 instrinsic height")
+        XCTAssertEqual(l2.frame.size.width , l2size.width, accuracy: 1, "l2 instrinsic width")
+        XCTAssertEqual(l2.frame.size.height , l2size.height, accuracy: 1, "l2 instrinsic height")
 
         XCTAssertGreaterThan(l1.frame.size.width , l2.frame.size.width, "l1 is wider than l2(more characters per line)")
         XCTAssertGreaterThan(l2.frame.size.height , l1.frame.size.height, "l2 is taller than l1 (it's milti-line)")
 
-        XCTAssertEqualWithAccuracy(l3.frame.size.width, v1.frame.size.width * 2, accuracy: 1,"l3 is weighted 2 horiontally")
-        XCTAssertEqualWithAccuracy(l3.frame.size.height, 20, accuracy: 1,"l3 is fixed 20px vertically")
+        XCTAssertEqual(l3.frame.size.width, v1.frame.size.width * 2, accuracy: 1,"l3 is weighted 2 horiontally")
+        XCTAssertEqual(l3.frame.size.height, 20, accuracy: 1,"l3 is fixed 20px vertically")
     }
 
     func testVFL6() {
@@ -826,9 +826,9 @@ class MortarTests: XCTestCase {
         let lineHeight = label.sizeThatFits(CGSize(width: 500, height: 500)).height
         let lineLength = label.sizeThatFits(CGSize(width: 500, height: 500)).width
 
-        XCTAssertEqualWithAccuracy(label.frame.origin.x, 50, accuracy: 1, "Left indent")
-        XCTAssertEqualWithAccuracy(label.frame.size.height, lineHeight * ceil(lineLength/50), accuracy: 1, "Right indent")
-        XCTAssertEqualWithAccuracy(label.frame.origin.y, 150 - label.frame.origin.y - label.frame.size.height, accuracy: 1, "top/bottom pad are equal")
+        XCTAssertEqual(label.frame.origin.x, 50, accuracy: 1, "Left indent")
+        XCTAssertEqual(label.frame.size.height, lineHeight * ceil(lineLength/50), accuracy: 1, "Right indent")
+        XCTAssertEqual(label.frame.origin.y, 150 - label.frame.origin.y - label.frame.size.height, accuracy: 1, "top/bottom pad are equal")
         let originalHeight = label.frame.size.height
 
         label.text = "This string is four lines."
@@ -837,9 +837,9 @@ class MortarTests: XCTestCase {
 
         let lineLength2 = label.sizeThatFits(CGSize(width: 500, height: 500)).width
 
-        XCTAssertEqualWithAccuracy(label.frame.origin.x, 50, accuracy: 1, "Left indent")
-        XCTAssertEqualWithAccuracy(label.frame.size.height, lineHeight * ceil(lineLength2/50), accuracy: 1, "Right indent")
-        XCTAssertEqualWithAccuracy(label.frame.origin.y, 150 - label.frame.origin.y - label.frame.size.height, accuracy: 1, "top/bottom pad are equal")
+        XCTAssertEqual(label.frame.origin.x, 50, accuracy: 1, "Left indent")
+        XCTAssertEqual(label.frame.size.height, lineHeight * ceil(lineLength2/50), accuracy: 1, "Right indent")
+        XCTAssertEqual(label.frame.origin.y, 150 - label.frame.origin.y - label.frame.size.height, accuracy: 1, "top/bottom pad are equal")
         XCTAssertGreaterThan(label.frame.size.height, originalHeight, "four line label shoudl be taller than 3 line label")
     }
 

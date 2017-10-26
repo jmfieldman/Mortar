@@ -55,6 +55,30 @@ public enum MortarDefault {
         }
     }
     
+    /**
+     Updates the new base value for this default (the value used when the stack is empty)
+     
+     - parameter newValue: The new value for the default.
+     */
+    public func set(base newValue: MortarCGFloatable) {
+        self.set(base: MortarAliasLayoutPriority(rawValue: Float(newValue.m_cgfloatValue())))
+    }
+    
+    /**
+     For .Priority:
+     
+     Push a new default layout priority onto the preferences stack.  Any constraint
+     created will be given a priority that matches the top value on the stack.
+     Default priorities can always be explicitly overridden.
+     
+     This function can only be called on the main thread, and must have a matching
+     popDefaultPriority called before the main event loop is re-entered.
+     
+     - parameter value: The new default priority.
+     */
+    public func push(_ value: MortarCGFloatable) {
+        self.push(MortarAliasLayoutPriority(rawValue: Float(value.m_cgfloatValue())))
+    }
     
     /**
      For .Priority:
