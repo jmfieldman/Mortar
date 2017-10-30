@@ -261,6 +261,11 @@ public class MortarConstraint {
     }
     
     @discardableResult
+    public func changePriority(to newPriority: MortarCGFloatable) -> MortarConstraint {
+        return self.changePriority(to: MortarAliasLayoutPriority(rawValue: Float(newPriority.m_cgfloatValue())))
+    }
+    
+    @discardableResult
     public func changePriority(to newPriority: MortarAliasLayoutPriority) -> MortarConstraint {
         for constraint in layoutConstraints {
             constraint.priority = newPriority

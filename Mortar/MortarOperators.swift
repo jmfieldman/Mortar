@@ -708,6 +708,12 @@ precedencegroup MortarPriorityPrecendence {
 
 infix operator ! : MortarPriorityPrecendence
 
+public func !(lhs: MortarAttributable, rhs: MortarCGFloatable) -> MortarAttribute {
+    let attr = lhs.m_intoAttribute()
+    attr.priority = MortarAliasLayoutPriority(rawValue: Float(rhs.m_cgfloatValue()))
+    return attr
+}
+
 public func !(lhs: MortarAttributable, rhs: MortarLayoutPriority) -> MortarAttribute {
     let attr = lhs.m_intoAttribute()
     attr.priority = rhs.layoutPriority()
@@ -721,6 +727,12 @@ public func !(lhs: MortarAttributable, rhs: MortarAliasLayoutPriority) -> Mortar
 }
 
 
+public func !(lhs: MortarTwople, rhs: MortarCGFloatable) -> MortarTuple {
+    var tup = MortarConvertTwople(lhs)
+    tup.1 = MortarAliasLayoutPriority(rawValue: Float(rhs.m_cgfloatValue()))
+    return tup
+}
+
 public func !(lhs: MortarTwople, rhs: MortarLayoutPriority) -> MortarTuple {
     var tup = MortarConvertTwople(lhs)
     tup.1 = rhs.layoutPriority()
@@ -733,6 +745,12 @@ public func !(lhs: MortarTwople, rhs: MortarAliasLayoutPriority) -> MortarTuple 
     return tup
 }
 
+
+public func !(lhs: MortarFourple, rhs: MortarCGFloatable) -> MortarTuple {
+    var tup = MortarConvertFourple(lhs)
+    tup.1 = MortarAliasLayoutPriority(rawValue: Float(rhs.m_cgfloatValue()))
+    return tup
+}
 
 public func !(lhs: MortarFourple, rhs: MortarLayoutPriority) -> MortarTuple {
     var tup = MortarConvertFourple(lhs)

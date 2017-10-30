@@ -27,20 +27,20 @@ import UIKit
 public typealias MortarView = UIView
 public typealias MortarAliasLayoutPriority = UILayoutPriority
 
-public let MortarAliasLayoutPriorityDefaultLow      =  UILayoutPriorityDefaultLow
-public let MortarAliasLayoutPriorityDefaultMedium   = (UILayoutPriorityDefaultHigh + UILayoutPriorityDefaultLow) / 2
-public let MortarAliasLayoutPriorityDefaultHigh     =  UILayoutPriorityDefaultHigh
-public let MortarAliasLayoutPriorityDefaultRequired =  UILayoutPriorityRequired
+public let MortarAliasLayoutPriorityDefaultLow      = UILayoutPriority.defaultLow
+public let MortarAliasLayoutPriorityDefaultMedium   = UILayoutPriority(rawValue: (Float(UILayoutPriority.defaultHigh.rawValue) + Float(UILayoutPriority.defaultLow.rawValue)) / 2)
+public let MortarAliasLayoutPriorityDefaultHigh     = UILayoutPriority.defaultHigh
+public let MortarAliasLayoutPriorityDefaultRequired = UILayoutPriority.required
     
 #else
 import AppKit
 public typealias MortarView = NSView
 public typealias MortarAliasLayoutPriority = NSLayoutPriority
 
-public let MortarAliasLayoutPriorityDefaultLow      =  NSLayoutPriorityDefaultLow
-public let MortarAliasLayoutPriorityDefaultMedium   = (NSLayoutPriorityDefaultHigh + NSLayoutPriorityDefaultLow) / 2
-public let MortarAliasLayoutPriorityDefaultHigh     =  NSLayoutPriorityDefaultHigh
-public let MortarAliasLayoutPriorityDefaultRequired =  NSLayoutPriorityRequired
+public let MortarAliasLayoutPriorityDefaultLow      = NSLayoutPriority.defaultLow
+public let MortarAliasLayoutPriorityDefaultMedium   = NSLayoutPriority(rawValue: (Float(NSLayoutPriority.defaultHigh.rawValue) + Float(NSLayoutPriority.defaultLow.rawValue)) / 2)
+public let MortarAliasLayoutPriorityDefaultHigh     = NSLayoutPriority.defaultHigh
+public let MortarAliasLayoutPriorityDefaultRequired = NSLayoutPriority.required
 
 #endif
 
@@ -235,7 +235,7 @@ internal enum MortarLayoutAttribute {
 }
 
 public enum MortarLayoutPriority {
-    case low, medium, high, required
+    case low, medium, high, req
     
     // As of v1.1, the actual default priority is .required.  
     // "default" is a misleading term for this enum.
@@ -248,7 +248,7 @@ public enum MortarLayoutPriority {
         case .low:      return MortarAliasLayoutPriorityDefaultLow
         case .medium:   return MortarAliasLayoutPriorityDefaultMedium
         case .high:     return MortarAliasLayoutPriorityDefaultHigh
-        case .required: return MortarAliasLayoutPriorityDefaultRequired
+        case .req:      return MortarAliasLayoutPriorityDefaultRequired
         
         // Please note that this is a misleading enum value that remains MortarAliasLayoutPriorityDefaultMedium
         // for compatibility reasons.  The actual default priority of a constraint is now 1000/.required
@@ -261,7 +261,7 @@ public enum MortarActivationState {
     case activated, deactivated
 }
 
-public protocol MortarCGFloatable {
+public protocol MortarCGFloatable: MortarAliasLayoutPriorityAble {
     @inline(__always) func m_cgfloatValue() -> CGFloat
 }
 
@@ -269,11 +269,19 @@ extension CGFloat : MortarCGFloatable {
     @inline(__always) public func m_cgfloatValue() -> CGFloat {
         return self
     }
+    
+    @inline(__always) public func m_intoPriority() -> MortarAliasLayoutPriority {
+        return MortarAliasLayoutPriority(rawValue: Float(self))
+    }
 }
 
 extension Int : MortarCGFloatable {
     @inline(__always) public func m_cgfloatValue() -> CGFloat {
         return CGFloat(self)
+    }
+    
+    @inline(__always) public func m_intoPriority() -> MortarAliasLayoutPriority {
+        return MortarAliasLayoutPriority(rawValue: Float(self))
     }
 }
 
@@ -281,11 +289,19 @@ extension UInt : MortarCGFloatable {
     @inline(__always) public func m_cgfloatValue() -> CGFloat {
         return CGFloat(self)
     }
+    
+    @inline(__always) public func m_intoPriority() -> MortarAliasLayoutPriority {
+        return MortarAliasLayoutPriority(rawValue: Float(self))
+    }
 }
 
 extension Int64 : MortarCGFloatable {
     @inline(__always) public func m_cgfloatValue() -> CGFloat {
         return CGFloat(self)
+    }
+    
+    @inline(__always) public func m_intoPriority() -> MortarAliasLayoutPriority {
+        return MortarAliasLayoutPriority(rawValue: Float(self))
     }
 }
 
@@ -293,11 +309,19 @@ extension UInt64 : MortarCGFloatable {
     @inline(__always) public func m_cgfloatValue() -> CGFloat {
         return CGFloat(self)
     }
+    
+    @inline(__always) public func m_intoPriority() -> MortarAliasLayoutPriority {
+        return MortarAliasLayoutPriority(rawValue: Float(self))
+    }
 }
 
 extension UInt32 : MortarCGFloatable {
     @inline(__always) public func m_cgfloatValue() -> CGFloat {
         return CGFloat(self)
+    }
+    
+    @inline(__always) public func m_intoPriority() -> MortarAliasLayoutPriority {
+        return MortarAliasLayoutPriority(rawValue: Float(self))
     }
 }
 
@@ -305,17 +329,29 @@ extension Int32 : MortarCGFloatable {
     @inline(__always) public func m_cgfloatValue() -> CGFloat {
         return CGFloat(self)
     }
+    
+    @inline(__always) public func m_intoPriority() -> MortarAliasLayoutPriority {
+        return MortarAliasLayoutPriority(rawValue: Float(self))
+    }
 }
 
 extension Double : MortarCGFloatable {
     @inline(__always) public func m_cgfloatValue() -> CGFloat {
         return CGFloat(self)
     }
+    
+    @inline(__always) public func m_intoPriority() -> MortarAliasLayoutPriority {
+        return MortarAliasLayoutPriority(rawValue: Float(self))
+    }
 }
 
 extension Float : MortarCGFloatable {
     @inline(__always) public func m_cgfloatValue() -> CGFloat {
         return CGFloat(self)
+    }
+    
+    @inline(__always) public func m_intoPriority() -> MortarAliasLayoutPriority {
+        return MortarAliasLayoutPriority(rawValue: Float(self))
     }
 }
 
@@ -353,9 +389,33 @@ extension MortarView : MortarAttributable {
     }
 }
 
+#if os(iOS) || os(tvOS)
+    extension UILayoutGuide : MortarAttributable {
+        public func m_intoAttribute() -> MortarAttribute {
+            return MortarAttribute(item: self)
+        }
+    }
+#endif
+
 extension MortarAttribute : MortarAttributable {
     @inline(__always) public func m_intoAttribute() -> MortarAttribute {
         return self
+    }
+}
+
+public protocol MortarAliasLayoutPriorityAble {
+    @inline(__always) func m_intoPriority() -> MortarAliasLayoutPriority
+}
+
+extension MortarAliasLayoutPriority: MortarAliasLayoutPriorityAble {
+    public func m_intoPriority() -> MortarAliasLayoutPriority {
+        return self
+    }
+}
+
+extension MortarAliasLayoutPriorityAble {
+    public var rawValue: Float {
+        return self.m_intoPriority().rawValue
     }
 }
 

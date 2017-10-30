@@ -60,6 +60,14 @@ public extension Array where Element: MortarConstraint {
     }
     
     @discardableResult
+    public func changePriority(to newPriority: MortarCGFloatable) -> MortarGroup {
+        for constraint in self {
+            constraint.changePriority(to: newPriority)
+        }
+        return self
+    }
+    
+    @discardableResult
     public func changePriority(to newPriority: MortarAliasLayoutPriority) -> MortarGroup {
         for constraint in self {
             constraint.changePriority(to: newPriority)
