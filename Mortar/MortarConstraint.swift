@@ -45,7 +45,7 @@ public class MortarConstraint {
      
      - returns: A mortar representing this layout constraint
      */
-    internal convenience init(target: MortarAttributable, source: MortarAttributable, relation: NSLayoutRelation) {
+    internal convenience init(target: MortarAttributable, source: MortarAttributable, relation: MortarAliasLayoutRelation) {
         
         self.init()
         
@@ -113,7 +113,7 @@ public class MortarConstraint {
     }
         
     
-    internal convenience init(target: MortarAttribute, source: MortarTuple, relation: NSLayoutRelation) {
+    internal convenience init(target: MortarAttribute, source: MortarTuple, relation: MortarAliasLayoutRelation) {
         
         self.init()
         
@@ -155,7 +155,7 @@ public class MortarConstraint {
         }
     }
     
-    internal convenience init(targetArray: [MortarAttribute], sourceArray: [MortarAttribute], crosslink: Bool, relation: NSLayoutRelation) {
+    internal convenience init(targetArray: [MortarAttribute], sourceArray: [MortarAttribute], crosslink: Bool, relation: MortarAliasLayoutRelation) {
         
         self.init()
         
@@ -180,7 +180,7 @@ public class MortarConstraint {
         
     }
     
-    internal convenience init(targetArray: [MortarAttribute], sourceTuple: MortarTuple, relation: NSLayoutRelation) {
+    internal convenience init(targetArray: [MortarAttribute], sourceTuple: MortarTuple, relation: MortarAliasLayoutRelation) {
         self.init()
         
         for target in targetArray {
@@ -188,7 +188,7 @@ public class MortarConstraint {
         }
     }
     
-    internal convenience init(targetAny: Any, sourceAny: Any, relation: NSLayoutRelation) {
+    internal convenience init(targetAny: Any, sourceAny: Any, relation: MortarAliasLayoutRelation) {
         if let target = (targetAny as? MortarAttribute) ?? (targetAny as? MortarAttributable)?.m_intoAttribute() {
             if let source = sourceAny as? MortarAttribute {
                 self.init(target: target, source: source, relation: relation)
@@ -218,7 +218,7 @@ public class MortarConstraint {
 
     }
     
-    internal convenience init(targetAnyArray: [Any], sourceAnyArray: [Any], crosslink: Bool, relation: NSLayoutRelation) {
+    internal convenience init(targetAnyArray: [Any], sourceAnyArray: [Any], crosslink: Bool, relation: MortarAliasLayoutRelation) {
         self.init()
         
         if crosslink {

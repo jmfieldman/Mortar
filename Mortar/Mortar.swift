@@ -26,24 +26,20 @@
 import UIKit
 public typealias MortarView = UIView
 public typealias MortarAliasLayoutPriority = UILayoutPriority
-
-public let MortarAliasLayoutPriorityDefaultLow      = UILayoutPriority.defaultLow
-public let MortarAliasLayoutPriorityDefaultMedium   = UILayoutPriority(rawValue: (Float(UILayoutPriority.defaultHigh.rawValue) + Float(UILayoutPriority.defaultLow.rawValue)) / 2)
-public let MortarAliasLayoutPriorityDefaultHigh     = UILayoutPriority.defaultHigh
-public let MortarAliasLayoutPriorityDefaultRequired = UILayoutPriority.required
-    
+public typealias MortarAliasLayoutRelation = NSLayoutRelation
+public typealias MortarAliasLayoutAttribute = NSLayoutAttribute
 #else
 import AppKit
 public typealias MortarView = NSView
-public typealias MortarAliasLayoutPriority = NSLayoutPriority
-
-public let MortarAliasLayoutPriorityDefaultLow      = NSLayoutPriority.defaultLow
-public let MortarAliasLayoutPriorityDefaultMedium   = NSLayoutPriority(rawValue: (Float(NSLayoutPriority.defaultHigh.rawValue) + Float(NSLayoutPriority.defaultLow.rawValue)) / 2)
-public let MortarAliasLayoutPriorityDefaultHigh     = NSLayoutPriority.defaultHigh
-public let MortarAliasLayoutPriorityDefaultRequired = NSLayoutPriority.required
-
+public typealias MortarAliasLayoutPriority = NSLayoutConstraint.Priority
+public typealias MortarAliasLayoutRelation = NSLayoutConstraint.Relation
+public typealias MortarAliasLayoutAttribute = NSLayoutConstraint.Attribute
 #endif
 
+public let MortarAliasLayoutPriorityDefaultLow      = MortarAliasLayoutPriority.defaultLow
+public let MortarAliasLayoutPriorityDefaultMedium   = MortarAliasLayoutPriority(rawValue: (Float(MortarAliasLayoutPriority.defaultHigh.rawValue) + Float(MortarAliasLayoutPriority.defaultLow.rawValue)) / 2)
+public let MortarAliasLayoutPriorityDefaultHigh     = MortarAliasLayoutPriority.defaultHigh
+public let MortarAliasLayoutPriorityDefaultRequired = MortarAliasLayoutPriority.required
 
 internal enum MortarLayoutAttribute {
     case left
@@ -82,7 +78,7 @@ internal enum MortarLayoutAttribute {
     case center
     
     #if os(iOS) || os(tvOS)
-    func nsLayoutAttribute() -> NSLayoutAttribute? {        
+    func nsLayoutAttribute() -> MortarAliasLayoutAttribute? {
         switch self {
         case .left:                     return .left
         case .right:                    return .right
@@ -110,7 +106,7 @@ internal enum MortarLayoutAttribute {
         }
     }
     #else
-    func nsLayoutAttribute() -> NSLayoutAttribute? {
+    func nsLayoutAttribute() -> MortarAliasLayoutAttribute? {
         switch self {
         case .left:                     return .left
         case .right:                    return .right
@@ -198,7 +194,7 @@ internal enum MortarLayoutAttribute {
     #endif
     
     #if os(iOS) || os(tvOS)
-    func implicitSuperviewBaseline() -> NSLayoutAttribute {
+    func implicitSuperviewBaseline() -> MortarAliasLayoutAttribute {
         switch self {
         case .left:                     return .left
         case .right:                    return .left
@@ -212,7 +208,7 @@ internal enum MortarLayoutAttribute {
         }
     }
     #else
-    func implicitSuperviewBaseline() -> NSLayoutAttribute {
+    func implicitSuperviewBaseline() -> MortarAliasLayoutAttribute {
         switch self {
         case .left:                     return .left
         case .right:                    return .left
