@@ -389,6 +389,14 @@ extension MortarView : MortarAttributable {
     }
 }
 
+#if os(iOS) || os(tvOS)
+    extension UILayoutGuide : MortarAttributable {
+        public func m_intoAttribute() -> MortarAttribute {
+            return MortarAttribute(item: self)
+        }
+    }
+#endif
+
 extension MortarAttribute : MortarAttributable {
     @inline(__always) public func m_intoAttribute() -> MortarAttribute {
         return self

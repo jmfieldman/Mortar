@@ -1,5 +1,10 @@
 # Mortar Changelog
 
+## 1.4.0 -- 10/28/17
+
+* Swift 4 support
+* Added support for UILayoutGuide
+
 ## 1.3.0 -- 5/1/17
 
 * Changed default MortarVFL sizing to intrinsic

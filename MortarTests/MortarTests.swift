@@ -612,6 +612,21 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
     }
     
+    
+    func testLayoutGuide() {
+        #if os(iOS) || os(tvOS)
+            if #available(iOS 11.0, *) {
+                let vc = UIViewController()
+                let v1 = UIView()
+                
+                vc.view.addSubview(v1)
+                
+                v1.m_top |=| vc.view.safeAreaLayoutGuide.m_top
+                v1.m_bottom |=| vc.view.layoutMarginsGuide.m_top
+            }
+        #endif
+    }
+    
     func testCompression() {
         let v1 = MortarView()
         let v2 = MortarView()
