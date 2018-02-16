@@ -1,5 +1,9 @@
 # Mortar Changelog
 
+## 1.4.0.2 -- 2/16/18
+
+* Added swift_version to podspec
+
 ## 1.4.0 -- 10/28/17
 
 * Swift 4 support
