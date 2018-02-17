@@ -8,6 +8,7 @@ env:
 before_install:
   - SIMULATOR_ID=$(xcrun instruments -s | grep -o "iPhone 6S (11.0) \[.*\]" | grep -o "\[.*\]" | sed "s/^\[\(.*\)\]$/\1/")
   - gem install xcpretty -N
+  - gem install cocoapods -v '1.4.0'
 script:
   - echo $SIMULATOR_ID
   - open -b com.apple.iphonesimulator --args -CurrentDeviceUDID $SIMULATOR_ID
