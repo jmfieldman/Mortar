@@ -1,5 +1,5 @@
 language: objective-c
-osx_image: xcode9
+osx_image: xcode9.2
 branches:
   only:
     - master
@@ -8,10 +8,11 @@ env:
 before_install:
   - SIMULATOR_ID=$(xcrun instruments -s | grep -o "iPhone 6S (11.0) \[.*\]" | grep -o "\[.*\]" | sed "s/^\[\(.*\)\]$/\1/")
   - gem install xcpretty -N
+  - gem install cocoapods -v '1.4.0'
 script:
   - echo $SIMULATOR_ID
   - open -b com.apple.iphonesimulator --args -CurrentDeviceUDID $SIMULATOR_ID
   - set -o pipefail
-  - xcodebuild -project Mortar.xcodeproj -scheme "Mortar iOS" -sdk "iphonesimulator11.0"
-    -destination "OS=11.0,name=iPhone 6S" ONLY_ACTIVE_ARCH=NO  test | xcpretty -c
+  - xcodebuild -project Mortar.xcodeproj -scheme "Mortar iOS" -sdk "iphonesimulator11.2"
+    -destination "OS=11.2,name=iPhone 6S" ONLY_ACTIVE_ARCH=NO  test | xcpretty -c
   - pod lib lint --quick
