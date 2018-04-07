@@ -1,5 +1,9 @@
 # Mortar Changelog
 
+## 1.4.0.3 -- 4/7/18
+
+* Added Core_NoCreatable and MortarVFL_NoCreatable subspecs
+
 ## 1.4.0.2 -- 2/16/18
 
 * Added swift_version to podspec

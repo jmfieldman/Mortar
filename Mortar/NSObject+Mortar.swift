@@ -8,34 +8,15 @@
 
 import Foundation
 
-
-
-/// This protocol declares that the object can be instantiated with a
-/// parameter-less initializer
-public protocol MortarNSObjectCreatable {
-    init()
-}
-
-/// An NSObject, and those inheriting from it, can be instantiated
-/// without parameters.
-extension NSObject: MortarNSObjectCreatable { }
-
-
-/// Implement the create() static function for NSObjectCreatable
-public extension MortarNSObjectCreatable {
-    
-    
-    /// Instantiates an instance of the receiving NSObject and
-    /// calls the creation function on it.
-    ///
-    /// - parameter creatorFunc: A function that takes the newly
-    ///                          created instance and performs any
-    ///                          desired configuration on it.
-    ///
-    /// - returns: The newly created instance.
-    public static func m_create(creatorFunc: (Self) -> Void) -> Self {
-        let retval = self.init()
-        creatorFunc(retval)
-        return retval
-    }
-}
+/// Provides default MortarCreatable support for all NSObject-based
+/// classes.  This is included in the default Mortar spec for backwards
+/// compatibility but may break codebases that contain class definitions
+/// that do not always wish to expose init().  For those codebases
+/// they should use:
+///
+/// pod 'Mortar/Core_NoCreatable'
+///
+/// and can put this code to allow m_create to be used on classes:
+///
+/// extension (your-class-name): MortarCreatable { }
+extension NSObject: MortarCreatable { }
