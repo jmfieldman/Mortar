@@ -92,6 +92,25 @@ pod 'Mortar', '~> 0.11' # Swift 2.3
 pod 'Mortar', '~> 0.10' # Swift 2.2
 ```
 
+### Disabling MortarCreatable
+
+The default implementation of Mortar declares a MortarCreatable protocol (m_create), which in recent versions of
+swift causes problems with classes that do not expose the default init() method.
+
+Until the next major release, you can use:
+
+```ruby
+pod 'Mortar/Core_NoCreatable'
+pod 'Mortar/MortarVFL_NoCreatable'
+```
+
+To install a version of Mortar that does not attach this protocol to NSObject.  You can then gain access to
+m_create for whatever classes you want, with:
+
+```ruby
+extension your_class_name: MortarCreatable { }
+```
+
 # Usage
 
 Mortar does not require closures of any kind.  The Mortar operators (```|=|```, ```|>|``` and ```|<|```) instantiate and return constraints that are activated by default.  
