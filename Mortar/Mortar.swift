@@ -26,8 +26,8 @@
 import UIKit
 public typealias MortarView = UIView
 public typealias MortarAliasLayoutPriority = UILayoutPriority
-public typealias MortarAliasLayoutRelation = NSLayoutRelation
-public typealias MortarAliasLayoutAttribute = NSLayoutAttribute
+public typealias MortarAliasLayoutRelation = NSLayoutConstraint.Relation
+public typealias MortarAliasLayoutAttribute = NSLayoutConstraint.Attribute
 #else
 import AppKit
 public typealias MortarView = NSView
