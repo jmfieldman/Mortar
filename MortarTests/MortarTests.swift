@@ -666,7 +666,7 @@ class MortarTests: XCTestCase {
     }
     
     func XCTAssertApprox(_ v1: CGFloat, _ v2: CGFloat, _ err: String) {
-        let closeEnough = fabs(v1 - v2) < 0.1
+        let closeEnough = abs(v1 - v2) < 0.1
         XCTAssertEqual(closeEnough, true, err)
     }
     
