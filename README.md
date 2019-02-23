@@ -1,8 +1,9 @@
 ![Mortar](/Development/Art/Banner.png)
 
-![Swift 3.0](https://img.shields.io/badge/Swift_3.0-%7E%3E%201.1-orange.svg?style=flat)
+![Swift 4.2](https://img.shields.io/badge/Swift_4.2-latest-orange.svg?style=flat)
+![Swift 4.0](https://img.shields.io/badge/Swift_4.0-%7E%3E%201.4-orange.svg?style=flat)
 ![Swift 3.1](https://img.shields.io/badge/Swift_3.1-%7E%3E%201.3-orange.svg?style=flat)
-![Swift 4.0](https://img.shields.io/badge/Swift_4.0-latest-orange.svg?style=flat)
+![Swift 3.0](https://img.shields.io/badge/Swift_3.0-%7E%3E%201.1-orange.svg?style=flat)
 
 Mortar allows you to create Auto Layout constraints using concise, simple code statements.
 
@@ -85,6 +86,7 @@ Or you can use a variety of ways to include the ```Mortar.framework``` file from
 > For the Swift 2.x documentation, refer to the ```README_SWIFT2.md``` file.
 
 ```ruby
+pod 'Mortar', '~> 1.5'  # Swift 4.2
 pod 'Mortar', '~> 1.4'  # Swift 4.0
 pod 'Mortar', '~> 1.3'  # Swift 3.1
 pod 'Mortar', '~> 1.1'  # Swift 3.0
