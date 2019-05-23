@@ -59,6 +59,8 @@
 		35BBBBF81C6D3C600014B159 /* Array+Mortar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Mortar.swift"; sourceTree = "<group>"; };
 		35BBBBF91C6D3C600014B159 /* View+Mortar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Mortar.swift"; sourceTree = "<group>"; };
 		35E850F91E9FC23700EB3D86 /* MortarVFL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MortarVFL.swift; sourceTree = "<group>"; };
+		6ACDE9222297665800BA7A1C /* Mortar.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Mortar.xcconfig; sourceTree = "<group>"; };
+		6ACDE924229766F600BA7A1C /* MortarTests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MortarTests.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 				355FCD241DAFDD3F0095C596 /* NSObject+Mortar.swift */,
 				35BBBBDC1C6D3BBD0014B159 /* Mortar.h */,
 				35BBBBDE1C6D3BBD0014B159 /* Info.plist */,
+				6ACDE9222297665800BA7A1C /* Mortar.xcconfig */,
 			);
 			path = Mortar;
 			sourceTree = "<group>";
@@ -131,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				35BBBBE81C6D3BBD0014B159 /* MortarTests.swift */,
+				6ACDE924229766F600BA7A1C /* MortarTests.xcconfig */,
 				35BBBBEA1C6D3BBD0014B159 /* Info.plist */,
 			);
 			path = MortarTests;
@@ -214,17 +218,17 @@
 				TargetAttributes = {
 					35BBBBD81C6D3BBD0014B159 = {
 						CreatedOnToolsVersion = 7.2;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1020;
 					};
 					35BBBBE21C6D3BBD0014B159 = {
 						CreatedOnToolsVersion = 7.2;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
 			buildConfigurationList = 35BBBBD31C6D3BBD0014B159 /* Build configuration list for PBXProject "Mortar" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -407,6 +411,7 @@
 		};
 		35BBBBEE1C6D3BBD0014B159 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6ACDE9222297665800BA7A1C /* Mortar.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -423,13 +428,12 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
-				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
 		35BBBBEF1C6D3BBD0014B159 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6ACDE9222297665800BA7A1C /* Mortar.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
@@ -445,32 +449,28 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.fieldman.Mortar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
-				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
 		35BBBBF11C6D3BBD0014B159 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6ACDE924229766F600BA7A1C /* MortarTests.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = MortarTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.fieldman.MortarTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
-				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
 		35BBBBF21C6D3BBD0014B159 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6ACDE924229766F600BA7A1C /* MortarTests.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = MortarTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.fieldman.MortarTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
-				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
