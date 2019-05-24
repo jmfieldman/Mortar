@@ -33,18 +33,18 @@ public typealias MortarGroup = [MortarConstraint]
 public extension Array where Element: MortarConstraint {
 
     @discardableResult
-    public func activate() -> MortarGroup {
+    func activate() -> MortarGroup {
         NSLayoutConstraint.activate(self.layoutConstraints)
         return self
     }
     
     @discardableResult
-    public func deactivate() -> MortarGroup {
+    func deactivate() -> MortarGroup {
         NSLayoutConstraint.deactivate(self.layoutConstraints)
         return self
     }
     
-    public var layoutConstraints: [NSLayoutConstraint] {
+    var layoutConstraints: [NSLayoutConstraint] {
         var response: [NSLayoutConstraint] = []
         self.forEach {
             response += $0.layoutConstraints
@@ -53,14 +53,14 @@ public extension Array where Element: MortarConstraint {
     }
     
     @discardableResult
-    public func replace(with newConstraints: MortarGroup) -> MortarGroup {
+    func replace(with newConstraints: MortarGroup) -> MortarGroup {
         self.deactivate()
         newConstraints.activate()
         return newConstraints
     }
     
     @discardableResult
-    public func changePriority(to newPriority: MortarCGFloatable) -> MortarGroup {
+    func changePriority(to newPriority: MortarCGFloatable) -> MortarGroup {
         for constraint in self {
             constraint.changePriority(to: newPriority)
         }
@@ -68,7 +68,7 @@ public extension Array where Element: MortarConstraint {
     }
     
     @discardableResult
-    public func changePriority(to newPriority: MortarAliasLayoutPriority) -> MortarGroup {
+    func changePriority(to newPriority: MortarAliasLayoutPriority) -> MortarGroup {
         for constraint in self {
             constraint.changePriority(to: newPriority)
         }
@@ -76,7 +76,7 @@ public extension Array where Element: MortarConstraint {
     }
     
     @discardableResult
-    public func changePriority(to newPriority: MortarLayoutPriority) -> MortarGroup {
+    func changePriority(to newPriority: MortarLayoutPriority) -> MortarGroup {
         for constraint in self {
             constraint.changePriority(to: newPriority)
         }

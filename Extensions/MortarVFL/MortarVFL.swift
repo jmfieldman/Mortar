@@ -212,7 +212,7 @@ public prefix func ==(floatable: MortarCGFloatable) -> _MortarSizingNode {
 // MARK: - Mortar view subscript -> VFL Node
 
 public extension MortarView {
-    public subscript(sizingNode: _MortarSizingNode) -> _MortarVFLNode {
+    subscript(sizingNode: _MortarSizingNode) -> _MortarVFLNode {
         return _MortarVFLNode(views: [self], sizingNode: sizingNode)
     }
 }
@@ -220,11 +220,11 @@ public extension MortarView {
 // MARK: - Making an array of MortarView with size -> VFL Node
 
 public extension Array where Element: MortarView {
-    public subscript(sizingNode: _MortarSizingNode) -> _MortarVFLNode {
+    subscript(sizingNode: _MortarSizingNode) -> _MortarVFLNode {
         return _MortarVFLNode(views: self, sizingNode: sizingNode)
     }
     
-    public func __asNode() -> _MortarVFLNode {
+    func __asNode() -> _MortarVFLNode {
         return _MortarVFLNode(views: self, sizingNode: _MortarSizingNode(floatable: 1, sizingType: .intrinsic))
     }
 }
@@ -841,7 +841,7 @@ private func raise(_ reason: String) throws {
 
 fileprivate extension _MortarVFLListCapture {
     
-    fileprivate func toGroup() throws -> MortarGroup {
+    func toGroup() throws -> MortarGroup {
         // Accumulate the constraints
         var result: MortarGroup = MortarGroup()
         
@@ -1093,7 +1093,7 @@ public extension UIViewController {
     /// Creates a _MortarVFLGhostView that is sized between the
     /// view controller's guide anchors.
     /// Will reuse the existing one if it exists, based on tag lookup
-    public var m_visibleRegion: MortarView {
+    var m_visibleRegion: MortarView {
         for view in self.view.subviews {
             if view.tag != UIViewController.kVisibleRegionGhostTag {
                 continue

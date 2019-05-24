@@ -25,7 +25,7 @@ public extension MortarCreatable {
     ///                          desired configuration on it.
     ///
     /// - returns: The newly created instance.
-    public static func m_create(creatorFunc: (Self) -> Void) -> Self {
+    static func m_create(creatorFunc: (Self) -> Void) -> Self {
         let retval = self.init()
         creatorFunc(retval)
         return retval
