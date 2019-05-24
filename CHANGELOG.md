@@ -1,5 +1,9 @@
 # Mortar Changelog
 
+## 1.6.0 -- 5/24/19
+
+* Swift 5.0 support
+
 ## 1.5.0 -- 2/23/19
 
 * Swift 4.2 support
