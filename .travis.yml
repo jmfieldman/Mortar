@@ -10,7 +10,7 @@ matrix:
     env: SWIFT_VERSION=5.0
 before_install:
   - gem install xcpretty -N
-  - gem install cocoapods -v '1.5.3'
+  - gem install cocoapods -v '1.7.0'
 script:
   - set -o pipefail
   - sed -i '' -e "s/^SWIFT_VERSION *=.*/SWIFT_VERSION = $SWIFT_VERSION/g" Mortar/Mortar.xcconfig MortarTests/MortarTests.xcconfig

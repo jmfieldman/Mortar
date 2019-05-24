@@ -16,7 +16,8 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = "9.0"
   s.osx.deployment_target = "10.10"
   s.tvos.deployment_target = "9.0"
-  s.swift_version = "4.2"
+  s.swift_version = '5.0'
+  s.swift_versions = ['4.2', '5.0'] if s.respond_to?(:swift_versions) # Cocoapods >=1.7.0
 
   s.source = { :git => "https://github.com/jmfieldman/Mortar.git", :tag => "#{s.version}" }
   s.source_files = "Mortar/*.swift"
