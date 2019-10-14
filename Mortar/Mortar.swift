@@ -386,7 +386,8 @@ extension MortarView : MortarAttributable {
 }
 
 #if os(iOS) || os(tvOS)
-    extension UILayoutGuide : MortarAttributable {
+@available(iOS 9.0, *)
+extension UILayoutGuide : MortarAttributable {
         public func m_intoAttribute() -> MortarAttribute {
             return MortarAttribute(item: self)
         }
