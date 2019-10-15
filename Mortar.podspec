@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Mortar"
-  s.version      = "1.6.0"
+  s.version      = "1.6.1"
   s.summary      = "Auto Layout in Swift using concise, powerful, flexible syntax"
 
   s.description  = <<-DESC
@@ -30,17 +30,17 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'MortarVFL' do |ss|
-    ss.source_files = "Extensions/MortarVFL/*.swift"
+    ss.source_files = "Mortar/MortarVFL/*.swift"
     ss.dependency 'Mortar/Core'
   end
 
   s.subspec 'Core_NoCreatable' do |ss|
     ss.source_files = "Mortar/*.swift"
-    ss.exclude_files = "Mortar/NSObject+Mortar.swift"
+    ss.exclude_files = "Mortar/NSObject+Mortar.swift", "Mortar/MortarVFL/**"
   end
 
   s.subspec 'MortarVFL_NoCreatable' do |ss|
-    ss.source_files = "Extensions/MortarVFL/*.swift"
+    ss.source_files = "Mortar/MortarVFL/*.swift"
     ss.dependency 'Mortar/Core_NoCreatable'
   end
 

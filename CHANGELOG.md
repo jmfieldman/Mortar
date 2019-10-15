@@ -1,5 +1,9 @@
 # Mortar Changelog
 
+## 1.6.1 -- 5/24/19
+
+* Changes to support Swift Package Manager
+
 ## 1.6.0 -- 5/24/19
 
 * Swift 5.0 support
