@@ -4,6 +4,7 @@
 
 .DS_Store
 .ruby-version
+.swiftpm
 
 ## Build generated
 build/
