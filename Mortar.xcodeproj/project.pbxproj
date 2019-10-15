@@ -104,7 +104,7 @@
 		35BBBBDB1C6D3BBD0014B159 /* Mortar */ = {
 			isa = PBXGroup;
 			children = (
-				35E850F71E9FC23700EB3D86 /* Extensions */,
+				35E850F81E9FC23700EB3D86 /* MortarVFL */,
 				3585ABAD1D85C7D60063299C /* .travis.yml */,
 				35964B221CBE8E6700E54D22 /* README.md */,
 				3585ABAE1D85DD630063299C /* README_SWIFT2.md */,
@@ -139,14 +139,6 @@
 			);
 			path = MortarTests;
 			sourceTree = "<group>";
-		};
-		35E850F71E9FC23700EB3D86 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				35E850F81E9FC23700EB3D86 /* MortarVFL */,
-			);
-			path = Extensions;
-			sourceTree = SOURCE_ROOT;
 		};
 		35E850F81E9FC23700EB3D86 /* MortarVFL */ = {
 			isa = PBXGroup;

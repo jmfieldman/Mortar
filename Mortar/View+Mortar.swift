@@ -123,6 +123,7 @@ public extension UIViewController {
 #endif
 
 #if os(iOS) || os(tvOS)
+@available(iOS 9.0, *)
 public extension UILayoutGuide {
 
     // -------- Mortar Attributes --------
