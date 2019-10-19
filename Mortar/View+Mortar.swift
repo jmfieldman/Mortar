@@ -43,8 +43,9 @@ public extension MortarView {
     var m_centerX:              MortarAttribute { get { return MortarAttribute(item: self, attribute: .centerX                ) } }
     var m_centerY:              MortarAttribute { get { return MortarAttribute(item: self, attribute: .centerY                ) } }
     var m_baseline:             MortarAttribute { get { return MortarAttribute(item: self, attribute: .baseline               ) } }
-    #if os(iOS) || os(tvOS)
     var m_firstBaseline:        MortarAttribute { get { return MortarAttribute(item: self, attribute: .firstBaseline          ) } }
+    #if os(iOS) || os(tvOS)
+
     var m_leftMargin:           MortarAttribute { get { return MortarAttribute(item: self, attribute: .leftMargin             ) } }
     var m_rightMargin:          MortarAttribute { get { return MortarAttribute(item: self, attribute: .rightMargin            ) } }
     var m_topMargin:            MortarAttribute { get { return MortarAttribute(item: self, attribute: .topMargin              ) } }

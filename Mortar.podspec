@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Mortar"
-  s.version      = "1.6.1"
+  s.version      = "1.7.0"
   s.summary      = "Auto Layout in Swift using concise, powerful, flexible syntax"
 
   s.description  = <<-DESC
@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.social_media_url = 'http://fieldman.org'
 
   s.ios.deployment_target = "9.0"
-  s.osx.deployment_target = "10.10"
+  s.osx.deployment_target = "10.11"
   s.tvos.deployment_target = "9.0"
   s.swift_version = '5.0'
   s.swift_versions = ['4.2', '5.0'] if s.respond_to?(:swift_versions) # Cocoapods >=1.7.0

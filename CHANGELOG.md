@@ -1,6 +1,11 @@
 # Mortar Changelog
 
-## 1.6.1 -- 5/24/19
+## 1.7.0 -- 10/19/19
+
+* Adding firstBaseline and lastBaseline to OSX attributes
+* Bumped OSX requirement to 10.11
+
+## 1.6.1 -- 10/15/19
 
 * Changes to support Swift Package Manager
 

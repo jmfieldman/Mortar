@@ -53,9 +53,9 @@ internal enum MortarLayoutAttribute {
     case centerX
     case centerY
     case baseline
-    #if os(iOS) || os(tvOS)
     case firstBaseline
     case lastBaseline
+    #if os(iOS) || os(tvOS)
     case leftMargin
     case rightMargin
     case topMargin
@@ -119,6 +119,8 @@ internal enum MortarLayoutAttribute {
         case .centerX:                  return .centerX
         case .centerY:                  return .centerY
         case .baseline:                 return .lastBaseline
+        case .firstBaseline:            return .firstBaseline
+        case .lastBaseline:             return .lastBaseline
         case .notAnAttribute:           return .notAnAttribute
         default:                        return nil
         }
@@ -177,6 +179,8 @@ internal enum MortarLayoutAttribute {
         case .centerX:                  return [.centerX                                ]
         case .centerY:                  return [.centerY                                ]
         case .baseline:                 return [.baseline                               ]
+        case .firstBaseline:            return [.firstBaseline                          ]
+        case .lastBaseline:             return [.lastBaseline                           ]
         case .notAnAttribute:           return [.notAnAttribute                         ]
         
         case .sides:                    return [.left,    .right                        ]
