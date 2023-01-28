@@ -120,8 +120,8 @@ private func withConstraintDeferral(_ block: () -> MortarView) -> MortarView {
 
 @resultBuilder
 public struct MortarViewArrayBuilder {
-    static func buildBlock() -> [MortarView] { [] }
-    static func buildBlock(_ views: MortarView...) -> [MortarView] {
+    public static func buildBlock() -> [MortarView] { [] }
+    public static func buildBlock(_ views: MortarView...) -> [MortarView] {
         views
     }
 }
