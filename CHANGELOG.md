@@ -1,5 +1,12 @@
 # Mortar Changelog
 
+## 2.0.0 -- 1/27/23
+
+* Clean up deprecations from legacy code
+* Rename m_create to create
+* Clean up package.swift
+* Update deployment target
+
 ## 1.7.0 -- 10/19/19
 
 * Adding firstBaseline and lastBaseline to OSX attributes
