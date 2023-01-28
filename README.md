@@ -61,9 +61,24 @@ Yes, there are many Auto Layout DSLs to choose from.  Mortar was created to fill
 
 * Mortar supports a robust compile-time VFL syntax that uses views directly (instead of dictionary lookups).
 
-* Additional goodies, like the ```|+|``` operator to visually construct view hierarchies rather than using tons of sequential calls to ```addSubview()```.
+* Mortar has additional goodies, like the ```|+|``` operator to visually construct view hierarchies rather than using tons of sequential calls to ```addSubview()```.
+
+* Mortar lets you construct a view hierarchy and supply layout constraints in a
+single imperative expression.
 
 # Installing
+
+### Swift Package Manager (Preferred)
+
+Add Mortar to your Package.swift dependency list:
+
+```swift
+.package(url: "https://github.com/jmfieldman/Mortar.git", from: "2.0.0")
+```
+
+### Cocoapods
+
+> Notice: Cocoapods support has been deprecated; the last supported Mortar version is 1.7.0
 
 You can install Mortar by adding it to your [CocoaPods](http://cocoapods.org/) ```Podfile```:
 
@@ -81,6 +96,8 @@ Or you can use a variety of ways to include the ```Mortar.framework``` file from
 
 # Swift Version Support
 
+Version 2.0.0, using the Swift Package Manager, has been tested with Xcode 14.2 and Swift 5.7.
+
 > This README reflects the updated syntax and constants used in the Swift 3 Mortar release.
 > For the Swift 2.x documentation, refer to the ```README_SWIFT2.md``` file.
 
@@ -91,23 +108,16 @@ pod 'Mortar', '~> 1.4'  # Swift 4.0
 pod 'Mortar', '~> 1.3'  # Swift 3.1
 ```
 
-### Disabling MortarCreatable
+#### Disabling MortarCreatable (Cocoapods, Legacy Swift)
 
-The default implementation of Mortar declares a MortarCreatable protocol (create), which in recent versions of
+The default implementation of Mortar declares a MortarCreatable protocol (create), which in legacy versions of
 swift causes problems with classes that do not expose the default init() method.
 
-Until the next major release, you can use:
+If you targetting a very old version of Swift, you can use:
 
 ```ruby
 pod 'Mortar/Core_NoCreatable'
 pod 'Mortar/MortarVFL_NoCreatable'
-```
-
-To install a version of Mortar that does not attach this protocol to NSObject.  You can then gain access to
-`create` for whatever classes you want, with:
-
-```swift
-extension your_class_name: MortarCreatable { }
 ```
 
 # Usage
@@ -722,3 +732,71 @@ class MyController: UIViewController {
     }
 }
 ```
+
+### Combining Hierarchy and Layout
+
+One of the historical problems with combining hierarchy and layout into a
+single function (like SwiftUI) is that UIKit requires two views to be in
+the same view hierarchy *before* a constrait is activated.
+
+This prevented you from doing something like:
+
+```swift
+view1 |+| [
+    UILabel.create {
+        // Crash here, because the newly created UILabel is not
+        // a subview of view1 until *after* the top-level |+| is
+        // executed.
+        $0.m_width |=| view1
+    }
+]
+```
+
+As of version 2.0.0, Mortar understands how to defer constraint activation
+while the hierarchy is being created:
+
+```swift
+view1 |+| [
+    UILabel.create {
+        // This is OK in Mortar 2.0.0; the constraint will not
+        // activate until after the outer-most |+| executes.
+        $0.m_width |=| view1
+    }
+]
+```
+
+That is, any time the `|+|` or `|^|` operators are in progress, or you use the
+new `.addSubviews` or `.addArrangedSubviews` result builders, Mortar knows *not*
+to activate any constraint assignments until after the outer-most hierarchy
+assignment is completed.
+
+Mortar 2.0.0 now also offers result builders as the right hand side of the
+add subview operators. The result builders take the left-side view in as a
+block parameter, which lets children easily reference anonymous parents:
+
+```swift
+view |+| { view in
+    UIStackView.create {
+        $0.spacing = 1
+        $0.axis = .vertical
+        $0.m_width |=| view
+    } |+| { stack in
+        UILabel.create {
+            $0.text = viewModel.helloText
+            $0.m_height |=| stack
+        }
+        UILabel.create {
+            $0.text = "World"
+            $0.m_height |=| stack
+            $0.reactive.text <~ viewModel.worldText
+        }
+        UIButton.create {
+            $0.reactive.pressed = viewModel.pressed
+        }
+    }
+]
+```
+
+Combining this with a reactive framework like ReactiveSwift can get you
+nearly all the way to a single-expression view definition, even for large
+custom layouts that can leverage stack views properly.

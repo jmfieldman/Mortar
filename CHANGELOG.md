@@ -7,6 +7,8 @@
 * Clean up package.swift
 * Update deployment target
 * Fix |+| and |^| to use addArrangedSubviews for UIStackView receivers
+* Add result builder version of |+| and |^|
+* Add concept of deferred constraints inside |+| and |^|
 
 ## 1.7.0 -- 10/19/19
 
