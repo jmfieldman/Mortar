@@ -583,7 +583,7 @@ class MortarTests: XCTestCase {
     }
     
     func testCreate() {
-        let v = MortarView.m_create { obj in
+        let v = MortarView.create { obj in
             
         }
         

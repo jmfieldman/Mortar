@@ -93,7 +93,7 @@ pod 'Mortar', '~> 1.3'  # Swift 3.1
 
 ### Disabling MortarCreatable
 
-The default implementation of Mortar declares a MortarCreatable protocol (m_create), which in recent versions of
+The default implementation of Mortar declares a MortarCreatable protocol (create), which in recent versions of
 swift causes problems with classes that do not expose the default init() method.
 
 Until the next major release, you can use:
@@ -104,9 +104,9 @@ pod 'Mortar/MortarVFL_NoCreatable'
 ```
 
 To install a version of Mortar that does not attach this protocol to NSObject.  You can then gain access to
-m_create for whatever classes you want, with:
+`create` for whatever classes you want, with:
 
-```ruby
+```swift
 extension your_class_name: MortarCreatable { }
 ```
 
@@ -690,7 +690,7 @@ Alternatively, if you want to see the upper subviews at the beginning of the arr
 
 ### Initializing NSObject at Creation
 
-Mortar extends ```NSObject``` with the ```m_create``` class function.  This class function performs a parameter-less
+Mortar extends `NSObject` with the `create` class function.  This class function performs a parameter-less
 instantiation of the class, and passes the new instance into the provided closure.  This allows you to configure
 an instance at creation-time, which is really nice for compartmentalizing view configuration.
 
@@ -701,7 +701,7 @@ to the view controller hierarchy and layout.
 class MyController: UIViewController {
 
     // Instantiation/configuration
-    let myLabel = UILabel.m_create {
+    let myLabel = UILabel.create {
         $0.text          = "Some Text"
         $0.textAlignment = .center
         $0.textColor     = .red

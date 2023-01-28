@@ -25,9 +25,22 @@ public extension MortarCreatable {
     ///                          desired configuration on it.
     ///
     /// - returns: The newly created instance.
-    static func m_create(creatorFunc: (Self) -> Void) -> Self {
+    static func create(creatorFunc: (Self) -> Void) -> Self {
         let retval = self.init()
         creatorFunc(retval)
         return retval
+    }
+
+    /// Executes the block on self, and returns self. Useful as
+    /// a followup to object instantiation that requires parameters
+    /// and cannot use `create`.
+    ///
+    /// - parameter alsoFunc: A function that takes the receiver
+    ///                       and performs any desired configuration.
+    ///
+    /// - returns: The receiver.
+    func also(_ alsoFunc: (Self) -> Void) -> Self {
+        alsoFunc(self)
+        return self
     }
 }
