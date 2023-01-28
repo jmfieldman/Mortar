@@ -57,7 +57,7 @@ func constraintDeferralArray() -> MortarConstraintDeferralArray? {
     Thread.current.threadDictionary[kMortarConstraintDeferralKey] as? MortarConstraintDeferralArray
 }
 
-private func withConstraintDeferral(_ block: () -> MortarView) -> MortarView {
+private func withConstraintDeferral<T: MortarView>(_ block: () -> T) -> T {
     var outerLayer = false
     if Thread.current.threadDictionary[kMortarConstraintDeferralKey] == nil {
         Thread.current.threadDictionary[kMortarConstraintDeferralKey] = MortarConstraintDeferralArray()
@@ -74,7 +74,7 @@ private func withConstraintDeferral(_ block: () -> MortarView) -> MortarView {
     return response
 }
 
-@discardableResult public func |+|(lhs: MortarView, rhs: @autoclosure () -> MortarView) -> MortarView {
+@discardableResult public func |+|<LHS: MortarView>(lhs: LHS, rhs: @autoclosure () -> MortarView) -> LHS {
     withConstraintDeferral {
         if let stack = lhs as? UIStackView {
             stack.addArrangedSubview(rhs())
@@ -85,7 +85,7 @@ private func withConstraintDeferral(_ block: () -> MortarView) -> MortarView {
     }
 }
 
-@discardableResult public func |+|(lhs: MortarView, rhs: @autoclosure () -> [MortarView]) -> MortarView {
+@discardableResult public func |+|<LHS: MortarView>(lhs: LHS, rhs: @autoclosure () -> [MortarView]) -> LHS {
     withConstraintDeferral {
         if let stack = lhs as? UIStackView {
             rhs().forEach { stack.addArrangedSubview($0) }
@@ -96,7 +96,7 @@ private func withConstraintDeferral(_ block: () -> MortarView) -> MortarView {
     }
 }
 
-@discardableResult public func |^|(lhs: MortarView, rhs: @autoclosure () -> MortarView) -> MortarView {
+@discardableResult public func |^|<LHS: MortarView>(lhs: LHS, rhs: @autoclosure () -> MortarView) -> LHS {
     withConstraintDeferral {
         if let stack = lhs as? UIStackView {
             stack.addArrangedSubview(rhs())
@@ -107,7 +107,7 @@ private func withConstraintDeferral(_ block: () -> MortarView) -> MortarView {
     }
 }
 
-@discardableResult public func |^|(lhs: MortarView, rhs: @autoclosure () -> [MortarView]) -> MortarView {
+@discardableResult public func |^|<LHS: MortarView>(lhs: LHS, rhs: @autoclosure () -> [MortarView]) -> LHS {
     withConstraintDeferral {
         if let stack = lhs as? UIStackView {
             rhs().reversed().forEach { stack.addArrangedSubview($0) }
@@ -126,7 +126,7 @@ public struct MortarViewArrayBuilder {
     }
 }
 
-@discardableResult public func |+|(lhs: MortarView, @MortarViewArrayBuilder rhs: (MortarView) -> [MortarView]) -> MortarView {
+@discardableResult public func |+|<LHS: MortarView>(lhs: LHS, @MortarViewArrayBuilder rhs: (LHS) -> [MortarView]) -> LHS {
     withConstraintDeferral {
         if let stack = lhs as? UIStackView {
             rhs(lhs).forEach { stack.addArrangedSubview($0) }
@@ -137,7 +137,7 @@ public struct MortarViewArrayBuilder {
     }
 }
 
-@discardableResult public func |^|(lhs: MortarView, @MortarViewArrayBuilder rhs: (MortarView) -> [MortarView]) -> MortarView {
+@discardableResult public func |^|<LHS: MortarView>(lhs: LHS, @MortarViewArrayBuilder rhs: (LHS) -> [MortarView]) -> LHS {
     withConstraintDeferral {
         if let stack = lhs as? UIStackView {
             rhs(lhs).reversed().forEach { stack.addArrangedSubview($0) }
@@ -148,7 +148,7 @@ public struct MortarViewArrayBuilder {
     }
 }
 
-@discardableResult public func |+|(lhs: MortarView, @MortarViewArrayBuilder rhs: () -> [MortarView]) -> MortarView {
+@discardableResult public func |+|<LHS: MortarView>(lhs: LHS, @MortarViewArrayBuilder rhs: () -> [MortarView]) -> LHS {
     withConstraintDeferral {
         if let stack = lhs as? UIStackView {
             rhs().forEach { stack.addArrangedSubview($0) }
@@ -159,7 +159,7 @@ public struct MortarViewArrayBuilder {
     }
 }
 
-@discardableResult public func |^|(lhs: MortarView, @MortarViewArrayBuilder rhs: () -> [MortarView]) -> MortarView {
+@discardableResult public func |^|<LHS: MortarView>(lhs: LHS, @MortarViewArrayBuilder rhs: () -> [MortarView]) -> LHS {
     withConstraintDeferral {
         if let stack = lhs as? UIStackView {
             rhs().reversed().forEach { stack.addArrangedSubview($0) }
@@ -171,7 +171,7 @@ public struct MortarViewArrayBuilder {
 }
 
 public extension MortarView {
-    @discardableResult func addSubviews(@MortarViewArrayBuilder _ views: (MortarView) -> [MortarView]) -> MortarView {
+    @discardableResult func addSubviews(@MortarViewArrayBuilder _ views: (MortarView) -> [MortarView]) -> Self {
         withConstraintDeferral {
             views(self).forEach { self.addSubview($0) }
             return self
@@ -181,7 +181,7 @@ public extension MortarView {
 
 #if os(iOS)
 public extension UIStackView {
-    @discardableResult func addArrangedSubviews(@MortarViewArrayBuilder _ views: (MortarView) -> [MortarView]) -> MortarView {
+    @discardableResult func addArrangedSubviews(@MortarViewArrayBuilder _ views: (MortarView) -> [MortarView]) -> Self {
         withConstraintDeferral {
             views(self).forEach { self.addArrangedSubview($0) }
             return self
