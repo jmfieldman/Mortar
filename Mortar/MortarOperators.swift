@@ -148,6 +148,28 @@ public struct MortarViewArrayBuilder {
     }
 }
 
+@discardableResult public func |+|(lhs: MortarView, @MortarViewArrayBuilder rhs: () -> [MortarView]) -> MortarView {
+    withConstraintDeferral {
+        if let stack = lhs as? UIStackView {
+            rhs().forEach { stack.addArrangedSubview($0) }
+        } else {
+            rhs().forEach { lhs.addSubview($0) }
+        }
+        return lhs
+    }
+}
+
+@discardableResult public func |^|(lhs: MortarView, @MortarViewArrayBuilder rhs: () -> [MortarView]) -> MortarView {
+    withConstraintDeferral {
+        if let stack = lhs as? UIStackView {
+            rhs().reversed().forEach { stack.addArrangedSubview($0) }
+        } else {
+            rhs().reversed().forEach { lhs.addSubview($0) }
+        }
+        return lhs
+    }
+}
+
 public extension MortarView {
     @discardableResult func addSubviews(@MortarViewArrayBuilder _ views: (MortarView) -> [MortarView]) -> MortarView {
         withConstraintDeferral {
