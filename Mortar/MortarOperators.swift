@@ -51,24 +51,38 @@ infix operator |+| : AddSubviewsPrecendence
 infix operator |^| : AddSubviewsPrecendence
 
 @discardableResult public func |+|(lhs: MortarView, rhs: MortarView) -> MortarView {
-    lhs.addSubview(rhs)
+    if let stack = lhs as? UIStackView {
+        stack.addArrangedSubview(rhs)
+    } else {
+        lhs.addSubview(rhs)
+    }
     return lhs
 }
 
 @discardableResult public func |+|(lhs: MortarView, rhs: [MortarView]) -> MortarView {
-    rhs.forEach { lhs.addSubview($0) }
+    if let stack = lhs as? UIStackView {
+        rhs.forEach { stack.addArrangedSubview($0) }
+    } else {
+        rhs.forEach { lhs.addSubview($0) }
+    }
     return lhs
 }
 
 @discardableResult public func |^|(lhs: MortarView, rhs: MortarView) -> MortarView {
-    lhs.addSubview(rhs)
+    if let stack = lhs as? UIStackView {
+        stack.addArrangedSubview(rhs)
+    } else {
+        lhs.addSubview(rhs)
+    }
     return lhs
 }
 
 @discardableResult public func |^|(lhs: MortarView, rhs: [MortarView]) -> MortarView {
-    for i in (0..<rhs.count).reversed() {
-        lhs.addSubview(rhs[i])
-    }    
+    if let stack = lhs as? UIStackView {
+        rhs.reversed().forEach { stack.addArrangedSubview($0) }
+    } else {
+        rhs.reversed().forEach { lhs.addSubview($0) }
+    }
     return lhs
 }
 

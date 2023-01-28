@@ -6,6 +6,7 @@
 * Rename m_create to create
 * Clean up package.swift
 * Update deployment target
+* Fix |+| and |^| to use addArrangedSubviews for UIStackView receivers
 
 ## 1.7.0 -- 10/19/19
 
@@ -71,7 +72,7 @@
 
 * Official Swift 2.3 support compiled against Xcode 8 GM seed
 
-## 0.11.0 -- 6/17/16 
+## 0.11.0 -- 6/17/16
 
 * Updated release for Swift 2.3
 
