@@ -41,7 +41,7 @@ view1 |>> viewA || viewB[==44] | 20 | viewC[~~2]
 
 #### Updating from a version prior to v1.1? Read this!
 
-> A change in the default Mortar constraint priority took effect in v1.1.  Please read the README_DEFAULTS.md file for more information. 
+> A change in the default Mortar constraint priority took effect in v1.1.  Please read the README_DEFAULTS.md file for more information.
 
 # Why?
 
@@ -112,7 +112,7 @@ extension your_class_name: MortarCreatable { }
 
 # Usage
 
-Mortar does not require closures of any kind.  The Mortar operators (```|=|```, ```|>|``` and ```|<|```) instantiate and return constraints that are activated by default.  
+Mortar does not require closures of any kind.  The Mortar operators (```|=|```, ```|>|``` and ```|<|```) instantiate and return constraints that are activated by default.
 
 Mortar will set ```translatesAutoresizingMaskIntoConstraints``` to ```false``` for every view declared on the left side of an operator.
 
@@ -131,29 +131,29 @@ view1.m_size  |<| (100, 100)        // Less than or equal
 
 Mortar supports all of the standard layout attributes:
 
-* ```m_left```                   
-* ```m_right```                  
-* ```m_top```                    
-* ```m_bottom```                 
-* ```m_leading```                
-* ```m_trailing```               
-* ```m_width```                  
-* ```m_height```             
-* ```m_centerX```            
-* ```m_centerY```            
-* ```m_baseline```           
+* ```m_left```
+* ```m_right```
+* ```m_top```
+* ```m_bottom```
+* ```m_leading```
+* ```m_trailing```
+* ```m_width```
+* ```m_height```
+* ```m_centerX```
+* ```m_centerY```
+* ```m_baseline```
 
 And iOS/tvOS spceific attributes:
 
-* ```m_firstBaseline```     
-* ```m_leftMargin```         
-* ```m_rightMargin```        
-* ```m_topMargin```          
-* ```m_bottomMargin```       
-* ```m_leadingMargin```      
-* ```m_trailingMargin```     
+* ```m_firstBaseline```
+* ```m_leftMargin```
+* ```m_rightMargin```
+* ```m_topMargin```
+* ```m_bottomMargin```
+* ```m_leadingMargin```
+* ```m_trailingMargin```
 * ```m_centerXWithinMargin```
-* ```m_centerYWithinMargin``` 
+* ```m_centerYWithinMargin```
 
 It also supports composite attributes:
 
@@ -172,7 +172,7 @@ It also supports composite attributes:
 
 _Mortar will do its best to infer implicit attributes!_
 
-The ```m_edges``` attribute is implied when no attributes are declared on either side: 
+The ```m_edges``` attribute is implied when no attributes are declared on either side:
 
 ```swift
 view1.m_edges |=| view2.m_edges     // These two lines
@@ -194,11 +194,11 @@ view1.m_top   |<| view2.m_bottom
 
 ### Using Layout Guides
 
-On iOS you can access the layout guides of a ```UIViewController```.  An example from inside ```viewDidLoad()``` that puts a view just below the top layout guide:
+On iOS you can access the layout guides of a ```UIViewController```.  An example from inside ```viewDidLoad()``` that puts a view just below the safe top:
 
 ```swift
 // Super useful when trying to position views inside a navigation/tab controller!
-view1.m_top   |<| self.m_topLayoutGuideBottom
+view1.m_top   |<| self.m_safeTop
 ```
 
 There is also a new ```UIViewController``` property ```m_safeRegion``` to help align views to the safe region of a controller's view.  *To use this property you must have the MortarVFL extension installed.*
@@ -217,7 +217,7 @@ Using ```m_safeRegion``` will create a "ghost" view as a subview of the controll
 Auto Layout constraints can have multipliers and constants applied to them.  This is done with normal arithmetic operators.  Attributes must be explicitly declared on the _right_ side When arthmetic operators are used.
 
 ```swift
-view1.m_size  |=| view2.m_size  * 2         // Multiplier   
+view1.m_size  |=| view2.m_size  * 2         // Multiplier
 view1.m_left  |>| view2.m_right + 20        // Constant
 view1         |<| view2.m_top   * 1.4 + 20  // Both -- m_top is implied on the left
 ```
@@ -329,7 +329,7 @@ view1.m_size |=| (view2.m_height ! .high, view2.m_width + 20 ! .low)  // Inside 
 > Defaults have changed in Mortar v1.1; See README_DEFAULTS.md if you are updating.
 
 By default, constraints are given priority of ```.required``` which is equal to 1000 (out of 1000) and is the same default used by Apple's constraint methods. Sometimes you
-may want large batches of constraints to have a different priority, and it is messy to include something like 
+may want large batches of constraints to have a different priority, and it is messy to include something like
 ```! .medium``` after every constraint.
 
 You can change the global base default value by using ```set```:
@@ -455,7 +455,7 @@ let group1 = [
     view1.m_sides |<| view2,
     view1.m_caps  |>| view2,
 ]
-        
+
 let group2 = [
     view1.m_width |=| view2
 ] ~~ .deactivated
@@ -504,7 +504,7 @@ Mortar supports a VFL language that is roughly equivalent to Apple's own [Auto L
 * You can use it directly with existing Mortar attribute support
 * Views are referenced directly (instead of using dictionaries) for compile-time checking
 * Full weight-based support for relative sizing
-* More concise: Operator-based instead of function/string-based 
+* More concise: Operator-based instead of function/string-based
 
 MortarVFL is contrained to its own extension because it makes heavy use of custom operators.  These operators may not be compatible with other libraries you are using, so we don't want Mortar core to conflict with those.
 
@@ -512,7 +512,7 @@ MortarVFL is contrained to its own extension because it makes heavy use of custo
 pod 'Mortar/MortarVFL'
 ```
 
-## MortarVFL Internal Composition 
+## MortarVFL Internal Composition
 
 The heart of a MortarVFL statement is a list of VFL nodes that are positioned sequentially along either the horizontal or vertical axis.  A node list might look like:
 
@@ -534,13 +534,13 @@ VFL nodes:
 * Represent either whitespace, one view, or multiple views
 * Have either fixed spacing or weighted spacing
 
-Nodes are separated by either a ```|``` or ```||``` operator.  
+Nodes are separated by either a ```|``` or ```||``` operator.
 
 The ```|``` operator introduces zero extra distance between nodes.  You can use this operator to connect nodes directly with zero spacing, or insert your own fixed/weighted numerical value between them (e.g. ```| 30 |``` or ```| ~~2 |```).  In these cases, the ```30``` and ```~~2``` are considered nodes that represent whitespace (no attached view).
 
 The ```||``` operator separates nodes by the default padding (8 points).
 
-Nodes that represent views respect their intrinsic content as much as possible given the realvent constraints and priorities. View nodes can also constain a subscript that gives them a size constraint.  You can use ```[==#]``` to give the view a fixed size, or ```[~~#]``` to give the view a weighted size.  You can also reference other views, e.g. ```[==viewA]``` to give the node's view the same constraint as the one it references. 
+Nodes that represent views respect their intrinsic content as much as possible given the realvent constraints and priorities. View nodes can also constain a subscript that gives them a size constraint.  You can use ```[==#]``` to give the view a fixed size, or ```[~~#]``` to give the view a weighted size.  You can also reference other views, e.g. ```[==viewA]``` to give the node's view the same constraint as the one it references.
 
 MortarVFL will throw an error if you have cyclic view references, e.g. ```viewA[==viewB] | viewB[==viewA]```
 
@@ -560,7 +560,7 @@ This positions the arrayed nodes in parallel with each other.  In the above exam
 MortarVFL statements must be captured on at least one end by a view attribute.  These captures look something like:
 
 ```swift
-// viewB and viewC will take equal width between the 
+// viewB and viewC will take equal width between the
 // right edge of viewA and the left edge of viewD
 viewA.m_right |> viewB[~~1] | viewC[~~1] <| viewD.m_left
 
@@ -568,15 +568,15 @@ viewA.m_right |> viewB[~~1] | viewC[~~1] <| viewD.m_left
 // left/right edges of viewA, inset by 8pt padding
 // and separated by 40pts.
 viewA ||>> viewB[~~1] | 40 | viewC[~~1]
-``` 
+```
 
 MortarVFL support horizontal and vertical spacing in a similar manner.  The horizontal operators use the ```>``` character while the vertical operators use the ```^``` character.  Otherwise they act similarly.  For example, the vertical version of the above statement would be:
 
 ```swift
-// viewB and viewC will take equal height between the 
+// viewB and viewC will take equal height between the
 // bottom edge of viewA and the top edge of viewD
 viewA.m_bottom |^ viewB[~~1] | viewC[~~1] ^| viewD.m_top
-``` 
+```
 
 Mortar will make sure your operators are compatible with the attributes you've selected.  For example, using ```|>``` with ```m_top``` would be an axis mismatch and raise an exception.
 
@@ -594,11 +594,11 @@ viewA.m_top  |^ viewB | viewC ^| viewD.m_bottom
 viewA        |^ viewB | viewC ^| viewD
 ```
 
-***Important Observation:*** Implicit attributes might be opposite of what you expect.  This is because implicit attributes are normally used to capture views inside the bounds of parent views and so we use the outer edges, not the inner edges. 
+***Important Observation:*** Implicit attributes might be opposite of what you expect.  This is because implicit attributes are normally used to capture views inside the bounds of parent views and so we use the outer edges, not the inner edges.
 
 ### Implicit Surround
 
-If you want the MortarVFL nodes to be inside the bounds of a single view, you can use the surround operators instead of placing the same view at both terminals. 
+If you want the MortarVFL nodes to be inside the bounds of a single view, you can use the surround operators instead of placing the same view at both terminals.
 
 The surround operators use either ```>>``` or ```^^```:
 
@@ -684,7 +684,7 @@ Alternatively, if you want to see the upper subviews at the beginning of the arr
             nameField,         // is therefore on top of backgroundView
             nameLabel
         ],
-        backgroundView        
+        backgroundView
     ]
 ```
 
@@ -707,7 +707,7 @@ class MyController: UIViewController {
         $0.textColor     = .red
     }
 
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
