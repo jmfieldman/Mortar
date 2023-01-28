@@ -89,7 +89,9 @@
 				35BBBBE71C6D3BBD0014B159 /* MortarTests */,
 				35BBBBDA1C6D3BBD0014B159 /* Products */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
 			usesTabs = 0;
 		};
 		35BBBBDA1C6D3BBD0014B159 /* Products */ = {
