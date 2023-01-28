@@ -16,7 +16,7 @@ import Foundation
 ///
 /// pod 'Mortar/Core_NoCreatable'
 ///
-/// and can put this code to allow m_create to be used on classes:
+/// and can put this code to allow `create` to be used on classes:
 ///
 /// extension (your-class-name): MortarCreatable { }
 extension NSObject: MortarCreatable { }

@@ -1,5 +1,16 @@
 # Mortar Changelog
 
+## 2.0.0 -- 1/27/23
+
+* Clean up deprecations from legacy code
+* Rename m_create to create
+* Clean up package.swift
+* Update deployment target
+* Fix |+| and |^| to use addArrangedSubviews for UIStackView receivers
+* Add result builder version of |+| and |^|
+* Add concept of deferred constraints inside |+| and |^|
+* Add "fast" create (e.g. `UILabel { $0.backgroundColor = .red }`)
+
 ## 1.7.0 -- 10/19/19
 
 * Adding firstBaseline and lastBaseline to OSX attributes
@@ -64,7 +75,7 @@
 
 * Official Swift 2.3 support compiled against Xcode 8 GM seed
 
-## 0.11.0 -- 6/17/16 
+## 0.11.0 -- 6/17/16
 
 * Updated release for Swift 2.3
 

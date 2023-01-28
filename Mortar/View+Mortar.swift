@@ -115,11 +115,17 @@ public extension MortarView {
 }
 
 #if os(iOS)
+@available(*, deprecated, message: "Old mortar View Controller layout guides are deprecated. Use m_safeTop and m_safeBottom")
 public extension UIViewController {
     var m_topLayoutGuideTop:        MortarAttribute { return MortarAttribute(item: self.topLayoutGuide,    attribute: .top)    }
     var m_topLayoutGuideBottom:     MortarAttribute { return MortarAttribute(item: self.topLayoutGuide,    attribute: .bottom) }
     var m_bottomLayoutGuideTop:     MortarAttribute { return MortarAttribute(item: self.bottomLayoutGuide, attribute: .top)    }
     var m_bottomLayoutGuideBottom:  MortarAttribute { return MortarAttribute(item: self.bottomLayoutGuide, attribute: .bottom) }
+}
+
+public extension UIViewController {
+    var m_safeTop:                  MortarAttribute { return MortarAttribute(item: self.view.safeAreaLayoutGuide, attribute: .top)    }
+    var m_safeBottom:               MortarAttribute { return MortarAttribute(item: self.view.safeAreaLayoutGuide, attribute: .bottom) }
 }
 #endif
 
@@ -163,3 +169,7 @@ public extension UILayoutGuide {
     var m_center:               MortarAttribute { get { return MortarAttribute(item: self, attribute: .center                 ) } }
 }
 #endif
+
+// Allow views to be created quickly without the `.create` named function.
+// e.g. UIView { $0.backgroundColor = .red } 
+public extension MortarView: MortarFastCreatable {}

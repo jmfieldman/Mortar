@@ -251,6 +251,33 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(v4.superview, v2, "Hierarchy mismatch")
         
     }
+
+    #if os(iOS)
+    func testAddArrangedSubviews() {
+        let v1 = MortarView()
+        let v2 = UIStackView()
+        let v3 = MortarView()
+        let v4 = MortarView()
+
+        self.container |+| [
+            v1,
+            v2 |+| [
+                v3,
+                v4
+            ]
+        ]
+
+        XCTAssertEqual(v1, self.container.subviews[0], "Hierarchy mismatch")
+        XCTAssertEqual(v2, self.container.subviews[1], "Hierarchy mismatch")
+
+        XCTAssertEqual(v1.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v2.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v3.superview, v2, "Hierarchy mismatch")
+        XCTAssertEqual(v4.superview, v2, "Hierarchy mismatch")
+
+        XCTAssertEqual(v2.arrangedSubviews.count, 2)
+    }
+    #endif
     
     func testAddReverseSubviews() {
         let v1 = MortarView()
@@ -556,7 +583,7 @@ class MortarTests: XCTestCase {
     
     func testReplaceGroup() {
         let v = MortarView()
-        
+
         self.container |+| v
         
         let g1 = [
@@ -583,8 +610,8 @@ class MortarTests: XCTestCase {
     }
     
     func testCreate() {
-        let v = MortarView.m_create { obj in
-            
+        let v = MortarView.create {
+            $0.backgroundColor = .red
         }
         
         self.container |+| v
@@ -611,8 +638,37 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(self.container.constraints.count, 4, "Should have 4 constraints installed (activated)")
         XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
     }
-    
-    
+
+    func testCreateImplicit() {
+        let v = MortarView {
+            $0.backgroundColor = .red
+        }
+
+        self.container |+| v
+
+        let g1 = [
+            v.m_sides |=| self.container,
+            v.m_caps  |=| self.container,
+            ]
+
+        let g2 = [
+            v.m_width |=| self.container
+            ] ~~ .deactivated
+
+        XCTAssertEqual(self.container.constraints.count, 4, "Should have 4 constraints installed (ancestor)")
+        XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+
+        g1.replace(with: g2)
+
+        XCTAssertEqual(self.container.constraints.count, 1, "Should have 1 constraints installed (replaced)")
+        XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+
+        g2.replace(with: g1)
+
+        XCTAssertEqual(self.container.constraints.count, 4, "Should have 4 constraints installed (activated)")
+        XCTAssertEqual(v.constraints.count, 0, "Should have 0 constraints installed (constraints installed on ancestor)")
+    }
+
     func testLayoutGuide() {
         #if os(iOS) || os(tvOS)
             if #available(iOS 11.0, *) {
@@ -859,7 +915,8 @@ class MortarTests: XCTestCase {
     }
 
     #if os(iOS)
-    func testLayoutGuides() {
+    @available(*, deprecated, message: "deprecated test")
+    func testDeprecatedLayoutGuides() {
         let v1  = MortarView()
         let v2  = MortarView()
         let v3  = MortarView()
@@ -875,6 +932,168 @@ class MortarTests: XCTestCase {
         v4.m_top |=| vc.m_bottomLayoutGuideBottom
         
         XCTAssertEqual(vc.view.constraints.count, 8, "Should have 4 constraints installed (ancestor)")
+    }
+  
+    func testLayoutGuides() {
+        let v1  = MortarView()
+        let v2  = MortarView()
+        let vc  = UIViewController()
+        vc.view = MortarView()
+        
+        vc.view |+| [v1, v2]
+        
+        v1.m_top |=| vc.m_safeTop
+        v2.m_top |=| vc.m_safeBottom
+        
+        XCTAssertEqual(vc.view.constraints.count, 6, "Should have 4 constraints installed (ancestor)")
+    }
+    #endif
+
+    func testDeferredConstraints() {
+        let sut = MortarView()
+        self.container.addSubview(sut)
+        sut |=| self.container.m_height
+
+        self.container |+| [
+            MortarView.create { _ in },
+            MortarView.create { _ in } |+| [
+                MortarView.create {
+                    $0 |=| sut.m_height + 5
+                },
+                MortarView.create {
+                    $0 |=| sut.m_height + 5
+                }
+            ]
+        ]
+
+        let v1 = self.container.subviews[1]
+        let v2 = self.container.subviews[2]
+        let v3 = v2.subviews[0]
+        let v4 = v2.subviews[1]
+
+        XCTAssertEqual(sut, self.container.subviews[0], "Hierarchy mismatch")
+
+        XCTAssertEqual(v1.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v2.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v3.superview, v2, "Hierarchy mismatch")
+        XCTAssertEqual(v4.superview, v2, "Hierarchy mismatch")
+
+        self.container.layoutIfNeeded()
+
+        XCTAssertEqual(v3.frame.size.height, MortarTests.CON_H + 5, "Frame mismatch")
+        XCTAssertEqual(v4.frame.size.height, MortarTests.CON_H + 5, "Frame mismatch")
+    }
+
+    func testDeferredBuilder() {
+        let sut = MortarView()
+        self.container.addSubview(sut)
+        sut |=| self.container.m_height
+
+        self.container |+| { container in
+            MortarView.create { _ in }
+            MortarView.create {
+                $0.m_height |=| 5
+            } |+| { v2 in
+                MortarView.create {
+                    $0 |=| container.m_height + 5
+                }
+                MortarView.create {
+                    $0 |=| v2.m_height + 5
+                }
+            }
+        }
+
+        let v1 = self.container.subviews[1]
+        let v2 = self.container.subviews[2]
+        let v3 = v2.subviews[0]
+        let v4 = v2.subviews[1]
+
+        XCTAssertEqual(sut, self.container.subviews[0], "Hierarchy mismatch")
+
+        XCTAssertEqual(v1.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v2.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v3.superview, v2, "Hierarchy mismatch")
+        XCTAssertEqual(v4.superview, v2, "Hierarchy mismatch")
+
+        self.container.layoutIfNeeded()
+
+        XCTAssertEqual(v3.frame.size.height, MortarTests.CON_H + 5, "Frame mismatch")
+        XCTAssertEqual(v4.frame.size.height, 10, "Frame mismatch")
+    }
+
+    func testDeferredAddSubviewsBuilder() {
+        let sut = MortarView()
+        self.container.addSubview(sut)
+        sut |=| self.container.m_height
+
+        self.container.addSubviews { container in
+            MortarView.create { _ in }
+            MortarView.create {
+                $0.m_height |=| 5
+            }.addSubviews { v2 in
+                MortarView.create {
+                    $0 |=| container.m_height + 5
+                }
+                MortarView.create {
+                    $0 |=| v2.m_height + 5
+                }
+            }
+        }
+
+        let v1 = self.container.subviews[1]
+        let v2 = self.container.subviews[2]
+        let v3 = v2.subviews[0]
+        let v4 = v2.subviews[1]
+
+        XCTAssertEqual(sut, self.container.subviews[0], "Hierarchy mismatch")
+
+        XCTAssertEqual(v1.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v2.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v3.superview, v2, "Hierarchy mismatch")
+        XCTAssertEqual(v4.superview, v2, "Hierarchy mismatch")
+
+        self.container.layoutIfNeeded()
+
+        XCTAssertEqual(v3.frame.size.height, MortarTests.CON_H + 5, "Frame mismatch")
+        XCTAssertEqual(v4.frame.size.height, 10, "Frame mismatch")
+    }
+
+    #if os(iOS)
+    func testStackViewDeferredAddSubviewsBuilder() {
+        let sut = MortarView()
+        self.container.addSubview(sut)
+        sut |=| self.container.m_height
+
+        self.container.addSubviews { container in
+            MortarView.create { _ in }
+            UIStackView.create {
+                $0.m_height |=| 5
+            }.addArrangedSubviews { v2 in
+                MortarView.create {
+                    $0 |=| container.m_height + 5
+                }
+                MortarView.create {
+                    $0 |=| v2.m_height + 5
+                }
+            }
+        }
+
+        let v1 = self.container.subviews[1]
+        let v2 = self.container.subviews[2]
+        let v3 = v2.subviews[0]
+        let v4 = v2.subviews[1]
+
+        XCTAssertEqual(sut, self.container.subviews[0], "Hierarchy mismatch")
+
+        XCTAssertEqual(v1.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v2.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v3.superview, v2, "Hierarchy mismatch")
+        XCTAssertEqual(v4.superview, v2, "Hierarchy mismatch")
+
+        self.container.layoutIfNeeded()
+
+        XCTAssertEqual(v3.frame.size.height, MortarTests.CON_H + 5, "Frame mismatch")
+        XCTAssertEqual(v4.frame.size.height, 10, "Frame mismatch")
     }
     #endif
 }

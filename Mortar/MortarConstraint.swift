@@ -107,7 +107,13 @@ public class MortarConstraint {
                                             constant: sourceMortar.constant[i])
             
             constraint.priority = (sourceMortar.priority ?? targetMortar.priority) ?? MortarDefault.priority.current()
-            constraint.isActive = true
+
+            if Thread.current.threadDictionary[kMortarConstraintDeferralKey] == nil {
+                constraint.isActive = true
+            } else {
+                (Thread.current.threadDictionary[kMortarConstraintDeferralKey] as? MortarConstraintDeferralArray)?.add(constraint)
+            }
+
             layoutConstraints.append(constraint)
         }        
     }
