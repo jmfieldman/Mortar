@@ -9,6 +9,7 @@
 * Fix |+| and |^| to use addArrangedSubviews for UIStackView receivers
 * Add result builder version of |+| and |^|
 * Add concept of deferred constraints inside |+| and |^|
+* Add "fast" create (e.g. `UILabel { $0.backgroundColor = .red }`)
 
 ## 1.7.0 -- 10/19/19
 
