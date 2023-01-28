@@ -76,44 +76,28 @@ private func withConstraintDeferral<T: MortarView>(_ block: () -> T) -> T {
 
 @discardableResult public func |+|<LHS: MortarView>(lhs: LHS, rhs: @autoclosure () -> MortarView) -> LHS {
     withConstraintDeferral {
-        if let stack = lhs as? UIStackView {
-            stack.addArrangedSubview(rhs())
-        } else {
-            lhs.addSubview(rhs())
-        }
+        lhs.m_addSubview(rhs())
         return lhs
     }
 }
 
 @discardableResult public func |+|<LHS: MortarView>(lhs: LHS, rhs: @autoclosure () -> [MortarView]) -> LHS {
     withConstraintDeferral {
-        if let stack = lhs as? UIStackView {
-            rhs().forEach { stack.addArrangedSubview($0) }
-        } else {
-            rhs().forEach { lhs.addSubview($0) }
-        }
+        rhs().forEach { lhs.m_addSubview($0) }
         return lhs
     }
 }
 
 @discardableResult public func |^|<LHS: MortarView>(lhs: LHS, rhs: @autoclosure () -> MortarView) -> LHS {
     withConstraintDeferral {
-        if let stack = lhs as? UIStackView {
-            stack.addArrangedSubview(rhs())
-        } else {
-            lhs.addSubview(rhs())
-        }
+        lhs.m_addSubview(rhs())
         return lhs
     }
 }
 
 @discardableResult public func |^|<LHS: MortarView>(lhs: LHS, rhs: @autoclosure () -> [MortarView]) -> LHS {
     withConstraintDeferral {
-        if let stack = lhs as? UIStackView {
-            rhs().reversed().forEach { stack.addArrangedSubview($0) }
-        } else {
-            rhs().reversed().forEach { lhs.addSubview($0) }
-        }
+        rhs().reversed().forEach { lhs.m_addSubview($0) }
         return lhs
     }
 }
@@ -128,67 +112,31 @@ public struct MortarViewArrayBuilder {
 
 @discardableResult public func |+|<LHS: MortarView>(lhs: LHS, @MortarViewArrayBuilder rhs: (LHS) -> [MortarView]) -> LHS {
     withConstraintDeferral {
-        if let stack = lhs as? UIStackView {
-            rhs(lhs).forEach { stack.addArrangedSubview($0) }
-        } else {
-            rhs(lhs).forEach { lhs.addSubview($0) }
-        }
+        rhs(lhs).forEach { lhs.m_addSubview($0) }
         return lhs
     }
 }
 
 @discardableResult public func |^|<LHS: MortarView>(lhs: LHS, @MortarViewArrayBuilder rhs: (LHS) -> [MortarView]) -> LHS {
     withConstraintDeferral {
-        if let stack = lhs as? UIStackView {
-            rhs(lhs).reversed().forEach { stack.addArrangedSubview($0) }
-        } else {
-            rhs(lhs).reversed().forEach { lhs.addSubview($0) }
-        }
+        rhs(lhs).reversed().forEach { lhs.m_addSubview($0) }
         return lhs
     }
 }
 
 @discardableResult public func |+|<LHS: MortarView>(lhs: LHS, @MortarViewArrayBuilder rhs: () -> [MortarView]) -> LHS {
     withConstraintDeferral {
-        if let stack = lhs as? UIStackView {
-            rhs().forEach { stack.addArrangedSubview($0) }
-        } else {
-            rhs().forEach { lhs.addSubview($0) }
-        }
+        rhs().forEach { lhs.m_addSubview($0) }
         return lhs
     }
 }
 
 @discardableResult public func |^|<LHS: MortarView>(lhs: LHS, @MortarViewArrayBuilder rhs: () -> [MortarView]) -> LHS {
     withConstraintDeferral {
-        if let stack = lhs as? UIStackView {
-            rhs().reversed().forEach { stack.addArrangedSubview($0) }
-        } else {
-            rhs().reversed().forEach { lhs.addSubview($0) }
-        }
+        rhs().reversed().forEach { lhs.m_addSubview($0) }
         return lhs
     }
 }
-
-public extension MortarView {
-    @discardableResult func addSubviews(@MortarViewArrayBuilder _ views: (MortarView) -> [MortarView]) -> Self {
-        withConstraintDeferral {
-            views(self).forEach { self.addSubview($0) }
-            return self
-        }
-    }
-}
-
-#if os(iOS)
-public extension UIStackView {
-    @discardableResult func addArrangedSubviews(@MortarViewArrayBuilder _ views: (MortarView) -> [MortarView]) -> Self {
-        withConstraintDeferral {
-            views(self).forEach { self.addArrangedSubview($0) }
-            return self
-        }
-    }
-}
-#endif
 
 
 /* The basic mortar operators to create equal, less-than-or-equal, and greater-than-or-equal */

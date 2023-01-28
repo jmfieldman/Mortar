@@ -1026,11 +1026,11 @@ class MortarTests: XCTestCase {
         self.container.addSubview(sut)
         sut |=| self.container.m_height
 
-        self.container.addSubviews { container in
+        self.container |+| { container in
             MortarView.create { _ in }
             MortarView.create {
                 $0.m_height |=| 5
-            }.addSubviews { v2 in
+            } |+| { v2 in
                 MortarView.create {
                     $0 |=| container.m_height + 5
                 }
@@ -1064,11 +1064,11 @@ class MortarTests: XCTestCase {
         self.container.addSubview(sut)
         sut |=| self.container.m_height
 
-        self.container.addSubviews { container in
+        self.container |+| { container in
             MortarView.create { _ in }
             UIStackView.create {
                 $0.m_height |=| 5
-            }.addArrangedSubviews { v2 in
+            } |+| { v2 in
                 MortarView.create {
                     $0 |=| container.m_height + 5
                 }
@@ -1094,6 +1094,57 @@ class MortarTests: XCTestCase {
 
         XCTAssertEqual(v3.frame.size.height, MortarTests.CON_H + 5, "Frame mismatch")
         XCTAssertEqual(v4.frame.size.height, 10, "Frame mismatch")
+    }
+
+    func testStackViewCustomSpacing() {
+        let sut = MortarView()
+        self.container.addSubview(sut)
+        sut |=| self.container.m_height
+
+        self.container |+| { container in
+            MortarView { _ in }
+            UIStackView {
+                $0.m_height |=| 5
+            } |+| { v2 in
+                MortarView {
+                    $0 |=| container.m_height + 5
+                    $0.m_customSpacingAfter = 8
+                }
+                MortarView {
+                    $0 |=| v2.m_height + 5
+                    $0.m_customSpacingAfter = 16
+                }
+                MortarView {
+                    $0 |=| v2.m_height + 10
+                }
+            }
+        }
+
+        let v1 = self.container.subviews[1]
+        let v2 = self.container.subviews[2] as! UIStackView
+        let v3 = v2.subviews[0]
+        let v4 = v2.subviews[1]
+        let v5 = v2.subviews[2]
+
+        XCTAssertEqual(sut, self.container.subviews[0], "Hierarchy mismatch")
+
+        XCTAssertEqual(v1.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v2.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v3.superview, v2, "Hierarchy mismatch")
+        XCTAssertEqual(v4.superview, v2, "Hierarchy mismatch")
+
+        self.container.layoutIfNeeded()
+
+        XCTAssertEqual(v3.frame.size.height, MortarTests.CON_H + 5, "Frame mismatch")
+        XCTAssertEqual(v4.frame.size.height, 10, "Frame mismatch")
+        XCTAssertEqual(v5.frame.size.height, 15, "Frame mismatch")
+
+        XCTAssertEqual(v3.m_customSpacingAfter, 8)
+        XCTAssertEqual(v4.m_customSpacingAfter, 16)
+        XCTAssertEqual(v5.m_customSpacingAfter, nil)
+
+        XCTAssertEqual(v2.customSpacing(after: v3), 8)
+        XCTAssertEqual(v2.customSpacing(after: v4), 16)        
     }
     #endif
 }

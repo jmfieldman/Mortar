@@ -170,6 +170,63 @@ public extension UILayoutGuide {
 }
 #endif
 
+private var kAssociatedCustomSpacing: Int = 0
+
+// Provide a property to imperatively set the custom spacing after a view
+// if it resides in a UIStackView. If set before the view is inside a UIStackView
+// then it is only initially used when combined with a |+| operator.
+public extension MortarView {
+    var m_customSpacingAfter: CGFloat? {
+        get {
+            objc_getAssociatedObject(self, &kAssociatedCustomSpacing) as? CGFloat
+        }
+        set {
+            objc_setAssociatedObject(self, &kAssociatedCustomSpacing, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)
+            newValue.flatMap { (self.superview as? UIStackView)?.setCustomSpacing($0, after: self) }
+        }
+    }
+}
+
+#if os(iOS) || os(tvOS)
+extension UIStackView {
+    func m_addArrangedSubview(_ view: MortarView) {
+        self.addArrangedSubview(view)
+        if let customSpacing = view.m_customSpacingAfter {
+            self.setCustomSpacing(customSpacing, after: view)
+        }
+    }
+}
+
+extension MortarView {
+    func m_addSubview(_ view: MortarView) {
+        if let stack = self as? UIStackView {
+            stack.m_addArrangedSubview(view)
+        } else {
+            self.addSubview(view)
+        }
+    }
+}
+#else
+extension NSStackView {
+    func m_addArrangedSubview(_ view: MortarView) {
+        self.addArrangedSubview(view)
+        if let customSpacing = view.m_customSpacingAfter {
+            self.setCustomSpacing(customSpacing, after: view)
+        }
+    }
+}
+
+extension MortarView {
+    func m_addSubview(_ view: MortarView) {
+        if let stack = self as? NSStackView {
+            stack.addArrangedSubview(view)
+        } else {
+            self.addSubview(view)
+        }
+    }
+}
+#endif
+
 // Allow views to be created quickly without the `.create` named function.
 // e.g. UIView { $0.backgroundColor = .red } 
 extension MortarView: MortarFastCreatable {}
