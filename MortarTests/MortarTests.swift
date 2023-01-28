@@ -954,5 +954,118 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(v3.frame.size.height, MortarTests.CON_H + 5, "Frame mismatch")
         XCTAssertEqual(v4.frame.size.height, MortarTests.CON_H + 5, "Frame mismatch")
     }
+
+    func testDeferredBuilder() {
+        let sut = MortarView()
+        self.container.addSubview(sut)
+        sut |=| self.container.m_height
+
+        self.container |+| { container in
+            MortarView.create { _ in }
+            MortarView.create {
+                $0.m_height |=| 5
+            } |+| { v2 in
+                MortarView.create {
+                    $0 |=| container.m_height + 5
+                }
+                MortarView.create {
+                    $0 |=| v2.m_height + 5
+                }
+            }
+        }
+
+        let v1 = self.container.subviews[1]
+        let v2 = self.container.subviews[2]
+        let v3 = v2.subviews[0]
+        let v4 = v2.subviews[1]
+
+        XCTAssertEqual(sut, self.container.subviews[0], "Hierarchy mismatch")
+
+        XCTAssertEqual(v1.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v2.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v3.superview, v2, "Hierarchy mismatch")
+        XCTAssertEqual(v4.superview, v2, "Hierarchy mismatch")
+
+        self.container.layoutIfNeeded()
+
+        XCTAssertEqual(v3.frame.size.height, MortarTests.CON_H + 5, "Frame mismatch")
+        XCTAssertEqual(v4.frame.size.height, 10, "Frame mismatch")
+    }
+
+    func testDeferredAddSubviewsBuilder() {
+        let sut = MortarView()
+        self.container.addSubview(sut)
+        sut |=| self.container.m_height
+
+        self.container.addSubviews { container in
+            MortarView.create { _ in }
+            MortarView.create {
+                $0.m_height |=| 5
+            }.addSubviews { v2 in
+                MortarView.create {
+                    $0 |=| container.m_height + 5
+                }
+                MortarView.create {
+                    $0 |=| v2.m_height + 5
+                }
+            }
+        }
+
+        let v1 = self.container.subviews[1]
+        let v2 = self.container.subviews[2]
+        let v3 = v2.subviews[0]
+        let v4 = v2.subviews[1]
+
+        XCTAssertEqual(sut, self.container.subviews[0], "Hierarchy mismatch")
+
+        XCTAssertEqual(v1.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v2.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v3.superview, v2, "Hierarchy mismatch")
+        XCTAssertEqual(v4.superview, v2, "Hierarchy mismatch")
+
+        self.container.layoutIfNeeded()
+
+        XCTAssertEqual(v3.frame.size.height, MortarTests.CON_H + 5, "Frame mismatch")
+        XCTAssertEqual(v4.frame.size.height, 10, "Frame mismatch")
+    }
+
+    #if os(iOS)
+    func testStackViewDeferredAddSubviewsBuilder() {
+        let sut = MortarView()
+        self.container.addSubview(sut)
+        sut |=| self.container.m_height
+
+        self.container.addSubviews { container in
+            MortarView.create { _ in }
+            UIStackView.create {
+                $0.m_height |=| 5
+            }.addArrangedSubviews { v2 in
+                MortarView.create {
+                    $0 |=| container.m_height + 5
+                }
+                MortarView.create {
+                    $0 |=| v2.m_height + 5
+                }
+            }
+        }
+
+        let v1 = self.container.subviews[1]
+        let v2 = self.container.subviews[2]
+        let v3 = v2.subviews[0]
+        let v4 = v2.subviews[1]
+
+        XCTAssertEqual(sut, self.container.subviews[0], "Hierarchy mismatch")
+
+        XCTAssertEqual(v1.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v2.superview, self.container, "Hierarchy mismatch")
+        XCTAssertEqual(v3.superview, v2, "Hierarchy mismatch")
+        XCTAssertEqual(v4.superview, v2, "Hierarchy mismatch")
+
+        self.container.layoutIfNeeded()
+
+        XCTAssertEqual(v3.frame.size.height, MortarTests.CON_H + 5, "Frame mismatch")
+        XCTAssertEqual(v4.frame.size.height, 10, "Frame mismatch")
+    }
+    #endif
 }
 

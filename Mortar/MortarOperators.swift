@@ -118,6 +118,55 @@ private func withConstraintDeferral(_ block: () -> MortarView) -> MortarView {
     }
 }
 
+@resultBuilder
+public struct MortarViewArrayBuilder {
+    static func buildBlock() -> [MortarView] { [] }
+    static func buildBlock(_ views: MortarView...) -> [MortarView] {
+        views
+    }
+}
+
+@discardableResult public func |+|(lhs: MortarView, @MortarViewArrayBuilder rhs: (MortarView) -> [MortarView]) -> MortarView {
+    withConstraintDeferral {
+        if let stack = lhs as? UIStackView {
+            rhs(lhs).forEach { stack.addArrangedSubview($0) }
+        } else {
+            rhs(lhs).forEach { lhs.addSubview($0) }
+        }
+        return lhs
+    }
+}
+
+@discardableResult public func |^|(lhs: MortarView, @MortarViewArrayBuilder rhs: (MortarView) -> [MortarView]) -> MortarView {
+    withConstraintDeferral {
+        if let stack = lhs as? UIStackView {
+            rhs(lhs).reversed().forEach { stack.addArrangedSubview($0) }
+        } else {
+            rhs(lhs).reversed().forEach { lhs.addSubview($0) }
+        }
+        return lhs
+    }
+}
+
+public extension MortarView {
+    @discardableResult func addSubviews(@MortarViewArrayBuilder _ views: (MortarView) -> [MortarView]) -> MortarView {
+        withConstraintDeferral {
+            views(self).forEach { self.addSubview($0) }
+            return self
+        }
+    }
+}
+
+#if os(iOS)
+public extension UIStackView {
+    @discardableResult func addArrangedSubviews(@MortarViewArrayBuilder _ views: (MortarView) -> [MortarView]) -> MortarView {
+        withConstraintDeferral {
+            views(self).forEach { self.addArrangedSubview($0) }
+            return self
+        }
+    }
+}
+#endif
 
 
 /* The basic mortar operators to create equal, less-than-or-equal, and greater-than-or-equal */
