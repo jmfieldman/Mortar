@@ -169,3 +169,7 @@ public extension UILayoutGuide {
     var m_center:               MortarAttribute { get { return MortarAttribute(item: self, attribute: .center                 ) } }
 }
 #endif
+
+// Allow views to be created quickly without the `.create` named function.
+// e.g. UIView { $0.backgroundColor = .red } 
+public extension MortarView: MortarFastCreatable {}

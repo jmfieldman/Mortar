@@ -44,3 +44,16 @@ public extension MortarCreatable {
         return self
     }
 }
+
+/// This protocol declares that the object can be instantiated with a
+/// parameter-less initializer
+public protocol MortarFastCreatable {
+    init()
+}
+
+public extension MortarFastCreatable {
+    init(_ block: (Self) -> Void) {
+        self.init()
+        block(self)
+    }
+}

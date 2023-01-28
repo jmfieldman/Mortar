@@ -717,18 +717,24 @@ class MyController: UIViewController {
         $0.textColor     = .red
     }
 
+    // UIViews can use the immediate init block
+    let myButton = UIButton {
+        $0.setTitle("Hello", for: .normal)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Hierarchy
         self.view |+| [
-            myLabel
+            myLabel,
+            myButton
         ]
 
         // Layout
         myLabel.m_top     |=| self.view
         myLabel.m_centerX |=| self.view
+        myButton.m_width  |=| myLabel
     }
 }
 ```
@@ -776,21 +782,21 @@ block parameter, which lets children easily reference anonymous parents:
 
 ```swift
 view |+| { view in
-    UIStackView.create {
+    UIStackView {
         $0.spacing = 1
         $0.axis = .vertical
         $0.m_width |=| view
     } |+| { stack in
-        UILabel.create {
+        UILabel {
             $0.text = viewModel.helloText
             $0.m_height |=| stack
         }
-        UILabel.create {
+        UILabel {
             $0.text = "World"
             $0.m_height |=| stack
             $0.reactive.text <~ viewModel.worldText
         }
-        UIButton.create {
+        UIButton {
             $0.reactive.pressed = viewModel.pressed
         }
     }
