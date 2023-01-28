@@ -201,15 +201,15 @@ On iOS you can access the layout guides of a ```UIViewController```.  An example
 view1.m_top   |<| self.m_topLayoutGuideBottom
 ```
 
-There is also a new ```UIViewController``` property ```m_visibleRegion``` to help align views to the region of controller's view that is below the top layout guide and above the bottom layout guide.  *To use this property you must have the MortarVFL extension installed.*
+There is also a new ```UIViewController``` property ```m_safeRegion``` to help align views to the safe region of a controller's view.  *To use this property you must have the MortarVFL extension installed.*
 
 ```swift
-// Center a view inside the visible region of a UIViewController that is a child of
+// Center a view inside the safe region of a UIViewController that is a child of
 // a navigation controller or tab controller
-textField.m_center |=| self.m_visibleRegion
+textField.m_center |=| self.m_safeRegion
 ```
 
-Using ```m_visibleRegion``` will create a "ghost" view as a subview of the controller's root view.  This ghost view is hidden and non-interactive, and used only for positioning.  Its class name is ```_MortarVFLGhostView``` in case you see it inside the view debugger.
+Using ```m_safeRegion``` will create a "ghost" view as a subview of the controller's root view.  This ghost view is hidden and non-interactive, and used only for positioning.  Its class name is ```_MortarVFLGhostView``` in case you see it inside the view debugger.
 
 
 ### Multipliers and Constants

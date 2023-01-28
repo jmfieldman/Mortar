@@ -1093,6 +1093,7 @@ public extension UIViewController {
     /// Creates a _MortarVFLGhostView that is sized between the
     /// view controller's guide anchors.
     /// Will reuse the existing one if it exists, based on tag lookup
+    @available(*, deprecated, message: "m_visibleRegion has been deprecated; use m_safeRegion")
     var m_visibleRegion: MortarView {
         for view in self.view.subviews {
             if view.tag != UIViewController.kVisibleRegionGhostTag {
@@ -1112,6 +1113,28 @@ public extension UIViewController {
         ghost.m_sides  |=| self.view
         ghost.m_top    |=| self.m_topLayoutGuideBottom
         ghost.m_bottom |=| self.m_bottomLayoutGuideTop
+        return ghost
+    }
+  
+    var m_safeRegion: MortarView {
+        for view in self.view.subviews {
+            if view.tag != UIViewController.kVisibleRegionGhostTag {
+                continue
+            }
+            
+            if let v = view as? _MortarVFLGhostView {
+                return v
+            } else {
+                try! raise("You cannot use m_visibleRegion unless you reserve the tag \(UIViewController.kVisibleRegionGhostTag) for its use")
+            }
+        }
+        
+        // Create it
+        let ghost = mGhostView(in: self.view)
+        ghost.tag = UIViewController.kVisibleRegionGhostTag
+        ghost.m_sides  |=| self.view
+        ghost.m_top    |=| self.m_safeTop
+        ghost.m_bottom |=| self.m_safeBottom
         return ghost
     }
 }

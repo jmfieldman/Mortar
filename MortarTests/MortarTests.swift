@@ -859,7 +859,8 @@ class MortarTests: XCTestCase {
     }
 
     #if os(iOS)
-    func testLayoutGuides() {
+    @available(*, deprecated, message: "deprecated test")
+    func testDeprecatedLayoutGuides() {
         let v1  = MortarView()
         let v2  = MortarView()
         let v3  = MortarView()
@@ -875,6 +876,20 @@ class MortarTests: XCTestCase {
         v4.m_top |=| vc.m_bottomLayoutGuideBottom
         
         XCTAssertEqual(vc.view.constraints.count, 8, "Should have 4 constraints installed (ancestor)")
+    }
+  
+    func testLayoutGuides() {
+        let v1  = MortarView()
+        let v2  = MortarView()
+        let vc  = UIViewController()
+        vc.view = MortarView()
+        
+        vc.view |+| [v1, v2]
+        
+        v1.m_top |=| vc.m_safeTop
+        v2.m_top |=| vc.m_safeBottom
+        
+        XCTAssertEqual(vc.view.constraints.count, 6, "Should have 4 constraints installed (ancestor)")
     }
     #endif
 }
