@@ -761,6 +761,44 @@ public func ~(lhs: MortarAttribute, rhs: MortarConstFour) -> MortarAttribute {
     return lhs
 }
 
+#if os(iOS) || os(tvOS)
+private extension UIEdgeInsets {
+  func constantFor(_ attribute: MortarLayoutAttribute) -> CGFloat {
+    switch attribute {
+    case .top: return self.top
+    case .bottom: return -self.bottom
+    case .trailing: return -self.right
+    case .right: return -self.right
+    case .leading: return self.left
+    case .left: return self.left
+    default: return 0
+    }
+  }
+}
+
+public func ~(lhs: MortarAttribute, rhs: UIEdgeInsets) -> MortarAttribute {
+    guard let components = lhs.attribute?.componentAttributes() else {
+        NSException(name: NSExceptionName(rawValue: "Attribute has no components for tuple arithmetic"),
+                  reason: "Attribute has no components for tuple arithmetic",
+                userInfo: nil).raise()
+        return lhs
+    }
+
+    if (components.count != 4) {
+        NSException(name: NSExceptionName(rawValue: "Attribute has wrong component count"),
+                  reason: "Attribute has \(components.count) components; requires 4",
+                userInfo: nil).raise()
+        return lhs
+    }
+
+    components.enumerated().forEach { i, attribute in
+        lhs.constant[i] += rhs.constantFor(attribute)
+    }
+
+    return lhs
+}
+#endif
+
 /**
  Priority operators
 */

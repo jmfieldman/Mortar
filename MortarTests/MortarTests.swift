@@ -227,6 +227,35 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(v.frame.size.width,  MortarTests.CON_W, "Frame mismatch")
         XCTAssertEqual(v.frame.size.height, MortarTests.CON_H, "Frame mismatch")
     }
+
+    func testUIEdgeInsets() {
+        let v = MortarView()
+
+        self.container |+| v
+
+        v.m_edges |=| self.container.m_edges ~ UIEdgeInsets(top: 4, left: 8, bottom: 12, right: 16)
+
+        self.container.layoutIfNeeded()
+
+        XCTAssertEqual(v.frame.origin.x, 8, "Frame mismatch")
+        XCTAssertEqual(v.frame.origin.y, 4, "Frame mismatch")
+        XCTAssertEqual(v.frame.size.width,  MortarTests.CON_W - 24, "Frame mismatch")
+        XCTAssertEqual(v.frame.size.height, MortarTests.CON_H - 16, "Frame mismatch")
+    }
+
+    func testSizeInsets() {
+        let v = MortarView()
+
+        self.container |+| v
+
+        v.m_center |=| self.container
+        v.m_size |=| self.container.m_size ~ (10, 10)
+
+        self.container.layoutIfNeeded()
+
+        XCTAssertEqual(v.frame.size.width,  MortarTests.CON_W - 10, "Frame mismatch")
+        XCTAssertEqual(v.frame.size.height, MortarTests.CON_H - 10, "Frame mismatch")
+    }
     
     func testAddSubviews() {
         let v1 = MortarView()

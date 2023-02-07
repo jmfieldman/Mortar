@@ -182,7 +182,11 @@ public extension MortarView {
         }
         set {
             objc_setAssociatedObject(self, &kAssociatedCustomSpacing, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)
+            #if os(iOS) || os(tvOS)
             newValue.flatMap { (self.superview as? UIStackView)?.setCustomSpacing($0, after: self) }
+            #else
+            newValue.flatMap { (self.superview as? NSStackView)?.setCustomSpacing($0, after: self) }
+            #endif
         }
     }
 }
