@@ -102,11 +102,23 @@ private func withConstraintDeferral<T: MortarView>(_ block: () -> T) -> T {
     }
 }
 
+public protocol MortarViewListProviding {
+  var list: [MortarView] { get }
+}
+
+extension MortarView: MortarViewListProviding {
+  public var list: [MortarView] { [self] }
+}
+
+extension Array: MortarViewListProviding where Element: MortarView {
+  public var list: [MortarView] { self }
+}
+
 @resultBuilder
 public struct MortarViewArrayBuilder {
     public static func buildBlock() -> [MortarView] { [] }
-    public static func buildBlock(_ views: MortarView?...) -> [MortarView] {
-        views.compactMap { $0 }
+    public static func buildBlock(_ views: MortarViewListProviding?...) -> [MortarView] {
+      views.compactMap { $0 }.flatMap { $0.list }
     }
 }
 

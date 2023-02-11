@@ -1117,6 +1117,25 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(v3.frame.size.height, MortarTests.CON_H + 5, "Frame mismatch")
         XCTAssertEqual(v4.frame.size.height, 10, "Frame mismatch")
     }
+  
+    func testAddSubviewsListBuilder() {
+        let sut = MortarView()
+        self.container.addSubview(sut)
+        sut |=| self.container.m_height
+        let inject = false
+      
+        self.container |+| { container in
+            MortarView.create { _ in }
+            inject ? MortarView.create {
+                $0.m_height |=| 5
+            } : nil
+            (0..<10).map { _ in
+                MortarView.create { _ in }
+            }
+        }
+
+      XCTAssertEqual(self.container.subviews.count, 12, "Count mismatch")
+    }
 
     #if os(iOS)
     func testStackViewDeferredAddSubviewsBuilder() {
