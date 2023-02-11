@@ -24,6 +24,29 @@
 import XCTest
 @testable import Mortar
 
+#if os(iOS) || os(tvOS)
+typealias TestLabel = UILabel
+#else
+typealias TestLabel = NSTextView
+extension NSTextView {
+  var text: String? {
+    get { return "" }
+    set { _ = newValue }
+  }
+}
+
+extension NSView {
+  func layoutIfNeeded() {
+    layoutSubtreeIfNeeded()
+  }
+  
+  var backgroundColor: NSColor {
+    get { return .red }
+    set { _ = newValue }
+  }
+}
+#endif
+
 class MortarTests: XCTestCase {
     
     static let CON_X: CGFloat = 100.0
@@ -228,6 +251,7 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(v.frame.size.height, MortarTests.CON_H, "Frame mismatch")
     }
 
+    #if os(iOS) || os(tvOS)
     func testUIEdgeInsets() {
         let v = MortarView()
 
@@ -242,6 +266,7 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(v.frame.size.width,  MortarTests.CON_W - 24, "Frame mismatch")
         XCTAssertEqual(v.frame.size.height, MortarTests.CON_H - 16, "Frame mismatch")
     }
+    #endif
 
     func testSizeInsets() {
         let v = MortarView()
@@ -755,6 +780,7 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(closeEnough, true, err)
     }
     
+    #if os(iOS)
     func testVFL1() {
         let v1 = MortarView()
         let v2 = MortarView()
@@ -851,15 +877,15 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(v3.frame.origin.y, 66, "VFL Issue B")
         
     }
-
+    
     func testVFL5() {
         let c = MortarView()
         let v1 = MortarView()
         let v2 = MortarView()
         let v3 = MortarView()
-        let l1 = UILabel()
-        let l2 = UILabel()
-        let l3 = UILabel()
+        let l1 = TestLabel()
+        let l2 = TestLabel()
+        let l3 = TestLabel()
 
         l1.text = "wide string"
         l2.text = "tall\nstring"
@@ -884,7 +910,7 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(l1.frame.origin.x + l1.frame.size.width + 8, l2.frame.origin.x , accuracy: 1, "spot check inner horizontal || pad")
         XCTAssertEqual(l1.frame.origin.y + l1.frame.size.height + 8, l2.frame.origin.y , accuracy: 1, "spot check inner vertical || pad")
 
-        XCTAssertEqual(l3.frame.origin.y + l3.frame.size.height + 8 , 500, accuracy: 1, "Bottommost || pad")
+        XCTAssertEqual(l3.frame.origin.y + l3.frame.size.height + 8, 500, accuracy: 1, "Bottommost || pad")
         XCTAssertEqual(l3.frame.origin.x + l3.frame.size.width + 8, 500, accuracy: 1, "Rightmost || pad")
 
         //plain veiw sizes
@@ -911,7 +937,7 @@ class MortarTests: XCTestCase {
 
     func testVFL6() {
         let c = MortarView()
-        let label = UILabel()
+        let label = TestLabel()
         label.text = "This is three lines."
         label.numberOfLines = 0
         label.lineBreakMode = .byCharWrapping
@@ -942,6 +968,7 @@ class MortarTests: XCTestCase {
         XCTAssertEqual(label.frame.origin.y, 150 - label.frame.origin.y - label.frame.size.height, accuracy: 1, "top/bottom pad are equal")
         XCTAssertGreaterThan(label.frame.size.height, originalHeight, "four line label shoudl be taller than 3 line label")
     }
+    #endif
 
     #if os(iOS)
     @available(*, deprecated, message: "deprecated test")
@@ -1054,6 +1081,7 @@ class MortarTests: XCTestCase {
         let sut = MortarView()
         self.container.addSubview(sut)
         sut |=| self.container.m_height
+        let injectMiddle = false
 
         self.container |+| { container in
             MortarView.create { _ in }
@@ -1063,6 +1091,9 @@ class MortarTests: XCTestCase {
                 MortarView.create {
                     $0 |=| container.m_height + 5
                 }
+                injectMiddle ? MortarView.create {
+                  $0 |=| v2.m_height + 100
+                } : nil
                 MortarView.create {
                     $0 |=| v2.m_height + 5
                 }
