@@ -3,7 +3,6 @@
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
 .DS_Store
-.ruby-version
 .swiftpm
 
 ## Build generated

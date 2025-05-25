@@ -21,40 +21,9 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import XCTest
-@testable import Mortar
+import CombineEx
 
-#if os(iOS) || os(tvOS)
-typealias TestLabel = UILabel
-#else
-typealias TestLabel = NSTextView
-extension NSTextView {
-  var text: String? {
-    get { return "" }
-    set { _ = newValue }
-  }
+public enum MortarDebug {
+    internal static let errorSubject = MutableProperty<String?>(nil)
+    public static let errorProperty = Property(errorSubject)
 }
-
-extension NSView {
-  func layoutIfNeeded() {
-    layoutSubtreeIfNeeded()
-  }
-  
-  var backgroundColor: NSColor {
-    get { return .red }
-    set { _ = newValue }
-  }
-}
-#endif
-
-class MortarTests: XCTestCase {
-    
-    override func setUp() {
-        super.setUp()
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-    }
-}
-

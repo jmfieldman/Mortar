@@ -21,40 +21,12 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import XCTest
-@testable import Mortar
+import CombineEx
 
-#if os(iOS) || os(tvOS)
-typealias TestLabel = UILabel
-#else
-typealias TestLabel = NSTextView
-extension NSTextView {
-  var text: String? {
-    get { return "" }
-    set { _ = newValue }
-  }
+public struct MortarCoordinate {
+    internal let item: AnyObject?
+    internal let attribute: MortarLayoutAttribute?
+    internal let multiplier: UIProperty<CGFloat>?
+    internal let constant: UIProperty<[CGFloat]>?
+    internal let priority: MortarLayoutPriority?
 }
-
-extension NSView {
-  func layoutIfNeeded() {
-    layoutSubtreeIfNeeded()
-  }
-  
-  var backgroundColor: NSColor {
-    get { return .red }
-    set { _ = newValue }
-  }
-}
-#endif
-
-class MortarTests: XCTestCase {
-    
-    override func setUp() {
-        super.setUp()
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-    }
-}
-

@@ -1,0 +1,15 @@
+{
+  "originHash" : "62588cb6a0c87175bf72fc3a97199bf94938723bd8cd3fbf3cc290f44adaa0b9",
+  "pins" : [
+    {
+      "identity" : "combineex",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jmfieldman/CombineEx.git",
+      "state" : {
+        "revision" : "3c39ea23c1e2bba344cee4073da1dbf4d3fbc6ec",
+        "version" : "0.0.4"
+      }
+    }
+  ],
+  "version" : 3
+}

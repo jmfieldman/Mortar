@@ -21,40 +21,14 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import XCTest
-@testable import Mortar
+import CombineEx
 
-#if os(iOS) || os(tvOS)
-typealias TestLabel = UILabel
-#else
-typealias TestLabel = NSTextView
-extension NSTextView {
-  var text: String? {
-    get { return "" }
-    set { _ = newValue }
-  }
-}
-
-extension NSView {
-  func layoutIfNeeded() {
-    layoutSubtreeIfNeeded()
-  }
-  
-  var backgroundColor: NSColor {
-    get { return .red }
-    set { _ = newValue }
-  }
-}
-#endif
-
-class MortarTests: XCTestCase {
+/// A `MortarConstraintGroup` is a collection of `MortarConstraint` objects bound by
+/// a single virtual expression.
+public struct MortarConstraintGroup {
+    internal let constraints: [MortarConstraint]
     
-    override func setUp() {
-        super.setUp()
-    }
-    
-    override func tearDown() {
-        super.tearDown()
+    internal init(constraints: [MortarConstraint]) {
+        self.constraints = constraints
     }
 }
-
