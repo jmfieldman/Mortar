@@ -13,4 +13,12 @@ public struct MortarConstraintGroup {
     init(constraints: [MortarConstraint]) {
         self.constraints = constraints
     }
+
+    init(
+        target: MortarCoordinate,
+        source: MortarCoordinate,
+        relation: MortarAliasLayoutRelation
+    ) {
+        self.constraints = []
+    }
 }

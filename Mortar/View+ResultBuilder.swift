@@ -24,6 +24,13 @@ public struct MortarAddSubviewsBuilder {
         MortarAddViewBox(view: nil)
     }
 
+    /// Builds an expression from a `MortarConstraintGroup`.
+    /// - Parameter expression: A MortarConstraintGroup value.
+    /// - Returns: A `MortarAddViewBox` with a nil view.
+    public static func buildExpression(_ expression: MortarConstraintGroup) -> MortarAddViewBox {
+        MortarAddViewBox(view: nil)
+    }
+
     /// Builds a block from multiple `MortarAddViewBox` components.
     /// - Parameter components: An array of `MortarAddViewBox` components.
     /// - Returns: An array of `MortarAddViewBox` components.

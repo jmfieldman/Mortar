@@ -8,6 +8,7 @@ import UIKit
 
 public typealias MortarView = UIView
 public typealias MortarLayoutGuide = UILayoutGuide
+public typealias MortarEdgeInsets = UIEdgeInsets
 public typealias MortarAliasLayoutPriority = UILayoutPriority
 public typealias MortarAliasLayoutRelation = NSLayoutConstraint.Relation
 public typealias MortarAliasLayoutAttribute = NSLayoutConstraint.Attribute
@@ -16,6 +17,7 @@ import AppKit
 
 public typealias MortarView = NSView
 public typealias MortarLayoutGuide = NSLayoutGuide
+public typealias MortarEdgeInsets = NSEdgeInsets
 public typealias MortarAliasLayoutPriority = NSLayoutConstraint.Priority
 public typealias MortarAliasLayoutRelation = NSLayoutConstraint.Relation
 public typealias MortarAliasLayoutAttribute = NSLayoutConstraint.Attribute
@@ -77,7 +79,6 @@ enum MortarLayoutAttribute {
     case bottomRight
     case bottomTrailing
     case edges
-    case frame
     case center
 
     #if os(iOS) || os(tvOS)
@@ -263,7 +264,6 @@ enum MortarLayoutAttribute {
         case .bottomRight: [.bottom, .right]
         case .bottomTrailing: [.bottom, .trailing]
         case .edges: [.top, .leading, .bottom, .trailing]
-        case .frame: [.leading, .top, .width, .height]
         case .center: [.centerX, .centerY]
         }
     }
@@ -296,7 +296,6 @@ enum MortarLayoutAttribute {
         case .bottomRight: [.bottom, .right]
         case .bottomTrailing: [.bottom, .trailing]
         case .edges: [.top, .leading, .bottom, .trailing]
-        case .frame: [.leading, .top, .width, .height]
         case .center: [.centerX, .centerY]
         }
     }
@@ -304,14 +303,14 @@ enum MortarLayoutAttribute {
 }
 
 public enum MortarLayoutPriority {
-    case low, medium, high, req, priority(Int)
+    case low, medium, high, required, priority(Int)
 
     @inline(__always) public func layoutPriority() -> MortarAliasLayoutPriority {
         switch self {
         case .low: MortarAliasLayoutPriority.defaultLow
         case .medium: MortarAliasLayoutPriority(rawValue: (Float(MortarAliasLayoutPriority.defaultHigh.rawValue) + Float(MortarAliasLayoutPriority.defaultLow.rawValue)) / 2)
         case .high: MortarAliasLayoutPriority.defaultHigh
-        case .req: MortarAliasLayoutPriority.required
+        case .required: MortarAliasLayoutPriority.required
         case let .priority(value): MortarAliasLayoutPriority(rawValue: Float(value))
         }
     }
