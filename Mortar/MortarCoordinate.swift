@@ -23,19 +23,22 @@ public struct MortarCoordinate {
     let multiplier: CGFloat
     let constant: MortarConstantTuple
     let priority: MortarLayoutPriority
+    let startActivated: Bool
 
     init(
         item: AnyObject?,
         attribute: MortarLayoutAttribute?,
         multiplier: CGFloat,
         constant: MortarConstantTuple,
-        priority: MortarLayoutPriority
+        priority: MortarLayoutPriority,
+        startActivated: Bool = true
     ) {
         self.item = item
         self.attribute = attribute
         self.multiplier = multiplier
         self.constant = constant
         self.priority = priority
+        self.startActivated = startActivated
     }
 }
 
@@ -79,22 +82,49 @@ extension MortarEdgeInsets: MortarCoordinateConvertible {
     }
 }
 
+extension MortarView: MortarCoordinateConvertible {
+    public var coordinate: MortarCoordinate {
+        .init(
+            item: self,
+            attribute: nil,
+            multiplier: 1,
+            constant: (0, 0, 0, 0),
+            priority: .required
+        )
+    }
+}
+
+extension MortarLayoutGuide: MortarCoordinateConvertible {
+    public var coordinate: MortarCoordinate {
+        .init(
+            item: self,
+            attribute: nil,
+            multiplier: 1,
+            constant: (0, 0, 0, 0),
+            priority: .required
+        )
+    }
+}
+
 public struct MortarSizeCoordinate {
     let item: AnyObject?
     let multiplier: CGFloat
     let constant: CGSize
     let priority: MortarLayoutPriority
+    let startActivated: Bool
 
     init(
         item: AnyObject?,
         multiplier: CGFloat,
         constant: CGSize,
-        priority: MortarLayoutPriority
+        priority: MortarLayoutPriority,
+        startActivated: Bool = true
     ) {
         self.item = item
         self.multiplier = multiplier
         self.constant = constant
         self.priority = priority
+        self.startActivated = startActivated
     }
 
     var coordinate: MortarCoordinate {

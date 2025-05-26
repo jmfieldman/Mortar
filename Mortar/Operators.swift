@@ -6,8 +6,8 @@
 // MARK: - Constraint Constants - Single Degree
 
 private func verifyDegrees(_ coordinate: MortarCoordinate, _ degree: Int) {
-    if coordinate.attribute?.componentAttributes.count != degree {
-        MortarError.emit("Operator used with incompatible degrees: coordinate for \(coordinate.attribute) has degree \(coordinate.attribute?.componentAttributes.count) but was expecting degree \(degree)")
+    if coordinate.attribute?.degree != degree {
+        MortarError.emit("Operator used with incompatible degrees: coordinate for \(coordinate.attribute ?? .notAnAttribute) has degree \(coordinate.attribute?.degree ?? 0) but was expecting degree \(degree)")
     }
 }
 
@@ -202,6 +202,52 @@ public func ^ (lhs: MortarSizeCoordinateConvertible, rhs: MortarLayoutPriority) 
         multiplier: coord.multiplier,
         constant: coord.constant,
         priority: rhs
+    )
+}
+
+// MARK: - Activation Operator
+
+public func % (lhs: MortarCoordinate, rhs: MortarActivationState) -> MortarCoordinate {
+    .init(
+        item: lhs.item,
+        attribute: lhs.attribute,
+        multiplier: lhs.multiplier,
+        constant: lhs.constant,
+        priority: lhs.priority,
+        startActivated: rhs == .activated
+    )
+}
+
+public func % (lhs: MortarSizeCoordinate, rhs: MortarActivationState) -> MortarSizeCoordinate {
+    .init(
+        item: lhs.item,
+        multiplier: lhs.multiplier,
+        constant: lhs.constant,
+        priority: lhs.priority,
+        startActivated: rhs == .activated
+    )
+}
+
+public func % (lhs: MortarCoordinateConvertible, rhs: MortarActivationState) -> MortarCoordinate {
+    let coord = lhs.coordinate
+    return .init(
+        item: coord.item,
+        attribute: coord.attribute,
+        multiplier: coord.multiplier,
+        constant: coord.constant,
+        priority: coord.priority,
+        startActivated: rhs == .activated
+    )
+}
+
+public func % (lhs: MortarSizeCoordinateConvertible, rhs: MortarActivationState) -> MortarSizeCoordinate {
+    let coord = lhs.coordinate
+    return .init(
+        item: coord.item,
+        multiplier: coord.multiplier,
+        constant: coord.constant,
+        priority: coord.priority,
+        startActivated: rhs == .activated
     )
 }
 

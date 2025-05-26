@@ -7,6 +7,7 @@
 import UIKit
 
 public typealias MortarView = UIView
+public typealias MortarStackView = UIStackView
 public typealias MortarLayoutGuide = UILayoutGuide
 public typealias MortarEdgeInsets = UIEdgeInsets
 public typealias MortarAliasLayoutPriority = UILayoutPriority
@@ -16,6 +17,7 @@ public typealias MortarAliasLayoutAttribute = NSLayoutConstraint.Attribute
 import AppKit
 
 public typealias MortarView = NSView
+public typealias MortarStackView = NSStackView
 public typealias MortarLayoutGuide = NSLayoutGuide
 public typealias MortarEdgeInsets = NSEdgeInsets
 public typealias MortarAliasLayoutPriority = NSLayoutConstraint.Priority
@@ -37,6 +39,9 @@ enum MortarLayoutAttribute {
     enum LayoutType {
         case position, size
     }
+
+    /// How many sub-attributes exist in this attribute
+    var degree: Int { componentAttributes.count }
 
     // Standard attributes
     case left
@@ -80,6 +85,53 @@ enum MortarLayoutAttribute {
     case bottomTrailing
     case edges
     case center
+
+    #if os(iOS) || os(tvOS)
+    static func from(_ standardAttribute: MortarAliasLayoutAttribute) -> MortarLayoutAttribute {
+        switch standardAttribute {
+        case .left: return .left
+        case .right: return .right
+        case .top: return .top
+        case .bottom: return .bottom
+        case .leading: return .leading
+        case .trailing: return .trailing
+        case .width: return .width
+        case .height: return .height
+        case .centerX: return .centerX
+        case .centerY: return .centerY
+        case .lastBaseline: return .lastBaseline
+        case .firstBaseline: return .firstBaseline
+        case .leftMargin: return .leftMargin
+        case .rightMargin: return .rightMargin
+        case .topMargin: return .topMargin
+        case .bottomMargin: return .bottomMargin
+        case .leadingMargin: return .leadingMargin
+        case .trailingMargin: return .trailingMargin
+        case .centerXWithinMargins: return .centerXWithinMargins
+        case .centerYWithinMargins: return .centerYWithinMargins
+        case .notAnAttribute: return .notAnAttribute
+        @unknown default:
+            return .notAnAttribute
+        }
+    }
+    #else
+    static func from(_ standardAttribute: MortarAliasLayoutAttribute) -> MortarLayoutAttribute {
+        switch standardAttribute {
+        case .left: return .left
+        case .right: return .right
+        case .top: return .top
+        case .bottom: return .bottom
+        case .leading: return .leading
+        case .trailing: return .trailing
+        case .width: return .width
+        case .height: return .height
+        case .centerX: return .centerX
+        case .centerY: return .centerY
+        @unknown default:
+            return .notAnAttribute
+        }
+    }
+    #endif
 
     #if os(iOS) || os(tvOS)
     var standardLayoutAttribute: MortarAliasLayoutAttribute? {

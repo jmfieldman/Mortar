@@ -43,7 +43,9 @@ public extension MortarView {
     /// Adds subviews to the current view using a result builder.
     /// - Parameter subviewBoxes: A closure that returns an array of `MortarAddViewBox` instances.
     func addSubviews(@MortarAddSubviewsBuilder _ subviewBoxes: () -> [MortarAddViewBox]) {
-        process(subviewBoxes())
+        MortarMainThreadLayoutStack.execute {
+            process(subviewBoxes())
+        }
     }
 }
 
@@ -52,14 +54,18 @@ public extension MortarView {
     /// - Parameter subviewBoxes: A closure that returns an array of `MortarAddViewBox` instances.
     convenience init(@MortarAddSubviewsBuilder _ subviewBoxes: () -> [MortarAddViewBox]) {
         self.init(frame: .zero)
-        process(subviewBoxes())
+        MortarMainThreadLayoutStack.execute {
+            process(subviewBoxes())
+        }
     }
 
     /// Initializes a `MortarView` with subviews using a result builder, allowing the view to be referenced in the closure.
     /// - Parameter subviewBoxes: A closure that takes the current view and returns an array of `MortarAddViewBox` instances.
     convenience init(@MortarAddSubviewsBuilder _ subviewBoxes: (MortarView) -> [MortarAddViewBox]) {
         self.init(frame: .zero)
-        process(subviewBoxes(self))
+        MortarMainThreadLayoutStack.execute {
+            process(subviewBoxes(self))
+        }
     }
 }
 
@@ -67,6 +73,10 @@ private extension MortarView {
     /// Processes an array of `MortarAddViewBox` instances and adds their views to the current view.
     /// - Parameter addViewBoxes: An array of `MortarAddViewBox` instances.
     func process(_ addViewBoxes: [MortarAddViewBox]) {
-        addViewBoxes.compactMap(\.view).forEach(addSubview)
+        if let stackView = self as? MortarStackView {
+            addViewBoxes.compactMap(\.view).forEach { stackView.addArrangedSubview($0) }
+        } else {
+            addViewBoxes.compactMap(\.view).forEach(addSubview)
+        }
     }
 }

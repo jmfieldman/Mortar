@@ -13,6 +13,9 @@ public struct MortarConstraint {
     let source: MortarCoordinate
     let relation: MortarAliasLayoutRelation
 
+    /// The resolved NSLayoutConstraint
+    let layoutConstraint: NSLayoutConstraint?
+
     init(
         target: MortarCoordinate,
         source: MortarCoordinate,
@@ -21,5 +24,24 @@ public struct MortarConstraint {
         self.target = target
         self.source = source
         self.relation = relation
+
+        guard
+            let targetItem = target.item,
+            let targetAttribute = target.attribute,
+            let targetStandardAttribute = targetAttribute.standardLayoutAttribute
+        else {
+            self.layoutConstraint = nil
+            return
+        }
+
+        self.layoutConstraint = NSLayoutConstraint(
+            item: targetItem,
+            attribute: targetStandardAttribute,
+            relatedBy: relation,
+            toItem: source.item,
+            attribute: source.attribute?.standardLayoutAttribute ?? targetStandardAttribute,
+            multiplier: source.multiplier,
+            constant: source.constant.0
+        )
     }
 }
