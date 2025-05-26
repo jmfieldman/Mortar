@@ -6,6 +6,8 @@
 import Mortar
 
 class ViewController: UIViewController {
+    let testProp = MutableProperty<Int>(0)
+
     override func loadView() {
         view = ZStackView { parent in
             ZStackView { child1 in
@@ -32,10 +34,16 @@ class ViewController: UIViewController {
                 }
 
                 UILabel {
-                    $0.text = "Line 2"
+                    $0.bind(\.text) <~ testProp.map { "Test \($0)" }
                 }
             }
         }
         view.backgroundColor = .red
+
+        for t in 1 ..< 100 {
+            DispatchQueue.global().asyncAfter(deadline: .now() + TimeInterval(t)) {
+                self.testProp.value = t
+            }
+        }
     }
 }
