@@ -49,10 +49,16 @@ public extension MortarView {
     }
 }
 
-public extension MortarView {
+public protocol MortarFrameInitializable {
+    init(frame: CGRect)
+}
+
+extension MortarView: MortarFrameInitializable {}
+
+public extension MortarFrameInitializable where Self: MortarView {
     /// Initializes a `MortarView` with subviews using a result builder.
     /// - Parameter subviewBoxes: A closure that returns an array of `MortarAddViewBox` instances.
-    convenience init(@MortarAddSubviewsBuilder _ subviewBoxes: () -> [MortarAddViewBox]) {
+    init(@MortarAddSubviewsBuilder _ subviewBoxes: () -> [MortarAddViewBox]) {
         self.init(frame: .zero)
         MortarMainThreadLayoutStack.execute {
             process(subviewBoxes())
@@ -61,7 +67,7 @@ public extension MortarView {
 
     /// Initializes a `MortarView` with subviews using a result builder, allowing the view to be referenced in the closure.
     /// - Parameter subviewBoxes: A closure that takes the current view and returns an array of `MortarAddViewBox` instances.
-    convenience init(@MortarAddSubviewsBuilder _ subviewBoxes: (MortarView) -> [MortarAddViewBox]) {
+    init(@MortarAddSubviewsBuilder _ subviewBoxes: (Self) -> [MortarAddViewBox]) {
         self.init(frame: .zero)
         MortarMainThreadLayoutStack.execute {
             process(subviewBoxes(self))

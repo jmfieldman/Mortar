@@ -7,8 +7,8 @@ import Mortar
 
 class ViewController: UIViewController {
     override func loadView() {
-        view = UIView { parent in
-            UIView { child1 in
+        view = ZStackView { parent in
+            ZStackView { child1 in
                 child1.backgroundColor = .blue
                 child1.anchors.center == parent.anchors.center
                 child1.size == CGSize(width: 100, height: 100)
@@ -21,7 +21,12 @@ class ViewController: UIViewController {
                 }
             }
 
-            UIStackView {
+            VStackView {
+                $0.alignment = .center
+                $0.backgroundColor = .white
+                $0.anchors.bottom == parent.anchors.bottom - 40
+                $0.anchors.sides == parent.anchors.sides
+
                 UILabel {
                     $0.text = "Hello, World!"
                 }
