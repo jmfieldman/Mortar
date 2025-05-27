@@ -5,6 +5,8 @@
 
 import CombineEx
 
+// MARK: - Bind Target
+
 public struct BindTarget<Target: AnyObject, T> {
     let target: Target
     let keyPath: WritableKeyPath<Target, T>
@@ -57,3 +59,61 @@ public func <~ <T>(lhs: BindTarget<some Any, T>, rhs: any Publisher<T, Never>) {
             }
         )
 }
+
+// MARK: - Sink
+
+public protocol _MortarSinkProviding: AnyObject {
+    @discardableResult
+    func sink<Binder, Output, E: Error>(
+        _ publisher: any Publisher<Output, E>,
+        receiveValue: ((Binder, Output) -> Void)?,
+        receiveCompletion: ((Binder, Subscribers.Completion<E>) -> Void)?
+    ) -> AnyCancellable where Binder == Self
+
+    @discardableResult
+    func sink<Binder, Output>(
+        _ publisher: any Publisher<Output, Never>,
+        receiveValue: ((Binder, Output) -> Void)?
+    ) -> AnyCancellable where Binder == Self
+}
+
+public extension _MortarSinkProviding {
+    @discardableResult
+    func sink<Binder, Output, E: Error>(
+        _ publisher: any Publisher<Output, E>,
+        receiveValue: ((Binder, Output) -> Void)? = nil,
+        receiveCompletion: ((Binder, Subscribers.Completion<E>) -> Void)? = nil
+    ) -> AnyCancellable where Binder == Self {
+        publisher.eraseToAnyPublisher()
+            .receiveOnMain()
+            .sink(
+                duringLifetimeOf: self,
+                receiveValue: { [weak self] in
+                    guard let self else { return }
+                    receiveValue?(self, $0)
+                },
+                receiveCompletion: { [weak self] in
+                    guard let self else { return }
+                    receiveCompletion?(self, $0)
+                }
+            )
+    }
+
+    @discardableResult
+    func sink<Binder, Output>(
+        _ publisher: any Publisher<Output, Never>,
+        receiveValue: ((Binder, Output) -> Void)?
+    ) -> AnyCancellable where Binder == Self {
+        publisher.eraseToAnyPublisher()
+            .receiveOnMain()
+            .sink(
+                duringLifetimeOf: self,
+                receiveValue: { [weak self] in
+                    guard let self else { return }
+                    receiveValue?(self, $0)
+                }
+            )
+    }
+}
+
+extension MortarView: _MortarSinkProviding {}

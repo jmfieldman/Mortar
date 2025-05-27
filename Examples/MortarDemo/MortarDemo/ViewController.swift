@@ -24,17 +24,25 @@ class ViewController: UIViewController {
             }
 
             VStackView {
-                $0.alignment = .center
-                $0.backgroundColor = .white
+                // Layout
                 $0.anchors.bottom == parent.anchors.bottom - 40
                 $0.anchors.sides == parent.anchors.sides
 
+                // Configuration
+                $0.alignment = .center
+                $0.backgroundColor = .white
+
+                // Subviews
                 UILabel {
                     $0.text = "Hello, World!"
                 }
 
                 UILabel {
                     $0.bind(\.text) <~ testProp.map { "Test \($0)" }
+                }
+
+                UILabel {
+                    $0.sink(testProp) { $0.text = "Test \($1)" }
                 }
             }
         }
