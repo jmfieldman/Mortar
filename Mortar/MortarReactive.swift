@@ -117,3 +117,31 @@ public extension _MortarSinkProviding {
 }
 
 extension MortarView: _MortarSinkProviding {}
+
+// MARK: - Observe
+
+public protocol _MortarPropertyProviding: MortarView {
+    func property<Source, T>(
+        _ keyPath: KeyPath<Source, T>
+    ) -> Property<T> where Source == Self
+}
+
+public extension _MortarPropertyProviding {
+    func property<T>(
+        _ keyPath: KeyPath<Self, T>
+    ) -> Property<T> {
+        let mutableProperty = MutableProperty(self[keyPath: keyPath])
+        let property = Property(mutableProperty)
+
+        let kvoToken = observe(keyPath) { obj, _ in
+            mutableProperty.value = obj[keyPath: keyPath]
+        }
+
+        permanentlyAssociate(kvoToken)
+        permanentlyAssociate(property)
+
+        return property
+    }
+}
+
+extension MortarView: _MortarPropertyProviding {}

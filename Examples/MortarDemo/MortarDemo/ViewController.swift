@@ -7,6 +7,7 @@ import Mortar
 
 class ViewController: UIViewController {
     let testProp = MutableProperty<Int>(0)
+    let boolProp = MutableProperty<Bool>(false)
 
     override func loadView() {
         view = ZStackView { parent in
@@ -43,6 +44,10 @@ class ViewController: UIViewController {
 
                 UILabel {
                     $0.sink(testProp) { $0.text = "Test \($1)" }
+                }
+
+                UILabel {
+                    $0.sink(boolProp) { $0.text = "boolprop is \($1)" }
                 }
             }
         }
