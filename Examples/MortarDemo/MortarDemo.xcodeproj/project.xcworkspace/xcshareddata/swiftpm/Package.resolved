@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/jmfieldman/CombineEx.git",
       "state" : {
-        "revision" : "3c39ea23c1e2bba344cee4073da1dbf4d3fbc6ec",
-        "version" : "0.0.4"
+        "revision" : "28a4751b908451a7889ad18dbe4ad1a4a591b65d",
+        "version" : "0.0.6"
       }
     }
   ],

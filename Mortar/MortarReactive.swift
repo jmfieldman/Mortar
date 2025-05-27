@@ -1,5 +1,5 @@
 //
-//  MortarBind.swift
+//  MortarReactive.swift
 //  Copyright © 2025 Jason Fieldman.
 //
 
@@ -28,7 +28,9 @@ extension MortarView: _MortarBindProviding {}
 
 infix operator <~: AssignmentPrecedence
 
-public func <~ <T>(lhs: BindTarget<some Any, T>, rhs: any Publisher<T, some Error>) {
+// swiftformat:disable opaqueGenericParameters
+
+public func <~ <T, E: Error>(lhs: BindTarget<some Any, T>, rhs: any Publisher<T, E>) {
     let lhsTarget = lhs.target
     let keyPath = lhs.keyPath
     rhs.eraseToAnyPublisher()
@@ -40,6 +42,8 @@ public func <~ <T>(lhs: BindTarget<some Any, T>, rhs: any Publisher<T, some Erro
             }
         )
 }
+
+// swiftformat:enable opaqueGenericParameters
 
 public func <~ <T>(lhs: BindTarget<some Any, T>, rhs: any Publisher<T, Never>) {
     let lhsTarget = lhs.target
