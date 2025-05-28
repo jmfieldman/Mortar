@@ -3,8 +3,6 @@
 //  Copyright © 2016 Jason Fieldman.
 //
 
-import CombineEx
-
 typealias MortarConstantTuple = (CGFloat, CGFloat, CGFloat, CGFloat)
 
 func tupleIndex(_ tuple: MortarConstantTuple, _ index: Int) -> CGFloat {

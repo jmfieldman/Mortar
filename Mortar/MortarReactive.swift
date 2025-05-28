@@ -148,6 +148,8 @@ extension MortarView: _MortarKVOPropertyProviding {}
 
 // MARK: - UIControl Publish Actions
 
+#if os(iOS) || os(tvOS)
+
 private class TargetBox<UIControlSubtype> {
     let subject: PassthroughSubject<UIControlSubtype, Never> = .init()
     @objc func invoke(sender: UIControl) {
@@ -175,3 +177,5 @@ public extension _MortarUIControlEventsProviding {
 }
 
 extension UIControl: _MortarUIControlEventsProviding {}
+
+#endif

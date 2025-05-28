@@ -26,7 +26,7 @@ class ViewController: UIViewController {
 
             VStackView {
                 // Layout
-                $0.anchors.bottom == parent.anchors.bottom - 40
+                $0.anchors.bottom == parent.safeAreaLayoutGuide.anchors.bottom - 40
                 $0.anchors.sides == parent.anchors.sides
 
                 // Configuration

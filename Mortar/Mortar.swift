@@ -13,6 +13,7 @@ public typealias MortarEdgeInsets = UIEdgeInsets
 public typealias MortarAliasLayoutPriority = UILayoutPriority
 public typealias MortarAliasLayoutRelation = NSLayoutConstraint.Relation
 public typealias MortarAliasLayoutAttribute = NSLayoutConstraint.Attribute
+public typealias MortarAliasLayoutAxis = NSLayoutConstraint.Axis
 #else
 import AppKit
 
@@ -23,11 +24,8 @@ public typealias MortarEdgeInsets = NSEdgeInsets
 public typealias MortarAliasLayoutPriority = NSLayoutConstraint.Priority
 public typealias MortarAliasLayoutRelation = NSLayoutConstraint.Relation
 public typealias MortarAliasLayoutAttribute = NSLayoutConstraint.Attribute
+public typealias MortarAliasLayoutAxis = NSLayoutConstraint.Orientation
 #endif
-
-public enum MortarAxis {
-    case horizontal, vertical
-}
 
 public enum MortarActivationState {
     case activated, deactivated
@@ -184,7 +182,7 @@ enum MortarLayoutAttribute {
     #endif
 
     #if os(iOS) || os(tvOS)
-    var axis: MortarAxis? {
+    var axis: MortarAliasLayoutAxis? {
         switch self {
         case .left: .horizontal
         case .right: .horizontal
