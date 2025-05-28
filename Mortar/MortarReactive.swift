@@ -118,16 +118,16 @@ public extension _MortarSinkProviding {
 
 extension MortarView: _MortarSinkProviding {}
 
-// MARK: - Observe
+// MARK: - KVO Property
 
-public protocol _MortarPropertyProviding: MortarView {
-    func property<Source, T>(
+public protocol _MortarKVOPropertyProviding: NSObject {
+    func kvoProperty<Source, T>(
         _ keyPath: KeyPath<Source, T>
     ) -> Property<T> where Source == Self
 }
 
-public extension _MortarPropertyProviding {
-    func property<T>(
+public extension _MortarKVOPropertyProviding {
+    func kvoProperty<T>(
         _ keyPath: KeyPath<Self, T>
     ) -> Property<T> {
         let mutableProperty = MutableProperty(self[keyPath: keyPath])
@@ -144,4 +144,34 @@ public extension _MortarPropertyProviding {
     }
 }
 
-extension MortarView: _MortarPropertyProviding {}
+extension MortarView: _MortarKVOPropertyProviding {}
+
+// MARK: - UIControl Publish Actions
+
+private class TargetBox<UIControlSubtype> {
+    let subject: PassthroughSubject<UIControlSubtype, Never> = .init()
+    @objc func invoke(sender: UIControl) {
+        if let control = sender as? UIControlSubtype {
+            subject.send(control)
+        }
+    }
+}
+
+public protocol _MortarUIControlEventsProviding: UIControl {
+    func events<UIControlSubtype>(
+        _ filter: UIControl.Event
+    ) -> AnyPublisher<UIControlSubtype, Never> where UIControlSubtype == Self
+}
+
+public extension _MortarUIControlEventsProviding {
+    func events<UIControlSubtype>(
+        _ filter: UIControl.Event = [.allEvents]
+    ) -> AnyPublisher<UIControlSubtype, Never> where UIControlSubtype == Self {
+        let internalTarget = TargetBox<Self>()
+        permanentlyAssociate(internalTarget)
+        addTarget(internalTarget, action: #selector(TargetBox<Self>.invoke(sender:)), for: filter)
+        return internalTarget.subject.eraseToAnyPublisher()
+    }
+}
+
+extension UIControl: _MortarUIControlEventsProviding {}

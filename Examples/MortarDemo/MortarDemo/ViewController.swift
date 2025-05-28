@@ -49,6 +49,14 @@ class ViewController: UIViewController {
                 UILabel {
                     $0.sink(boolProp) { $0.text = "boolprop is \($1)" }
                 }
+
+                UILabel {
+                    $0.bind(\.text) <~ boolProp.map { "boolprop is \($0)" }
+                }
+
+                UISwitch {
+                    boolProp <~ $0.events(.valueChanged).map(\.isOn)
+                }
             }
         }
         view.backgroundColor = .red
