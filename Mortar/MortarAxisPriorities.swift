@@ -3,10 +3,18 @@
 //  Copyright © 2025 Jason Fieldman.
 //
 
+/// Represents the layout priorities for both horizontal and vertical axes.
 public struct MortarAxisPriorities {
+    /// The horizontal layout priority.
     public var horizontal: MortarAliasLayoutPriority
+
+    /// The vertical layout priority.
     public var vertical: MortarAliasLayoutPriority
 
+    /// Initializes the priorities with specified horizontal and vertical values.
+    /// - Parameters:
+    ///   - horizontal: The horizontal layout priority.
+    ///   - vertical: The vertical layout priority.
     public init(
         horizontal: MortarAliasLayoutPriority,
         vertical: MortarAliasLayoutPriority
@@ -17,6 +25,7 @@ public struct MortarAxisPriorities {
 }
 
 public extension MortarView {
+    /// Gets or sets the compression resistance priorities for both horizontal and vertical axes.
     var compressionResistance: MortarAxisPriorities {
         get {
             .init(
@@ -30,6 +39,7 @@ public extension MortarView {
         }
     }
 
+    /// Gets or sets the horizontal compression resistance priority.
     var compressionResistanceHorizontal: MortarAliasLayoutPriority {
         get {
             contentCompressionResistancePriority(for: .horizontal)
@@ -39,6 +49,7 @@ public extension MortarView {
         }
     }
 
+    /// Gets or sets the vertical compression resistance priority.
     var compressionResistanceVertical: MortarAliasLayoutPriority {
         get {
             contentCompressionResistancePriority(for: .vertical)
@@ -48,6 +59,7 @@ public extension MortarView {
         }
     }
 
+    /// Gets or sets the content hugging priorities for both horizontal and vertical axes.
     var contentHugging: MortarAxisPriorities {
         get {
             .init(
@@ -61,7 +73,8 @@ public extension MortarView {
         }
     }
 
-    var contentHughingHorizontal: MortarAliasLayoutPriority {
+    /// Gets or sets the horizontal content hugging priority.
+    var contentHuggingHorizontal: MortarAliasLayoutPriority {
         get {
             contentHuggingPriority(for: .horizontal)
         }
@@ -70,6 +83,7 @@ public extension MortarView {
         }
     }
 
+    /// Gets or sets the vertical content hugging priority.
     var contentHuggingVertical: MortarAliasLayoutPriority {
         get {
             contentHuggingPriority(for: .vertical)
