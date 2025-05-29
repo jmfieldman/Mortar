@@ -87,32 +87,6 @@ public func - (lhs: MortarCoordinate, rhs: CGSize) -> MortarCoordinate {
     )
 }
 
-// MARK: - SizeConstraint Constants - CGSize
-
-public func + (lhs: MortarSizeCoordinate, rhs: CGSize) -> MortarSizeCoordinate {
-    .init(
-        item: lhs.item,
-        multiplier: lhs.multiplier,
-        constant: CGSize(
-            width: lhs.constant.width + rhs.width,
-            height: lhs.constant.height + rhs.height
-        ),
-        priority: lhs.priority
-    )
-}
-
-public func - (lhs: MortarSizeCoordinate, rhs: CGSize) -> MortarSizeCoordinate {
-    .init(
-        item: lhs.item,
-        multiplier: lhs.multiplier,
-        constant: CGSize(
-            width: lhs.constant.width - rhs.width,
-            height: lhs.constant.height - rhs.height
-        ),
-        priority: lhs.priority
-    )
-}
-
 // MARK: - Constraint Constants - Edge Insets
 
 public func + (lhs: MortarCoordinate, rhs: MortarEdgeInsets) -> MortarCoordinate {
@@ -171,24 +145,6 @@ public func / (lhs: MortarCoordinate, rhs: MortarCGFloatable) -> MortarCoordinat
     )
 }
 
-public func * (lhs: MortarSizeCoordinate, rhs: MortarCGFloatable) -> MortarSizeCoordinate {
-    .init(
-        item: lhs.item,
-        multiplier: lhs.multiplier * rhs.floatValue,
-        constant: lhs.constant,
-        priority: lhs.priority
-    )
-}
-
-public func / (lhs: MortarSizeCoordinate, rhs: MortarCGFloatable) -> MortarSizeCoordinate {
-    .init(
-        item: lhs.item,
-        multiplier: lhs.multiplier / rhs.floatValue,
-        constant: lhs.constant,
-        priority: lhs.priority
-    )
-}
-
 // MARK: - Priority Operator
 
 public func ^ (lhs: MortarCoordinate, rhs: MortarLayoutPriority) -> MortarCoordinate {
@@ -201,30 +157,11 @@ public func ^ (lhs: MortarCoordinate, rhs: MortarLayoutPriority) -> MortarCoordi
     )
 }
 
-public func ^ (lhs: MortarSizeCoordinate, rhs: MortarLayoutPriority) -> MortarSizeCoordinate {
-    .init(
-        item: lhs.item,
-        multiplier: lhs.multiplier,
-        constant: lhs.constant,
-        priority: rhs
-    )
-}
-
 public func ^ (lhs: MortarCoordinateConvertible, rhs: MortarLayoutPriority) -> MortarCoordinate {
     let coord = lhs.coordinate
     return .init(
         item: coord.item,
         attribute: coord.attribute,
-        multiplier: coord.multiplier,
-        constant: coord.constant,
-        priority: rhs
-    )
-}
-
-public func ^ (lhs: MortarSizeCoordinateConvertible, rhs: MortarLayoutPriority) -> MortarSizeCoordinate {
-    let coord = lhs.sizeCoordinate
-    return .init(
-        item: coord.item,
         multiplier: coord.multiplier,
         constant: coord.constant,
         priority: rhs
@@ -244,32 +181,11 @@ public func % (lhs: MortarCoordinate, rhs: MortarActivationState) -> MortarCoord
     )
 }
 
-public func % (lhs: MortarSizeCoordinate, rhs: MortarActivationState) -> MortarSizeCoordinate {
-    .init(
-        item: lhs.item,
-        multiplier: lhs.multiplier,
-        constant: lhs.constant,
-        priority: lhs.priority,
-        startActivated: rhs == .activated
-    )
-}
-
 public func % (lhs: MortarCoordinateConvertible, rhs: MortarActivationState) -> MortarCoordinate {
     let coord = lhs.coordinate
     return .init(
         item: coord.item,
         attribute: coord.attribute,
-        multiplier: coord.multiplier,
-        constant: coord.constant,
-        priority: coord.priority,
-        startActivated: rhs == .activated
-    )
-}
-
-public func % (lhs: MortarSizeCoordinateConvertible, rhs: MortarActivationState) -> MortarSizeCoordinate {
-    let coord = lhs.sizeCoordinate
-    return .init(
-        item: coord.item,
         multiplier: coord.multiplier,
         constant: coord.constant,
         priority: coord.priority,
@@ -323,54 +239,6 @@ public func <= (lhs: MortarCoordinate, rhs: MortarCoordinateConvertible) -> Mort
     .init(
         target: lhs,
         source: rhs.coordinate,
-        relation: .lessThanOrEqual
-    )
-}
-
-public func == (lhs: MortarSizeCoordinate, rhs: MortarSizeCoordinate) -> MortarConstraintGroup {
-    .init(
-        target: lhs.coordinate,
-        source: rhs.coordinate,
-        relation: .equal
-    )
-}
-
-public func >= (lhs: MortarSizeCoordinate, rhs: MortarSizeCoordinate) -> MortarConstraintGroup {
-    .init(
-        target: lhs.coordinate,
-        source: rhs.coordinate,
-        relation: .greaterThanOrEqual
-    )
-}
-
-public func <= (lhs: MortarSizeCoordinate, rhs: MortarSizeCoordinate) -> MortarConstraintGroup {
-    .init(
-        target: lhs.coordinate,
-        source: rhs.coordinate,
-        relation: .lessThanOrEqual
-    )
-}
-
-public func == (lhs: MortarSizeCoordinate, rhs: MortarSizeCoordinateConvertible) -> MortarConstraintGroup {
-    .init(
-        target: lhs.coordinate,
-        source: rhs.sizeCoordinate.coordinate,
-        relation: .equal
-    )
-}
-
-public func >= (lhs: MortarSizeCoordinate, rhs: MortarSizeCoordinateConvertible) -> MortarConstraintGroup {
-    .init(
-        target: lhs.coordinate,
-        source: rhs.sizeCoordinate.coordinate,
-        relation: .greaterThanOrEqual
-    )
-}
-
-public func <= (lhs: MortarSizeCoordinate, rhs: MortarSizeCoordinateConvertible) -> MortarConstraintGroup {
-    .init(
-        target: lhs.coordinate,
-        source: rhs.sizeCoordinate.coordinate,
         relation: .lessThanOrEqual
     )
 }
