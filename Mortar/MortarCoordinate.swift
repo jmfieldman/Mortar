@@ -68,6 +68,18 @@ extension CGPoint: MortarCoordinateConvertible {
     }
 }
 
+extension CGSize: MortarCoordinateConvertible {
+    public var coordinate: MortarCoordinate {
+        .init(
+            item: nil,
+            attribute: nil,
+            multiplier: 1,
+            constant: (width, height, 0, 0),
+            priority: .required
+        )
+    }
+}
+
 extension MortarEdgeInsets: MortarCoordinateConvertible {
     public var coordinate: MortarCoordinate {
         .init(
@@ -157,11 +169,11 @@ public struct MortarSizeCoordinate {
 }
 
 public protocol MortarSizeCoordinateConvertible {
-    var coordinate: MortarSizeCoordinate { get }
+    var sizeCoordinate: MortarSizeCoordinate { get }
 }
 
 extension CGSize: MortarSizeCoordinateConvertible {
-    public var coordinate: MortarSizeCoordinate {
+    public var sizeCoordinate: MortarSizeCoordinate {
         .init(
             item: nil,
             multiplier: 1,

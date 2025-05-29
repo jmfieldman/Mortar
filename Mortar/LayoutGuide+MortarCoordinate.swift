@@ -4,7 +4,7 @@
 //
 
 public extension MortarLayoutGuide {
-    var anchors: MortarAnchorProvider {
+    var layout: MortarAnchorProvider {
         .init(item: self)
     }
 

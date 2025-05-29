@@ -13,21 +13,21 @@ class ViewController: UIViewController {
         view = ZStackView { parent in
             ZStackView { child1 in
                 child1.backgroundColor = .blue
-                child1.anchors.center == parent.anchors.center
-                child1.size == CGSize(width: 100, height: 100)
+                child1.layout.center == parent.layout.center
+                child1.layout.size == CGSize(width: 100, height: 200)
 
                 UIView { inner in
                     inner.backgroundColor = .yellow
-                    inner.anchors.topLeft == parent.anchors.topLeft + CGPoint(x: 40, y: 80)
-                    inner.size.width == 100
-                    inner.size.height == 200
+                    inner.layout.topLeft == parent.layout.topLeft + CGPoint(x: 40, y: 80)
+                    inner.layout.width == 100
+                    inner.layout.height == 200
                 }
             }
 
             VStackView {
                 // Layout
-                $0.anchors.bottom == parent.safeAreaLayoutGuide.anchors.bottom - 40
-                $0.anchors.sides == parent.anchors.sides
+                $0.layout.bottom == parent.safeAreaLayoutGuide.layout.bottom - 40
+                $0.layout.sides == parent.layout.sides
 
                 // Configuration
                 $0.alignment = .center

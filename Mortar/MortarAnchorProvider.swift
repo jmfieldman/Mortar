@@ -29,6 +29,9 @@ public extension MortarAnchorProvider {
     var baseline: MortarCoordinate { anchorCoordinate(.baseline) }
     var firstBaseline: MortarCoordinate { anchorCoordinate(.firstBaseline) }
     var lastBaseline: MortarCoordinate { anchorCoordinate(.lastBaseline) }
+    var size: MortarCoordinate { anchorCoordinate(.size) }
+    var width: MortarCoordinate { anchorCoordinate(.width) }
+    var height: MortarCoordinate { anchorCoordinate(.height) }
 
     #if os(iOS) || os(tvOS)
     var leftMargin: MortarCoordinate { anchorCoordinate(.leftMargin) }

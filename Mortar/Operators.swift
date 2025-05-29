@@ -63,6 +63,32 @@ public func - (lhs: MortarCoordinate, rhs: CGPoint) -> MortarCoordinate {
 
 // MARK: - Constraint Constants - CGSize
 
+public func + (lhs: MortarCoordinate, rhs: CGSize) -> MortarCoordinate {
+    verifyDegrees(lhs, 2)
+
+    return .init(
+        item: lhs.item,
+        attribute: lhs.attribute,
+        multiplier: lhs.multiplier,
+        constant: (lhs.constant.0 + rhs.width.floatValue, lhs.constant.1 + rhs.height.floatValue, lhs.constant.2, lhs.constant.3),
+        priority: lhs.priority
+    )
+}
+
+public func - (lhs: MortarCoordinate, rhs: CGSize) -> MortarCoordinate {
+    verifyDegrees(lhs, 2)
+
+    return .init(
+        item: lhs.item,
+        attribute: lhs.attribute,
+        multiplier: lhs.multiplier,
+        constant: (lhs.constant.0 - rhs.width.floatValue, lhs.constant.1 - rhs.height.floatValue, lhs.constant.2, lhs.constant.3),
+        priority: lhs.priority
+    )
+}
+
+// MARK: - SizeConstraint Constants - CGSize
+
 public func + (lhs: MortarSizeCoordinate, rhs: CGSize) -> MortarSizeCoordinate {
     .init(
         item: lhs.item,
@@ -196,7 +222,7 @@ public func ^ (lhs: MortarCoordinateConvertible, rhs: MortarLayoutPriority) -> M
 }
 
 public func ^ (lhs: MortarSizeCoordinateConvertible, rhs: MortarLayoutPriority) -> MortarSizeCoordinate {
-    let coord = lhs.coordinate
+    let coord = lhs.sizeCoordinate
     return .init(
         item: coord.item,
         multiplier: coord.multiplier,
@@ -241,7 +267,7 @@ public func % (lhs: MortarCoordinateConvertible, rhs: MortarActivationState) -> 
 }
 
 public func % (lhs: MortarSizeCoordinateConvertible, rhs: MortarActivationState) -> MortarSizeCoordinate {
-    let coord = lhs.coordinate
+    let coord = lhs.sizeCoordinate
     return .init(
         item: coord.item,
         multiplier: coord.multiplier,
@@ -328,7 +354,7 @@ public func <= (lhs: MortarSizeCoordinate, rhs: MortarSizeCoordinate) -> MortarC
 public func == (lhs: MortarSizeCoordinate, rhs: MortarSizeCoordinateConvertible) -> MortarConstraintGroup {
     .init(
         target: lhs.coordinate,
-        source: rhs.coordinate.coordinate,
+        source: rhs.sizeCoordinate.coordinate,
         relation: .equal
     )
 }
@@ -336,7 +362,7 @@ public func == (lhs: MortarSizeCoordinate, rhs: MortarSizeCoordinateConvertible)
 public func >= (lhs: MortarSizeCoordinate, rhs: MortarSizeCoordinateConvertible) -> MortarConstraintGroup {
     .init(
         target: lhs.coordinate,
-        source: rhs.coordinate.coordinate,
+        source: rhs.sizeCoordinate.coordinate,
         relation: .greaterThanOrEqual
     )
 }
@@ -344,7 +370,7 @@ public func >= (lhs: MortarSizeCoordinate, rhs: MortarSizeCoordinateConvertible)
 public func <= (lhs: MortarSizeCoordinate, rhs: MortarSizeCoordinateConvertible) -> MortarConstraintGroup {
     .init(
         target: lhs.coordinate,
-        source: rhs.coordinate.coordinate,
+        source: rhs.sizeCoordinate.coordinate,
         relation: .lessThanOrEqual
     )
 }
