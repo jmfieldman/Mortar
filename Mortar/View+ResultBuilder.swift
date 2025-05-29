@@ -46,6 +46,18 @@ public struct MortarAddSubviewsBuilder {
     }
 }
 
+private extension MortarView {
+    /// Processes an array of `MortarAddViewBox` instances and adds their views to the current view.
+    /// - Parameter addViewBoxes: An array of `MortarAddViewBox` instances.
+    func process(_ addViewBoxes: [MortarAddViewBox]) {
+        if let stackView = self as? MortarStackView {
+            addViewBoxes.compactMap(\.view).forEach { stackView.addArrangedSubview($0) }
+        } else {
+            addViewBoxes.compactMap(\.view).forEach(addSubview)
+        }
+    }
+}
+
 public protocol MortarFrameInitializable {
     init(frame: CGRect)
 }
@@ -70,7 +82,13 @@ public extension MortarFrameInitializable where Self: MortarView {
             process(subviewBoxes(self))
         }
     }
+}
 
+public protocol MortarConfigurableView {}
+
+extension MortarView: MortarConfigurableView {}
+
+public extension MortarConfigurableView where Self: MortarView {
     /// Configures the view by adding subviews using a result builder.
     /// - Parameter configureBlock: A closure that returns an array of `MortarAddViewBox` instances.
     /// - Returns: The configured view (`Self`).
@@ -89,17 +107,5 @@ public extension MortarFrameInitializable where Self: MortarView {
             process(configureBlock(self))
         }
         return self
-    }
-}
-
-private extension MortarView {
-    /// Processes an array of `MortarAddViewBox` instances and adds their views to the current view.
-    /// - Parameter addViewBoxes: An array of `MortarAddViewBox` instances.
-    func process(_ addViewBoxes: [MortarAddViewBox]) {
-        if let stackView = self as? MortarStackView {
-            addViewBoxes.compactMap(\.view).forEach { stackView.addArrangedSubview($0) }
-        } else {
-            addViewBoxes.compactMap(\.view).forEach(addSubview)
-        }
     }
 }
