@@ -46,16 +46,6 @@ public struct MortarAddSubviewsBuilder {
     }
 }
 
-public extension MortarView {
-    /// Adds subviews to the current view using a result builder.
-    /// - Parameter subviewBoxes: A closure that returns an array of `MortarAddViewBox` instances.
-    func addSubviews(@MortarAddSubviewsBuilder _ subviewBoxes: () -> [MortarAddViewBox]) {
-        MortarMainThreadLayoutStack.execute {
-            process(subviewBoxes())
-        }
-    }
-}
-
 public protocol MortarFrameInitializable {
     init(frame: CGRect)
 }
@@ -79,6 +69,26 @@ public extension MortarFrameInitializable where Self: MortarView {
         MortarMainThreadLayoutStack.execute {
             process(subviewBoxes(self))
         }
+    }
+
+    /// Configures the view by adding subviews using a result builder.
+    /// - Parameter configureBlock: A closure that returns an array of `MortarAddViewBox` instances.
+    /// - Returns: The configured view (`Self`).
+    func configure(@MortarAddSubviewsBuilder _ configureBlock: () -> [MortarAddViewBox]) -> Self {
+        MortarMainThreadLayoutStack.execute {
+            process(configureBlock())
+        }
+        return self
+    }
+
+    /// Configures the view by adding subviews using a result builder, allowing access to the view within the closure.
+    /// - Parameter configureBlock: A closure that takes `Self` and returns an array of `MortarAddViewBox` instances.
+    /// - Returns: The configured view (`Self`).
+    func configure(@MortarAddSubviewsBuilder _ configureBlock: (Self) -> [MortarAddViewBox]) -> Self {
+        MortarMainThreadLayoutStack.execute {
+            process(configureBlock(self))
+        }
+        return self
     }
 }
 

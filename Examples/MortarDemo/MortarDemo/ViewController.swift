@@ -9,6 +9,13 @@ class ViewController: UIViewController {
     let testProp = MutableProperty<Int>(0)
     let boolProp = MutableProperty<Bool>(false)
 
+    let legacyLabel = {
+        let label = UILabel()
+        label.text = "Old Style"
+        label.backgroundColor = .magenta
+        return label
+    }()
+
     override func loadView() {
         view = ZStackView { parent in
             ZStackView { child1 in
@@ -21,6 +28,11 @@ class ViewController: UIViewController {
                     inner.layout.topLeft == parent.layout.topLeft + CGPoint(x: 40, y: 80)
                     inner.layout.width == 100
                     inner.layout.height == 200
+                }
+
+                legacyLabel.configure {
+                    $0.layout.centerX == parent.layout.centerX
+                    $0.layout.bottom == child1.layout.top
                 }
             }
 
@@ -55,7 +67,11 @@ class ViewController: UIViewController {
                 }
 
                 UISwitch {
-                    boolProp <~ $0.events(.valueChanged).map(\.isOn)
+                    boolProp <~ $0.publishEvents(.valueChanged).map(\.isOn)
+
+                    $0.handleEvents(.valueChanged) {
+                        print("toggle \($0.isOn)")
+                    }
                 }
             }
         }

@@ -160,19 +160,35 @@ private class TargetBox<UIControlSubtype> {
 }
 
 public protocol _MortarUIControlEventsProviding: UIControl {
-    func events<UIControlSubtype>(
+    func publishEvents<UIControlSubtype>(
         _ filter: UIControl.Event
     ) -> AnyPublisher<UIControlSubtype, Never> where UIControlSubtype == Self
+
+    func handleEvents<UIControlSubtype>(
+        _ filter: UIControl.Event,
+        _ handleBlock: @escaping (UIControlSubtype) -> Void
+    ) where UIControlSubtype == Self
 }
 
 public extension _MortarUIControlEventsProviding {
-    func events<UIControlSubtype>(
+    func publishEvents<UIControlSubtype>(
         _ filter: UIControl.Event = [.allEvents]
     ) -> AnyPublisher<UIControlSubtype, Never> where UIControlSubtype == Self {
         let internalTarget = TargetBox<Self>()
         permanentlyAssociate(internalTarget)
         addTarget(internalTarget, action: #selector(TargetBox<Self>.invoke(sender:)), for: filter)
         return internalTarget.subject.eraseToAnyPublisher()
+    }
+
+    func handleEvents<UIControlSubtype>(
+        _ filter: UIControl.Event,
+        _ handleBlock: @escaping (UIControlSubtype) -> Void
+    ) where UIControlSubtype == Self {
+        publishEvents(filter)
+            .sink(
+                duringLifetimeOf: self,
+                receiveValue: handleBlock
+            )
     }
 }
 
