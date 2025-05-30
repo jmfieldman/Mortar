@@ -8,13 +8,13 @@ import CombineEx
 /// A `MortarConstraint` binds a target and source together with a relation (=, <=, >=).
 /// This constraint coordinates must represent non-virtual, single-sub-attribute
 /// values with the same theme (position, size, axis).
-public struct MortarConstraint {
+public class MortarConstraint {
     let target: MortarCoordinate
     let source: MortarCoordinate
     let relation: MortarAliasLayoutRelation
 
-    /// The resolved NSLayoutConstraint
-    let layoutConstraint: NSLayoutConstraint?
+    private let layoutConstraintBuilder: (() -> NSLayoutConstraint?)?
+    private(set) lazy var layoutConstraint: NSLayoutConstraint? = layoutConstraintBuilder?()
 
     init(
         target: MortarCoordinate,
@@ -25,23 +25,72 @@ public struct MortarConstraint {
         self.source = source
         self.relation = relation
 
-        guard
-            let targetItem = target.item,
-            let targetAttribute = target.attribute,
-            let targetStandardAttribute = targetAttribute.standardLayoutAttribute
-        else {
-            self.layoutConstraint = nil
+        guard let targetItem = target.item as? MortarView else {
+            MortarError.emit("Cannot create constraint for non-view target")
+            self.layoutConstraintBuilder = nil
             return
         }
 
-        self.layoutConstraint = NSLayoutConstraint(
-            item: targetItem,
-            attribute: targetStandardAttribute,
-            relatedBy: relation,
-            toItem: source.item,
-            attribute: source.attribute?.standardLayoutAttribute ?? targetStandardAttribute,
-            multiplier: source.multiplier,
-            constant: source.constant.0
-        )
+        guard
+            let targetAttribute = target.attribute,
+            let targetStandardAttribute = targetAttribute.standardLayoutAttribute
+        else {
+            MortarError.emit("Cannot create constraint without target attribute")
+            self.layoutConstraintBuilder = nil
+            return
+        }
+
+        self.layoutConstraintBuilder = {
+            var resolvedSourceItem: Any?
+            do {
+                resolvedSourceItem = try resolveSourceItem(source.item)
+            } catch {
+                return nil
+            }
+
+            return NSLayoutConstraint(
+                item: targetItem,
+                attribute: targetStandardAttribute,
+                relatedBy: relation,
+                toItem: resolvedSourceItem,
+                attribute: source.attribute?.standardLayoutAttribute ?? targetStandardAttribute,
+                multiplier: source.multiplier,
+                constant: source.constant.0
+            )
+        }
     }
+}
+
+private func resolveSourceItem(_ item: Any?) throws -> Any? {
+    guard let item else {
+        return nil
+    }
+
+    if let view = item as? MortarView {
+        return view
+    }
+
+    if let guide = item as? MortarLayoutGuide {
+        return guide
+    }
+
+    if let reference = item as? MortarRelativeAnchor {
+        switch reference {
+        case let .parent(view):
+            guard let parent = view.superview as? MortarView else {
+                MortarError.emit("Constraint source item must be a subview of a UIView")
+                return nil
+            }
+            return parent
+        case let .reference(referenceId):
+            guard let referenceView = MortarMainThreadLayoutStack.shared.viewForLayoutReference(id: referenceId) else {
+                MortarError.emit("Could not resolve layout referenceId [\(referenceId)]")
+                return nil
+            }
+            return referenceView
+        }
+    }
+
+    MortarError.emit("Invalid constraint source item")
+    throw NSError(domain: "", code: 0, userInfo: nil)
 }

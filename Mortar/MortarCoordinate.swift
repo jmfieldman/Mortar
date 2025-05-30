@@ -16,7 +16,7 @@ func tupleIndex(_ tuple: MortarConstantTuple, _ index: Int) -> CGFloat {
 }
 
 public struct MortarCoordinate {
-    let item: AnyObject?
+    let item: Any?
     let attribute: MortarLayoutAttribute?
     let multiplier: CGFloat
     let constant: MortarConstantTuple
@@ -24,7 +24,7 @@ public struct MortarCoordinate {
     let startActivated: Bool
 
     init(
-        item: AnyObject?,
+        item: Any?,
         attribute: MortarLayoutAttribute?,
         multiplier: CGFloat,
         constant: MortarConstantTuple,

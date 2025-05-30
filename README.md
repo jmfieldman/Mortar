@@ -34,6 +34,4 @@ class MyViewController: UIViewController {
 Which creates:
 
 <img src="Resources/ExampleA.png" width="200px">
-<!-- ![ExampleA](/Resources/ExampleA.png) -->
-
 

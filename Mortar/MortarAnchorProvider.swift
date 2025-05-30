@@ -3,8 +3,13 @@
 //  Copyright © 2025 Jason Fieldman.
 //
 
+enum MortarRelativeAnchor {
+    case parent(MortarView)
+    case reference(String)
+}
+
 public struct MortarAnchorProvider {
-    let item: AnyObject
+    let item: Any
 
     func anchorCoordinate(_ attribute: MortarLayoutAttribute) -> MortarCoordinate {
         .init(

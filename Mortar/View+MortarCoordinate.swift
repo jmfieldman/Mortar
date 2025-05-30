@@ -7,4 +7,21 @@ public extension MortarView {
     var layout: MortarAnchorProvider {
         .init(item: self)
     }
+
+    var parentLayout: MortarAnchorProvider {
+        .init(item: MortarRelativeAnchor.parent(self))
+    }
+
+    func referrencedLayout(_ referenceId: String) -> MortarAnchorProvider {
+        .init(item: MortarRelativeAnchor.reference(referenceId))
+    }
+
+    var layoutReferenceId: String? {
+        get {
+            MortarMainThreadLayoutStack.shared.layoutReferenceIdFor(view: self)
+        }
+        set {
+            MortarMainThreadLayoutStack.shared.addLayoutReference(id: newValue, view: self)
+        }
+    }
 }

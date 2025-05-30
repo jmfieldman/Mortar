@@ -27,11 +27,18 @@ class ViewController: UIViewController {
         view = UIContainer { container in
             container.backgroundColor = .darkGray
 
+            UIView {
+                $0.backgroundColor = .blue
+                $0.layout.size == CGSize(width: 20, height: 20)
+                $0.layout.centerY == $0.referrencedLayout("button").centerY
+                $0.layout.leading == $0.referrencedLayout("button").trailing
+            }
+
             VStackView {
                 $0.backgroundColor = .lightGray
-                $0.layout.leading == container.layout.leadingMargin
-                $0.layout.trailing == container.layout.trailingMargin
-                $0.layout.centerY == container.layout.centerY
+                $0.layout.leading == $0.parentLayout.leadingMargin
+                $0.layout.trailing == $0.parentLayout.trailingMargin
+                $0.layout.centerY == $0.parentLayout.centerY
 
                 UILabel {
                     $0.layout.height == 44
@@ -41,6 +48,7 @@ class ViewController: UIViewController {
                 }
 
                 UIButton(type: .roundedRect) {
+                    $0.layoutReferenceId = "button"
                     $0.setTitle("Button", for: .normal)
                     $0.handleEvents(.touchUpInside, touchAction)
                 }

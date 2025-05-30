@@ -8,6 +8,7 @@ class MortarMainThreadLayoutStack {
 
     private var stackDepth: Int = 0
     private var accumulator: [MortarConstraint] = []
+    private var layoutReferences: [String: MortarView] = [:]
 
     private init() {
         DispatchQueue.main.setSpecific(key: key, value: value)
@@ -45,6 +46,9 @@ class MortarMainThreadLayoutStack {
             for item in accumulator {
                 item.layoutConstraint?.isActive = item.source.startActivated
             }
+
+            // Also flush layout references
+            layoutReferences.removeAll()
         }
     }
 
@@ -59,3 +63,23 @@ class MortarMainThreadLayoutStack {
 
 private let key = DispatchSpecificKey<UInt8>()
 private let value: UInt8 = 0
+
+// MARK: - Layout References
+
+extension MortarMainThreadLayoutStack {
+    func addLayoutReference(id: String?, view: MortarView) {
+        if let id {
+            layoutReferences[id] = view
+        } else if let existing = layoutReferenceIdFor(view: view) {
+            layoutReferences[existing] = nil
+        }
+    }
+
+    func viewForLayoutReference(id: String) -> MortarView? {
+        layoutReferences[id]
+    }
+
+    func layoutReferenceIdFor(view: MortarView) -> String? {
+        layoutReferences.first { $0.value === view }?.key
+    }
+}
