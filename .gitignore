@@ -4,6 +4,7 @@
 
 .DS_Store
 .swiftpm
+Package.resolved
 
 ## Build generated
 build/
