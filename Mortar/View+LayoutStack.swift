@@ -14,7 +14,7 @@ class MortarMainThreadLayoutStack {
         accumulator.reserveCapacity(4096)
     }
 
-    private func isMainThread() -> Bool {
+    func isMainThread() -> Bool {
         DispatchQueue.getSpecific(key: key) == value
     }
 

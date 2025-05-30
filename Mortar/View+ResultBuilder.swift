@@ -92,6 +92,7 @@ public extension MortarConfigurableView where Self: MortarView {
     /// Configures the view by adding subviews using a result builder.
     /// - Parameter configureBlock: A closure that returns an array of `MortarAddViewBox` instances.
     /// - Returns: The configured view (`Self`).
+    @discardableResult
     func configure(@MortarAddSubviewsBuilder _ configureBlock: () -> [MortarAddViewBox]) -> Self {
         MortarMainThreadLayoutStack.execute {
             process(configureBlock())
@@ -102,6 +103,7 @@ public extension MortarConfigurableView where Self: MortarView {
     /// Configures the view by adding subviews using a result builder, allowing access to the view within the closure.
     /// - Parameter configureBlock: A closure that takes `Self` and returns an array of `MortarAddViewBox` instances.
     /// - Returns: The configured view (`Self`).
+    @discardableResult
     func configure(@MortarAddSubviewsBuilder _ configureBlock: (Self) -> [MortarAddViewBox]) -> Self {
         MortarMainThreadLayoutStack.execute {
             process(configureBlock(self))

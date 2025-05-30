@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "combineex",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jmfieldman/CombineEx.git",
+      "state" : {
+        "revision" : "a0adecb970e0a0aefc5e96e1d3a61fb64d199749",
+        "version" : "0.0.8"
+      }
+    }
+  ],
+  "version" : 2
+}
