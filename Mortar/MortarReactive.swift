@@ -168,6 +168,16 @@ public protocol _MortarUIControlEventsProviding: UIControl {
         _ filter: UIControl.Event,
         _ handleBlock: @escaping (UIControlSubtype) -> Void
     ) where UIControlSubtype == Self
+
+    func handleEvents<UIControlSubtype>(
+        _ filter: UIControl.Event,
+        _ actionTrigger: some ActionTriggerConvertible<UIControlSubtype>
+    ) where UIControlSubtype == Self
+
+    func handleEvents(
+        _ filter: UIControl.Event,
+        _ actionTrigger: some ActionTriggerConvertible<Void>
+    )
 }
 
 public extension _MortarUIControlEventsProviding {
@@ -188,6 +198,38 @@ public extension _MortarUIControlEventsProviding {
             .sink(
                 duringLifetimeOf: self,
                 receiveValue: handleBlock
+            )
+    }
+
+    func handleEvents(
+        _ filter: UIControl.Event,
+        _ actionTrigger: some ActionTriggerConvertible<Self>
+    ) {
+        let resolvedActionTrigger = actionTrigger.asActionTrigger
+        publishEvents(filter)
+            .sink(
+                duringLifetimeOf: self,
+                receiveValue: { _ in
+                    resolvedActionTrigger
+                        .applyAnonymous(self)
+                        .sink(duringLifetimeOf: self)
+                }
+            )
+    }
+
+    func handleEvents(
+        _ filter: UIControl.Event,
+        _ actionTrigger: some ActionTriggerConvertible<Void>
+    ) {
+        let resolvedActionTrigger = actionTrigger.asActionTrigger
+        publishEvents(filter)
+            .sink(
+                duringLifetimeOf: self,
+                receiveValue: { _ in
+                    resolvedActionTrigger
+                        .applyAnonymous(())
+                        .sink(duringLifetimeOf: self)
+                }
             )
     }
 }

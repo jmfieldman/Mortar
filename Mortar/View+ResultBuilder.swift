@@ -111,3 +111,29 @@ public extension MortarConfigurableView where Self: MortarView {
         return self
     }
 }
+
+// MARK: - Specific Subview Overrides
+
+#if os(iOS) || os(tvOS)
+
+public extension MortarFrameInitializable where Self: UIButton {
+    /// Initializes a `MortarView` with subviews using a result builder.
+    /// - Parameter subviewBoxes: A closure that returns an array of `MortarAddViewBox` instances.
+    init(type: UIButton.ButtonType, @MortarAddSubviewsBuilder _ subviewBoxes: () -> [MortarAddViewBox]) {
+        self.init(type: type)
+        MortarMainThreadLayoutStack.execute {
+            process(subviewBoxes())
+        }
+    }
+
+    /// Initializes a `MortarView` with subviews using a result builder, allowing the view to be referenced in the closure.
+    /// - Parameter subviewBoxes: A closure that takes the current view and returns an array of `MortarAddViewBox` instances.
+    init(type: UIButton.ButtonType, @MortarAddSubviewsBuilder _ subviewBoxes: (Self) -> [MortarAddViewBox]) {
+        self.init(type: type)
+        MortarMainThreadLayoutStack.execute {
+            process(subviewBoxes(self))
+        }
+    }
+}
+
+#endif

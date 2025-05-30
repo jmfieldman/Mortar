@@ -18,9 +18,36 @@ class ViewController: UIViewController {
         return label
     }()
 
+    let touchAction = Deferred {
+        NSLog("test")
+        return Just<Void>(()).eraseToAnyPublisher()
+    }.eraseToAnyDeferredPublisher()
+
     override func loadView() {
-        view = ZStackView { parent in
-            ZStackView { child1 in
+        view = UIContainer { container in
+            container.backgroundColor = .darkGray
+
+            VStackView {
+                $0.backgroundColor = .lightGray
+                $0.layout.leading == container.layout.leadingMargin
+                $0.layout.trailing == container.layout.trailingMargin
+                $0.layout.centerY == container.layout.centerY
+
+                UILabel {
+                    $0.layout.height == 44
+                    $0.text = "Hello, World!"
+                    $0.textColor = .red
+                    $0.textAlignment = .center
+                }
+
+                UIButton(type: .roundedRect) {
+                    $0.setTitle("Button", for: .normal)
+                    $0.handleEvents(.touchUpInside, touchAction)
+                }
+            }
+        }
+        let view2 = UIContainer { parent in
+            UIContainer { child1 in
                 child1.backgroundColor = .blue
                 child1.layout.center == parent.layout.center
                 child1.layout.size == CGSize(width: 100, height: 200)
@@ -94,7 +121,6 @@ class ViewController: UIViewController {
                 }
             }
         }
-        view.backgroundColor = .red
 
         for t in 1 ..< 100 {
             DispatchQueue.global().asyncAfter(deadline: .now() + TimeInterval(t)) {

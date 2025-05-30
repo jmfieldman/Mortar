@@ -3,7 +3,7 @@
 //  Copyright © 2025 Jason Fieldman.
 //
 
-public typealias ZStackView = MortarView
+public typealias UIContainer = MortarView
 
 public class HStackView: MortarStackView {
     override public init(frame: CGRect) {
