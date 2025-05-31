@@ -13,6 +13,7 @@ class MortarMainThreadLayoutStack {
     private init() {
         DispatchQueue.main.setSpecific(key: key, value: value)
         accumulator.reserveCapacity(4096)
+        layoutReferences.reserveCapacity(256)
     }
 
     func isMainThread() -> Bool {
@@ -47,8 +48,9 @@ class MortarMainThreadLayoutStack {
                 item.layoutConstraint?.isActive = item.source.startActivated
             }
 
-            // Also flush layout references
-            layoutReferences.removeAll()
+            // Flush references
+            accumulator.removeAll(keepingCapacity: true)
+            layoutReferences.removeAll(keepingCapacity: true)
         }
     }
 

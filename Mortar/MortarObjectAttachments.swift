@@ -17,12 +17,7 @@ func __AnyObjectPermanentObjDictStorage(_ object: AnyObject) -> NSMutableDiction
     }
 
     let dict = NSMutableDictionary()
-    objc_setAssociatedObject(
-        object,
-        &kPermanentObjDictAssociationKey,
-        dict,
-        objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC
-    )
+    objc_setAssociatedObject(object, &kPermanentObjDictAssociationKey, dict, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     return dict
 }
 

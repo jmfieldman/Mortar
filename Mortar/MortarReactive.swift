@@ -47,10 +47,12 @@ public func <~ <T, E: Error>(lhs: BindTarget<some Any, T>, rhs: any Publisher<T,
 
 // swiftformat:enable opaqueGenericParameters
 
+private var kBindingAssociationKey = 0
+
 public func <~ <T>(lhs: BindTarget<some Any, T>, rhs: any Publisher<T, Never>) {
     let lhsTarget = lhs.target
     let keyPath = lhs.keyPath
-    rhs.eraseToAnyPublisher()
+    let cancellable = rhs.eraseToAnyPublisher()
         .receiveOnMain()
         .sink(
             duringLifetimeOf: lhsTarget,
@@ -58,6 +60,9 @@ public func <~ <T>(lhs: BindTarget<some Any, T>, rhs: any Publisher<T, Never>) {
                 lhsTarget?[keyPath: keyPath] = value
             }
         )
+
+    // Bind rhs to lifetime of cancellable
+    objc_setAssociatedObject(cancellable, &kBindingAssociationKey, rhs, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 }
 
 // MARK: - Sink
@@ -178,6 +183,16 @@ public protocol _MortarUIControlEventsProviding: UIControl {
         _ filter: UIControl.Event,
         _ actionTrigger: some ActionTriggerConvertible<Void>
     )
+
+    func handleEvents<UIControlSubtype>(
+        _ filter: UIControl.Event,
+        _ actionTriggerPublisher: some Publisher<some ActionTriggerConvertible<UIControlSubtype>, Never>
+    ) where UIControlSubtype == Self
+
+    func handleEvents(
+        _ filter: UIControl.Event,
+        _ actionTriggerPublisher: some Publisher<some ActionTriggerConvertible<Void>, Never>
+    )
 }
 
 public extension _MortarUIControlEventsProviding {
@@ -227,6 +242,46 @@ public extension _MortarUIControlEventsProviding {
                 duringLifetimeOf: self,
                 receiveValue: { _ in
                     resolvedActionTrigger
+                        .applyAnonymous(())
+                        .sink(duringLifetimeOf: self)
+                }
+            )
+    }
+
+    func handleEvents<UIControlSubtype>(
+        _ filter: UIControl.Event,
+        _ actionTriggerPublisher: some Publisher<some ActionTriggerConvertible<UIControlSubtype>, Never>
+    ) where UIControlSubtype == Self {
+        let currentTrigger = Property<ActionTrigger<UIControlSubtype>?>(
+            initial: nil,
+            then: actionTriggerPublisher.map(\.asActionTrigger)
+        )
+
+        publishEvents(filter)
+            .sink(
+                duringLifetimeOf: self,
+                receiveValue: { _ in
+                    currentTrigger.value?
+                        .applyAnonymous(self)
+                        .sink(duringLifetimeOf: self)
+                }
+            )
+    }
+
+    func handleEvents(
+        _ filter: UIControl.Event,
+        _ actionTriggerPublisher: some Publisher<some ActionTriggerConvertible<Void>, Never>
+    ) {
+        let currentTrigger = Property<ActionTrigger<Void>?>(
+            initial: nil,
+            then: actionTriggerPublisher.map(\.asActionTrigger)
+        )
+
+        publishEvents(filter)
+            .sink(
+                duringLifetimeOf: self,
+                receiveValue: { _ in
+                    currentTrigger.value?
                         .applyAnonymous(())
                         .sink(duringLifetimeOf: self)
                 }

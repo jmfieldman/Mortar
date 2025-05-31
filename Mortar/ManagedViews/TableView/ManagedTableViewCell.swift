@@ -38,12 +38,7 @@ func __AssociatedMutableProperty<T>(_ object: AnyObject, _ type: T.Type) -> Muta
     }
 
     let property = MutableProperty<T?>(nil)
-    objc_setAssociatedObject(
-        object,
-        &kAssociatedMutablePropertyKey,
-        property,
-        objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC
-    )
+    objc_setAssociatedObject(object, &kAssociatedMutablePropertyKey, property, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     return property
 }
 
@@ -53,11 +48,6 @@ func __AssociatedPublisher<T>(_ object: AnyObject, _ type: T.Type) -> AnyPublish
     }
 
     let publisher = __AssociatedMutableProperty(object, type).compactMap(\.self).eraseToAnyPublisher()
-    objc_setAssociatedObject(
-        object,
-        &kAssociatedPublisherKey,
-        publisher,
-        objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC
-    )
+    objc_setAssociatedObject(object, &kAssociatedPublisherKey, publisher, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     return publisher
 }
