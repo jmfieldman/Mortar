@@ -12,7 +12,7 @@ public extension MortarView {
         .init(item: MortarRelativeAnchor.parent(self))
     }
 
-    func referrencedLayout(_ referenceId: String) -> MortarAnchorProvider {
+    func referencedLayout(_ referenceId: String) -> MortarAnchorProvider {
         .init(item: MortarRelativeAnchor.reference(referenceId))
     }
 
