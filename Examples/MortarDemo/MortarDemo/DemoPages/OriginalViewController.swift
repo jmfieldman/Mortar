@@ -1,11 +1,11 @@
 //
-//  ViewController.swift
+//  OriginalViewController.swift
 //  Copyright © 2025 Jason Fieldman.
 //
 
 import Mortar
 
-class ViewController: UIViewController {
+class OriginalViewController: UIViewController {
     let testProp = MutableProperty<Int>(0)
     let boolProp = MutableProperty<Bool>(false)
 
