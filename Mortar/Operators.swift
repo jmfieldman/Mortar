@@ -5,12 +5,24 @@
 
 // MARK: - Constraint Constants - Single Degree
 
+/// Verifies that the degree of a given coordinate matches the expected degree.
+/// Emits an error to the MortarError publisher if the degree does not match.
+///
+/// - Parameters:
+///   - coordinate: The MortarCoordinate to verify.
+///   - degree: The expected degree value.
 private func verifyDegrees(_ coordinate: MortarCoordinate, _ degree: Int) {
     if coordinate.attribute?.degree != degree {
-        MortarError.emit("Operator used with incompatible degrees: coordinate for \(coordinate.attribute ?? .notAnAttribute) has degree \(coordinate.attribute?.degree ?? 0) but was expecting degree \(degree)")
+        MortarError.emit("Operator used with incompatible degrees: coordinate for $coordinate.attribute ?? .notAnAttribute) has degree $coordinate.attribute?.degree ?? 0) but was expecting degree $degree)")
     }
 }
 
+/// Adds a MortarCGFloatable value to the constant of a MortarCoordinate.
+///
+/// - Parameters:
+///   - lhs: The left-hand side MortarCoordinate.
+///   - rhs: The right-hand side MortarCGFloatable value to add.
+/// - Returns: A new MortarCoordinate with the updated constant.
 public func + (lhs: MortarCoordinate, rhs: MortarCGFloatable) -> MortarCoordinate {
     verifyDegrees(lhs, 1)
 
@@ -23,6 +35,12 @@ public func + (lhs: MortarCoordinate, rhs: MortarCGFloatable) -> MortarCoordinat
     )
 }
 
+/// Subtracts a MortarCGFloatable value from the constant of a MortarCoordinate.
+///
+/// - Parameters:
+///   - lhs: The left-hand side MortarCoordinate.
+///   - rhs: The right-hand side MortarCGFloatable value to subtract.
+/// - Returns: A new MortarCoordinate with the updated constant.
 public func - (lhs: MortarCoordinate, rhs: MortarCGFloatable) -> MortarCoordinate {
     verifyDegrees(lhs, 1)
 
