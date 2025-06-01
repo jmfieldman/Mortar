@@ -12,7 +12,7 @@ public struct BindTarget<Target: AnyObject, T> {
     let keyPath: WritableKeyPath<Target, T>
 }
 
-public protocol _MortarBindProviding: MortarView {
+public protocol _MortarBindProviding: NSObject {
     func bind<Target, T>(
         _ keyPath: WritableKeyPath<Target, T>
     ) -> BindTarget<Target, T> where Target == Self
@@ -26,7 +26,7 @@ public extension _MortarBindProviding {
     }
 }
 
-extension MortarView: _MortarBindProviding {}
+extension NSObject: _MortarBindProviding {}
 
 infix operator <~: AssignmentPrecedence
 

@@ -10,6 +10,8 @@ class MainMenuViewController: UIViewController {
 
     override func loadView() {
         title = "Mortar Demo"
+
+        // Main View
         view = UIContainer {
             ManagedTableView {
                 $0.layout.edges == $0.parentLayout.edges
@@ -27,6 +29,19 @@ class MainMenuViewController: UIViewController {
                 }
             }
         }
+
+        // Sort selector
+        navigationItem.bind(\.rightBarButtonItems) <~ model
+            .sortStarred.map { [unowned self] sortStarred in
+                return [
+                    UIBarButtonItem(
+                        image: .init(systemName: sortStarred ? "star.fill" : "star"),
+                        style: .plain,
+                        target: model,
+                        action: #selector(MainMenuViewControllerModel.toggleSortStarred)
+                    ),
+                ]
+            }
     }
 
     private func makeSections(
@@ -72,7 +87,7 @@ class MainMenuViewController: UIViewController {
     }
 }
 
-// MARK: - Model
+// MARK: - View Controller Model
 
 private class MainMenuViewControllerModel {
     // Public interface
@@ -89,6 +104,10 @@ private class MainMenuViewControllerModel {
                 list.append(title)
             }
         }
+    }
+
+    @objc func toggleSortStarred() {
+        mutableSortStarred.modify { $0 = !$0 }
     }
 
     // Private implementation
