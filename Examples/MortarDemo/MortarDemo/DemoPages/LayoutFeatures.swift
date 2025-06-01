@@ -1,5 +1,5 @@
 //
-//  LayoutFeaturesViewController.swift
+//  LayoutFeatures.swift
 //  Copyright © 2016 Jason Fieldman.
 //
 
