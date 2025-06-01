@@ -8,7 +8,7 @@ import Mortar
 class LayoutFeaturesViewController: UIViewController {
     override func loadView() {
         view = UIContainer { container in
-            container.backgroundColor = .darkGray
+            container.backgroundColor = .lightGray
 
             // Basic layout features against named parent
             UIView {

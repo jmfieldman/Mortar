@@ -15,7 +15,7 @@ class ReactiveFeaturesViewController: UIViewController {
 
     override func loadView() {
         view = UIContainer { container in
-            container.backgroundColor = .darkGray
+            container.backgroundColor = .lightGray
 
             VStackView {
                 $0.backgroundColor = .white
