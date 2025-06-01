@@ -76,6 +76,9 @@ class LayoutFeaturesViewController: UIViewController {
                 $0.layout.size == CGSize(width: 100, height: 44)
                 let group = $0.layout.center == $0.parentLayout.center
                 $0.handleEvents(.touchUpInside) { _ in
+                    // The group can contain multiple component constraints,
+                    // like 'center' capturing (centerX, centerY) -- in this example
+                    // modifying just the first will update centerX.
                     group.layoutConstraints.first?.constant += 20
                 }
             }
