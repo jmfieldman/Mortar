@@ -24,32 +24,31 @@ class BasicManagedTableViewController: UIViewController {
 
             ManagedTableView {
                 $0.layout.edges == $0.parentLayout.edges
-                $0.sections <~ Property(value: self.makeSections())
+                $0.sections <~ Property(value: [self.makeSection()])
             }
         }
     }
 
     /// Constructing the section models is usually more complex than you
     /// want in the view hierarchy code. Feel free to create a separate
-    /// builder function, like this.
-    private func makeSections() -> [ManagedTableViewSection] {
-        [
-            // Sections/row models can all be created from structs
-            ManagedTableViewSection(
-                rows: [
-                    SimpleTextRowModel(text: "Simple row, disclosure false", showDisclosure: false),
-                    SimpleTextRowModel(text: "Simple row, disclosure true", showDisclosure: true),
+    /// builder function, like this. Typically you would supply reactive
+    /// inputs.
+    private func makeSection() -> ManagedTableViewSection {
+        // Sections/row models can all be created from structs
+        ManagedTableViewSection(
+            rows: [
+                SimpleTextRowModel(text: "Simple row, disclosure false", showDisclosure: false),
+                SimpleTextRowModel(text: "Simple row, disclosure true", showDisclosure: true),
 
-                    // You can freely mix and match models inside the rows array
+                // You can freely mix and match models inside the rows array
 
-                    AlertTextRowModel(text: "Tap to alert") { [weak self] in
-                        let alert = UIAlertController(title: "Alert", message: "Message", preferredStyle: .alert)
-                        alert.addAction(.init(title: "OK", style: .default))
-                        self?.present(alert, animated: true)
-                    },
-                ]
-            ),
-        ]
+                AlertTextRowModel(text: "Tap to alert") { [weak self] in
+                    let alert = UIAlertController(title: "Alert", message: "Message", preferredStyle: .alert)
+                    alert.addAction(.init(title: "OK", style: .default))
+                    self?.present(alert, animated: true)
+                },
+            ]
+        )
     }
 }
 
