@@ -114,6 +114,7 @@ private class MainMenuViewControllerModel {
 
     private let demoScreenArray: [DemoScreen] = [
         .init("Layout Features", LayoutFeaturesViewController.self),
+        .init("Reactive Features", ReactiveFeaturesViewController.self),
     ]
 
     private let mutableStarList = PersistentProperty<[String]>(

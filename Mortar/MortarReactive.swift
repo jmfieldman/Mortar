@@ -80,6 +80,19 @@ public protocol _MortarSinkProviding: AnyObject {
         _ publisher: any Publisher<Output, Never>,
         receiveValue: ((Binder, Output) -> Void)?
     ) -> AnyCancellable where Binder == Self
+
+    @discardableResult
+    func sink<Binder, E: Error>(
+        _ publisher: any Publisher<Void, E>,
+        receiveValue: ((Binder) -> Void)?,
+        receiveCompletion: ((Binder, Subscribers.Completion<E>) -> Void)?
+    ) -> AnyCancellable where Binder == Self
+
+    @discardableResult
+    func sink<Binder>(
+        _ publisher: any Publisher<Void, Never>,
+        receiveValue: ((Binder) -> Void)?
+    ) -> AnyCancellable where Binder == Self
 }
 
 public extension _MortarSinkProviding {
@@ -116,6 +129,39 @@ public extension _MortarSinkProviding {
                 receiveValue: { [weak self] in
                     guard let self else { return }
                     receiveValue?(self, $0)
+                }
+            )
+    }
+
+    @discardableResult
+    func sink<Binder, E: Error>(
+        _ publisher: any Publisher<Void, E>,
+        receiveValue: ((Binder) -> Void)?,
+        receiveCompletion: ((Binder, Subscribers.Completion<E>) -> Void)?
+    ) -> AnyCancellable where Binder == Self {
+        publisher.eraseToAnyPublisher()
+            .receiveOnMain()
+            .sink(
+                duringLifetimeOf: self,
+                receiveValue: { [weak self] in
+                    guard let self else { return }
+                    receiveValue?(self)
+                }
+            )
+    }
+
+    @discardableResult
+    func sink<Binder>(
+        _ publisher: any Publisher<Void, Never>,
+        receiveValue: ((Binder) -> Void)?
+    ) -> AnyCancellable where Binder == Self {
+        publisher.eraseToAnyPublisher()
+            .receiveOnMain()
+            .sink(
+                duringLifetimeOf: self,
+                receiveValue: { [weak self] in
+                    guard let self else { return }
+                    receiveValue?(self)
                 }
             )
     }
@@ -193,6 +239,18 @@ public protocol _MortarUIControlEventsProviding: UIControl {
         _ filter: UIControl.Event,
         _ actionTriggerPublisher: some Publisher<some ActionTriggerConvertible<Void>, Never>
     )
+
+    func handleEvents<UIControlSubtype, Input>(
+        _ filter: UIControl.Event,
+        _ actionTrigger: some ActionTriggerConvertible<Input>,
+        _ transform: @escaping (UIControlSubtype) -> Input
+    ) where UIControlSubtype == Self
+
+    func handleEvents<UIControlSubtype, Input>(
+        _ filter: UIControl.Event,
+        _ actionTriggerPublisher: some Publisher<some ActionTriggerConvertible<Input>, Never>,
+        _ transform: @escaping (UIControlSubtype) -> Input
+    ) where UIControlSubtype == Self
 }
 
 public extension _MortarUIControlEventsProviding {
@@ -283,6 +341,44 @@ public extension _MortarUIControlEventsProviding {
                 receiveValue: { _ in
                     currentTrigger.value?
                         .applyAnonymous(())
+                        .sink(duringLifetimeOf: self)
+                }
+            )
+    }
+
+    func handleEvents<UIControlSubtype, Input>(
+        _ filter: UIControl.Event,
+        _ actionTrigger: some ActionTriggerConvertible<Input>,
+        _ transform: @escaping (UIControlSubtype) -> Input
+    ) where UIControlSubtype == Self {
+        let resolvedActionTrigger = actionTrigger.asActionTrigger
+        publishEvents(filter)
+            .sink(
+                duringLifetimeOf: self,
+                receiveValue: { _ in
+                    resolvedActionTrigger
+                        .applyAnonymous(transform(self))
+                        .sink(duringLifetimeOf: self)
+                }
+            )
+    }
+
+    func handleEvents<UIControlSubtype, Input>(
+        _ filter: UIControl.Event,
+        _ actionTriggerPublisher: some Publisher<some ActionTriggerConvertible<Input>, Never>,
+        _ transform: @escaping (UIControlSubtype) -> Input
+    ) where UIControlSubtype == Self {
+        let currentTrigger = Property<ActionTrigger<Input>?>(
+            initial: nil,
+            then: actionTriggerPublisher.map(\.asActionTrigger)
+        )
+
+        publishEvents(filter)
+            .sink(
+                duringLifetimeOf: self,
+                receiveValue: { _ in
+                    currentTrigger.value?
+                        .applyAnonymous(transform(self))
                         .sink(duringLifetimeOf: self)
                 }
             )
