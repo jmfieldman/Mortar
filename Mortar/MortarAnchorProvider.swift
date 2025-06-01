@@ -47,6 +47,8 @@ public extension MortarAnchorProvider {
     var trailingMargin: MortarCoordinate { anchorCoordinate(.trailingMargin) }
     var centerXWithinMargins: MortarCoordinate { anchorCoordinate(.centerXWithinMargins) }
     var centerYWithinMargins: MortarCoordinate { anchorCoordinate(.centerYWithinMargins) }
+    var sideMargins: MortarCoordinate { anchorCoordinate(.sideMargins) }
+    var capMargins: MortarCoordinate { anchorCoordinate(.capMargins) }
     #endif
 
     var sides: MortarCoordinate { anchorCoordinate(.sides) }

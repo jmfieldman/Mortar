@@ -2,7 +2,7 @@
 
 Mortar is a DSL that allows you to create UIView hierarchies with declarative, anonymous code - similar to SwiftUI.
 
-Consider this inset stack view that contains a label and button:
+Consider this basic inset stack view that contains a label and button:
 
 <img src="Resources/ExampleA.png" width="200px">
 
@@ -16,8 +16,7 @@ class MyViewController: UIViewController {
 
             VStackView {
                 $0.backgroundColor = .lightGray
-                $0.layout.leading == $0.parentLayout.leadingMargin
-                $0.layout.trailing == $0.parentLayout.trailingMargin
+                $0.layout.sides == $0.parentLayout.sideMargins
                 $0.layout.centerY == $0.parentLayout.centerY
 
                 UILabel {
@@ -29,7 +28,7 @@ class MyViewController: UIViewController {
 
                 UIButton(type: .roundedRect) {
                     $0.setTitle("Button", for: .normal)
-                    $0.handleEvents(.touchUpInside) { _ in NSLog("touched") }
+                    $0.handleEvents(.touchUpInside) { NSLog("touched \($0)") }
                 }
             }
         }

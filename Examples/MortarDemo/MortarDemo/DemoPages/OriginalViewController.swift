@@ -29,8 +29,7 @@ class OriginalViewController: UIViewController {
 
             VStackView {
                 $0.backgroundColor = .lightGray
-                $0.layout.leading == $0.parentLayout.leadingMargin
-                $0.layout.trailing == $0.parentLayout.trailingMargin
+                $0.layout.sides == $0.parentLayout.sideMargins
                 $0.layout.centerY == $0.parentLayout.centerY
 
                 UILabel {

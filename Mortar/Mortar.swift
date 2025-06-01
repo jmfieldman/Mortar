@@ -67,6 +67,8 @@ enum MortarLayoutAttribute {
     case trailingMargin
     case centerXWithinMargins
     case centerYWithinMargins
+    case sideMargins
+    case capMargins
     #endif
 
     // Attributes with multiple sub-attributes
@@ -205,6 +207,8 @@ enum MortarLayoutAttribute {
         case .trailingMargin: .horizontal
         case .centerXWithinMargins: .horizontal
         case .centerYWithinMargins: .vertical
+        case .sideMargins: .horizontal
+        case .capMargins: .vertical
         default: nil
         }
     }
@@ -253,6 +257,8 @@ enum MortarLayoutAttribute {
         case .trailingMargin: .position
         case .centerXWithinMargins: .position
         case .centerYWithinMargins: .position
+        case .sideMargins: .position
+        case .capMargins: .position
         default: nil
         }
     }
@@ -301,6 +307,8 @@ enum MortarLayoutAttribute {
         case .trailingMargin: [.trailingMargin]
         case .centerXWithinMargins: [.centerXWithinMargins]
         case .centerYWithinMargins: [.centerYWithinMargins]
+        case .sideMargins: [.leadingMargin, .trailingMargin]
+        case .capMargins: [.topMargin, .bottomMargin]
         case .notAnAttribute: [.notAnAttribute]
         case .sides: [.leading, .trailing]
         case .caps: [.top, .bottom]
