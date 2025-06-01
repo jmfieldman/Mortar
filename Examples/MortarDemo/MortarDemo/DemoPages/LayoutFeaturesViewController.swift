@@ -44,12 +44,12 @@ class LayoutFeaturesViewController: UIViewController {
                 $0.layout.size == $0.referencedLayout("redSquare").size
             }
 
-            // Apply operators to layout
+            // Apply operators to layout to adjust constraint constants
             UIView {
                 $0.backgroundColor = .orange
                 $0.layout.bottom == $0.parentLayout.bottom - 40
                 $0.layout.trailing == $0.parentLayout.trailing - 40
-                $0.layout.size == $0.referencedLayout("redSquare").size - CGSize(width: 50, height: 50)
+                $0.layout.size == $0.referencedLayout("redSquare").size / 2
             }
 
             // Use inequality operators for less/greater than constraints
@@ -59,6 +59,14 @@ class LayoutFeaturesViewController: UIViewController {
                 $0.layout.size <= CGSize(width: 200, height: 200)
                 $0.layout.top == $0.referencedLayout("redSquare").bottom + 20
                 $0.layout.trailing == $0.parentLayout.trailing
+            }
+
+            // Use layout guides as well
+            UIView {
+                $0.backgroundColor = .brown
+                $0.layout.bottom == container.safeAreaLayoutGuide.layout.bottom
+                $0.layout.leading == $0.parentLayout.leading
+                $0.layout.size == CGSize(width: 300, height: 20)
             }
         }
     }
