@@ -49,6 +49,11 @@ class ReactiveFeaturesViewController: UIViewController {
                 $0.layout.centerX == $0.parentLayout.centerX
                 $0.layout.top == $0.parentLayout.top + 200
 
+                UILabel {
+                    $0.layout.center == $0.parentLayout.center
+                    $0.bind(\.text) <~ model.toggleCount.map(\.description)
+                }
+
                 // You can also sink publishers when you want to perform more
                 // complex tasks on their value update.
                 $0.sink(model.toggled) { square in
