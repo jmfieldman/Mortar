@@ -77,4 +77,24 @@ public struct MortarConstraintGroup {
             }
         }
     }
+
+    /// Returns the underlying NSLayoutConstraints associated with this group.
+    /// Note that the constraints will not be activated until the Mortar
+    /// declaration stack has been completely popped.
+    public var layoutConstraints: [NSLayoutConstraint] {
+        constraints.compactMap(\.layoutConstraint)
+    }
+
+    /// Modifies/returns the `isActive` state of the constraint group. For the
+    /// retrieval, only returns true if all member-constraints are true.
+    public var isActive: Bool {
+        get {
+            constraints.allSatisfy { $0.layoutConstraint?.isActive ?? false }
+        }
+        set {
+            for constraint in constraints {
+                constraint.layoutConstraint?.isActive = newValue
+            }
+        }
+    }
 }

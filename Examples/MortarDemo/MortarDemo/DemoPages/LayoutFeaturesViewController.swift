@@ -68,6 +68,17 @@ class LayoutFeaturesViewController: UIViewController {
                 $0.layout.leading == $0.parentLayout.leading
                 $0.layout.size == CGSize(width: 300, height: 20)
             }
+
+            // Capture layout constraints and modify them
+            UIButton(type: .roundedRect) {
+                $0.backgroundColor = .yellow
+                $0.setTitle("Move me", for: .normal)
+                $0.layout.size == CGSize(width: 100, height: 44)
+                let group = $0.layout.center == $0.parentLayout.center
+                $0.handleEvents(.touchUpInside) { _ in
+                    group.layoutConstraints.first?.constant += 20
+                }
+            }
         }
     }
 }
