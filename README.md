@@ -2,7 +2,7 @@
 
 > Mortar 3 is incompatible with previous versions, and aims to solve different problems. Check the git tags to find previous versions.
 
-Mortar is a DSL that allows you to create UIView hierarchies with declarative, anonymous syntax. Its goal is to provide the best of SwiftUI without its perceived shortcomings.
+Mortar is a DSL that allows you to create UIView hierarchies with declarative, anonymous syntax. Its goal is to provide the best of SwiftUI without its [perceived shortcomings](WHY.md).
 
 The following example is all based on UIKit classes:
 
