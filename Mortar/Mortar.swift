@@ -1,47 +1,47 @@
 //
-//  Mortar
+//  Mortar.swift
+//  Copyright © 2016 Jason Fieldman.
 //
-//  Copyright (c) 2016-Present Jason Fieldman - https://github.com/jmfieldman/Mortar
-//
-//  Permission is hereby granted, free of charge, to any person obtaining a copy
-//  of this software and associated documentation files (the "Software"), to deal
-//  in the Software without restriction, including without limitation the rights
-//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//  copies of the Software, and to permit persons to whom the Software is
-//  furnished to do so, subject to the following conditions:
-//
-//  The above copyright notice and this permission notice shall be included in
-//  all copies or substantial portions of the Software.
-//
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//  THE SOFTWARE.
-
 
 #if os(iOS) || os(tvOS)
 import UIKit
+
 public typealias MortarView = UIView
+public typealias MortarStackView = UIStackView
+public typealias MortarLayoutGuide = UILayoutGuide
+public typealias MortarEdgeInsets = UIEdgeInsets
 public typealias MortarAliasLayoutPriority = UILayoutPriority
 public typealias MortarAliasLayoutRelation = NSLayoutConstraint.Relation
 public typealias MortarAliasLayoutAttribute = NSLayoutConstraint.Attribute
+public typealias MortarAliasLayoutAxis = NSLayoutConstraint.Axis
 #else
 import AppKit
+
 public typealias MortarView = NSView
+public typealias MortarStackView = NSStackView
+public typealias MortarLayoutGuide = NSLayoutGuide
+public typealias MortarEdgeInsets = NSEdgeInsets
 public typealias MortarAliasLayoutPriority = NSLayoutConstraint.Priority
 public typealias MortarAliasLayoutRelation = NSLayoutConstraint.Relation
 public typealias MortarAliasLayoutAttribute = NSLayoutConstraint.Attribute
+public typealias MortarAliasLayoutAxis = NSLayoutConstraint.Orientation
 #endif
 
-public let MortarAliasLayoutPriorityDefaultLow      = MortarAliasLayoutPriority.defaultLow
-public let MortarAliasLayoutPriorityDefaultMedium   = MortarAliasLayoutPriority(rawValue: (Float(MortarAliasLayoutPriority.defaultHigh.rawValue) + Float(MortarAliasLayoutPriority.defaultLow.rawValue)) / 2)
-public let MortarAliasLayoutPriorityDefaultHigh     = MortarAliasLayoutPriority.defaultHigh
-public let MortarAliasLayoutPriorityDefaultRequired = MortarAliasLayoutPriority.required
+public enum MortarActivationState {
+    case activated, deactivated
+}
 
-internal enum MortarLayoutAttribute {
+/// Defines the virtual Mortar-specific attributes, which allow for custom
+/// attributes that represent multuple sub-attributes.
+enum MortarLayoutAttribute {
+    enum LayoutType {
+        case position, size
+    }
+
+    /// How many sub-attributes exist in this attribute
+    var degree: Int { componentAttributes.count }
+
+    // Standard attributes
     case left
     case right
     case top
@@ -55,6 +55,9 @@ internal enum MortarLayoutAttribute {
     case baseline
     case firstBaseline
     case lastBaseline
+    case notAnAttribute
+
+    // iOS/tvOS-specific attributes
     #if os(iOS) || os(tvOS)
     case leftMargin
     case rightMargin
@@ -64,383 +67,309 @@ internal enum MortarLayoutAttribute {
     case trailingMargin
     case centerXWithinMargins
     case centerYWithinMargins
+    case sideMargins
+    case capMargins
     #endif
-    case notAnAttribute
+
+    // Attributes with multiple sub-attributes
     case sides
     case caps
     case size
-    case cornerTL
-    case cornerTR
-    case cornerBL
-    case cornerBR
+    case topLeft
+    case topLeading
+    case topRight
+    case topTrailing
+    case bottomLeft
+    case bottomLeading
+    case bottomRight
+    case bottomTrailing
     case edges
-    case frame
     case center
-    
+
     #if os(iOS) || os(tvOS)
-    func nsLayoutAttribute() -> MortarAliasLayoutAttribute? {
-        switch self {
-        case .left:                     return .left
-        case .right:                    return .right
-        case .top:                      return .top
-        case .bottom:                   return .bottom
-        case .leading:                  return .leading
-        case .trailing:                 return .trailing
-        case .width:                    return .width
-        case .height:                   return .height
-        case .centerX:                  return .centerX
-        case .centerY:                  return .centerY
-        case .baseline:                 return .lastBaseline
-        case .firstBaseline:            return .firstBaseline
-        case .lastBaseline:             return .lastBaseline
-        case .leftMargin:               return .leftMargin
-        case .rightMargin:              return .rightMargin
-        case .topMargin:                return .topMargin
-        case .bottomMargin:             return .bottomMargin
-        case .leadingMargin:            return .leadingMargin
-        case .trailingMargin:           return .trailingMargin
-        case .centerXWithinMargins:     return .centerXWithinMargins
-        case .centerYWithinMargins:     return .centerYWithinMargins
-        case .notAnAttribute:           return .notAnAttribute
-        default:                        return nil
+    static func from(_ standardAttribute: MortarAliasLayoutAttribute) -> MortarLayoutAttribute {
+        switch standardAttribute {
+        case .left: return .left
+        case .right: return .right
+        case .top: return .top
+        case .bottom: return .bottom
+        case .leading: return .leading
+        case .trailing: return .trailing
+        case .width: return .width
+        case .height: return .height
+        case .centerX: return .centerX
+        case .centerY: return .centerY
+        case .lastBaseline: return .lastBaseline
+        case .firstBaseline: return .firstBaseline
+        case .leftMargin: return .leftMargin
+        case .rightMargin: return .rightMargin
+        case .topMargin: return .topMargin
+        case .bottomMargin: return .bottomMargin
+        case .leadingMargin: return .leadingMargin
+        case .trailingMargin: return .trailingMargin
+        case .centerXWithinMargins: return .centerXWithinMargins
+        case .centerYWithinMargins: return .centerYWithinMargins
+        case .notAnAttribute: return .notAnAttribute
+        @unknown default:
+            return .notAnAttribute
         }
     }
     #else
-    func nsLayoutAttribute() -> MortarAliasLayoutAttribute? {
-        switch self {
-        case .left:                     return .left
-        case .right:                    return .right
-        case .top:                      return .top
-        case .bottom:                   return .bottom
-        case .leading:                  return .leading
-        case .trailing:                 return .trailing
-        case .width:                    return .width
-        case .height:                   return .height
-        case .centerX:                  return .centerX
-        case .centerY:                  return .centerY
-        case .baseline:                 return .lastBaseline
-        case .firstBaseline:            return .firstBaseline
-        case .lastBaseline:             return .lastBaseline
-        case .notAnAttribute:           return .notAnAttribute
-        default:                        return nil
+    static func from(_ standardAttribute: MortarAliasLayoutAttribute) -> MortarLayoutAttribute {
+        switch standardAttribute {
+        case .left: return .left
+        case .right: return .right
+        case .top: return .top
+        case .bottom: return .bottom
+        case .leading: return .leading
+        case .trailing: return .trailing
+        case .width: return .width
+        case .height: return .height
+        case .centerX: return .centerX
+        case .centerY: return .centerY
+        @unknown default:
+            return .notAnAttribute
         }
     }
     #endif
-    
+
     #if os(iOS) || os(tvOS)
-    func componentAttributes() -> [MortarLayoutAttribute] {
+    var standardLayoutAttribute: MortarAliasLayoutAttribute? {
         switch self {
-        case .left:                     return [.left                                   ]
-        case .right:                    return [.right                                  ]
-        case .top:                      return [.top                                    ]
-        case .bottom:                   return [.bottom                                 ]
-        case .leading:                  return [.leading                                ]
-        case .trailing:                 return [.trailing                               ]
-        case .width:                    return [.width                                  ]
-        case .height:                   return [.height                                 ]
-        case .centerX:                  return [.centerX                                ]
-        case .centerY:                  return [.centerY                                ]
-        case .baseline:                 return [.lastBaseline                           ]
-        case .firstBaseline:            return [.firstBaseline                          ]
-        case .lastBaseline:             return [.lastBaseline                           ]
-        case .leftMargin:               return [.leftMargin                             ]
-        case .rightMargin:              return [.rightMargin                            ]
-        case .topMargin:                return [.topMargin                              ]
-        case .bottomMargin:             return [.bottomMargin                           ]
-        case .leadingMargin:            return [.leadingMargin                          ]
-        case .trailingMargin:           return [.trailingMargin                         ]
-        case .centerXWithinMargins:     return [.centerXWithinMargins                   ]
-        case .centerYWithinMargins:     return [.centerYWithinMargins                   ]
-        case .notAnAttribute:           return [.notAnAttribute                         ]
-            
-        case .sides:                    return [.leading, .trailing                     ]
-        case .caps:                     return [.top,     .bottom                       ]
-        case .size:                     return [.width,   .height                       ]
-        case .cornerTL:                 return [.top,     .left                         ]
-        case .cornerTR:                 return [.top,     .right                        ]
-        case .cornerBL:                 return [.bottom,  .left                         ]
-        case .cornerBR:                 return [.bottom,  .right                        ]
-        case .edges:                    return [.top,     .leading, .bottom,  .trailing ]
-        case .frame:                    return [.leading, .top,     .width,   .height   ]
-        case .center:                   return [.centerX, .centerY                      ]            
+        case .left: .left
+        case .right: .right
+        case .top: .top
+        case .bottom: .bottom
+        case .leading: .leading
+        case .trailing: .trailing
+        case .width: .width
+        case .height: .height
+        case .centerX: .centerX
+        case .centerY: .centerY
+        case .baseline: .lastBaseline
+        case .firstBaseline: .firstBaseline
+        case .lastBaseline: .lastBaseline
+        case .leftMargin: .leftMargin
+        case .rightMargin: .rightMargin
+        case .topMargin: .topMargin
+        case .bottomMargin: .bottomMargin
+        case .leadingMargin: .leadingMargin
+        case .trailingMargin: .trailingMargin
+        case .centerXWithinMargins: .centerXWithinMargins
+        case .centerYWithinMargins: .centerYWithinMargins
+        case .notAnAttribute: .notAnAttribute
+        default: nil
         }
     }
     #else
-    func componentAttributes() -> [MortarLayoutAttribute] {
+    var standardLayoutAttribute: MortarAliasLayoutAttribute? {
         switch self {
-        case .left:                     return [.left                                   ]
-        case .right:                    return [.right                                  ]
-        case .top:                      return [.top                                    ]
-        case .bottom:                   return [.bottom                                 ]
-        case .leading:                  return [.leading                                ]
-        case .trailing:                 return [.trailing                               ]
-        case .width:                    return [.width                                  ]
-        case .height:                   return [.height                                 ]
-        case .centerX:                  return [.centerX                                ]
-        case .centerY:                  return [.centerY                                ]
-        case .baseline:                 return [.baseline                               ]
-        case .firstBaseline:            return [.firstBaseline                          ]
-        case .lastBaseline:             return [.lastBaseline                           ]
-        case .notAnAttribute:           return [.notAnAttribute                         ]
-        
-        case .sides:                    return [.leading, .trailing                     ]
-        case .caps:                     return [.top,     .bottom                       ]
-        case .size:                     return [.width,   .height                       ]
-        case .cornerTL:                 return [.top,     .left                         ]
-        case .cornerTR:                 return [.top,     .right                        ]
-        case .cornerBL:                 return [.bottom,  .left                         ]
-        case .cornerBR:                 return [.bottom,  .right                        ]
-        case .edges:                    return [.top,     .leading, .bottom,  .trailing ]
-        case .frame:                    return [.leading, .top,     .width,   .height   ]
-        case .center:                   return [.centerX, .centerY                      ]
+        case .left: .left
+        case .right: .right
+        case .top: .top
+        case .bottom: .bottom
+        case .leading: .leading
+        case .trailing: .trailing
+        case .width: .width
+        case .height: .height
+        case .centerX: .centerX
+        case .centerY: .centerY
+        case .baseline: .lastBaseline
+        case .firstBaseline: .firstBaseline
+        case .lastBaseline: .lastBaseline
+        case .notAnAttribute: .notAnAttribute
+        default: nil
         }
     }
     #endif
-    
+
     #if os(iOS) || os(tvOS)
-    func implicitSuperviewBaseline() -> MortarAliasLayoutAttribute {
+    var axis: MortarAliasLayoutAxis? {
         switch self {
-        case .left:                     return .left
-        case .right:                    return .left
-        case .top:                      return .top
-        case .bottom:                   return .top
-        case .centerX:                  return .left
-        case .centerY:                  return .top
-        case .centerXWithinMargins:     return .left
-        case .centerYWithinMargins:     return .top
-        default:                        return .notAnAttribute
+        case .left: .horizontal
+        case .right: .horizontal
+        case .top: .vertical
+        case .bottom: .vertical
+        case .leading: .horizontal
+        case .trailing: .horizontal
+        case .width: .horizontal
+        case .height: .vertical
+        case .centerX: .horizontal
+        case .centerY: .vertical
+        case .baseline: .vertical
+        case .firstBaseline: .vertical
+        case .lastBaseline: .vertical
+        case .leftMargin: .horizontal
+        case .rightMargin: .horizontal
+        case .topMargin: .vertical
+        case .bottomMargin: .vertical
+        case .leadingMargin: .horizontal
+        case .trailingMargin: .horizontal
+        case .centerXWithinMargins: .horizontal
+        case .centerYWithinMargins: .vertical
+        case .sideMargins: .horizontal
+        case .capMargins: .vertical
+        default: nil
         }
     }
     #else
-    func implicitSuperviewBaseline() -> MortarAliasLayoutAttribute {
+    var axis: MortarAxis? {
         switch self {
-        case .left:                     return .left
-        case .right:                    return .left
-        case .top:                      return .top
-        case .bottom:                   return .top
-        case .centerX:                  return .left
-        case .centerY:                  return .top
-        default:                        return .notAnAttribute
+        case .left: .horizontal
+        case .right: .horizontal
+        case .top: .vertical
+        case .bottom: .vertical
+        case .leading: .horizontal
+        case .trailing: .horizontal
+        case .width: .horizontal
+        case .height: .vertical
+        case .centerX: .horizontal
+        case .centerY: .vertical
+        case .baseline: .vertical
+        case .firstBaseline: .vertical
+        case .lastBaseline: .vertical
+        default: nil
         }
     }
     #endif
-    
-    func insetConstantModifier() -> CGFloat {
+
+    #if os(iOS) || os(tvOS)
+    var layoutType: LayoutType? {
         switch self {
-        case .right:                    return -1
-        case .trailing:                 return -1
-        case .bottom:                   return -1
-        case .width:                    return -1
-        case .height:                   return -1
-        default:                        return 1
+        case .left: .position
+        case .right: .position
+        case .top: .position
+        case .bottom: .position
+        case .leading: .position
+        case .trailing: .position
+        case .width: .size
+        case .height: .size
+        case .centerX: .position
+        case .centerY: .position
+        case .baseline: .position
+        case .firstBaseline: .position
+        case .lastBaseline: .position
+        case .leftMargin: .position
+        case .rightMargin: .position
+        case .topMargin: .position
+        case .bottomMargin: .position
+        case .leadingMargin: .position
+        case .trailingMargin: .position
+        case .centerXWithinMargins: .position
+        case .centerYWithinMargins: .position
+        case .sideMargins: .position
+        case .capMargins: .position
+        default: nil
         }
     }
+    #else
+    var layoutType: LayoutType? {
+        switch self {
+        case .left: .position
+        case .right: .position
+        case .top: .position
+        case .bottom: .position
+        case .leading: .position
+        case .trailing: .position
+        case .width: .size
+        case .height: .size
+        case .centerX: .position
+        case .centerY: .position
+        case .baseline: .position
+        case .firstBaseline: .position
+        case .lastBaseline: .position
+        default: nil
+        }
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    var componentAttributes: [MortarAliasLayoutAttribute] {
+        switch self {
+        case .left: [.left]
+        case .right: [.right]
+        case .top: [.top]
+        case .bottom: [.bottom]
+        case .leading: [.leading]
+        case .trailing: [.trailing]
+        case .width: [.width]
+        case .height: [.height]
+        case .centerX: [.centerX]
+        case .centerY: [.centerY]
+        case .baseline: [.lastBaseline]
+        case .firstBaseline: [.firstBaseline]
+        case .lastBaseline: [.lastBaseline]
+        case .leftMargin: [.leftMargin]
+        case .rightMargin: [.rightMargin]
+        case .topMargin: [.topMargin]
+        case .bottomMargin: [.bottomMargin]
+        case .leadingMargin: [.leadingMargin]
+        case .trailingMargin: [.trailingMargin]
+        case .centerXWithinMargins: [.centerXWithinMargins]
+        case .centerYWithinMargins: [.centerYWithinMargins]
+        case .sideMargins: [.leadingMargin, .trailingMargin]
+        case .capMargins: [.topMargin, .bottomMargin]
+        case .notAnAttribute: [.notAnAttribute]
+        case .sides: [.leading, .trailing]
+        case .caps: [.top, .bottom]
+        case .size: [.width, .height]
+        case .topLeft: [.top, .left]
+        case .topLeading: [.top, .leading]
+        case .topRight: [.top, .right]
+        case .topTrailing: [.top, .trailing]
+        case .bottomLeft: [.bottom, .left]
+        case .bottomLeading: [.bottom, .leading]
+        case .bottomRight: [.bottom, .right]
+        case .bottomTrailing: [.bottom, .trailing]
+        case .edges: [.top, .leading, .bottom, .trailing]
+        case .center: [.centerX, .centerY]
+        }
+    }
+    #else
+    var componentAttributes: [MortarAliasLayoutAttribute] {
+        switch self {
+        case .left: [.left]
+        case .right: [.right]
+        case .top: [.top]
+        case .bottom: [.bottom]
+        case .leading: [.leading]
+        case .trailing: [.trailing]
+        case .width: [.width]
+        case .height: [.height]
+        case .centerX: [.centerX]
+        case .centerY: [.centerY]
+        case .baseline: [.baseline]
+        case .firstBaseline: [.firstBaseline]
+        case .lastBaseline: [.lastBaseline]
+        case .notAnAttribute: [.notAnAttribute]
+        case .sides: [.leading, .trailing]
+        case .caps: [.top, .bottom]
+        case .size: [.width, .height]
+        case .topLeft: [.top, .left]
+        case .topLeading: [.top, .leading]
+        case .topRight: [.top, .right]
+        case .topTrailing: [.top, .trailing]
+        case .bottomLeft: [.bottom, .left]
+        case .bottomLeading: [.bottom, .leading]
+        case .bottomRight: [.bottom, .right]
+        case .bottomTrailing: [.bottom, .trailing]
+        case .edges: [.top, .leading, .bottom, .trailing]
+        case .center: [.centerX, .centerY]
+        }
+    }
+    #endif
 }
 
 public enum MortarLayoutPriority {
-    case low, medium, high, req
-    
-    // As of v1.1, the actual default priority is .required.  
-    // "default" is a misleading term for this enum.
-    // Medium is a better term for the priority between low and high.
-    @available(*, deprecated, message: "The default priority enumeration has been renamed medium")
-    case `default`
-    
+    case low, medium, high, required, priority(Int)
+
     @inline(__always) public func layoutPriority() -> MortarAliasLayoutPriority {
         switch self {
-        case .low:      return MortarAliasLayoutPriorityDefaultLow
-        case .medium:   return MortarAliasLayoutPriorityDefaultMedium
-        case .high:     return MortarAliasLayoutPriorityDefaultHigh
-        case .req:      return MortarAliasLayoutPriorityDefaultRequired
-        
-        // Please note that this is a misleading enum value that remains MortarAliasLayoutPriorityDefaultMedium
-        // for compatibility reasons.  The actual default priority of a constraint is now 1000/.required
-        case .default:  return MortarAliasLayoutPriorityDefaultMedium
+        case .low: MortarAliasLayoutPriority.defaultLow
+        case .medium: MortarAliasLayoutPriority(rawValue: (Float(MortarAliasLayoutPriority.defaultHigh.rawValue) + Float(MortarAliasLayoutPriority.defaultLow.rawValue)) / 2)
+        case .high: MortarAliasLayoutPriority.defaultHigh
+        case .required: MortarAliasLayoutPriority.required
+        case let .priority(value): MortarAliasLayoutPriority(rawValue: Float(value))
         }
     }
 }
-
-public enum MortarActivationState {
-    case activated, deactivated
-}
-
-public protocol MortarCGFloatable: MortarAliasLayoutPriorityAble {
-    @inline(__always) func m_cgfloatValue() -> CGFloat
-}
-
-extension CGFloat : MortarCGFloatable {
-    @inline(__always) public func m_cgfloatValue() -> CGFloat {
-        return self
-    }
-    
-    @inline(__always) public func m_intoPriority() -> MortarAliasLayoutPriority {
-        return MortarAliasLayoutPriority(rawValue: Float(self))
-    }
-}
-
-extension Int : MortarCGFloatable {
-    @inline(__always) public func m_cgfloatValue() -> CGFloat {
-        return CGFloat(self)
-    }
-    
-    @inline(__always) public func m_intoPriority() -> MortarAliasLayoutPriority {
-        return MortarAliasLayoutPriority(rawValue: Float(self))
-    }
-}
-
-extension UInt : MortarCGFloatable {
-    @inline(__always) public func m_cgfloatValue() -> CGFloat {
-        return CGFloat(self)
-    }
-    
-    @inline(__always) public func m_intoPriority() -> MortarAliasLayoutPriority {
-        return MortarAliasLayoutPriority(rawValue: Float(self))
-    }
-}
-
-extension Int64 : MortarCGFloatable {
-    @inline(__always) public func m_cgfloatValue() -> CGFloat {
-        return CGFloat(self)
-    }
-    
-    @inline(__always) public func m_intoPriority() -> MortarAliasLayoutPriority {
-        return MortarAliasLayoutPriority(rawValue: Float(self))
-    }
-}
-
-extension UInt64 : MortarCGFloatable {
-    @inline(__always) public func m_cgfloatValue() -> CGFloat {
-        return CGFloat(self)
-    }
-    
-    @inline(__always) public func m_intoPriority() -> MortarAliasLayoutPriority {
-        return MortarAliasLayoutPriority(rawValue: Float(self))
-    }
-}
-
-extension UInt32 : MortarCGFloatable {
-    @inline(__always) public func m_cgfloatValue() -> CGFloat {
-        return CGFloat(self)
-    }
-    
-    @inline(__always) public func m_intoPriority() -> MortarAliasLayoutPriority {
-        return MortarAliasLayoutPriority(rawValue: Float(self))
-    }
-}
-
-extension Int32 : MortarCGFloatable {
-    @inline(__always) public func m_cgfloatValue() -> CGFloat {
-        return CGFloat(self)
-    }
-    
-    @inline(__always) public func m_intoPriority() -> MortarAliasLayoutPriority {
-        return MortarAliasLayoutPriority(rawValue: Float(self))
-    }
-}
-
-extension Double : MortarCGFloatable {
-    @inline(__always) public func m_cgfloatValue() -> CGFloat {
-        return CGFloat(self)
-    }
-    
-    @inline(__always) public func m_intoPriority() -> MortarAliasLayoutPriority {
-        return MortarAliasLayoutPriority(rawValue: Float(self))
-    }
-}
-
-extension Float : MortarCGFloatable {
-    @inline(__always) public func m_cgfloatValue() -> CGFloat {
-        return CGFloat(self)
-    }
-    
-    @inline(__always) public func m_intoPriority() -> MortarAliasLayoutPriority {
-        return MortarAliasLayoutPriority(rawValue: Float(self))
-    }
-}
-
-public protocol MortarAttributable {
-    @inline(__always) func m_intoAttribute() -> MortarAttribute
-}
-
-extension CGFloat : MortarAttributable {
-    public func m_intoAttribute() -> MortarAttribute {
-        return MortarAttribute(constant: self)
-    }
-}
-
-extension Int : MortarAttributable {
-    public func m_intoAttribute() -> MortarAttribute {
-        return MortarAttribute(constant: self)
-    }
-}
-
-extension Double : MortarAttributable {
-    public func m_intoAttribute() -> MortarAttribute {
-        return MortarAttribute(constant: self)
-    }
-}
-
-extension Float : MortarAttributable {
-    public func m_intoAttribute() -> MortarAttribute {
-        return MortarAttribute(constant: self)
-    }
-}
-
-extension MortarView : MortarAttributable {
-    public func m_intoAttribute() -> MortarAttribute {
-        return MortarAttribute(item: self)
-    }
-}
-
-#if os(iOS) || os(tvOS)
-@available(iOS 9.0, *)
-extension UILayoutGuide : MortarAttributable {
-    public func m_intoAttribute() -> MortarAttribute {
-        return MortarAttribute(item: self)
-    }
-}
-#endif
-
-extension MortarAttribute : MortarAttributable {
-    @inline(__always) public func m_intoAttribute() -> MortarAttribute {
-        return self
-    }
-}
-
-public protocol MortarAliasLayoutPriorityAble {
-    @inline(__always) func m_intoPriority() -> MortarAliasLayoutPriority
-}
-
-extension MortarAliasLayoutPriority: MortarAliasLayoutPriorityAble {
-    public func m_intoPriority() -> MortarAliasLayoutPriority {
-        return self
-    }
-}
-
-extension MortarAliasLayoutPriorityAble {
-    public var rawValue: Float {
-        return self.m_intoPriority().rawValue
-    }
-}
-
-public typealias MortarConstTwo  = (MortarCGFloatable, MortarCGFloatable)
-public typealias MortarConstFour = (MortarCGFloatable, MortarCGFloatable, MortarCGFloatable, MortarCGFloatable)
-
-public typealias MortarTwople  = (MortarAttributable, MortarAttributable)
-public typealias MortarFourple = (MortarAttributable, MortarAttributable, MortarAttributable, MortarAttributable)
-public typealias MortarTuple   = ([MortarAttribute], MortarAliasLayoutPriority?)
-
-@inline(__always) internal func MortarConvertTwople(_ twople: MortarTwople) -> MortarTuple {
-    return ([twople.0.m_intoAttribute(), twople.1.m_intoAttribute()], MortarDefault.priority.current())
-}
-
-@inline(__always) internal func MortarConvertFourple(_ fourple: MortarFourple) -> MortarTuple {
-    return ([fourple.0.m_intoAttribute(), fourple.1.m_intoAttribute(), fourple.2.m_intoAttribute(), fourple.3.m_intoAttribute()], MortarDefault.priority.current())
-}
-
-public enum MortarAxis {
-    case horizontal, vertical
-}
-
-
-

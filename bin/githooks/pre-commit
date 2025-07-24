@@ -1,0 +1,10 @@
+#!/bin/sh
+
+disable_swiftformat=$(git config --bool hooks.disable-swiftformat)
+if [[ "$disable_swiftformat" == true ]]; then
+  exit 0
+fi
+
+# Swiftformat
+git diff -z --diff-filter=d --staged --name-only -- '*.swift' | xargs -0 mint run swiftformat --config .swiftformat
+git diff -z --diff-filter=d --staged --name-only -- '*.swift' | xargs -0 git add

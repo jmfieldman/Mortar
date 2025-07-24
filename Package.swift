@@ -1,21 +1,26 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.9
 
 import PackageDescription
 
 let package = Package(
     name: "Mortar",
-    platforms: [.iOS(.v12), .tvOS(.v12), .macOS(.v10_14)],
+    platforms: [.iOS(.v17), .macOS(.v14), .tvOS(.v17)],
     products: [
         .library(
             name: "Mortar",
             targets: ["Mortar"]
         ),
     ],
-    dependencies: [],
+    dependencies: [
+        .package(
+            url: "https://github.com/jmfieldman/CombineEx.git",
+            from: "0.0.17"
+        ),
+    ],
     targets: [
         .target(
             name: "Mortar",
-            dependencies: [],
+            dependencies: ["CombineEx"],
             path: "Mortar"
         ),
         .testTarget(
