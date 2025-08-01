@@ -6,6 +6,8 @@
 .swiftpm
 Package.resolved
 
+.vscode
+
 ## Build generated
 build/
 DerivedData
