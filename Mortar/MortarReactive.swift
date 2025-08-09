@@ -12,11 +12,7 @@ public struct BindTarget<Target: AnyObject, T> {
     let keyPath: WritableKeyPath<Target, T>
 }
 
-public protocol _MortarBindProviding: NSObject {
-    func bind<Target, T>(
-        _ keyPath: WritableKeyPath<Target, T>
-    ) -> BindTarget<Target, T> where Target == Self
-}
+public protocol _MortarBindProviding: AnyObject {}
 
 public extension _MortarBindProviding {
     func bind<T>(
@@ -67,41 +63,15 @@ public func <~ <T>(lhs: BindTarget<some Any, T>, rhs: any Publisher<T, Never>) {
 
 // MARK: - Sink
 
-public protocol _MortarSinkProviding: AnyObject {
-    @discardableResult
-    func sink<Binder, Output, E: Error>(
-        _ publisher: any Publisher<Output, E>,
-        receiveValue: ((Binder, Output) -> Void)?,
-        receiveCompletion: ((Binder, Subscribers.Completion<E>) -> Void)?
-    ) -> AnyCancellable where Binder == Self
-
-    @discardableResult
-    func sink<Binder, Output>(
-        _ publisher: any Publisher<Output, Never>,
-        receiveValue: ((Binder, Output) -> Void)?
-    ) -> AnyCancellable where Binder == Self
-
-    @discardableResult
-    func sink<Binder, E: Error>(
-        _ publisher: any Publisher<Void, E>,
-        receiveValue: ((Binder) -> Void)?,
-        receiveCompletion: ((Binder, Subscribers.Completion<E>) -> Void)?
-    ) -> AnyCancellable where Binder == Self
-
-    @discardableResult
-    func sink<Binder>(
-        _ publisher: any Publisher<Void, Never>,
-        receiveValue: ((Binder) -> Void)?
-    ) -> AnyCancellable where Binder == Self
-}
+public protocol _MortarSinkProviding: AnyObject {}
 
 public extension _MortarSinkProviding {
     @discardableResult
-    func sink<Binder, Output, E: Error>(
+    func sink<Output, E: Error>(
         _ publisher: any Publisher<Output, E>,
-        receiveValue: ((Binder, Output) -> Void)? = nil,
-        receiveCompletion: ((Binder, Subscribers.Completion<E>) -> Void)? = nil
-    ) -> AnyCancellable where Binder == Self {
+        receiveValue: ((Self, Output) -> Void)? = nil,
+        receiveCompletion: ((Self, Subscribers.Completion<E>) -> Void)? = nil
+    ) -> AnyCancellable {
         publisher.eraseToAnyPublisher()
             .receiveOnMain()
             .sink(
@@ -118,10 +88,10 @@ public extension _MortarSinkProviding {
     }
 
     @discardableResult
-    func sink<Binder, Output>(
+    func sink<Output>(
         _ publisher: any Publisher<Output, Never>,
-        receiveValue: ((Binder, Output) -> Void)?
-    ) -> AnyCancellable where Binder == Self {
+        receiveValue: ((Self, Output) -> Void)?
+    ) -> AnyCancellable {
         publisher.eraseToAnyPublisher()
             .receiveOnMain()
             .sink(
@@ -134,11 +104,11 @@ public extension _MortarSinkProviding {
     }
 
     @discardableResult
-    func sink<Binder, E: Error>(
+    func sink<E: Error>(
         _ publisher: any Publisher<Void, E>,
-        receiveValue: ((Binder) -> Void)?,
-        receiveCompletion: ((Binder, Subscribers.Completion<E>) -> Void)?
-    ) -> AnyCancellable where Binder == Self {
+        receiveValue: ((Self) -> Void)?,
+        receiveCompletion: ((Self, Subscribers.Completion<E>) -> Void)?
+    ) -> AnyCancellable {
         publisher.eraseToAnyPublisher()
             .receiveOnMain()
             .sink(
@@ -151,10 +121,10 @@ public extension _MortarSinkProviding {
     }
 
     @discardableResult
-    func sink<Binder>(
+    func sink(
         _ publisher: any Publisher<Void, Never>,
-        receiveValue: ((Binder) -> Void)?
-    ) -> AnyCancellable where Binder == Self {
+        receiveValue: ((Self) -> Void)?
+    ) -> AnyCancellable {
         publisher.eraseToAnyPublisher()
             .receiveOnMain()
             .sink(
@@ -171,11 +141,7 @@ extension MortarView: _MortarSinkProviding {}
 
 // MARK: - KVO Property
 
-public protocol _MortarKVOPropertyProviding: NSObject {
-    func kvoProperty<Source, T>(
-        _ keyPath: KeyPath<Source, T>
-    ) -> Property<T> where Source == Self
-}
+public protocol _MortarKVOPropertyProviding: NSObject {}
 
 public extension _MortarKVOPropertyProviding {
     func kvoProperty<T>(
@@ -210,63 +176,22 @@ private class TargetBox<UIControlSubtype> {
     }
 }
 
-public protocol _MortarUIControlEventsProviding: UIControl {
-    func publishEvents<UIControlSubtype>(
-        _ filter: UIControl.Event
-    ) -> AnyPublisher<UIControlSubtype, Never> where UIControlSubtype == Self
-
-    func handleEvents<UIControlSubtype>(
-        _ filter: UIControl.Event,
-        _ handleBlock: @escaping (UIControlSubtype) -> Void
-    ) where UIControlSubtype == Self
-
-    func handleEvents<UIControlSubtype>(
-        _ filter: UIControl.Event,
-        _ actionTrigger: some ActionTriggerConvertible<UIControlSubtype>
-    ) where UIControlSubtype == Self
-
-    func handleEvents(
-        _ filter: UIControl.Event,
-        _ actionTrigger: some ActionTriggerConvertible<Void>
-    )
-
-    func handleEvents<UIControlSubtype>(
-        _ filter: UIControl.Event,
-        _ actionTriggerPublisher: some Publisher<some ActionTriggerConvertible<UIControlSubtype>, Never>
-    ) where UIControlSubtype == Self
-
-    func handleEvents(
-        _ filter: UIControl.Event,
-        _ actionTriggerPublisher: some Publisher<some ActionTriggerConvertible<Void>, Never>
-    )
-
-    func handleEvents<UIControlSubtype, Input>(
-        _ filter: UIControl.Event,
-        _ actionTrigger: some ActionTriggerConvertible<Input>,
-        _ transform: @escaping (UIControlSubtype) -> Input
-    ) where UIControlSubtype == Self
-
-    func handleEvents<UIControlSubtype, Input>(
-        _ filter: UIControl.Event,
-        _ actionTriggerPublisher: some Publisher<some ActionTriggerConvertible<Input>, Never>,
-        _ transform: @escaping (UIControlSubtype) -> Input
-    ) where UIControlSubtype == Self
-}
+public protocol _MortarUIControlEventsProviding: UIControl {}
 
 public extension _MortarUIControlEventsProviding {
-    func publishEvents<UIControlSubtype>(
+    func publishEvents(
         _ filter: UIControl.Event = [.allEvents]
-    ) -> AnyPublisher<UIControlSubtype, Never> where UIControlSubtype == Self {
+    ) -> AnyPublisher<Self, Never> {
         let internalTarget = TargetBox<Self>()
         permanentlyAssociate(internalTarget)
         addTarget(internalTarget, action: #selector(TargetBox<Self>.invoke(sender:)), for: filter)
         return internalTarget.subject.eraseToAnyPublisher()
     }
 
-    func handleEvents<UIControlSubtype>(
+    func handleEvents(
         _ filter: UIControl.Event,
-        _ handleBlock: @escaping (UIControlSubtype) -> Void
-    ) where UIControlSubtype == Self {
+        _ handleBlock: @escaping (Self) -> Void
+    ) {
         publishEvents(filter)
             .sink(
                 duringLifetimeOf: self,
@@ -306,11 +231,11 @@ public extension _MortarUIControlEventsProviding {
             )
     }
 
-    func handleEvents<UIControlSubtype>(
+    func handleEvents(
         _ filter: UIControl.Event,
-        _ actionTriggerPublisher: some Publisher<some ActionTriggerConvertible<UIControlSubtype>, Never>
-    ) where UIControlSubtype == Self {
-        let currentTrigger = Property<ActionTrigger<UIControlSubtype>?>(
+        _ actionTriggerPublisher: some Publisher<some ActionTriggerConvertible<Self>, Never>
+    ) {
+        let currentTrigger = Property<ActionTrigger<Self>?>(
             initial: nil,
             then: actionTriggerPublisher.map(\.asActionTrigger)
         )
@@ -346,11 +271,11 @@ public extension _MortarUIControlEventsProviding {
             )
     }
 
-    func handleEvents<UIControlSubtype, Input>(
+    func handleEvents<Input>(
         _ filter: UIControl.Event,
         _ actionTrigger: some ActionTriggerConvertible<Input>,
-        _ transform: @escaping (UIControlSubtype) -> Input
-    ) where UIControlSubtype == Self {
+        _ transform: @escaping (Self) -> Input
+    ) {
         let resolvedActionTrigger = actionTrigger.asActionTrigger
         publishEvents(filter)
             .sink(
@@ -363,11 +288,11 @@ public extension _MortarUIControlEventsProviding {
             )
     }
 
-    func handleEvents<UIControlSubtype, Input>(
+    func handleEvents<Input>(
         _ filter: UIControl.Event,
         _ actionTriggerPublisher: some Publisher<some ActionTriggerConvertible<Input>, Never>,
-        _ transform: @escaping (UIControlSubtype) -> Input
-    ) where UIControlSubtype == Self {
+        _ transform: @escaping (Self) -> Input
+    ) {
         let currentTrigger = Property<ActionTrigger<Input>?>(
             initial: nil,
             then: actionTriggerPublisher.map(\.asActionTrigger)

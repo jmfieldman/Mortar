@@ -77,7 +77,7 @@ private func resolveSourceItem(_ item: Any?) throws -> Any? {
     if let reference = item as? MortarRelativeAnchor {
         switch reference {
         case let .parent(view):
-            guard let parent = view.superview as? MortarView else {
+            guard let parent = view.superview else {
                 MortarError.emit("Constraint source item must be a subview of a UIView")
                 return nil
             }
