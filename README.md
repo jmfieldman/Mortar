@@ -2,7 +2,7 @@
 
 > Mortar 3 is incompatible with previous versions, and aims to solve different problems. Check the git tags to find previous versions.
 
-> Mortar 3 is still very much a work in progress!
+> Mortar 3 is still very much a work in progress, and fundamental API decisions may change at any moment. Please let me know If you choose to use this library for a production app so that I can be more cognizant of impact.
 
 Mortar is a DSL that allows you to create UIView hierarchies with declarative, anonymous syntax. Its goal is to provide the best of SwiftUI without its [perceived shortcomings](WHY.md).
 
