@@ -17,7 +17,7 @@ class ReactiveFeaturesViewController: UIViewController {
         view = UIContainer { container in
             container.backgroundColor = .lightGray
 
-            VStackView {
+            UIVStack {
                 $0.backgroundColor = .white
                 $0.alignment = .fill
                 $0.layout.sides == $0.parentLayout.sideMargins

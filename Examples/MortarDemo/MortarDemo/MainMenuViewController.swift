@@ -158,7 +158,7 @@ private class MainMenuRowCell: UITableViewCell, ManagedTableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         accessoryType = .disclosureIndicator
         contentView.configure {
-            HStackView {
+            UIHStack {
                 $0.alignment = .center
                 $0.layout.edges == $0.parentLayout.edges
 

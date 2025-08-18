@@ -8,8 +8,8 @@
 public typealias UIContainer = MortarView
 
 /// A horizontal stack view that arranges its subviews in a horizontal line.
-public class HStackView: MortarStackView {
-    /// Initializes an instance of HStackView with a specified frame.
+public class UIHStack: MortarStackView {
+    /// Initializes an instance of UIHStack with a specified frame.
     ///
     /// - Parameter frame: The frame rectangle for the view, measured in points.
     override public init(frame: CGRect) {
@@ -27,8 +27,8 @@ public class HStackView: MortarStackView {
 }
 
 /// A vertical stack view that arranges its subviews in a vertical line.
-public class VStackView: MortarStackView {
-    /// Initializes an instance of VStackView with a specified frame.
+public class UIVStack: MortarStackView {
+    /// Initializes an instance of UIVStack with a specified frame.
     ///
     /// - Parameter frame: The frame rectangle for the view, measured in points.
     override public init(frame: CGRect) {

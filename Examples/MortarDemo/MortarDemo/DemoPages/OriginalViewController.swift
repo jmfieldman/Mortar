@@ -27,7 +27,7 @@ class OriginalViewController: UIViewController {
         view = UIContainer {
             $0.backgroundColor = .darkGray
 
-            VStackView {
+            UIVStack {
                 $0.backgroundColor = .lightGray
                 $0.layout.sides == $0.parentLayout.sideMargins
                 $0.layout.centerY == $0.parentLayout.centerY
@@ -82,7 +82,7 @@ class OriginalViewController: UIViewController {
                 }
             }
 
-            VStackView {
+            UIVStack {
                 // Layout
                 $0.layout.bottom == parent.safeAreaLayoutGuide.layout.bottom - 40
                 $0.layout.sides == parent.layout.sides
