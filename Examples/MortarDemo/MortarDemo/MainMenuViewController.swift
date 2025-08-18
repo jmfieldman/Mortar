@@ -70,9 +70,9 @@ class MainMenuViewController: UIViewController {
         }
     }
 
-    private func makeRows(demoScreens: [DemoScreen], starList: Set<String>) -> [MainMenuRowModel] {
+    private func makeRows(demoScreens: [DemoScreen], starList: Set<String>) -> [MainMenuRowCell.Model] {
         demoScreens.map { [weak self, model] demoScreen in
-            return MainMenuRowModel(
+            return MainMenuRowCell.Model(
                 title: demoScreen.title,
                 isStarred: starList.contains(demoScreen.title),
                 starTapHandler: .immediate { [model] in
@@ -143,16 +143,14 @@ private struct DemoScreen {
 
 // MARK: - ManagedTableView Classes
 
-private struct MainMenuRowModel: ManagedTableViewCellModel {
-    typealias Cell = MainMenuRowCell
-    let title: String
-    let isStarred: Bool
-    let starTapHandler: ActionTrigger<Void>
-    let onSelect: (() -> Void)?
-}
-
 private class MainMenuRowCell: UITableViewCell, ManagedTableViewCell {
-    typealias Model = MainMenuRowModel
+    struct Model: ManagedTableViewCellModel, ArbitrarilyIdentifiable {
+        typealias Cell = MainMenuRowCell
+        let title: String
+        let isStarred: Bool
+        let starTapHandler: ActionTrigger<Void>
+        let onSelect: (() -> Void)?
+    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

@@ -37,12 +37,12 @@ class BasicManagedTableViewController: UIViewController {
         // Sections/row models can all be created from structs
         ManagedTableViewSection(
             rows: [
-                SimpleTextRowModel(text: "Simple row, disclosure false", showDisclosure: false),
-                SimpleTextRowModel(text: "Simple row, disclosure true", showDisclosure: true),
+                SimpleTextRowCell.Model(text: "Simple row, disclosure false", showDisclosure: false),
+                SimpleTextRowCell.Model(text: "Simple row, disclosure true", showDisclosure: true),
 
                 // You can freely mix and match models inside the rows array
 
-                AlertTextRowModel(text: "Tap to alert") { [weak self] in
+                AlertTextRowCell.Model(text: "Tap to alert") { [weak self] in
                     let alert = UIAlertController(title: "Alert", message: "Message", preferredStyle: .alert)
                     alert.addAction(.init(title: "OK", style: .default))
                     self?.present(alert, animated: true)
@@ -54,15 +54,6 @@ class BasicManagedTableViewController: UIViewController {
 
 // MARK: - Row Implementations
 
-/// Models can be simple structs; don't forget to declare conformity
-/// to `ManagedTableViewCellModel`
-private struct SimpleTextRowModel: ManagedTableViewCellModel {
-    typealias Cell = SimpleTextRowCell
-
-    let text: String
-    let showDisclosure: Bool
-}
-
 /// For managed cells, override the standard init method and configure
 /// the `contentView` with your view hierarchy.
 ///
@@ -71,7 +62,14 @@ private struct SimpleTextRowModel: ManagedTableViewCellModel {
 /// Note that this also crosses cell reuse - so the new model can represent
 /// a completely different underlying element.
 private final class SimpleTextRowCell: UITableViewCell, ManagedTableViewCell {
-    typealias Model = SimpleTextRowModel
+    /// Models can be simple structs; don't forget to declare conformity
+    /// to `ManagedTableViewCellModel`
+    struct Model: ManagedTableViewCellModel, ArbitrarilyIdentifiable {
+        typealias Cell = SimpleTextRowCell
+
+        let text: String
+        let showDisclosure: Bool
+    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -100,15 +98,13 @@ private final class SimpleTextRowCell: UITableViewCell, ManagedTableViewCell {
     }
 }
 
-private struct AlertTextRowModel: ManagedTableViewCellModel {
-    typealias Cell = AlertTextRowCell
-
-    let text: String
-    let onSelect: (() -> Void)?
-}
-
 private final class AlertTextRowCell: UITableViewCell, ManagedTableViewCell {
-    typealias Model = AlertTextRowModel
+    struct Model: ManagedTableViewCellModel, ArbitrarilyIdentifiable {
+        typealias Cell = AlertTextRowCell
+
+        let text: String
+        let onSelect: (() -> Void)?
+    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

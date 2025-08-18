@@ -76,19 +76,6 @@ extension ManagedTableView: UITableViewDataSource {
     }
 }
 
-protocol Reusable: AnyObject {
-    static var reuseIdentifier: String { get }
-}
-
-extension Reusable {
-    static var reuseIdentifier: String {
-        String(describing: self)
-    }
-}
-
-extension UITableViewHeaderFooterView: Reusable {}
-extension UITableViewCell: Reusable {}
-
 extension ManagedTableView {
     func dequeueCell<T>(_ type: T.Type, for indexPath: IndexPath) -> T where T: Reusable {
         registerCellIfNeeded(type)

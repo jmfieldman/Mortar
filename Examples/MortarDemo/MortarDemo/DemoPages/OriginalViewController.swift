@@ -46,7 +46,7 @@ class OriginalViewController: UIViewController {
                 }
             }
         }
-        let view2 = UIContainer { parent in
+        let _ = UIContainer { parent in
             UIContainer { child1 in
                 child1.backgroundColor = .blue
                 child1.layout.center == parent.layout.center
@@ -131,7 +131,7 @@ class OriginalViewController: UIViewController {
 }
 
 class SimpleRowCell: UITableViewCell, ManagedTableViewCell {
-    struct Model: ManagedTableViewCellModel {
+    struct Model: ManagedTableViewCellModel, ArbitrarilyIdentifiable {
         typealias Cell = SimpleRowCell
 
         let text: String
