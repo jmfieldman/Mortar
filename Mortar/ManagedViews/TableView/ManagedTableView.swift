@@ -3,6 +3,8 @@
 //  Copyright © 2025 Jason Fieldman.
 //
 
+#if os(iOS) || os(tvOS)
+
 import UIKit
 
 public final class ManagedTableView: UITableView {
@@ -76,7 +78,7 @@ extension ManagedTableView: UITableViewDataSource {
     }
 }
 
-extension ManagedTableView {
+private extension ManagedTableView {
     func dequeueCell<T>(_ type: T.Type, for indexPath: IndexPath) -> T where T: Reusable {
         registerCellIfNeeded(type)
         return dequeueReusableCell(withIdentifier: type.reuseIdentifier, for: indexPath) as! T
@@ -88,7 +90,7 @@ extension ManagedTableView {
     }
 }
 
-extension ManagedTableView {
+private extension ManagedTableView {
     func registerCellIfNeeded(_ type: (some Reusable).Type) {
         guard !registeredCellIdentifiers.contains(type.reuseIdentifier) else { return }
         register(type.self, forCellReuseIdentifier: type.reuseIdentifier)
@@ -118,3 +120,22 @@ private extension ManagedTableViewHeaderFooterViewModel {
         return headerFooter
     }
 }
+
+// MARK: Reusable
+
+/// This internal protocol automates reuse identification for managed cells
+/// so that they simply use their class name as the reuse identifier.
+private protocol Reusable: AnyObject {
+    static var reuseIdentifier: String { get }
+}
+
+extension Reusable {
+    static var reuseIdentifier: String {
+        String(describing: self)
+    }
+}
+
+extension UITableViewHeaderFooterView: Reusable {}
+extension UITableViewCell: Reusable {}
+
+#endif

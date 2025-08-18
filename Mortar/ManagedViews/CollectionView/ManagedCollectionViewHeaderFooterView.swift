@@ -1,5 +1,5 @@
 //
-//  ManagedTableViewHeaderFooterView.swift
+//  ManagedCollectionViewHeaderFooterView.swift
 //  Copyright © 2025 Jason Fieldman.
 //
 
@@ -7,15 +7,15 @@
 
 import UIKit
 
-public protocol ManagedTableViewHeaderFooterViewModel {
-    associatedtype Header: ManagedTableViewHeaderFooterView
+public protocol ManagedCollectionReusableViewModel {
+    associatedtype ReusableView: ManagedCollectionReusableView
 }
 
-public protocol ManagedTableViewHeaderFooterView: UITableViewHeaderFooterView {
+public protocol ManagedCollectionReusableView: UICollectionReusableView {
     associatedtype Model: ManagedTableViewHeaderFooterViewModel
 }
 
-extension ManagedTableViewHeaderFooterView {
+extension ManagedCollectionReusableView {
     func update(model: Model) {
         __AssociatedMutableProperty(self, Model.self).value = model
     }

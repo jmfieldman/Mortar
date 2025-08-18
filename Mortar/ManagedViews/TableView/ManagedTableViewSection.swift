@@ -3,6 +3,8 @@
 //  Copyright © 2025 Jason Fieldman.
 //
 
+#if os(iOS) || os(tvOS)
+
 public struct ManagedTableViewSection {
     public let header: (any ManagedTableViewHeaderFooterViewModel)?
     public let rows: [any ManagedTableViewCellModel]
@@ -18,3 +20,5 @@ public struct ManagedTableViewSection {
         self.footer = footer
     }
 }
+
+#endif

@@ -1,5 +1,5 @@
 //
-//  ManagedTableViewCell.swift
+//  ManagedCollectionViewCell.swift
 //  Copyright © 2025 Jason Fieldman.
 //
 
@@ -8,20 +8,20 @@
 import CombineEx
 import UIKit
 
-public protocol ManagedTableViewCellModel: Identifiable {
-    associatedtype Cell: ManagedTableViewCell
+public protocol ManagedCollectionViewCellModel: Identifiable {
+    associatedtype Cell: ManagedCollectionViewCell
     var onSelect: (() -> Void)? { get }
 }
 
-public extension ManagedTableViewCellModel {
+public extension ManagedCollectionViewCellModel {
     var onSelect: (() -> Void)? { nil }
 }
 
-public protocol ManagedTableViewCell: UITableViewCell {
-    associatedtype Model: ManagedTableViewCellModel
+public protocol ManagedCollectionViewCell: UICollectionViewCell {
+    associatedtype Model: ManagedCollectionViewCellModel
 }
 
-extension ManagedTableViewCell {
+extension ManagedCollectionViewCell {
     func update(model: Model) {
         __AssociatedMutableProperty(self, Model.self).value = model
     }

@@ -3,6 +3,7 @@
 //  Copyright © 2025 Jason Fieldman.
 //
 
+import CombineEx
 import Foundation
 import UIKit
 
@@ -17,19 +18,27 @@ public extension ArbitrarilyIdentifiable {
     var id: UUID { UUID() }
 }
 
-// MARK: Reusable
+// MARK: Associated Properties
 
-/// This internal protocol automates reuse identification for managed cells
-/// so that they simply use their class name as the reuse identifier.
-protocol Reusable: AnyObject {
-    static var reuseIdentifier: String { get }
-}
+private var kAssociatedPublisherKey = 0
+private var kAssociatedMutablePropertyKey = 0
 
-extension Reusable {
-    static var reuseIdentifier: String {
-        String(describing: self)
+func __AssociatedMutableProperty<T>(_ object: AnyObject, _ type: T.Type) -> MutableProperty<T?> {
+    if let property = objc_getAssociatedObject(object, &kAssociatedMutablePropertyKey) as? MutableProperty<T?> {
+        return property
     }
+
+    let property = MutableProperty<T?>(nil)
+    objc_setAssociatedObject(object, &kAssociatedMutablePropertyKey, property, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    return property
 }
 
-extension UITableViewHeaderFooterView: Reusable {}
-extension UITableViewCell: Reusable {}
+func __AssociatedPublisher<T>(_ object: AnyObject, _ type: T.Type) -> AnyPublisher<T, Never> {
+    if let publisher = objc_getAssociatedObject(object, &kAssociatedPublisherKey) as? AnyPublisher<T, Never> {
+        return publisher
+    }
+
+    let publisher = __AssociatedMutableProperty(object, type).compactMap(\.self).eraseToAnyPublisher()
+    objc_setAssociatedObject(object, &kAssociatedPublisherKey, publisher, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    return publisher
+}
