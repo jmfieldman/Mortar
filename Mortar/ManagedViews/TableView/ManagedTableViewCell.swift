@@ -8,7 +8,7 @@
 import CombineEx
 import UIKit
 
-public protocol ManagedTableViewCellModel: Identifiable {
+public protocol ManagedTableViewCellModel: Identifiable<String> {
     associatedtype Cell: ManagedTableViewCell
     var onSelect: (() -> Void)? { get }
 }

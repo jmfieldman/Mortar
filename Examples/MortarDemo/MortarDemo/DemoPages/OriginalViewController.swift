@@ -134,6 +134,7 @@ class SimpleRowCell: UITableViewCell, ManagedTableViewCell {
     struct Model: ManagedTableViewCellModel, ArbitrarilyIdentifiable {
         typealias Cell = SimpleRowCell
 
+        let id: String = UUID().uuidString
         let text: String
     }
 

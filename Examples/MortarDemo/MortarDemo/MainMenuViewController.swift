@@ -146,6 +146,8 @@ private struct DemoScreen {
 private class MainMenuRowCell: UITableViewCell, ManagedTableViewCell {
     struct Model: ManagedTableViewCellModel, ArbitrarilyIdentifiable {
         typealias Cell = MainMenuRowCell
+
+        let id: String = UUID().uuidString
         let title: String
         let isStarred: Bool
         let starTapHandler: ActionTrigger<Void>

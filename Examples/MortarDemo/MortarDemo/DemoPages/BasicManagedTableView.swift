@@ -67,6 +67,7 @@ private final class SimpleTextRowCell: UITableViewCell, ManagedTableViewCell {
     struct Model: ManagedTableViewCellModel, ArbitrarilyIdentifiable {
         typealias Cell = SimpleTextRowCell
 
+        let id: String = UUID().uuidString
         let text: String
         let showDisclosure: Bool
     }
@@ -102,6 +103,7 @@ private final class AlertTextRowCell: UITableViewCell, ManagedTableViewCell {
     struct Model: ManagedTableViewCellModel, ArbitrarilyIdentifiable {
         typealias Cell = AlertTextRowCell
 
+        let id: String = UUID().uuidString
         let text: String
         let onSelect: (() -> Void)?
     }

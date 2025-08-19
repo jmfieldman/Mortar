@@ -11,10 +11,11 @@ public final class ManagedTableView: UITableView {
     public private(set) lazy var sections = BindTarget<ManagedTableView, [ManagedTableViewSection]>(target: self, keyPath: \.mainSyncSections)
     private var mainSyncSections: [ManagedTableViewSection] = [] {
         didSet {
-            reloadData()
+            updateDataSource()
         }
     }
 
+    private var diffableDataSource: UITableViewDiffableDataSource<String, String>?
     private var registeredCellIdentifiers: Set<String> = []
     private var registeredHeaderIdentifiers: Set<String> = []
 
@@ -23,12 +24,28 @@ public final class ManagedTableView: UITableView {
 
         self.sectionHeaderTopPadding = 0
         self.delegate = self
-        self.dataSource = self
+
+        self.diffableDataSource = UITableViewDiffableDataSource<String, String>(tableView: self) { [weak self] _, indexPath, _ in
+            guard let self else {
+                return nil
+            }
+            let viewModel = mainSyncSections[indexPath.section].rows[indexPath.row]
+            return viewModel.__dequeueCell(self, indexPath)
+        }
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func updateDataSource() {
+        var snapshot = NSDiffableDataSourceSnapshot<String, String>()
+        for section in mainSyncSections {
+            snapshot.appendSections([section.id])
+            snapshot.appendItems(section.rows.map { $0.id as String })
+        }
+        diffableDataSource?.apply(snapshot, animatingDifferences: false)
     }
 }
 
@@ -48,21 +65,6 @@ extension ManagedTableView: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         mainSyncSections[indexPath.section].rows[indexPath.row].onSelect?()
-    }
-}
-
-extension ManagedTableView: UITableViewDataSource {
-    public func numberOfSections(in tableView: UITableView) -> Int {
-        mainSyncSections.count
-    }
-
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        mainSyncSections[section].rows.count
-    }
-
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let viewModel = mainSyncSections[indexPath.section].rows[indexPath.row]
-        return viewModel.__dequeueCell(self, indexPath)
     }
 
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
