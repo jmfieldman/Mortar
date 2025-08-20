@@ -133,6 +133,5 @@ extension ClassReusable {
 }
 
 extension UICollectionReusableView: ClassReusable {}
-extension UICollectionViewCell: ClassReusable {}
 
 #endif
