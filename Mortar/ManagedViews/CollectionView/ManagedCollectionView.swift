@@ -11,10 +11,11 @@ public final class ManagedCollectionView: UICollectionView {
     public private(set) lazy var sections = BindTarget<ManagedCollectionView, [ManagedCollectionViewSection]>(target: self, keyPath: \.mainSyncSections)
     private var mainSyncSections: [ManagedCollectionViewSection] = [] {
         didSet {
-            reloadData()
+            updateDataSource()
         }
     }
 
+    private var diffableDataSource: UICollectionViewDiffableDataSource<String, String>?
     private var registeredCellIdentifiers: Set<String> = []
     private var registeredReusableIdentifiers: Set<String> = []
 
@@ -22,12 +23,48 @@ public final class ManagedCollectionView: UICollectionView {
         super.init(frame: frame, collectionViewLayout: layout)
 
         self.delegate = self
-        self.dataSource = self
+
+        self.diffableDataSource = UICollectionViewDiffableDataSource<String, String>(collectionView: self) { [weak self] _, indexPath, _ in
+            guard let self else {
+                return nil
+            }
+
+            let viewModel = mainSyncSections[indexPath.section].items[indexPath.row]
+            return viewModel.__dequeueCell(self, indexPath)
+        }
+
+        diffableDataSource?.supplementaryViewProvider = { [weak self] _, kind, indexPath -> UICollectionReusableView? in
+            guard let self else {
+                return nil
+            }
+
+            switch kind {
+            case UICollectionView.elementKindSectionHeader:
+                return mainSyncSections[indexPath.section].header.flatMap {
+                    $0.__dequeueReusableView(self, indexPath)
+                } ?? UICollectionReusableView()
+            case UICollectionView.elementKindSectionFooter:
+                return mainSyncSections[indexPath.section].footer.flatMap {
+                    $0.__dequeueReusableView(self, indexPath)
+                } ?? UICollectionReusableView()
+            default:
+                return nil
+            }
+        }
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func updateDataSource() {
+        var snapshot = NSDiffableDataSourceSnapshot<String, String>()
+        for section in mainSyncSections {
+            snapshot.appendSections([section.id])
+            snapshot.appendItems(section.items.map { $0.id as String })
+        }
+        diffableDataSource?.apply(snapshot, animatingDifferences: false)
     }
 }
 
@@ -35,36 +72,6 @@ extension ManagedCollectionView: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         mainSyncSections[indexPath.section].items[indexPath.item].onSelect?()
-    }
-}
-
-extension ManagedCollectionView: UICollectionViewDataSource {
-    public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        mainSyncSections.count
-    }
-
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        mainSyncSections[section].items.count
-    }
-
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let viewModel = mainSyncSections[indexPath.section].items[indexPath.row]
-        return viewModel.__dequeueCell(self, indexPath)
-    }
-
-    public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        switch kind {
-        case UICollectionView.elementKindSectionHeader:
-            mainSyncSections[indexPath.section].header.flatMap {
-                $0.__dequeueReusableView(self, indexPath)
-            } ?? UICollectionReusableView()
-        case UICollectionView.elementKindSectionFooter:
-            mainSyncSections[indexPath.section].footer.flatMap {
-                $0.__dequeueReusableView(self, indexPath)
-            } ?? UICollectionReusableView()
-        default:
-            UICollectionReusableView()
-        }
     }
 }
 
