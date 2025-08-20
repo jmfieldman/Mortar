@@ -81,25 +81,25 @@ extension ManagedTableView: UITableViewDelegate {
 }
 
 private extension ManagedTableView {
-    func dequeueCell<T>(_ type: T.Type, for indexPath: IndexPath) -> T where T: Reusable {
+    func dequeueCell<T>(_ type: T.Type, for indexPath: IndexPath) -> T where T: ClassReusable {
         registerCellIfNeeded(type)
         return dequeueReusableCell(withIdentifier: type.reuseIdentifier, for: indexPath) as! T
     }
 
-    func dequeueHeaderFooterView<T>(_ type: T.Type) -> T where T: Reusable {
+    func dequeueHeaderFooterView<T>(_ type: T.Type) -> T where T: ClassReusable {
         registerHeaderFooterIfNeeded(type)
         return dequeueReusableHeaderFooterView(withIdentifier: type.reuseIdentifier) as! T
     }
 }
 
 private extension ManagedTableView {
-    func registerCellIfNeeded(_ type: (some Reusable).Type) {
+    func registerCellIfNeeded(_ type: (some ClassReusable).Type) {
         guard !registeredCellIdentifiers.contains(type.reuseIdentifier) else { return }
         register(type.self, forCellReuseIdentifier: type.reuseIdentifier)
         registeredCellIdentifiers.insert(type.reuseIdentifier)
     }
 
-    func registerHeaderFooterIfNeeded(_ type: (some Reusable).Type) {
+    func registerHeaderFooterIfNeeded(_ type: (some ClassReusable).Type) {
         guard !registeredHeaderIdentifiers.contains(type.reuseIdentifier) else { return }
         register(type.self, forHeaderFooterViewReuseIdentifier: type.reuseIdentifier)
         registeredHeaderIdentifiers.insert(type.reuseIdentifier)
@@ -127,17 +127,17 @@ private extension ManagedTableViewHeaderFooterViewModel {
 
 /// This internal protocol automates reuse identification for managed cells
 /// so that they simply use their class name as the reuse identifier.
-private protocol Reusable: AnyObject {
+private protocol ClassReusable: AnyObject {
     static var reuseIdentifier: String { get }
 }
 
-extension Reusable {
+extension ClassReusable {
     static var reuseIdentifier: String {
         String(describing: self)
     }
 }
 
-extension UITableViewHeaderFooterView: Reusable {}
-extension UITableViewCell: Reusable {}
+extension UITableViewHeaderFooterView: ClassReusable {}
+extension UITableViewCell: ClassReusable {}
 
 #endif

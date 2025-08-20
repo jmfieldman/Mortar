@@ -76,25 +76,25 @@ extension ManagedCollectionView: UICollectionViewDelegate {
 }
 
 private extension ManagedCollectionView {
-    func dequeueCell<T>(_ type: T.Type, for indexPath: IndexPath) -> T where T: Reusable {
+    func dequeueCell<T>(_ type: T.Type, for indexPath: IndexPath) -> T where T: ClassReusable {
         registerCellIfNeeded(type)
         return dequeueReusableCell(withReuseIdentifier: type.reuseIdentifier, for: indexPath) as! T
     }
 
-    func dequeueReusableView<T>(_ type: T.Type, for indexPath: IndexPath) -> T where T: Reusable {
+    func dequeueReusableView<T>(_ type: T.Type, for indexPath: IndexPath) -> T where T: ClassReusable {
         registerReusableViewIfNeeded(type)
         return dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: type.reuseIdentifier, for: indexPath) as! T
     }
 }
 
 private extension ManagedCollectionView {
-    func registerCellIfNeeded(_ type: (some Reusable).Type) {
+    func registerCellIfNeeded(_ type: (some ClassReusable).Type) {
         guard !registeredCellIdentifiers.contains(type.reuseIdentifier) else { return }
         register(type.self, forCellWithReuseIdentifier: type.reuseIdentifier)
         registeredCellIdentifiers.insert(type.reuseIdentifier)
     }
 
-    func registerReusableViewIfNeeded(_ type: (some Reusable).Type) {
+    func registerReusableViewIfNeeded(_ type: (some ClassReusable).Type) {
         guard !registeredReusableIdentifiers.contains(type.reuseIdentifier) else { return }
         register(type.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: type.reuseIdentifier)
         register(type.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: type.reuseIdentifier)
@@ -122,17 +122,17 @@ private extension ManagedCollectionReusableViewModel {
 
 /// This internal protocol automates reuse identification for managed cells
 /// so that they simply use their class name as the reuse identifier.
-private protocol Reusable: AnyObject {
+private protocol ClassReusable: AnyObject {
     static var reuseIdentifier: String { get }
 }
 
-extension Reusable {
+extension ClassReusable {
     static var reuseIdentifier: String {
         String(describing: self)
     }
 }
 
-extension UICollectionReusableView: Reusable {}
-extension UICollectionViewCell: Reusable {}
+extension UICollectionReusableView: ClassReusable {}
+extension UICollectionViewCell: ClassReusable {}
 
 #endif
