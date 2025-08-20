@@ -78,27 +78,27 @@ extension ManagedCollectionView: UICollectionViewDelegate {
 private extension ManagedCollectionView {
     func dequeueCell<T>(_ type: T.Type, for indexPath: IndexPath) -> T where T: ClassReusable {
         registerCellIfNeeded(type)
-        return dequeueReusableCell(withReuseIdentifier: type.reuseIdentifier, for: indexPath) as! T
+        return dequeueReusableCell(withReuseIdentifier: type.typeReuseIdentifier, for: indexPath) as! T
     }
 
     func dequeueReusableView<T>(_ type: T.Type, for indexPath: IndexPath) -> T where T: ClassReusable {
         registerReusableViewIfNeeded(type)
-        return dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: type.reuseIdentifier, for: indexPath) as! T
+        return dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: type.typeReuseIdentifier, for: indexPath) as! T
     }
 }
 
 private extension ManagedCollectionView {
     func registerCellIfNeeded(_ type: (some ClassReusable).Type) {
-        guard !registeredCellIdentifiers.contains(type.reuseIdentifier) else { return }
-        register(type.self, forCellWithReuseIdentifier: type.reuseIdentifier)
-        registeredCellIdentifiers.insert(type.reuseIdentifier)
+        guard !registeredCellIdentifiers.contains(type.typeReuseIdentifier) else { return }
+        register(type.self, forCellWithReuseIdentifier: type.typeReuseIdentifier)
+        registeredCellIdentifiers.insert(type.typeReuseIdentifier)
     }
 
     func registerReusableViewIfNeeded(_ type: (some ClassReusable).Type) {
-        guard !registeredReusableIdentifiers.contains(type.reuseIdentifier) else { return }
-        register(type.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: type.reuseIdentifier)
-        register(type.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: type.reuseIdentifier)
-        registeredReusableIdentifiers.insert(type.reuseIdentifier)
+        guard !registeredReusableIdentifiers.contains(type.typeReuseIdentifier) else { return }
+        register(type.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: type.typeReuseIdentifier)
+        register(type.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: type.typeReuseIdentifier)
+        registeredReusableIdentifiers.insert(type.typeReuseIdentifier)
     }
 }
 
@@ -123,11 +123,11 @@ private extension ManagedCollectionReusableViewModel {
 /// This internal protocol automates reuse identification for managed cells
 /// so that they simply use their class name as the reuse identifier.
 private protocol ClassReusable: AnyObject {
-    static var reuseIdentifier: String { get }
+    static var typeReuseIdentifier: String { get }
 }
 
 extension ClassReusable {
-    static var reuseIdentifier: String {
+    static var typeReuseIdentifier: String {
         String(describing: self)
     }
 }

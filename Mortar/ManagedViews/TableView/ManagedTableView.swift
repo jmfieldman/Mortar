@@ -83,26 +83,26 @@ extension ManagedTableView: UITableViewDelegate {
 private extension ManagedTableView {
     func dequeueCell<T>(_ type: T.Type, for indexPath: IndexPath) -> T where T: ClassReusable {
         registerCellIfNeeded(type)
-        return dequeueReusableCell(withIdentifier: type.reuseIdentifier, for: indexPath) as! T
+        return dequeueReusableCell(withIdentifier: type.typeReuseIdentifier, for: indexPath) as! T
     }
 
     func dequeueHeaderFooterView<T>(_ type: T.Type) -> T where T: ClassReusable {
         registerHeaderFooterIfNeeded(type)
-        return dequeueReusableHeaderFooterView(withIdentifier: type.reuseIdentifier) as! T
+        return dequeueReusableHeaderFooterView(withIdentifier: type.typeReuseIdentifier) as! T
     }
 }
 
 private extension ManagedTableView {
     func registerCellIfNeeded(_ type: (some ClassReusable).Type) {
-        guard !registeredCellIdentifiers.contains(type.reuseIdentifier) else { return }
-        register(type.self, forCellReuseIdentifier: type.reuseIdentifier)
-        registeredCellIdentifiers.insert(type.reuseIdentifier)
+        guard !registeredCellIdentifiers.contains(type.typeReuseIdentifier) else { return }
+        register(type.self, forCellReuseIdentifier: type.typeReuseIdentifier)
+        registeredCellIdentifiers.insert(type.typeReuseIdentifier)
     }
 
     func registerHeaderFooterIfNeeded(_ type: (some ClassReusable).Type) {
-        guard !registeredHeaderIdentifiers.contains(type.reuseIdentifier) else { return }
-        register(type.self, forHeaderFooterViewReuseIdentifier: type.reuseIdentifier)
-        registeredHeaderIdentifiers.insert(type.reuseIdentifier)
+        guard !registeredHeaderIdentifiers.contains(type.typeReuseIdentifier) else { return }
+        register(type.self, forHeaderFooterViewReuseIdentifier: type.typeReuseIdentifier)
+        registeredHeaderIdentifiers.insert(type.typeReuseIdentifier)
     }
 }
 
@@ -128,11 +128,11 @@ private extension ManagedTableViewHeaderFooterViewModel {
 /// This internal protocol automates reuse identification for managed cells
 /// so that they simply use their class name as the reuse identifier.
 private protocol ClassReusable: AnyObject {
-    static var reuseIdentifier: String { get }
+    static var typeReuseIdentifier: String { get }
 }
 
 extension ClassReusable {
-    static var reuseIdentifier: String {
+    static var typeReuseIdentifier: String {
         String(describing: self)
     }
 }
