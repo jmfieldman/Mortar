@@ -1,12 +1,74 @@
 # Mortar 3
 
 > Mortar 3 is incompatible with previous versions, and aims to solve different problems. Check the git tags to find previous versions.
-
+>
 > Mortar 3 is still very much a work in progress, and fundamental API decisions may change at any moment. Please let me know If you choose to use this library for a production app so that I can be more cognizant of impact.
 
-Mortar is a DSL that allows you to create UIView hierarchies with declarative, anonymous syntax. Its goal is to provide the best of SwiftUI without its [perceived shortcomings](WHY.md).
+## Project Summary
 
-The following example is all based on UIKit classes:
+Mortar is a Swift DSL (Domain Specific Language) that enables declarative, anonymous view hierarchy construction using UIKit. It bridges the gap between traditional UIKit development and SwiftUI-like syntax while maintaining full compatibility with existing UIKit infrastructure.
+
+### Key Differentiators
+
+1. **Anonymous View Construction**: Create complete view hierarchies without naming views or defining them outside of their usage context
+2. **Declarative Layout**: Provides a clean syntax for AutoLayout constraints that works with UIKit's native classes
+3. **Reactive Integration**: Seamlessly integrates with CombineEx for reactive programming patterns
+4. **Managed Views**: Specialized components for UITableView and UICollectionView that work with model-driven data
+
+### Problem Solved
+
+Traditional UIKit development requires:
+- Explicit view naming and definition
+- Verbose AutoLayout constraint code 
+- Complex separation of concerns for reactive state management
+
+Mortar solves these issues by providing:
+- Anonymous view creation with inline layout constraints
+- Clean, readable syntax for AutoLayout expressions
+- Reactive programming patterns that work naturally with UIKit
+
+## Architecture and Design Decisions
+
+### Why Mortar Exists
+
+Mortar was created to address the author's dissatisfaction with SwiftUI's approach while maintaining the benefits of UIKit. The framework:
+- Avoids treating entire view hierarchies as immutable structs
+- Maintains UIKit's performance characteristics and flexibility 
+- Provides clean separation of view logic from business logic
+- Enables anonymous, declarative UI construction
+
+### Core Concepts
+
+1. **Result Builder Pattern**: Uses `MortarAddSubviewsBuilder` to enable anonymous view creation within UIKit's initialization blocks
+2. **Layout Properties**: Extends UIView with layout properties that provide access to parent and referenced layouts
+3. **Reactive Extensions**: Integrates with CombineEx for clean reactive programming patterns
+4. **Managed Views**: Provides specialized components for collection views that work with model-driven data
+
+### Technical Approach
+
+The framework leverages Swift's result builder feature to create a DSL that allows:
+- Views to be created and added without explicit naming
+- Layout constraints to be expressed in a natural, readable syntax  
+- Reactive patterns to be applied inline with view construction
+- Complex UI hierarchies to be built in a single, declarative block
+
+## Dependencies
+
+### Required Frameworks
+- **CombineEx**: Version 0.0.17 or later (used for reactive programming patterns)
+- **SwiftUI**: iOS 17+, macOS 14+, tvOS 17+ (for platform support)
+
+### Key Components
+
+The framework is built around these core components:
+1. `MortarAddSubviewsBuilder`: Enables anonymous view creation
+2. Layout extension properties: Provide constraint capabilities on UIViews  
+3. Reactive extensions: Enable reactive programming patterns
+4. Managed view classes: Specialized components for collection views
+
+## Usage Examples
+
+### Basic View Construction
 
 ```swift
 import Mortar 
@@ -38,116 +100,60 @@ class MyViewController: UIViewController {
 }
 ```
 
-Some things to notice above:
-
-* No views in the hierarchy are named, or defined outside of this function.
-* A complete layout DSL is available to constrain views anonymously.
-* You can still use all of the UIKit properties and behaviors as expected.
-* Event handling can be declared inline as well.
-
-This is only a partial list of Mortar features. Read on for more!
-
-### Anonymous Views
-
-The anonymous view layout mechanism is provided by the `MortarAddSubviewsBuilder` result builder:
+### Layout Constraints
 
 ```swift
-init(@MortarAddSubviewsBuilder _ subviewBoxes: () -> [MortarAddViewBox]) {
-    self.init(frame: .zero)
-    MortarMainThreadLayoutStack.execute {
-        process(subviewBoxes())
-    }
-}
-```
-
-This result builder attempts to cast each expression inside the UIView's init block into a `MortarAddViewBox`. If that cast is possible, and the expression is a UIView subclass, then it is added to subviews of the receiving objects. The `MortarMainThreadLayoutStack` wrapper ensures that the layout expressions are only performed after the subviews have been added (to avoid Autolayout crashes.)
-
-The nature of the Swift language allows other types of expressions to still execute, so non-view expressions still work (e.g. variable declarations.)
-
-Magic, basically.
-
-### Layout Properties
-
-To facilitate easy anonymous layout constraints, new properties are added to UIViews, e.g.:
-
-```swift
-// `parentLayout` refers to the immediate ancestor
+// Basic constraint against parent layout
 $0.layout.centerY == $0.parentLayout.centerY
 
-// Multi-constraint guides in a single expression
-// (e.g. `sides` combines `leading` and `trailing`)
+// Multi-constraint guide in single expression  
 $0.layout.sides == $0.parentLayout.sideMargins
 
-// You can equate to constants
+// Constraint to constants
 $0.layout.size == CGSize(width: 100, height: 100)
 
-// Inequalities are supported
+// Inequalities
 $0.layout.trailing == $0.parentLayout.trailing
 
-// The expression returns a constraint group that you can modify
+// Constraint modification after creation
 let group = $0.layout.center == $0.parentLayout.center
 group.layoutConstraints.first?.constant += 20
 ```
 
-There are more examples and features to explore in the [LayoutFeaturesViewController](Examples/MortarDemo/MortarDemo/DemoPages/LayoutFeatures.swift) example code.
+### Reactive Programming
 
-### Reactive Properties
-
-Reactive extensions are provided to handle UIView input/output/updates in a clean, anonymous manner. Many of these extensions rely on the [CombineEx](https://github.com/jmfieldman/CombineEx) framework.
-
-Most of these are designed to work with a provided view model, to help encapsulate the view's business logic into a separate entity.
-
-```
-// UIControl events can trigger CombineEx Actions with the given input value.
+```swift
+// Handle UIControl events with CombineEx Actions
 $0.handleEvents(.valueChanged, model.toggleStateAction) { $0.isOn }
 
-// Publishers can be bound to any compatible keypath.
+// Bind publishers to view properties
 $0.bind(\.text) <~ model.toggleState.map { "Toggle is \($0)" }
 
-// Publishers from the model can be sunk directly in the view hierarchy
-// when their new value needs to perform some complex task with the view.
-// The `view` block parameter refers to the anonymous $0 receiving view
+// Sink publishers for complex view updates
 $0.sink(model.someVoidPublisher) { view in
-  // Void publishers
+  // Void publishers handling
 }
 
 $0.sink(model.someValuePublisher) { view, value in
-  // Value publishers
+  // Value publishers handling
 }
 ```
 
-There are lots of other ways to use reactive properties on anonymous views. Check out [MortarReactive.swift](Mortar/MortarReactive.swift) and [ReactiveFeaturesViewController](Examples/MortarDemo/MortarDemo/DemoPages/ReactiveFeatures.swift).
-
-### ManagedTableView
-
-While this library is opinionated that constructing a complete view hierarchy out of model structs is ridiculous, it *is* appropriate for powering collection-esque views like UITableView, UICollectionView, and even UIStackView (in some cases).
-
-The ManagedX classes abstract this for you, so that you can power your collections with data models, and the internal view will automatically instantiate/reuse the corresponding UIView subclass.
-
-First, declare any number of `ManagedTableViewCellModel` and their corresponding `ManagedTableViewCell`:
+### Managed Table Views
 
 ```swift
+// Define model and cell classes
 private struct SimpleTextRowModel: ManagedTableViewCellModel {
     typealias Cell = SimpleTextRowCell
 
     let text: String
-    // ... other immutable properties ...
 }
 
 private final class SimpleTextRowCell: UITableViewCell, ManagedTableViewCell {
     typealias Model = SimpleTextRowModel
-
-    // The ManagedTableViewCell provides an internal `model` publisher
-    // that emits its corresponding model value (updated when the cell
-    // is reused.)
 }
-```
 
-Then you can bind any Publisher/Property to the `sections` sink as long as it provides a `[ManagedTableViewSection]`. The row models are internally mapped to their corresponding cell classes, which are instantiated/reused and have their models updated.
-
-This lets you provide immutable view models for your collection cells from your controller's top-level view model (or wherever you want to generate them.)
-
-```swift
+// Use in view controller
 class BasicManagedTableViewController: UIViewController {
     override func loadView() {
         view = UIContainer {
@@ -164,10 +170,57 @@ class BasicManagedTableViewController: UIViewController {
         ManagedTableViewSection(
             rows: [
                 SimpleTextRowModel(text: "Simple row 1"),
-                SimpleTextRowModel(text: "Simple row 2"),
+                SimpleTextRowModel(text: "Simple row 2"), 
                 SimpleTextRowModel(text: "Simple row 3"),
             ]
         )
     }
 }
 ```
+
+## Key Features
+
+### Anonymous Views
+- No need to name views or define them outside of their usage context
+- Complete layout DSL available for anonymous constraints  
+- Full UIKit compatibility maintained
+
+### Layout Properties
+- Access to parent layout anchors via `parentLayout`
+- Multi-constraint guides (e.g., `sides` combines leading/trailing)
+- Support for inequalities and constraint modifications
+- Layout references for cross-view constraints
+
+### Reactive Programming
+- Integration with CombineEx framework
+- Inline event handling and property binding
+- Publisher sinking for complex view updates
+
+### Managed Views
+- Specialized components for UITableView and UICollectionView
+- Model-driven data binding
+- Automatic view reuse and model updating
+
+## Getting Started
+
+1. Add Mortar as a dependency in your Package.swift:
+```swift
+dependencies: [
+    .package(url: "https://github.com/jmfieldman/Mortar.git", from: "3.0.0")
+]
+```
+
+2. Import Mortar in your code:
+```swift
+import Mortar
+```
+
+3. Start building anonymous views with declarative syntax
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for more information on how to contribute to Mortar.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
