@@ -78,7 +78,8 @@ class MyViewController: UIViewController {
         view = UIContainer {
             $0.backgroundColor = .darkGray
 
-            VStackView {
+            UIVStack {
+                $0.alignment = .center
                 $0.backgroundColor = .lightGray
                 $0.layout.sides == $0.parentLayout.sideMargins
                 $0.layout.centerY == $0.parentLayout.centerY
