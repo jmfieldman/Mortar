@@ -1,5 +1,5 @@
 //
-//  MortarTests.swift
+//  TestUtilities.swift
 //  Copyright © 2016 Jason Fieldman.
 //
 
@@ -28,13 +28,3 @@ extension NSView {
     }
 }
 #endif
-
-class MortarTests: XCTestCase {
-    override func setUp() {
-        super.setUp()
-    }
-
-    override func tearDown() {
-        super.tearDown()
-    }
-}
