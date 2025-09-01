@@ -26,12 +26,14 @@ extension NSObject: _MortarBindProviding {}
 
 infix operator <~: AssignmentPrecedence
 
+private var kBindingAssociationKey = 0
+
 // swiftformat:disable opaqueGenericParameters
 
 public func <~ <T, E: Error>(lhs: BindTarget<some Any, T>, rhs: any Publisher<T, E>) {
     let lhsTarget = lhs.target
     let keyPath = lhs.keyPath
-    rhs.eraseToAnyPublisher()
+    let cancellable = rhs.eraseToAnyPublisher()
         .receiveOnMain()
         .sink(
             duringLifetimeOf: lhsTarget,
@@ -39,13 +41,46 @@ public func <~ <T, E: Error>(lhs: BindTarget<some Any, T>, rhs: any Publisher<T,
                 lhsTarget?[keyPath: keyPath] = value
             }
         )
+
+    // Bind rhs to lifetime of cancellable
+    objc_setAssociatedObject(cancellable, &kBindingAssociationKey, rhs, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+}
+
+public func <~ <T, E: Error>(lhs: BindTarget<some Any, T?>, rhs: any Publisher<T, E>) {
+    let lhsTarget = lhs.target
+    let keyPath = lhs.keyPath
+    let cancellable = rhs.eraseToAnyPublisher()
+        .receiveOnMain()
+        .sink(
+            duringLifetimeOf: lhsTarget,
+            receiveValue: { [weak lhsTarget] value in
+                lhsTarget?[keyPath: keyPath] = value
+            }
+        )
+
+    // Bind rhs to lifetime of cancellable
+    objc_setAssociatedObject(cancellable, &kBindingAssociationKey, rhs, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 }
 
 // swiftformat:enable opaqueGenericParameters
 
-private var kBindingAssociationKey = 0
-
 public func <~ <T>(lhs: BindTarget<some Any, T>, rhs: any Publisher<T, Never>) {
+    let lhsTarget = lhs.target
+    let keyPath = lhs.keyPath
+    let cancellable = rhs.eraseToAnyPublisher()
+        .receiveOnMain()
+        .sink(
+            duringLifetimeOf: lhsTarget,
+            receiveValue: { [weak lhsTarget] value in
+                lhsTarget?[keyPath: keyPath] = value
+            }
+        )
+
+    // Bind rhs to lifetime of cancellable
+    objc_setAssociatedObject(cancellable, &kBindingAssociationKey, rhs, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+}
+
+public func <~ <T>(lhs: BindTarget<some Any, T?>, rhs: any Publisher<T, Never>) {
     let lhsTarget = lhs.target
     let keyPath = lhs.keyPath
     let cancellable = rhs.eraseToAnyPublisher()
