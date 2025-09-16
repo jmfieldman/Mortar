@@ -14,6 +14,8 @@ public typealias MortarAliasLayoutPriority = UILayoutPriority
 public typealias MortarAliasLayoutRelation = NSLayoutConstraint.Relation
 public typealias MortarAliasLayoutAttribute = NSLayoutConstraint.Attribute
 public typealias MortarAliasLayoutAxis = NSLayoutConstraint.Axis
+public typealias MortarGestureRecognizer = UIGestureRecognizer
+public typealias MortarGestureRecognizerDelegate = UIGestureRecognizerDelegate
 #else
 import AppKit
 
@@ -25,6 +27,8 @@ public typealias MortarAliasLayoutPriority = NSLayoutConstraint.Priority
 public typealias MortarAliasLayoutRelation = NSLayoutConstraint.Relation
 public typealias MortarAliasLayoutAttribute = NSLayoutConstraint.Attribute
 public typealias MortarAliasLayoutAxis = NSLayoutConstraint.Orientation
+public typealias MortarGestureRecognizer = NSGestureRecognizer
+public typealias MortarGestureRecognizerDelegate = NSGestureRecognizerDelegate
 #endif
 
 public enum MortarActivationState {

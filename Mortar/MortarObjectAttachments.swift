@@ -10,7 +10,7 @@ private var kPermanentObjDictAssociationKey = 0
 /// Returns a dictionary used for storing permanently-associated values, creating one if it doesn't exist.
 ///
 /// - Parameter object: The object to associate the mutable set with.
-/// - Returns: An `NSMutableSet` instance associated with the given object.
+/// - Returns: An `NSMutableDictionary` instance associated with the given object.
 func __AnyObjectPermanentObjDictStorage(_ object: AnyObject) -> NSMutableDictionary {
     if let dict = objc_getAssociatedObject(object, &kPermanentObjDictAssociationKey) as? NSMutableDictionary {
         return dict
