@@ -5,12 +5,14 @@
 
 import CombineEx
 
-/// A convenience initializer for creating gesture recognizers with configuration blocks.
-public extension MortarGestureRecognizer {
+@MainActor public protocol MortarExtendableGestureRecognizer: MortarGestureRecognizer {}
+extension MortarGestureRecognizer: MortarExtendableGestureRecognizer {}
+
+public extension MortarExtendableGestureRecognizer {
     /// Initializes a gesture recognizer with a configuration block.
     ///
     /// - Parameter configuration: A closure that configures the gesture recognizer.
-    convenience init(configuration: (Self) -> Void) {
+    init(configuration: (Self) -> Void) {
         self.init(target: nil, action: nil)
         configuration(self)
     }
