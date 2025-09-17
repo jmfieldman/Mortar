@@ -218,20 +218,9 @@ Mortar maintains full compatibility with existing UIKit infrastructure:
 - Can be mixed with traditional UIKit code in the same project
 - No need to rewrite existing codebases to adopt Mortar
 
-## Getting Started
+### Import Mortar in your code:
 
-1. Add Mortar as a dependency in your Package.swift:
-```swift
-dependencies: [
-    .package(url: "https://github.com/jmfieldman/Mortar.git", from: "3.0.0")
-]
-```
-
-2. Import Mortar in your code:
 ```swift
 import Mortar
 ```
 
-3. Start building anonymous views with declarative syntax
-
-This guide should provide AI agents with all the information needed to effectively use Mortar for iOS UI development.

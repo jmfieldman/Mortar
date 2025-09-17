@@ -1,7 +1,7 @@
 # Mortar 3
 
 > Mortar 3 is incompatible with previous versions, and aims to solve different problems. Check the git tags to find previous versions.
->
+
 > Mortar 3 is still very much a work in progress, and fundamental API decisions may change at any moment. Please let me know If you choose to use this library for a production app so that I can be more cognizant of impact.
 
 ## Project Summary
@@ -15,60 +15,7 @@ Mortar is a Swift DSL (Domain Specific Language) that enables declarative, anony
 3. **Reactive Integration**: Seamlessly integrates with CombineEx for reactive programming patterns
 4. **Managed Views**: Specialized components for UITableView and UICollectionView that work with model-driven data
 
-### Problem Solved
-
-Traditional UIKit development requires:
-- Explicit view naming and definition
-- Verbose AutoLayout constraint code 
-- Complex separation of concerns for reactive state management
-
-Mortar solves these issues by providing:
-- Anonymous view creation with inline layout constraints
-- Clean, readable syntax for AutoLayout expressions
-- Reactive programming patterns that work naturally with UIKit
-
-## Architecture and Design Decisions
-
-### Why Mortar Exists
-
-Mortar was created to address the author's dissatisfaction with SwiftUI's approach while maintaining the benefits of UIKit. The framework:
-- Avoids treating entire view hierarchies as immutable structs
-- Maintains UIKit's performance characteristics and flexibility 
-- Provides clean separation of view logic from business logic
-- Enables anonymous, declarative UI construction
-
-### Core Concepts
-
-1. **Result Builder Pattern**: Uses `MortarAddSubviewsBuilder` to enable anonymous view creation within UIKit's initialization blocks
-2. **Layout Properties**: Extends UIView with layout properties that provide access to parent and referenced layouts
-3. **Reactive Extensions**: Integrates with CombineEx for clean reactive programming patterns
-4. **Managed Views**: Provides specialized components for collection views that work with model-driven data
-
-### Technical Approach
-
-The framework leverages Swift's result builder feature to create a DSL that allows:
-- Views to be created and added without explicit naming
-- Layout constraints to be expressed in a natural, readable syntax  
-- Reactive patterns to be applied inline with view construction
-- Complex UI hierarchies to be built in a single, declarative block
-
-## Dependencies
-
-### Required Frameworks
-- **CombineEx**: Version 0.0.17 or later (used for reactive programming patterns)
-- **SwiftUI**: iOS 17+, macOS 14+, tvOS 17+ (for platform support)
-
-### Key Components
-
-The framework is built around these core components:
-1. `MortarAddSubviewsBuilder`: Enables anonymous view creation
-2. Layout extension properties: Provide constraint capabilities on UIViews  
-3. Reactive extensions: Enable reactive programming patterns
-4. Managed view classes: Specialized components for collection views
-
-## Usage Examples
-
-### Basic View Construction
+### Example View Construction
 
 ```swift
 import Mortar 
@@ -101,7 +48,56 @@ class MyViewController: UIViewController {
 }
 ```
 
+- No need to name views or define them outside of their usage context
+- Complete layout DSL available for anonymous constraints  
+- Full UIKit compatibility maintained
+
+## Problems Solved
+
+Traditional UIKit development requires:
+- Explicit view naming and definition
+- Verbose AutoLayout constraint code 
+- Complex separation of concerns for reactive state management
+
+Mortar solves these issues by providing:
+- Anonymous view creation with inline layout constraints
+- Clean, readable syntax for AutoLayout expressions
+- Reactive programming patterns that work naturally with UIKit
+
+## Architecture and Design Decisions
+
+### Why Mortar Exists
+
+Mortar was created to address dissatisfactions with SwiftUI while maintaining the benefits of UIKit. The framework combines the best of both:
+- Avoids treating entire view hierarchies as immutable structs
+- Maintains UIKit's performance characteristics and flexibility 
+- Provides clean separation of view logic from business logic
+- Enables anonymous, declarative UI construction
+
+### Core Concepts
+
+1. **Result Builder Pattern**: Uses `MortarAddSubviewsBuilder` to enable anonymous view creation within UIKit's initialization blocks
+2. **Layout Properties**: Extends UIView with layout properties that provide access to parent and referenced layouts
+3. **Reactive Extensions**: Integrates with CombineEx for clean reactive programming patterns
+4. **Managed Views**: Provides specialized components for collection views that work with model-driven data
+
+### Technical Approach
+
+The framework leverages Swift's result builder feature to create a DSL that allows:
+- Views to be created and added without explicit naming
+- Layout constraints to be expressed in a natural, readable syntax  
+- Reactive patterns to be applied inline with view construction
+- Complex UI hierarchies to be built in a single, declarative block
+
+## Usage Examples
+
 ### Layout Constraints
+
+- DSL allows you to declare layout constraints inline with UIView configuration
+- Access to parent layout anchors via `parentLayout`
+- Multi-constraint guides (e.g., `sides` combines leading/trailing)
+- Support for inequalities and constraint modifications
+- Layout references for cross-view constraints
 
 ```swift
 // Basic constraint against parent layout
@@ -123,6 +119,10 @@ group.layoutConstraints.first?.constant += 20
 
 ### Reactive Programming
 
+- Integration with CombineEx framework
+- Inline event handling and property binding
+- Publisher sinking for complex view updates
+
 ```swift
 // Handle UIControl events with CombineEx Actions
 $0.handleEvents(.valueChanged, model.toggleStateAction) { $0.isOn }
@@ -141,6 +141,10 @@ $0.sink(model.someValuePublisher) { view, value in
 ```
 
 ### Managed Table Views
+
+- Specialized components for UITableView and UICollectionView
+- Model-driven data binding
+- Automatic view reuse and model updating
 
 ```swift
 // Define model and cell classes
@@ -179,35 +183,12 @@ class BasicManagedTableViewController: UIViewController {
 }
 ```
 
-## Key Features
-
-### Anonymous Views
-- No need to name views or define them outside of their usage context
-- Complete layout DSL available for anonymous constraints  
-- Full UIKit compatibility maintained
-
-### Layout Properties
-- Access to parent layout anchors via `parentLayout`
-- Multi-constraint guides (e.g., `sides` combines leading/trailing)
-- Support for inequalities and constraint modifications
-- Layout references for cross-view constraints
-
-### Reactive Programming
-- Integration with CombineEx framework
-- Inline event handling and property binding
-- Publisher sinking for complex view updates
-
-### Managed Views
-- Specialized components for UITableView and UICollectionView
-- Model-driven data binding
-- Automatic view reuse and model updating
-
 ## Getting Started
 
 1. Add Mortar as a dependency in your Package.swift:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/jmfieldman/Mortar.git", from: "3.0.0")
+    .package(url: "https://github.com/jmfieldman/Mortar.git", from: <version>)
 ]
 ```
 
@@ -217,10 +198,6 @@ import Mortar
 ```
 
 3. Start building anonymous views with declarative syntax
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for more information on how to contribute to Mortar.
 
 ## License
 
