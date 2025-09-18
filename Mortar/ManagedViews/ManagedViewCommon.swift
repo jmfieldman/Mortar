@@ -5,7 +5,12 @@
 
 import CombineEx
 import Foundation
+
+#if os(iOS) || os(tvOS)
 import UIKit
+#else
+import AppKit
+#endif
 
 // MARK: ArbitrarilyIdentifiable
 

@@ -131,6 +131,9 @@ enum MortarLayoutAttribute {
         case .height: return .height
         case .centerX: return .centerX
         case .centerY: return .centerY
+        case .lastBaseline: return .lastBaseline
+        case .firstBaseline: return .firstBaseline
+        case .notAnAttribute: return .notAnAttribute
         @unknown default:
             return .notAnAttribute
         }
@@ -217,7 +220,7 @@ enum MortarLayoutAttribute {
         }
     }
     #else
-    var axis: MortarAxis? {
+    var axis: MortarAliasLayoutAxis? {
         switch self {
         case .left: .horizontal
         case .right: .horizontal
@@ -342,7 +345,7 @@ enum MortarLayoutAttribute {
         case .height: [.height]
         case .centerX: [.centerX]
         case .centerY: [.centerY]
-        case .baseline: [.baseline]
+        case .baseline: [.lastBaseline]
         case .firstBaseline: [.firstBaseline]
         case .lastBaseline: [.lastBaseline]
         case .notAnAttribute: [.notAnAttribute]

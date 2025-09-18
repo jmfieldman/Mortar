@@ -3,6 +3,8 @@
 //  Copyright © 2025 Jason Fieldman.
 //
 
+#if os(iOS) || os(tvOS)
+
 /// A type alias for UIContainer pointing to MortarView. `UIContainer` is more
 /// descriptive of what container views do vs. SwiftUI's `ZStack`
 public typealias UIContainer = MortarView
@@ -44,3 +46,5 @@ public class UIVStack: MortarStackView {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+#endif

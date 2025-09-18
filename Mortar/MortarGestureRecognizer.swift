@@ -3,6 +3,8 @@
 //  Copyright © 2025 Jason Fieldman.
 //
 
+#if os(iOS) || os(tvOS)
+
 import CombineEx
 
 @MainActor public protocol MortarExtendableGestureRecognizer: MortarGestureRecognizer {}
@@ -143,3 +145,5 @@ public final class MortarGestureRecognizerDelegateHandler<T: MortarGestureRecogn
         shouldReceiveEvent?(event) ?? true
     }
 }
+
+#endif
