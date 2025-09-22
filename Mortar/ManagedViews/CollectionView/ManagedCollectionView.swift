@@ -8,10 +8,19 @@
 import UIKit
 
 public final class ManagedCollectionView: UICollectionView {
-    public private(set) lazy var sections = BindTarget<ManagedCollectionView, [ManagedCollectionViewSection]>(target: self, keyPath: \.mainSyncSections)
-    private var mainSyncSections: [ManagedCollectionViewSection] = [] {
+    public var sections: [ManagedCollectionViewSection] = [] {
         didSet {
             updateDataSource()
+        }
+    }
+
+    public var singleSectionItems: [any ManagedCollectionViewCellModel] {
+        get {
+            sections.first?.items ?? []
+        }
+
+        set {
+            sections = [ManagedCollectionViewSection(id: "SingleSection", items: newValue)]
         }
     }
 
@@ -29,7 +38,7 @@ public final class ManagedCollectionView: UICollectionView {
                 return nil
             }
 
-            let viewModel = mainSyncSections[indexPath.section].items[indexPath.row]
+            let viewModel = sections[indexPath.section].items[indexPath.row]
             return viewModel.__dequeueCell(self, indexPath)
         }
 
@@ -40,11 +49,11 @@ public final class ManagedCollectionView: UICollectionView {
 
             switch kind {
             case UICollectionView.elementKindSectionHeader:
-                return mainSyncSections[indexPath.section].header.flatMap {
+                return sections[indexPath.section].header.flatMap {
                     $0.__dequeueReusableView(self, indexPath)
                 } ?? UICollectionReusableView()
             case UICollectionView.elementKindSectionFooter:
-                return mainSyncSections[indexPath.section].footer.flatMap {
+                return sections[indexPath.section].footer.flatMap {
                     $0.__dequeueReusableView(self, indexPath)
                 } ?? UICollectionReusableView()
             default:
@@ -60,7 +69,7 @@ public final class ManagedCollectionView: UICollectionView {
 
     private func updateDataSource() {
         var snapshot = NSDiffableDataSourceSnapshot<String, String>()
-        for section in mainSyncSections {
+        for section in sections {
             snapshot.appendSections([section.id])
             snapshot.appendItems(section.items.map { $0.id as String })
         }
@@ -71,7 +80,7 @@ public final class ManagedCollectionView: UICollectionView {
 extension ManagedCollectionView: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        mainSyncSections[indexPath.section].items[indexPath.item].onSelect?()
+        sections[indexPath.section].items[indexPath.item].onSelect?()
     }
 }
 

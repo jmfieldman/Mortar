@@ -8,10 +8,19 @@
 import UIKit
 
 public final class ManagedTableView: UITableView {
-    public private(set) lazy var sections = BindTarget<ManagedTableView, [ManagedTableViewSection]>(target: self, keyPath: \.mainSyncSections)
-    private var mainSyncSections: [ManagedTableViewSection] = [] {
+    public var sections: [ManagedTableViewSection] = [] {
         didSet {
             updateDataSource()
+        }
+    }
+
+    public var singleSectionRows: [any ManagedTableViewCellModel] {
+        get {
+            sections.first?.rows ?? []
+        }
+
+        set {
+            sections = [ManagedTableViewSection(id: "SingleSection", rows: newValue)]
         }
     }
 
@@ -29,7 +38,7 @@ public final class ManagedTableView: UITableView {
             guard let self else {
                 return nil
             }
-            let viewModel = mainSyncSections[indexPath.section].rows[indexPath.row]
+            let viewModel = sections[indexPath.section].rows[indexPath.row]
             return viewModel.__dequeueCell(self, indexPath)
         }
     }
@@ -41,7 +50,7 @@ public final class ManagedTableView: UITableView {
 
     private func updateDataSource() {
         var snapshot = NSDiffableDataSourceSnapshot<String, String>()
-        for section in mainSyncSections {
+        for section in sections {
             snapshot.appendSections([section.id])
             snapshot.appendItems(section.rows.map { $0.id as String })
         }
@@ -51,7 +60,7 @@ public final class ManagedTableView: UITableView {
 
 extension ManagedTableView: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        mainSyncSections[section].header != nil ? UITableView.automaticDimension : 0.0
+        sections[section].header != nil ? UITableView.automaticDimension : 0.0
     }
 
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -59,22 +68,22 @@ extension ManagedTableView: UITableViewDelegate {
     }
 
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        mainSyncSections[section].footer != nil ? UITableView.automaticDimension : 0.0
+        sections[section].footer != nil ? UITableView.automaticDimension : 0.0
     }
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        mainSyncSections[indexPath.section].rows[indexPath.row].onSelect?()
+        sections[indexPath.section].rows[indexPath.row].onSelect?()
     }
 
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        mainSyncSections[section].header.flatMap {
+        sections[section].header.flatMap {
             $0.__dequeueHeaderFooter(self)
         }
     }
 
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        mainSyncSections[section].footer.flatMap {
+        sections[section].footer.flatMap {
             $0.__dequeueHeaderFooter(self)
         }
     }

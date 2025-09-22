@@ -24,7 +24,7 @@ class BasicManagedTableViewController: UIViewController {
 
             ManagedTableView {
                 $0.layout.edges == $0.parentLayout.edges
-                $0.sections <~ Property(value: [self.makeSection()])
+                $0.bind(\.sections) <~ Property(value: [self.makeSection()])
             }
         }
     }

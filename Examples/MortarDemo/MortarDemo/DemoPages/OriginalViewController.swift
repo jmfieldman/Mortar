@@ -71,7 +71,7 @@ class OriginalViewController: UIViewController {
                 $0.layout.size == CGSize(width: 150, height: 300)
                 $0.layout.top == parent.layout.top + 300
 
-                $0.sections <~ tableStrings.map { strings -> [ManagedTableViewSection] in
+                $0.bind(\.sections) <~ tableStrings.map { strings -> [ManagedTableViewSection] in
                     [
                         ManagedTableViewSection(
                             rows: strings.map {

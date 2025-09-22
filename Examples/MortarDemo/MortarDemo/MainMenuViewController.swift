@@ -16,7 +16,7 @@ class MainMenuViewController: UIViewController {
             ManagedTableView {
                 $0.layout.edges == $0.parentLayout.edges
 
-                $0.sections <~ Property<[ManagedTableViewSection]>.combineLatest(
+                $0.bind(\.sections) <~ Property<[ManagedTableViewSection]>.combineLatest(
                     model.demoScreens,
                     model.sortStarred,
                     model.starList
