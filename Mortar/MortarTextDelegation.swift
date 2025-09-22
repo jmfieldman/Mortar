@@ -16,12 +16,11 @@ public extension MortarExtendableTextField {
     ///
     /// - Parameter configureBlock: A closure that configures the gesture recognizer delegate.
     /// - Returns: The configured gesture recognizer instance.
-    func handleDelegation(_ configureBlock: (MortarTextFieldDelegateHandler<Self>) -> Void) -> Self {
+    func handleDelegation(_ configureBlock: (MortarTextFieldDelegateHandler<Self>) -> Void) {
         let delegateHandler = MortarTextFieldDelegateHandler<Self>()
         delegate = delegateHandler
         configureBlock(delegateHandler)
         permanentlyAssociate(delegateHandler)
-        return self
     }
 }
 

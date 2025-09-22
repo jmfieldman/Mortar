@@ -32,7 +32,7 @@ public extension MortarExtendableGestureRecognizer {
     ///
     /// - Parameter actionHandler: A closure that handles the gesture recognition event.
     /// - Returns: The configured gesture recognizer instance.
-    func handleAction(_ actionHandler: @escaping (Self) -> Void) -> Self {
+    func handleAction(_ actionHandler: @escaping (Self) -> Void) {
         let typedActionHandler: (MortarGestureRecognizer) -> Void = {
             actionHandler($0 as! Self)
         }
@@ -40,19 +40,17 @@ public extension MortarExtendableGestureRecognizer {
         let target = MortarGestureRecognizerTarget(actionHandler: typedActionHandler)
         addTarget(target, action: #selector(MortarGestureRecognizerTarget.handleGesture))
         permanentlyAssociate(target)
-        return self
     }
 
     /// Configures the gesture recognizer's delegate with a block.
     ///
     /// - Parameter configureBlock: A closure that configures the gesture recognizer delegate.
     /// - Returns: The configured gesture recognizer instance.
-    func handleDelegation(_ configureBlock: (MortarGestureRecognizerDelegateHandler<Self>) -> Void) -> Self {
+    func handleDelegation(_ configureBlock: (MortarGestureRecognizerDelegateHandler<Self>) -> Void) {
         let delegateHandler = MortarGestureRecognizerDelegateHandler<Self>()
         delegate = delegateHandler
         configureBlock(delegateHandler)
         permanentlyAssociate(delegateHandler)
-        return self
     }
 }
 
