@@ -10,11 +10,11 @@ import UIKit
 
 public protocol ManagedCollectionViewCellModel: Identifiable<String> {
     associatedtype Cell: ManagedCollectionViewCell
-    var onSelect: (() -> Void)? { get }
+    var onSelect: ((ManagedCollectionView, IndexPath) -> Void)? { get }
 }
 
 public extension ManagedCollectionViewCellModel {
-    var onSelect: (() -> Void)? { nil }
+    var onSelect: ((ManagedCollectionView, IndexPath) -> Void)? { nil }
 }
 
 public protocol ManagedCollectionViewCell: UICollectionViewCell {

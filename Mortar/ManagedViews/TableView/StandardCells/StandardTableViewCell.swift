@@ -18,7 +18,7 @@ public final class StandardTableViewCell: UITableViewCell, ManagedTableViewCell 
         public let image: UIImage?
         public let accessoryType: UITableViewCell.AccessoryType
         public let accessoryView: (@MainActor () -> UIView?)?
-        public let onSelect: (() -> Void)?
+        public let onSelect: ((ManagedTableView, IndexPath) -> Void)?
 
         public init(
             id: String = UUID().uuidString,
@@ -27,7 +27,7 @@ public final class StandardTableViewCell: UITableViewCell, ManagedTableViewCell 
             image: UIImage? = nil,
             accessoryType: UITableViewCell.AccessoryType = .none,
             accessoryView: (@MainActor () -> UIView?)? = nil,
-            onSelect: (() -> Void)? = nil
+            onSelect: ((ManagedTableView, IndexPath) -> Void)? = nil
         ) {
             self.id = id
             self.text = text

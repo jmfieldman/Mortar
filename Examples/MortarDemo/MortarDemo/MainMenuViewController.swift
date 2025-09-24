@@ -151,7 +151,7 @@ private class MainMenuRowCell: UITableViewCell, ManagedTableViewCell {
         let title: String
         let isStarred: Bool
         let starTapHandler: ActionTrigger<Void>
-        let onSelect: (() -> Void)?
+        let onSelect: ((ManagedTableView, IndexPath) -> Void)?
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

@@ -105,7 +105,7 @@ private final class AlertTextRowCell: UITableViewCell, ManagedTableViewCell {
 
         let id: String = UUID().uuidString
         let text: String
-        let onSelect: (() -> Void)?
+        let onSelect: ((ManagedTableView, IndexPath) -> Void)?
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

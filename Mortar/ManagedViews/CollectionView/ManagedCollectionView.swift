@@ -80,7 +80,7 @@ public final class ManagedCollectionView: UICollectionView {
 extension ManagedCollectionView: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        sections[indexPath.section].items[indexPath.item].onSelect?()
+        sections[indexPath.section].items[indexPath.item].onSelect?(collectionView as! ManagedCollectionView, indexPath)
     }
 }
 
