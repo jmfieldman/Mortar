@@ -20,7 +20,7 @@ import AppKit
 public protocol ArbitrarilyIdentifiable: Identifiable {}
 
 public extension ArbitrarilyIdentifiable {
-    var id: UUID { UUID() }
+    var id: String { UUID().uuidString }
 }
 
 // MARK: Associated Properties

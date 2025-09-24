@@ -73,7 +73,7 @@ extension ManagedTableView: UITableViewDelegate {
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        sections[indexPath.section].rows[indexPath.row].onSelect?()
+        sections[indexPath.section].rows[indexPath.row].onSelect?(tableView as! ManagedTableView, indexPath)
     }
 
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

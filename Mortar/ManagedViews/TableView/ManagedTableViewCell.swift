@@ -10,11 +10,11 @@ import UIKit
 
 public protocol ManagedTableViewCellModel: Identifiable<String> {
     associatedtype Cell: ManagedTableViewCell
-    var onSelect: (() -> Void)? { get }
+    var onSelect: ((ManagedTableView, IndexPath) -> Void)? { get }
 }
 
 public extension ManagedTableViewCellModel {
-    var onSelect: (() -> Void)? { nil }
+    var onSelect: ((ManagedTableView, IndexPath) -> Void)? { nil }
 }
 
 public protocol ManagedTableViewCell: UITableViewCell {
