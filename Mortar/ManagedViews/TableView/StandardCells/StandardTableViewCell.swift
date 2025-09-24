@@ -17,7 +17,7 @@ public final class StandardTableViewCell: UITableViewCell, ManagedTableViewCell 
         public let textStyle: AttributeContainer
         public let image: UIImage?
         public let accessoryType: UITableViewCell.AccessoryType
-        public let accessoryView: UIView?
+        public let accessoryView: (@MainActor () -> UIView?)?
         public let onSelect: (() -> Void)?
 
         public init(
@@ -26,7 +26,7 @@ public final class StandardTableViewCell: UITableViewCell, ManagedTableViewCell 
             textStyle: AttributeContainer = AttributeContainer(),
             image: UIImage? = nil,
             accessoryType: UITableViewCell.AccessoryType = .none,
-            accessoryView: UIView? = nil,
+            accessoryView: (@MainActor () -> UIView?)? = nil,
             onSelect: (() -> Void)? = nil
         ) {
             self.id = id
@@ -48,7 +48,7 @@ public final class StandardTableViewCell: UITableViewCell, ManagedTableViewCell 
         imageView?.bind(\.image) <~ model.map(\.image)
 
         bind(\.accessoryType) <~ model.map(\.accessoryType)
-        bind(\.accessoryView) <~ model.map(\.accessoryView)
+        bind(\.accessoryView) <~ model.map { $0.accessoryView?() }
     }
 
     @available(*, unavailable)
