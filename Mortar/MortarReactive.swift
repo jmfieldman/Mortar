@@ -225,7 +225,7 @@ public extension _MortarUIControlEventsProviding {
 
     func handleEvents(
         _ filter: UIControl.Event,
-        _ handleBlock: @escaping (Self) -> Void
+        _ handleBlock: @escaping @Sendable (Self) -> Void
     ) {
         publishEvents(filter)
             .sink(

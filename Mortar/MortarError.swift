@@ -22,7 +22,7 @@ public enum MortarError {
     /// This helper allows you to install a block-based listener to Mortar errors
     /// without requiring any explicit publisher-based syntax. The hook lasts for
     /// the lifetime of the process.
-    public static func install(hook: @escaping (String) -> Void) {
+    public static func install(hook: @escaping @Sendable (String) -> Void) {
         errorSubject
             .compactMap(\.self)
             .sink(
