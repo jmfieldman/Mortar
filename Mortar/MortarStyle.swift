@@ -11,15 +11,13 @@ import AppKit
 
 private var kStyleBoxAssociationKey = 0
 
-/// A private class that wraps an `AttributeContainer` for use with associated objects.
-///
-/// This wrapper is used to store and manage text style attributes for views
-/// that conform to `MortarTextStylable`.
-private class AttributeContainerBox {
-    var attributeContainer: AttributeContainer
+/// A class that wraps an `[NSAttributedString.Key: Any]` for use with associated
+/// objects and allowing the dictionary to be Sendable.
+public final class TextStyle: @unchecked Sendable {
+    let attributes: [NSAttributedString.Key: Any]
 
-    init(attributeContainer: AttributeContainer) {
-        self.attributeContainer = attributeContainer
+    init(_ attributeDictionary: [NSAttributedString.Key: Any]) {
+        self.attributes = attributeDictionary
     }
 }
 
@@ -28,44 +26,32 @@ private class AttributeContainerBox {
 /// Conforming types can use the `textStyle` property to get and set
 /// text attributes that will be applied to their content.
 @MainActor public protocol MortarTextStylable: MortarView {
-    var textStyle: AttributeContainer { get set }
-}
-
-/// This extension manages the associated object storage for text styles,
-/// ensuring that each conforming view has its own attribute container.
-private extension MortarTextStylable {
-    /// The associated `AttributeContainerBox` for this view.
-    ///
-    /// This property uses Objective-C's associated object mechanism to store
-    /// the text style information for each view that conforms to `MortarTextStylable`.
-    private var attributeContainerBox: AttributeContainerBox {
-        if let existing = objc_getAssociatedObject(self, &kStyleBoxAssociationKey) as? AttributeContainerBox {
-            return existing
-        }
-
-        let newValue = AttributeContainerBox(attributeContainer: .init())
-        objc_setAssociatedObject(self, &kStyleBoxAssociationKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        return newValue
-    }
+    var textStyle: TextStyle? { get set }
 }
 
 /// A public extension to `MortarTextStylable` that implements the `textStyle` property.
-///
-/// This extension provides the actual implementation of the `textStyle` property
-/// that allows getting and setting text attributes for conforming views.
 public extension MortarTextStylable {
     /// The text style attributes to apply to the view's content.
-    ///
-    /// When getting, returns the current text style attributes.
-    /// When setting, updates the text style attributes for the view.
-    var textStyle: AttributeContainer {
+    var textStyle: TextStyle? {
         get {
-            attributeContainerBox.attributeContainer
+            objc_getAssociatedObject(self, &kStyleBoxAssociationKey) as? TextStyle
         }
-
         set {
-            attributeContainerBox.attributeContainer = newValue
+            objc_setAssociatedObject(self, &kStyleBoxAssociationKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
+    }
+}
+
+public extension NSParagraphStyle {
+    /// Allows the user to configure a paragraph style inline, e.g.
+    ///
+    ///   let style: NSParagraphStyle = .configure {
+    ///     $0.alignment = .center
+    ///   }
+    static func configure(_ block: (NSMutableParagraphStyle) -> Void) -> NSMutableParagraphStyle {
+        let style = NSMutableParagraphStyle()
+        block(style)
+        return style
     }
 }
 
@@ -88,7 +74,7 @@ extension UILabel: MortarTextStylable {
 
         set {
             attributedText = newValue.flatMap {
-                NSAttributedString(AttributedString($0, attributes: textStyle))
+                NSAttributedString(string: $0, attributes: textStyle?.attributes)
             }
         }
     }
@@ -110,7 +96,7 @@ extension UIButton: MortarTextStylable {
     public func setStyledTitle(_ title: String?, for state: UIControl.State) {
         setAttributedTitle(
             title.flatMap {
-                NSAttributedString(AttributedString($0, attributes: textStyle))
+                NSAttributedString(string: $0, attributes: textStyle?.attributes)
             },
             for: state
         )

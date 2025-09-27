@@ -14,7 +14,7 @@ public final class StandardTableViewCell: UITableViewCell, ManagedTableViewCell 
 
         public let id: String
         public let text: String
-        public let textStyle: AttributeContainer
+        public let textStyle: TextStyle?
         public let image: UIImage?
         public let accessoryType: UITableViewCell.AccessoryType
         public let accessoryView: (@MainActor () -> UIView?)?
@@ -23,7 +23,7 @@ public final class StandardTableViewCell: UITableViewCell, ManagedTableViewCell 
         public init(
             id: String = UUID().uuidString,
             text: String,
-            textStyle: AttributeContainer = AttributeContainer(),
+            textStyle: TextStyle? = nil,
             image: UIImage? = nil,
             accessoryType: UITableViewCell.AccessoryType = .none,
             accessoryView: (@MainActor () -> UIView?)? = nil,
