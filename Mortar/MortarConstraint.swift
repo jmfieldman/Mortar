@@ -76,18 +76,18 @@ private func resolveSourceItem(_ item: Any?) throws -> Any? {
 
     if let reference = item as? MortarRelativeAnchor {
         switch reference {
-        case let .parent(view):
+        case let .parent(view, block):
             guard let parent = view.superview else {
                 MortarError.emit("Constraint source item must be a subview of a UIView")
                 return nil
             }
-            return parent
-        case let .reference(referenceId):
+            return block(parent)
+        case let .reference(referenceId, block):
             guard let referenceView = MortarMainThreadLayoutStack.shared.viewForLayoutReference(id: referenceId) else {
                 MortarError.emit("Could not resolve layout referenceId [\(referenceId)]")
                 return nil
             }
-            return referenceView
+            return block(referenceView)
         }
     }
 

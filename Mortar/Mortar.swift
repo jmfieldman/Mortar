@@ -73,6 +73,7 @@ enum MortarLayoutAttribute {
     case centerYWithinMargins
     case sideMargins
     case capMargins
+    case edgeMargins
     #endif
 
     // Attributes with multiple sub-attributes
@@ -316,6 +317,7 @@ enum MortarLayoutAttribute {
         case .centerYWithinMargins: [.centerYWithinMargins]
         case .sideMargins: [.leadingMargin, .trailingMargin]
         case .capMargins: [.topMargin, .bottomMargin]
+        case .edgeMargins: [.topMargin, .leadingMargin, .bottomMargin, .trailingMargin]
         case .notAnAttribute: [.notAnAttribute]
         case .sides: [.leading, .trailing]
         case .caps: [.top, .bottom]

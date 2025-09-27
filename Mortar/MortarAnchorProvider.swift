@@ -4,8 +4,8 @@
 //
 
 enum MortarRelativeAnchor {
-    case parent(MortarView)
-    case reference(String)
+    case parent(MortarView, (MortarView) -> Any)
+    case reference(String, (MortarView) -> Any)
 }
 
 public struct MortarAnchorProvider {
