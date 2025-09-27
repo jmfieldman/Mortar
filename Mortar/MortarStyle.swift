@@ -14,9 +14,9 @@ private var kStyleBoxAssociationKey = 0
 /// A class that wraps an `[NSAttributedString.Key: Any]` for use with associated
 /// objects and allowing the dictionary to be Sendable.
 public final class TextStyle: @unchecked Sendable {
-    let attributes: [NSAttributedString.Key: Any]
+    public let attributes: [NSAttributedString.Key: Any]
 
-    init(_ attributeDictionary: [NSAttributedString.Key: Any]) {
+    public init(_ attributeDictionary: [NSAttributedString.Key: Any]) {
         self.attributes = attributeDictionary
     }
 }
