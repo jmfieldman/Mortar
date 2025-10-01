@@ -24,6 +24,12 @@ public extension _MortarBindProviding {
 
 extension NSObject: _MortarBindProviding {}
 
+public extension MutableProperty {
+    func bind() -> BindTarget<MutableProperty<Output>, Output> {
+        BindTarget(target: self, keyPath: \.value)
+    }
+}
+
 infix operator <~: AssignmentPrecedence
 
 private var kBindingAssociationKey = 0
