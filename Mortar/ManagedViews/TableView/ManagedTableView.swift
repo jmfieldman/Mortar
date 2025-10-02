@@ -95,8 +95,8 @@ public final class ManagedTableView: UITableView {
             if Thread.isMainThread {
                 executeOperation(operation, completion: { promise(.success(())) })
             } else {
-                DispatchQueue.main.async { [self] in
-                    executeOperation(operation, completion: { promise(.success(())) })
+                DispatchQueue.main.async {
+                    self.executeOperation(operation, completion: { promise(.success(())) })
                 }
             }
         }
