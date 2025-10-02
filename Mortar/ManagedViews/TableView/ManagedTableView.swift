@@ -186,7 +186,7 @@ private extension ManagedTableView {
 
     func executeOperation(_ operation: Operation) {
         switch operation {
-        case let .reloadAllCells:
+        case .reloadAllCells:
             guard var snapshot = diffableDataSource?.snapshot() else {
                 return
             }
