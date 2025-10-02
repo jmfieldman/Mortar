@@ -30,7 +30,7 @@ public final class ManagedTableView: UITableView {
 
     // Operations
     public enum Operation {
-        case reloadData
+        case reloadAllCells(animated: Bool)
         case reloadCell(id: String, animated: Bool)
         case scrollCell(id: String, to: UITableView.ScrollPosition, animated: Bool)
     }
@@ -186,8 +186,12 @@ private extension ManagedTableView {
 
     func executeOperation(_ operation: Operation) {
         switch operation {
-        case .reloadData:
-            reloadData()
+        case let .reloadAllCells(animated):
+            guard var snapshot = diffableDataSource?.snapshot() else {
+                return
+            }
+            snapshot.reloadItems(snapshot.itemIdentifiers)
+            diffableDataSource?.apply(snapshot, animatingDifferences: animated)
         case let .reloadCell(id, animated):
             guard indexPathForId(id) != nil, var snapshot = diffableDataSource?.snapshot() else {
                 return
