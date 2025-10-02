@@ -186,7 +186,7 @@ private extension ManagedTableView {
     func executeOperation(_ operation: Operation) {
         switch operation {
         case let .reloadCell(id, animated):
-            guard var snapshot = diffableDataSource?.snapshot() else {
+            guard indexPathForId(id) != nil, var snapshot = diffableDataSource?.snapshot() else {
                 return
             }
             snapshot.reloadItems([id])
