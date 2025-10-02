@@ -28,6 +28,15 @@ public final class ManagedTableView: UITableView {
     private var registeredCellIdentifiers: Set<String> = []
     private var registeredHeaderIdentifiers: Set<String> = []
 
+    // Operations
+    public enum Operation {
+        case reloadCell(id: String, animated: Bool)
+        case scrollCell(id: String, to: UITableView.ScrollPosition, animated: Bool)
+    }
+
+    private let operationQueue = DispatchQueue(label: "ManagedTableView.operationQueue")
+    private var operations: [Operation] = []
+
     override public init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
 
@@ -55,6 +64,21 @@ public final class ManagedTableView: UITableView {
             snapshot.appendItems(section.rows.map { $0.id as String })
         }
         diffableDataSource?.apply(snapshot, animatingDifferences: false)
+    }
+
+    public func queueOperation(_ operation: Operation) {
+        if Thread.isMainThread {
+            operationQueue.sync {
+                executeOperation(operation)
+            }
+        } else {
+            operationQueue.sync {
+                operations.append(operation)
+            }
+            RunLoop.main.perform { [weak self] in
+                self?.processOperationsOnMainThread()
+            }
+        }
     }
 }
 
@@ -148,5 +172,43 @@ extension ClassReusable {
 
 extension UITableViewHeaderFooterView: ClassReusable {}
 extension UITableViewCell: ClassReusable {}
+
+// MARK: Operations
+
+private extension ManagedTableView {
+    func processOperationsOnMainThread() {
+        operationQueue.sync {
+            operations.forEach(executeOperation)
+            operations.removeAll()
+        }
+    }
+
+    func executeOperation(_ operation: Operation) {
+        switch operation {
+        case let .reloadCell(id, animated):
+            guard var snapshot = diffableDataSource?.snapshot() else {
+                return
+            }
+            snapshot.reloadItems([id])
+            diffableDataSource?.apply(snapshot, animatingDifferences: animated)
+        case let .scrollCell(id, position, animated):
+            guard let indexPath = indexPathForId(id) else {
+                return
+            }
+            scrollToRow(at: indexPath, at: position, animated: animated)
+        }
+    }
+
+    func indexPathForId(_ id: String) -> IndexPath? {
+        for section in sections.enumerated() {
+            for row in section.element.rows.enumerated() {
+                if row.element.id == id {
+                    return IndexPath(row: row.offset, section: section.offset)
+                }
+            }
+        }
+        return nil
+    }
+}
 
 #endif
