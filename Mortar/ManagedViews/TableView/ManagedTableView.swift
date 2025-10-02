@@ -84,6 +84,23 @@ public final class ManagedTableView: UITableView {
             }
         }
     }
+
+    public func deferredOperationFuture(_ operation: Operation) -> AnyDeferredFuture<Void, Never> {
+        AnyDeferredFuture<Void, Never> { [weak self] promise in
+            guard let self else {
+                promise(.success(()))
+                return
+            }
+
+            if Thread.isMainThread {
+                executeOperation(operation, completion: { promise(.success(())) })
+            } else {
+                DispatchQueue.main.async { [self] in
+                    executeOperation(operation, completion: { promise(.success(())) })
+                }
+            }
+        }
+    }
 }
 
 extension ManagedTableView: UITableViewDelegate {
@@ -182,12 +199,12 @@ extension UITableViewCell: ClassReusable {}
 private extension ManagedTableView {
     func processOperationsOnMainThread() {
         operationQueue.sync {
-            operations.forEach(executeOperation)
+            operations.forEach { executeOperation($0, completion: nil) }
             operations.removeAll()
         }
     }
 
-    func executeOperation(_ operation: Operation) {
+    func executeOperation(_ operation: Operation, completion: (() -> Void)? = nil) {
         switch operation {
         case .reloadAllCells:
             guard var snapshot = diffableDataSource?.snapshot() else {
@@ -195,17 +212,21 @@ private extension ManagedTableView {
             }
             snapshot.reloadItems(snapshot.itemIdentifiers)
             diffableDataSource?.applySnapshotUsingReloadData(snapshot)
+            completion?()
         case let .reloadCell(id, animated):
             guard indexPathForId(id) != nil, var snapshot = diffableDataSource?.snapshot() else {
                 return
             }
             snapshot.reloadItems([id])
-            diffableDataSource?.apply(snapshot, animatingDifferences: animated)
+            diffableDataSource?.apply(snapshot, animatingDifferences: animated, completion: completion)
         case let .scrollCell(id, position, animated):
             guard let indexPath = indexPathForId(id) else {
                 return
             }
             scrollToRow(at: indexPath, at: position, animated: animated)
+            if let completion {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: completion)
+            }
         }
     }
 
