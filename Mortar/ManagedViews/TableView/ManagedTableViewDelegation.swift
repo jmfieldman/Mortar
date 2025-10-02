@@ -54,6 +54,9 @@ public final class _ManagedTableViewScrollDelegateHandler: NSObject {
     /// Called when the scroll view ends scrolling animation.
     public var didEndScrollingAnimation: ((ManagedTableView) -> Void)?
 
+    /// Called on any delegate method that signals end of a scroll
+    public var didFinishAnyScrolling: ((ManagedTableView) -> Void)?
+
     /// Called when the scroll view's adjusted content inset changes.
     public var didChangeAdjustedContentInset: ((ManagedTableView) -> Void)?
 }
@@ -65,6 +68,7 @@ extension ManagedTableView: UIScrollViewDelegate {
 
     public func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
         scrollDelegateHandler.didScrollToTop?(scrollView as! ManagedTableView)
+        scrollDelegateHandler.didFinishAnyScrolling?(scrollView as! ManagedTableView)
     }
 
     public func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
@@ -93,6 +97,9 @@ extension ManagedTableView: UIScrollViewDelegate {
 
     public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         scrollDelegateHandler.didEndDragging?(scrollView as! ManagedTableView, decelerate)
+        if !decelerate {
+            scrollDelegateHandler.didFinishAnyScrolling?(scrollView as! ManagedTableView)
+        }
     }
 
     public func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
@@ -101,10 +108,12 @@ extension ManagedTableView: UIScrollViewDelegate {
 
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         scrollDelegateHandler.didEndDecelerating?(scrollView as! ManagedTableView)
+        scrollDelegateHandler.didFinishAnyScrolling?(scrollView as! ManagedTableView)
     }
 
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         scrollDelegateHandler.didEndScrollingAnimation?(scrollView as! ManagedTableView)
+        scrollDelegateHandler.didFinishAnyScrolling?(scrollView as! ManagedTableView)
     }
 
     public func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
