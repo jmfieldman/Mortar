@@ -28,6 +28,9 @@ public final class ManagedTableView: UITableView {
     private var registeredCellIdentifiers: Set<String> = []
     private var registeredHeaderIdentifiers: Set<String> = []
 
+    // Scroll Delegation
+    let scrollDelegateHandler = _ManagedTableViewScrollDelegateHandler()
+
     // Operations
     public enum Operation {
         case reloadAllCells
