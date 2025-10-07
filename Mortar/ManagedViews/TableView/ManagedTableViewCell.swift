@@ -11,10 +11,12 @@ import UIKit
 public protocol ManagedTableViewCellModel: Identifiable<String> {
     associatedtype Cell: ManagedTableViewCell
     var onSelect: ((ManagedTableView, IndexPath) -> Void)? { get }
+    var preventHeightCaching: Bool { get }
 }
 
 public extension ManagedTableViewCellModel {
     var onSelect: ((ManagedTableView, IndexPath) -> Void)? { nil }
+    var preventHeightCaching: Bool { false }
 }
 
 public protocol ManagedTableViewCell: UITableViewCell {

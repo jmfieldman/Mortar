@@ -44,6 +44,9 @@ public final class ManagedTableView: UITableView {
     private let operationQueue = DispatchQueue(label: "ManagedTableView.operationQueue")
     private var operations: [Operation] = []
 
+    public var enableHeightCaching: Bool = false
+    fileprivate var cachedHeightsById: [String: CGFloat] = [:]
+
     override public init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
 
@@ -114,7 +117,16 @@ extension ManagedTableView: UITableViewDelegate {
     }
 
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        UITableView.automaticDimension
+        guard enableHeightCaching else {
+            return UITableView.automaticDimension
+        }
+
+        let viewModel = sections[indexPath.section].rows[indexPath.row]
+        if !viewModel.preventHeightCaching, let cachedHeight = cachedHeightsById[viewModel.id] {
+            return cachedHeight
+        }
+
+        return UITableView.automaticDimension
     }
 
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -135,6 +147,17 @@ extension ManagedTableView: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         sections[section].footer.flatMap {
             $0.__dequeueHeaderFooter(self)
+        }
+    }
+
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard enableHeightCaching else {
+            return
+        }
+
+        let viewModel = sections[indexPath.section].rows[indexPath.row]
+        if !viewModel.preventHeightCaching {
+            cachedHeightsById[viewModel.id] = cell.frame.size.height
         }
     }
 }
