@@ -32,7 +32,7 @@ public final class ManagedTableView: UITableView {
     let scrollDelegateHandler = _ManagedTableViewScrollDelegateHandler()
 
     // Can be observed to see when the data source/table updates
-    @objc dynamic var lastDataSourceUpdate: Date?
+    @objc public private(set) dynamic var lastDataSourceUpdate: Date?
 
     // Operations
     public enum Operation {
