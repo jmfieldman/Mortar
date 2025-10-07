@@ -31,6 +31,9 @@ public final class ManagedTableView: UITableView {
     // Scroll Delegation
     let scrollDelegateHandler = _ManagedTableViewScrollDelegateHandler()
 
+    // Can be observed to see when the data source/table updates
+    @objc dynamic var lastDataSourceUpdate: Date?
+
     // Operations
     public enum Operation {
         case reloadAllCells
@@ -67,7 +70,9 @@ public final class ManagedTableView: UITableView {
             snapshot.appendSections([section.id])
             snapshot.appendItems(section.rows.map { $0.id as String })
         }
-        diffableDataSource?.apply(snapshot, animatingDifferences: false)
+        diffableDataSource?.apply(snapshot, animatingDifferences: false, completion: { [weak self] in
+            self?.lastDataSourceUpdate = Date()
+        })
     }
 
     public func queueOperation(_ operation: Operation) {
@@ -211,14 +216,19 @@ private extension ManagedTableView {
                 return
             }
             snapshot.reloadItems(snapshot.itemIdentifiers)
-            diffableDataSource?.applySnapshotUsingReloadData(snapshot)
-            completion?()
+            diffableDataSource?.applySnapshotUsingReloadData(snapshot) { [weak self] in
+                completion?()
+                self?.lastDataSourceUpdate = Date()
+            }
         case let .reloadCell(id, animated):
             guard indexPathForId(id) != nil, var snapshot = diffableDataSource?.snapshot() else {
                 return
             }
             snapshot.reloadItems([id])
-            diffableDataSource?.apply(snapshot, animatingDifferences: animated, completion: completion)
+            diffableDataSource?.apply(snapshot, animatingDifferences: animated) { [weak self] in
+                completion?()
+                self?.lastDataSourceUpdate = Date()
+            }
         case let .scrollCell(id, position, animated):
             guard let indexPath = indexPathForId(id) else {
                 return
