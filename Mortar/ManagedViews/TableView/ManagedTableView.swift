@@ -188,6 +188,7 @@ private extension ManagedTableView {
     }
 }
 
+@MainActor
 private extension ManagedTableViewCellModel {
     func __dequeueCell(_ tableView: ManagedTableView, _ indexPath: IndexPath) -> Cell {
         let cell = tableView.dequeueCell(Cell.self, for: indexPath)
@@ -197,6 +198,7 @@ private extension ManagedTableViewCellModel {
     }
 }
 
+@MainActor
 private extension ManagedTableViewHeaderFooterViewModel {
     func __dequeueHeaderFooter(_ tableView: ManagedTableView) -> Header {
         let headerFooter = tableView.dequeueHeaderFooterView(Header.self)

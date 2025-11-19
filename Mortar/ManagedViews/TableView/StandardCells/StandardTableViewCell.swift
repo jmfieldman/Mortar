@@ -39,21 +39,16 @@ public final class StandardTableViewCell: UITableViewCell, ManagedTableViewCell 
         }
     }
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-
+    public func configureView() {
         textLabel?.bind(\.textStyle) <~ model.map(\.textStyle)
         textLabel?.bind(\.styledText) <~ model.map(\.text)
         imageView?.bind(\.isHidden) <~ model.map { $0.image == nil }
         imageView?.bind(\.image) <~ model.map(\.image)
 
         bind(\.accessoryType) <~ model.map(\.accessoryType)
-        bind(\.accessoryView) <~ model.map { $0.accessoryView?() }
-    }
-
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        bind(\.accessoryView) <~ model.map { model in
+            MainActor.assumeIsolated { model.accessoryView?() }
+        }
     }
 }
 

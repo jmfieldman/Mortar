@@ -111,6 +111,7 @@ private extension ManagedCollectionView {
     }
 }
 
+@MainActor
 private extension ManagedCollectionViewCellModel {
     func __dequeueCell(_ collectionView: ManagedCollectionView, _ indexPath: IndexPath) -> Cell {
         let cell = collectionView.dequeueCell(Cell.self, for: indexPath)
@@ -119,6 +120,7 @@ private extension ManagedCollectionViewCellModel {
     }
 }
 
+@MainActor
 private extension ManagedCollectionReusableViewModel {
     func __dequeueReusableView(_ collectionView: ManagedCollectionView, _ indexPath: IndexPath) -> ReusableView {
         let reusableView = collectionView.dequeueReusableView(ReusableView.self, for: indexPath)
